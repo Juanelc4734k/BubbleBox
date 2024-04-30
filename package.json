@@ -2,9 +2,9 @@
   "name": "bubblebox",
   "version": "1.0.0",
   "description": "Red social",
-  "main": "frontend/src/index.js",
+  "main": "backend/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node backend/index.js"
   },
   "keywords": [
     "Node.js",
@@ -13,6 +13,8 @@
   "author": "Equipo MegaPro",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
     "pg": "^8.11.5"
   },
   "devDependencies": {
