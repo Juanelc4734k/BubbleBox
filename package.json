@@ -10,8 +10,8 @@
     "Node.js",
     "PostgreSQL"
   ],
-  "author": "Tu Nombre",
-  "license": "ISC",
+  "author": "Equipo MegaPro",
+  "license": "MIT",
   "dependencies": {
     "pg": "^8.11.5"
   },
