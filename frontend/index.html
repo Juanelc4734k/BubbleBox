@@ -8,6 +8,24 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module">
+      import React from 'react';
+      import ReactDOM from 'react-dom';
+      import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+      import Login from './components/Login';
+      import Register from './components/Register';
+
+      const App = () => (
+        <Router>
+          <Switch>
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/" component={Login} />
+          </Switch>
+        </Router>
+      );
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
   </body>
 </html>
