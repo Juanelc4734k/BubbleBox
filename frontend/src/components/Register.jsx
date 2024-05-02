@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
 function Register() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
+  const [nombre, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [contraseña, setPassword] = useState('');
   const handleRegister = async () => {
     try {
       const response = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({nombre, email, telefono, contraseña})
       });
       const data = await response.json();
-      console.log(data);
+      console.log('Registro exitoso: ', data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -21,8 +22,11 @@ function Register() {
   return (
     <div>
       <h1>Register</h1>
-      <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <form action=""></form>
+      <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setUsername(e.target.value)} />
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input type="tel" placeholder="Telefono" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+      <input type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setPassword(e.target.value)} />
       <button onClick={handleRegister}>Register</button>
     </div>
   );
