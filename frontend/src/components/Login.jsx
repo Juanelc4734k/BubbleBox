@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 function Login(){
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [nombre, setUsername] = useState('');
+    const [contraseña, setPassword] = useState('');
 
     const handleLogin = async () => {
         try {
             const response = await fetch('/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({username, password})
+                body: JSON.stringify({nombre, contraseña})
             });
             const data = await response.json();
             console.log(data);
@@ -21,8 +21,8 @@ function Login(){
     return (
         <div>
             <h1>Login</h1>
-            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setUsername(e.target.value)} />
+            <input type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setPassword(e.target.value)} />
             <button onClick={handleLogin}>Login</button>
         </div>
     );
