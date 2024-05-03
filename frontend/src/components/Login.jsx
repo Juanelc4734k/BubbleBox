@@ -1,21 +1,22 @@
 import React, { useState } from "react";
+import Axios from 'axios';
 
 function Login(){
     const [nombre, setUsername] = useState('');
     const [contraseña, setPassword] = useState('');
 
-    const handleLogin = async () => {
-        try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({nombre, contraseña})
-            });
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error('Error', error);
-        }
+    const login = () => {
+        Axios.post('http://localhost:8081/auth/login', {
+            nombre: nombre,
+            contraseña: contraseña
+        }).then((response) => {
+            alert(response.data.message);
+            setUsername('');
+            setPassword('');
+        }).catch((err) => {
+            console.error('Error:', err);
+            alert('Error al ingresar');
+        })
     };
 
     return (
@@ -23,7 +24,7 @@ function Login(){
             <h1>Login</h1>
             <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setUsername(e.target.value)} />
             <input type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setPassword(e.target.value)} />
-            <button onClick={handleLogin}>Login</button>
+            <button onClick={login}>Login</button>
         </div>
     );
 }
