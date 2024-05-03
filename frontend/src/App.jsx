@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Login from './components/Login';
 import Register from './components/register';
+import ('./css/App.css');
 
 function App() {
   return (
