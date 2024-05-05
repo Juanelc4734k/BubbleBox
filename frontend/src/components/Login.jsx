@@ -1,7 +1,8 @@
+// Login.jsx
 import React, { useState } from "react";
 import Axios from 'axios';
 
-function Login(){
+function Login({ onLogin }) {
     const [nombre, setUsername] = useState('');
     const [contraseña, setPassword] = useState('');
 
@@ -11,12 +12,14 @@ function Login(){
             contraseña: contraseña
         }).then((response) => {
             alert(response.data.message);
-            setUsername('');
-            setPassword('');
+            const { rol, token } = response.data;
+            const tokenWithRole = `${token}.${rol}`;
+            localStorage.setItem('token', tokenWithRole);            
+            onLogin(rol); // Llama a la función onLogin pasando el rol
         }).catch((err) => {
             console.error('Error:', err);
             alert('Error al ingresar');
-        })
+        });
     };
 
     return (
