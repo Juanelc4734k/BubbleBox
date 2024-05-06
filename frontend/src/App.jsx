@@ -32,8 +32,6 @@ function App() {
     localStorage.removeItem('token');
   };
 
-console.log(userRole); // Debería imprimir el rol del usuario
-
   return (
     <div>
       {isLoggedIn ? (
