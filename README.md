@@ -4,5 +4,7 @@ BubbleBox vuela e imagina
 Tecnologias a utilizar:
 VSCode
 NodeJS
-ReactJS
-0...
+ReactJS && Vite
+Photoshop
+Canva
+Figma
