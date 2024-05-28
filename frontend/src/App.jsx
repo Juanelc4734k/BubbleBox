@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import Login from './components/Login';
-import Register from './components/register';
+import Register from './components/Register';
 import Home from './components/Home';
 import ('./css/App.css');
 
