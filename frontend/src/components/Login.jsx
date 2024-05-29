@@ -18,12 +18,12 @@ function Login({ onLogin }) {
             onLogin(rol); // Llama a la función onLogin pasando el rol
         }).catch((err) => {
             console.error('Error:', err);
-            alert('Error al ingresar');
+            alert('Usuario no registrado');
         });
     };
 
     return (
-        <div>
+        <div className="Login">
             <h1>Login</h1>
             <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setUsername(e.target.value)} />
             <input type="password" placeholder="Contraseña" value={contraseña} onChange={(e) => setPassword(e.target.value)} />

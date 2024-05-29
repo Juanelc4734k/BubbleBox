@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import ('../css/register.css')
 
 function Register() {
   const [nombre, setUsername] = useState('');
@@ -28,7 +29,7 @@ function Register() {
   
 
     return (
-      <div>
+      <div className='Register'>
         <h1>Register</h1>
         <form action=""></form>
         <input type="text" placeholder="Nombre" value={nombre} onChange={(e) => setUsername(e.target.value)} />
