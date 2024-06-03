@@ -5,6 +5,13 @@ const User = require('../models/user');
 exports.register = async (req, res) => {
   const { username, email, password, role } = req.body;
   try {
+    // Verificar si ya existe un usuario con el mismo nombre de usuario
+    const existingUser = await User.findOne({ where: { username } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
+    // Crear y guardar el nuevo usuario
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ username, email, password: hashedPassword, role });
     res.status(201).json({ message: 'User created successfully', user });

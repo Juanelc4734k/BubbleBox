@@ -14,6 +14,7 @@ const Profile = () => {
                     },
                 });
                 setUser(res.data.user);
+                console.log(res.data.user);
             } catch (err) {
                 console.error(err);
             }
@@ -42,8 +43,16 @@ const Profile = () => {
                 <p>Role: Administrator</p>
             )}
             {/* Condición para renderizar información específica para usuarios normales */}
-            {user.role !== 'admin' && (
+            {user.role === 'user' && (
                 <p>Role: Normal User</p>
+            )}
+            {/* Condición para renderizar información específica para super administradores */}
+            {user.role === 'superadmin' && (
+                <p>Role: Super Administrator</p>
+            )}
+            {/* Condición para renderizar información específica para empleados */}
+            {user.role === 'employee' && (
+                <p>Role: Employee</p>
             )}
             {/* Botón para cerrar sesión */}
             <button onClick={handleLogout}>Cerrar sesión</button>
