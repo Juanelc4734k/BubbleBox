@@ -46,10 +46,6 @@ const Profile = () => {
             {user.role === 'user' && (
                 <p>Role: Normal User</p>
             )}
-            {/* Condición para renderizar información específica para super administradores */}
-            {user.role === 'superadmin' && (
-                <p>Role: Super Administrator</p>
-            )}
             {/* Condición para renderizar información específica para empleados */}
             {user.role === 'employee' && (
                 <p>Role: Employee</p>
