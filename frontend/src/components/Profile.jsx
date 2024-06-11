@@ -1,28 +1,44 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
+/**
+ * Componente de perfil de usuario.
+ * Recupera y muestra la información del perfil del usuario autenticado.
+ */
 const Profile = () => {
+    // Estado para almacenar la información del usuario
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        /**
+         * Función para recuperar la información del perfil del usuario desde el servidor.
+         */
         const fetchUser = async () => {
+            // Recupera el token de autenticación del almacenamiento local
             const token = localStorage.getItem('token');
             try {
+                // Realiza una solicitud GET al servidor para obtener la información del perfil del usuario
                 const res = await axios.get('http://localhost:5000/api/users/profile', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+                // Actualiza el estado con la información del usuario
                 setUser(res.data.user);
-                console.log(res.data.user);
             } catch (err) {
+                // Maneja cualquier error que ocurra durante la solicitud
                 console.error(err);
             }
         };
 
+        // Llama a la función para recuperar la información del perfil del usuario
         fetchUser();
     }, []);
 
+    /**
+     * Función para cerrar la sesión del usuario.
+     * Elimina el token de autenticación del almacenamiento local y redirige al usuario a la página de inicio de sesión.
+     */
     const handleLogout = () => {
         // Limpiar el token de autenticación del almacenamiento local
         localStorage.removeItem('token');
@@ -30,6 +46,7 @@ const Profile = () => {
         window.location.href = '/login';
     };
 
+    // Renderiza un mensaje de carga mientras se recupera la información del usuario
     if (!user) {
         return <div>Loading...</div>;
     }
