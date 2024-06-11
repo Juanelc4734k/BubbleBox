@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import Footer from "./Footer";
+import Navbar from "./Navbar";
 import axios from 'axios';
 
 /**
@@ -54,6 +57,8 @@ const Profile = () => {
     return (
         <div>
             <h1>Profile</h1>
+            <Sidebar role={user.role} />
+            <Navbar />
             <p>Username: {user.username}</p>
             {/* Condición para renderizar información específica para usuarios administradores */}
             {user.role === 'admin' && (
@@ -62,14 +67,16 @@ const Profile = () => {
             {/* Condición para renderizar información específica para usuarios normales */}
             {user.role === 'user' && (
                 <p>Role: Normal User</p>
-            )}
+                )}
             {/* Condición para renderizar información específica para empleados */}
             {user.role === 'employee' && (
                 <p>Role: Employee</p>
-            )}
+                )}
             {/* Botón para cerrar sesión */}
             <button onClick={handleLogout}>Cerrar sesión</button>
+            <Footer />
         </div>
+
     );
 };
 
