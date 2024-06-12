@@ -2,7 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-import Profile from './components/auth/Profile';
+import Home from './components/pages/user/Main';
+import HomeEmpleado from './components/pages/employee/Main';
+import HomeAdmin from './components/pages/admin/Main';
 
 /**
  * Componente principal de la aplicación.
@@ -19,7 +21,11 @@ function App() {
         {/* Ruta para el componente de inicio de sesión */}
         <Route path="/login" element={<Login />} />
         {/* Ruta para el componente de perfil */}
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/user" element={<Home />} />
+        {/* Ruta para el componente de administrador */}
+        <Route path="/admin" element={<HomeAdmin />} />
+        {/* Ruta para el componente de empleado */}
+        <Route path="/employee" element={<HomeEmpleado />} />
       </Routes>
     </Router>
   );

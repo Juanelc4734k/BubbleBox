@@ -5,6 +5,7 @@ import axios from 'axios';
 const Login = () => {
   const [form, setForm] = useState({ username: '', password: '' });
   const [loggedIn, setLoggedIn] = useState(false);
+  const [role, setRole] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,7 @@ const Login = () => {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', form);
       localStorage.setItem('token', res.data.token);
+      setRole(res.data.user.role);
       setLoggedIn(true);
       console.log(res.data);
     } catch (err) {
@@ -23,9 +25,18 @@ const Login = () => {
     }
   };
 
+  if (loggedIn) {
+    if (role === 'admin') {
+      return <Navigate to="/admin" />;
+    } else if (role === 'employee') {
+      return <Navigate to="/employee" />;
+    }
+    return <Navigate to="/profile" />;
+  }
+
   return (
     <>
-      {loggedIn ? <Navigate to="/profile" /> : (
+      {loggedIn ? <Navigate to="/user" /> : (
         <form onSubmit={handleSubmit}>
           <input 
             type="text" 
