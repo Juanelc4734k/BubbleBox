@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Register from './components/Register';
-import Login from './components/Login';
-import Profile from './components/Profile';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
+import Profile from './components/auth/Profile';
 
 /**
  * Componente principal de la aplicación.
