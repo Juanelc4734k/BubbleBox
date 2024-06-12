@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import Navbar from "./Navbar";
+import Sidebar from "../common/Sidebar";
+import Footer from "../common/Footer";
+import Navbar from "../common/Navbar";
 import axios from 'axios';
 
 /**
