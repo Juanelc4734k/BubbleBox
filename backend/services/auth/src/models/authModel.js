@@ -25,9 +25,30 @@ const findUserByEmail = (email) => {
 const comparePassword = (plainPassword, hashedPassword) => {
     return bcrypt.compare(plainPassword, hashedPassword);
 };
+
+const loginUser = async (email, contraseña) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM usuarios WHERE email = ?';
+        db.query(query, [email], async (err, results) => {
+            if (err) return reject(err);
+            if (results.length === 0) return resolve(null);
+            
+            const user = results[0];
+            const isMatch = await bcrypt.compare(contraseña, user.contraseña);
+            
+            if (isMatch) {
+                resolve(user);
+            } else {
+                resolve(null);
+            }
+        });
+    });
+};
+
   
 module.exports = {
     createUser,
+    loginUser,
     findUserByEmail,
     comparePassword,
 };

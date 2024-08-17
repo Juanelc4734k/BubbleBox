@@ -1,11 +1,16 @@
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config({ path: '../../.env' });
+const db = require('./src/config/db');
+
 const app = express();
-const PORT = 3001;
 
-app.get('/', (req, res) => {
-  res.send('Service Chats is up and running!');
-});
+//middlewares
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Service Chats running on port ${PORT}`);
-});
+//routes
+
+
+const PORT =  process.env.CHATS_PORT || 3001;
+app.listen(PORT, () => console.log(`Service Chats running on port ${PORT}`));

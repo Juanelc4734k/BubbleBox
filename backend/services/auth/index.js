@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
+require('dotenv').config({ path: '../../.env' });
 const db = require('./src/config/db');
 const authRoutes = require('./src/routes/authRoutes');
 
@@ -15,5 +15,7 @@ app.use('/auth', authRoutes);
 
 
 const PORT = process.env.AUTH_PORT || 3010 ;
+// console.log('Ruta actual:', __dirname);
+// console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 app.listen(PORT, () => console.log(`Service Auht running on port ${PORT}`));
