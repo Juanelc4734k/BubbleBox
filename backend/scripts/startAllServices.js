@@ -1,9 +1,8 @@
 const { exec } = require('child_process');
 
 const servicios = [
-    { nombre: 'chats', ruta: '../services/chats/index.js' },
-    { nombre: 'communities', ruta: '../services/communities/index.js' },
-    { nombre: 'auth', ruta: '../services/auth/index.js' }
+    { nombre: 'auth', ruta: '../auth/index.js', puerto: 3010 },
+    { nombre: 'chats', ruta: '../chats/index.js', puerto: 3001 }
 ];
 
 servicios.forEach(servicio => {
@@ -20,9 +19,11 @@ servicios.forEach(servicio => {
             console.error(`stdout de ${servicio.nombre}: `, stdout);
         });
 
-        proceso.on('close', code => {
-            console.log(`${servicio.nombre} finalizado con codigo ${code}`);
-        });
+    proceso.on('close', code => {
+        console.log(`${servicio.nombre} finalizado con código ${code}`);
+    });
+
+    console.log(`El servicio ${servicio.nombre} está corriendo en el puerto ${servicio.puerto}`);
 });
 
-console.log('Todos los microservicios han sido iniciados. ')
+console.log('Todos los microservicios han sido iniciados.')

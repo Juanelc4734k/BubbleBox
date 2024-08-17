@@ -1,11 +1,18 @@
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config({ path: '../../.env' });
+const db = require('./src/config/db');
+const postRoutes = require('./src/routes/postRoutes');
+
 const app = express();
-const PORT = 3008;
 
-app.get('/', (req, res) => {
-  res.send('Service Posts is up and running!');
-});
+//middlewares
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Service Posts running on port ${PORT}`);
-});
+//routes
+app.use('/posts', postRoutes);
+
+const PORT = process.env.POSTS_PORT || 3008;
+
+app.listen(PORT, () => console.log(`Service Posts running on port ${PORT}`));
