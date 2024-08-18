@@ -2,15 +2,19 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 const db = require('./src/config/db');
-const friendRoutes = require('./src/routes/friendRoutes');
+const commentsRoutes = require('./src/routes/commentsRoutes');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/friendships', friendRoutes);
+app.use('/comments', commentsRoutes);
 
-const PORT = process.env.FRIENDSHIPS_PORT || 3005;
+const PORT = process.env.COMMENTS_PORT || 3011;
 
-app.listen(PORT, () => console.log(`Service FriendShips running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
+
+
+
+
