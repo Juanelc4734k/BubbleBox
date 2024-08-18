@@ -3,11 +3,14 @@ const postModel = require('../models/postModel');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await postModel.obtenerTodasLasPublicaciones();
+        console.log('Posts obtenidos en el controlador:', JSON.stringify(posts, null, 2));
         res.json(posts);
     } catch (error) {
+        console.error('Error al obtener las publicaciones:', error);
         res.status(500).json({ mensaje: 'Error al obtener las publicaciones', error: error.message });
     }
 };
+
 
 const getPostById = async (req, res) => {
     try {

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/auth';
 
-export default function LoginForm() {
+export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,8 +17,10 @@ export default function LoginForm() {
             const response = await login(formData);
             setMessage(response.message);
             localStorage.setItem('token', response.token);
+            setIsAuthenticated(true);
+            navigate('/home');
         } catch (error) {
-            setMessage(error.response.data.message);
+            setMessage(error.message);
         }
     };
     
@@ -27,4 +31,4 @@ export default function LoginForm() {
             <button type="submit">Login</button>
         </form>
     );
-};
+}
