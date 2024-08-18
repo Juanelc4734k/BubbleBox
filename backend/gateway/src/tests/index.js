@@ -1,7 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const httpProxy = require('http-proxy');
 
 const app = express();
+
+app.use(cors());
 const proxy = httpProxy.createProxyServer();
 
 const servicios = {
