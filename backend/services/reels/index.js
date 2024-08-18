@@ -1,11 +1,16 @@
 const express = require('express');
+const cors = require('cors');
+require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
+const db = require('./src/config/db');
+const reelsRoutes = require('./src/routes/reelsRoutes');
+
 const app = express();
-const PORT = 3002;
 
-app.get('/', (req, res) => {
-  res.send('Service Reels is up and running!');
-});
+app.use(cors());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.log(`Service Reels running on port ${PORT}`);
-});
+app.use('/reels', reelsRoutes);
+
+const PORT = process.env.REELS_PORT || 3002;
+
+app.listen(PORT, () => console.log(`Service Reels running on port ${PORT}`));

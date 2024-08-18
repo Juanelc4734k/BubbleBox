@@ -11,6 +11,11 @@ const servicios = {
   auth: 'http://localhost:3010',
   posts: 'http://localhost:3008',
   users: 'http://localhost:3009',
+  friendships: 'http://localhost:3005',
+  reels: 'http://localhost:3002',
+  stories: 'http://localhost:3003',
+  comments: 'http://localhost:3011',
+  reactions: 'http://localhost:3012'
 };
 
 app.use((req, res) => {
