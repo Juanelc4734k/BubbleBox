@@ -8,14 +8,16 @@ app.use(cors());
 const proxy = httpProxy.createProxyServer();
 
 const servicios = {
-  auth: 'http://localhost:3010',
-  posts: 'http://localhost:3008',
-  users: 'http://localhost:3009',
-  friendships: 'http://localhost:3005',
+  chats: 'http://localhost:3001',
   reels: 'http://localhost:3002',
   stories: 'http://localhost:3003',
+  communities: 'http://localhost:3004',
+  friendships: 'http://localhost:3005',
+  posts: 'http://localhost:3008',
+  users: 'http://localhost:3009',
+  auth: 'http://localhost:3010',
   comments: 'http://localhost:3011',
-  reactions: 'http://localhost:3012'
+  reactions: 'http://localhost:3012',
 };
 
 app.use((req, res) => {

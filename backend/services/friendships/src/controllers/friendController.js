@@ -4,9 +4,9 @@ const crearSolicitudAmistad = async (req, res) => {
   try {
     const { idUsuario1, idUsuario2 } = req.body;
     const resultado = await friendModel.crearSolicitudAmistad(idUsuario1, idUsuario2);
-    res.status(201).json({ mensaje: 'Solicitud de amistad creada con éxito', resultado });
+    res.status(201).json(resultado);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al crear la solicitud de amistad', error: error.message });
+    res.status(500).json({ mensaje: 'Error al procesar la solicitud de amistad', error: error.message });
   }
 };
 

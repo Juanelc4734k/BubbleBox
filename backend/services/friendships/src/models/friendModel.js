@@ -2,10 +2,35 @@ const db = require('../config/db');
 
 const crearSolicitudAmistad = (idUsuario1, idUsuario2) => {
   return new Promise((resolve, reject) => {
-    const query = 'INSERT INTO amistades (id_usuario1, id_usuario2, estado, fecha_creacion, fecha_actualizacion) VALUES (?, ?, "pendiente", NOW(), NOW())';
-    db.query(query, [idUsuario1, idUsuario2], (error, results) => {
-      if (error) reject(error);
-      else resolve(results);
+    // Primero, verificamos si ya existe una amistad o solicitud pendiente
+    const checkQuery = `
+      SELECT * FROM amistades 
+      WHERE (id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?)
+    `;
+    db.query(checkQuery, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (checkError, checkResults) => {
+      if (checkError) {
+        reject(checkError);
+      } else if (checkResults.length > 0) {
+        // Ya existe una relación
+        const existingRelation = checkResults[0];
+        if (existingRelation.estado === 'aceptada') {
+          resolve({ mensaje: 'Ya son amigos', estado: 'aceptada' });
+        } else if (existingRelation.estado === 'pendiente') {
+          resolve({ mensaje: 'Ya existe una solicitud pendiente', estado: 'pendiente' });
+        } else {
+          resolve({ mensaje: 'La solicitud fue rechazada anteriormente', estado: 'rechazada' });
+        }
+      } else {
+        // No existe relación, creamos una nueva solicitud
+        const insertQuery = 'INSERT INTO amistades (id_usuario1, id_usuario2, estado, fecha_creacion, fecha_actualizacion) VALUES (?, ?, "pendiente", NOW(), NOW())';
+        db.query(insertQuery, [idUsuario1, idUsuario2], (insertError, insertResults) => {
+          if (insertError) {
+            reject(insertError);
+          } else {
+            resolve({ mensaje: 'Solicitud de amistad creada con éxito', estado: 'pendiente', id: insertResults.insertId });
+          }
+        });
+      }
     });
   });
 };
@@ -79,11 +104,25 @@ const obtenerSolicitudesPendientes = (idUsuario) => {
 };
 
 const verificarEstadoSolicitud = (id) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT estado FROM amistades WHERE id = ?';
+    db.query(query, [id], (error, results) => {
+      if (error) reject(error);
+      else resolve(results[0]);
+    });
+  });
+};
+
+  const checkFriendship = (idUsuario1, idUsuario2) => {
     return new Promise((resolve, reject) => {
-      const query = 'SELECT estado FROM amistades WHERE id = ?';
-      pool.query(query, [id], (error, results) => {
+      const query = `
+        SELECT * FROM amistades 
+        WHERE ((id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?))
+        AND estado = "aceptada"
+      `;
+      db.query(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
         if (error) reject(error);
-        else resolve(results[0]);
+        else resolve(results.length > 0);
       });
     });
   };
@@ -95,7 +134,8 @@ module.exports = {
   obtenerAmistades,
   eliminarAmistad,
   obtenerSolicitudesPendientes,
-  verificarEstadoSolicitud
+  verificarEstadoSolicitud,
+  checkFriendship
 };
 
 
