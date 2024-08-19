@@ -11,6 +11,26 @@ const getAllPosts = async (req, res) => {
     }
 };
 
+const getUserPosts = async (req, res) => {
+    try {
+        const posts = await postModel.obtenerPublicacionesDeUsuarios();
+        res.json(posts);
+    } catch (error) {
+        console.error('Error al obtener las publicaciones de usuarios:', error);
+        res.status(500).json({ mensaje: 'Error al obtener las publicaciones de usuarios', error: error.message });
+    }
+};
+
+const getCommunityPosts = async (req, res) => {
+    try {
+        const posts = await postModel.obtenerPublicacionesDeComunidades();
+        res.json(posts);
+    } catch (error) {
+        console.error('Error al obtener las publicaciones de comunidades:', error);
+        res.status(500).json({ mensaje: 'Error al obtener las publicaciones de comunidades', error: error.message });
+    }
+};
+
 
 const getPostById = async (req, res) => {
     try {
@@ -34,6 +54,17 @@ const createPost = async (req, res) => {
         res.status(500).json({ mensaje: 'Error al crear la publicación', error: error.message });
     }
 };
+
+const crearPublicacionComunidad = async (req, res) => {
+    try {
+        const { titulo, contenido, idUsuario, idComunidad, imagen } = req.body;
+        const nuevoPostId = await postModel.crearPublicacionComunidad(titulo, contenido, idUsuario, idComunidad, imagen);
+        res.status(201).json({ mensaje: 'Publicación de comunidad creada con éxito', id: nuevoPostId });
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al crear la publicación de comunidad', error: error.message });
+    }
+};
+
 
 const updatePost = async (req, res) => {
     try {
@@ -67,6 +98,9 @@ module.exports = {
     getAllPosts,
     getPostById,
     createPost,
+    crearPublicacionComunidad,
     updatePost,
-    deletePost
+    deletePost,
+    getUserPosts,
+    getCommunityPosts
 };
