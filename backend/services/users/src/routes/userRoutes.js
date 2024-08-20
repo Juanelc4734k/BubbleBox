@@ -23,6 +23,7 @@ router.put('/actualizar-usuario/:id', userController.updateUser);
 router.delete('/eliminar-usuario/:id', userController.deleteUser);
 router.get('/buscar-usuarios/:query', userController.searchUsers);
 router.get('/perfil', authMiddleware, userController.getCurrentUserProfile);
+router.get('/perfil/:id', userController.getPublicUserProfile);
 router.put('/actualizar-foto-perfil', authMiddleware, upload.single('avatar'), userController.updateProfilePhoto);
 router.put('/cambiar-contrasena', authMiddleware, userController.changePassword);
 

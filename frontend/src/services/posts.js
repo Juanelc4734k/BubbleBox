@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:3000';
 export const getAllPosts = async () => {
     try {
         const response = await axios.get(`${API_URL}/posts/obtener-todos`);
-        console.log('Datos obtenidos:', response.data);
+        console.table(response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching posts:', error.message);

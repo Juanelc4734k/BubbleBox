@@ -202,6 +202,32 @@ const getCurrentUserProfile = async (req, res) => {
   }
 };
 
+// Añadir esta nueva función al final del archivo, antes de module.exports
+const getPublicUserProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const userProfile = await userModel.getUserById(userId);
+
+    if (!userProfile) {
+      return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
+    }
+
+    // Filtrar información sensible
+    const publicProfile = {
+      id: userProfile.id,
+      nombre: userProfile.nombre,
+      username: userProfile.username,
+      avatar: userProfile.avatar,
+      estado: userProfile.estado
+    };
+
+    res.json(publicProfile);
+  } catch (error) {
+    console.error('Error al obtener el perfil público del usuario:', error);
+    res.status(500).json({ mensaje: "Error al obtener el perfil del usuario", error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -211,5 +237,6 @@ module.exports = {
   searchUsers,
   updateProfilePhoto,
   changePassword,
-  getCurrentUserProfile
+  getCurrentUserProfile,
+  getPublicUserProfile
 };
