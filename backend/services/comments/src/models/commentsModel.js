@@ -49,6 +49,21 @@ const obtenerComentariosHistoria = (idHistoria) => {
   return obtenerComentarios(idHistoria, TIPO_HISTORIA);
 };
 
+const obtenerInformacionPublicacion = (idPublicacion) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT id_usuario FROM publicaciones WHERE id = ?';
+    db.query(query, [idPublicacion], (error, results) => {
+      if (error) {
+        reject(error);
+      } else if (results.length === 0) {
+        reject(new Error('Publicación no encontrada'));
+      } else {
+        resolve(results[0]);
+      }
+    });
+  });
+};
+
 module.exports = {
   crearComentarioPublicacion,
   obtenerComentariosPublicacion,
@@ -58,6 +73,7 @@ module.exports = {
   obtenerComentariosHistoria,
   TIPO_PUBLICACION,
   TIPO_REEL,
-  TIPO_HISTORIA
+  TIPO_HISTORIA,
+  obtenerInformacionPublicacion
 };
 

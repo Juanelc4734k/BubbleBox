@@ -6,6 +6,7 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     setIsAuthenticated(false);
     navigate('/login');
   };

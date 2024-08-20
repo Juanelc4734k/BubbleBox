@@ -1,4 +1,6 @@
 const postModel = require('../models/postModel');
+const friendModel = require('../../../friendships/src/models/friendModel');
+const axios = require('axios');
 
 const getAllPosts = async (req, res) => {
     try {
@@ -49,8 +51,35 @@ const createPost = async (req, res) => {
     try {
         const { titulo, contenido, idUsuario, imagen } = req.body;
         const nuevoPostId = await postModel.crearPublicacion(titulo, contenido, idUsuario, imagen);
+
+        const amigos = await friendModel.obtenerAmistades(idUsuario);
+
+        let nombreUsuarioCreador = 'Usuario';
+        try {
+            const usuarioCreador = await axios.get(`http://localhost:3000/users/usuario/${idUsuario}`);
+            nombreUsuarioCreador = usuarioCreador.data.nombre;
+            //console.log(nombreUsuarioCreador);
+        } catch (error) {
+            console.error('Error al obtener el usuario creador:', error.message);
+        }
+
+        for (const amigo of amigos) {
+            const amigoId = amigo.id_usuario1 === idUsuario ? amigo.id_usuario2 : amigo.id_usuario1;
+            
+            try {
+                await axios.post(`http://localhost:3000/notifications/send`, {
+                    usuario_id: amigoId,
+                    tipo: 'post',
+                    contenido: `Tu amigo ${nombreUsuarioCreador} ha creado una nueva publicación`
+                });
+            } catch (error) {
+                console.error('Error al enviar la notificación:', error.message);
+            }
+        }
+
         res.status(201).json({ mensaje: 'Publicación creada con éxito', id: nuevoPostId });
     } catch (error) {
+        console.error('Error detallado:', error);
         res.status(500).json({ mensaje: 'Error al crear la publicación', error: error.message });
     }
 };

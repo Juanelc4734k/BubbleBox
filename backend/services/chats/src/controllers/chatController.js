@@ -1,5 +1,6 @@
 const chatModel = require('../models/chatsModel');
 const friendshipModel = require('../../../friendships/src/models/friendModel');
+const axios = require('axios');
 
 const getMessages = async (req, res) => {
     try {
@@ -20,12 +21,30 @@ const createMessage = async (req, res) => {
         const { senderId, receiverId, message } = req.body;
         const areFriends = await friendshipModel.checkFriendship(senderId, receiverId);
         if (!areFriends) {
-            return res.status(403).json({ message: 'No puedes enviar mensajes a usuarios que no son tus amigos' });
+            return res.status(403).json({ mensaje: 'No puedes enviar mensajes a usuarios que no son tus amigos' });
         }
-        const newMessage = await chatModel.saveMessage(senderId, receiverId, message);
-        res.status(201).json(newMessage);
+        
+        let nombreRemitente = 'Usuario';
+        try {
+            const respuestaUsuario = await axios.get(`http://localhost:3000/users/usuario/${senderId}`);
+            nombreRemitente = respuestaUsuario.data.nombre;
+        } catch (error) {
+            console.error('Error al obtener el nombre del remitente:', error.message);
+        }
+        
+        const nuevoMensaje = await chatModel.saveMessage(senderId, receiverId, message);
+        try {
+            await axios.post(`http://localhost:3000/notifications/send`, {
+                usuario_id: receiverId,
+                tipo: 'message',
+                contenido: `Tu amigo ${nombreRemitente} te ha enviado un mensaje`
+            });
+        } catch (error) {
+            console.error('Error al enviar la notificación:', error.message);
+        }
+        res.status(201).json(nuevoMensaje);
     } catch (error) {
-        res.status(500).json({ message: 'Error al crear el mensaje', error: error.message });
+        res.status(500).json({ mensaje: 'Error al crear el mensaje', error: error.message });
     }
 };
 

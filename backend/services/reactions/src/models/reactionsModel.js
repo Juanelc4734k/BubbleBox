@@ -78,12 +78,43 @@ const actualizarReaccion = (datos) => {
   });
 };
 
+const obtenerInformacionContenido = (id_contenido, tipo_contenido) => {
+  return new Promise((resolve, reject) => {
+    let query;
+    switch (tipo_contenido) {
+      case 'publicacion':
+        query = 'SELECT id_usuario FROM publicaciones WHERE id = ?';
+        break;
+      case 'reel':
+        query = 'SELECT usuario_id FROM reels WHERE id = ?';
+        break;
+      case 'historia':
+        query = 'SELECT usuario_id FROM historias WHERE id = ?';
+        break;
+      default:
+        reject(new Error('Tipo de contenido no válido'));
+        return;
+    }
+    
+    db.query(query, [id_contenido], (error, results) => {
+      if (error) {
+        reject(error);
+      } else if (results.length === 0) {
+        reject(new Error(`${tipo_contenido} no encontrado`));
+      } else {
+        resolve(results[0]);
+      }
+    });
+  });
+};
+
 module.exports = {
   crearReaccion,
   obtenerReaccionesPublicacion,
   obtenerReaccionesReel,
   obtenerReaccionesHistoria,
   eliminarReaccion,
-  actualizarReaccion
+  actualizarReaccion,
+  obtenerInformacionContenido
 };
 

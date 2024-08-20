@@ -1,19 +1,46 @@
 const commentsModel = require('../models/commentsModel');
+const axios = require('axios');
 
 // Controladores para comentarios de publicaciones
 const crearComentarioPublicacion = async (req, res) => {
-    try {
-      const { idUsuario, contenido } = req.body;
-      const { idPublicacion } = req.params;
-      if (!idUsuario || !idPublicacion || !contenido) {
-        return res.status(400).json({ error: 'Faltan datos requeridos' });
-      }
-      const resultado = await commentsModel.crearComentarioPublicacion(idUsuario, idPublicacion, contenido);
-      res.status(201).json({ mensaje: 'Comentario creado con éxito', id: resultado.insertId });
-    } catch (error) {
-      res.status(500).json({ error: 'Error al crear el comentario', detalles: error.message });
+  try {
+    const { idUsuario, contenido } = req.body;
+    const { idPublicacion } = req.params;
+    if (!idUsuario || !idPublicacion || !contenido) {
+      return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
-  };
+    const resultado = await commentsModel.crearComentarioPublicacion(idUsuario, idPublicacion, contenido);
+
+    // Obtener información de la publicación
+    const infoPublicacion = await commentsModel.obtenerInformacionPublicacion(idPublicacion);
+    
+    // Obtener el nombre del usuario que comenta
+    let nombreUsuarioComentario = 'Usuario';
+    try {
+      const respuestaUsuario = await axios.get(`http://localhost:3000/users/usuario/${idUsuario}`);
+      nombreUsuarioComentario = respuestaUsuario.data.nombre;
+    } catch (error) {
+      console.error('Error al obtener el nombre del usuario que comenta:', error.message);
+    }
+
+    // Enviar notificación al autor de la publicación si es diferente al que comenta
+    if (infoPublicacion.id_usuario !== idUsuario) {
+      try {
+        await axios.post(`http://localhost:3000/notifications/send`, {
+          usuario_id: infoPublicacion.id_usuario,
+          tipo: 'comentario',
+          contenido: `${nombreUsuarioComentario} ha comentado en tu publicación`
+        });
+      } catch (error) {
+        console.error('Error al enviar la notificación:', error.message);
+      }
+    }
+
+    res.status(201).json({ mensaje: 'Comentario creado con éxito', id: resultado.insertId });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al crear el comentario', detalles: error.message });
+  }
+};
 
 const obtenerComentariosPublicacion = async (req, res) => {
   try {
