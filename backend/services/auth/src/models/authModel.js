@@ -37,7 +37,12 @@ const loginUser = async (email, contraseña) => {
             const isMatch = await bcrypt.compare(contraseña, user.contraseña);
             
             if (isMatch) {
-                resolve(user);
+                const updateQuery = 'UPDATE usuarios SET estado = "conectado" WHERE id = ?';
+                db.query(updateQuery, [user.id], (updateErr) => {
+                    if (updateErr) return reject(updateErr);
+                    user.estado = "conectado";
+                    resolve(user);
+                });
             } else {
                 resolve(null);
             }
@@ -45,10 +50,33 @@ const loginUser = async (email, contraseña) => {
     });
 };
 
+const logoutUser = (userId) => {
+    return new Promise((resolve, reject) => {
+      const query = 'UPDATE usuarios SET estado = "desconectado" WHERE id = ?';
+      db.query(query, [userId], (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+  };
+
+  const updateUserStatus = (userId, status) => {
+    return new Promise((resolve, reject) => {
+      const query = 'UPDATE usuarios SET estado = ? WHERE id = ?';
+      db.query(query, [status, userId], (err, result) => {
+        if (err) return reject(err);
+        resolve(result);
+      });
+    });
+  };
   
+
+
 module.exports = {
     createUser,
     loginUser,
     findUserByEmail,
     comparePassword,
+    logoutUser,
+    updateUserStatus
 };

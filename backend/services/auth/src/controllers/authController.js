@@ -37,6 +37,9 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Email o contraseña incorrectos' });
     }
     
+    // Actualizar el estado del usuario a "conectado"
+    await authModel.updateUserStatus(user.id, 'conectado');
+    
     if (!process.env.JWT_SECRET) {
       console.error('JWT_SECRET no está definido en las variables de entorno');
       return res.status(500).json({ error: 'Error de configuración del servidor' });
@@ -50,7 +53,20 @@ const loginUser = async (req, res) => {
   }
 };
 
+const logoutUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    await authModel.logoutUser(userId);
+    res.status(200).json({ mensaje: "Usuario desconectado exitosamente" });
+  } catch (error) {
+    console.error('Error en logoutUser:', error);
+    res.status(500).json({ error: 'Error al cerrar sesión' });
+  }
+};
+
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser
 };
