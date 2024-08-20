@@ -7,6 +7,7 @@ const Sidebar = ({ setIsAuthenticated }) => {
     <nav className="sidebar">
       <ul>
         <li><Link to="/home">Inicio</Link></li>
+        <li><Link to="/friends">Amigos</Link></li>
         <li><Link to="/chats">Chats</Link></li>
         <li><Link to="/comunidades">Comunidades</Link></li>
         <li><Link to="/perfil">Perfil</Link></li>

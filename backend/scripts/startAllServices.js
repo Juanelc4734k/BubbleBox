@@ -19,6 +19,7 @@ const servicios = [
     { nombre: 'stories', ruta: '../services/stories/index.js', puerto: 3003 },
     { nombre: 'communities', ruta: '../services/communities/index.js', puerto: 3004 },
     { nombre: 'friendships', ruta: '../services/friendships/index.js', puerto: 3005 },
+    { nombre: 'notifications', ruta: '../services/notifications/index.js', puerto: 3007 },
     { nombre: 'posts', ruta: '../services/posts/index.js', puerto: 3008 },
     { nombre: 'users', ruta: '../services/users/index.js', puerto: 3009 },
     { nombre: 'auth', ruta: '../services/auth/index.js', puerto: 3010 },

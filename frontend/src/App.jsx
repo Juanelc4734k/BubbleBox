@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Sidebar from './components/layout/Sidebar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import Friends from './pages/Friends';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
@@ -24,6 +25,7 @@ export default function App() {
         {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
         <Routes>
           <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
         </Routes>

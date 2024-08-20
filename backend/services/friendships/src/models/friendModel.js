@@ -127,6 +127,16 @@ const verificarEstadoSolicitud = (id) => {
     });
   };
 
+  const obtenerSolicitudPorId = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM amistades WHERE id = ?';
+        db.query(query, [id], (error, results) => {
+            if (error) reject(error);
+            else resolve(results[0]);
+        });
+    });
+};
+
 module.exports = {
   crearSolicitudAmistad,
   aceptarSolicitudAmistad,
@@ -135,7 +145,8 @@ module.exports = {
   eliminarAmistad,
   obtenerSolicitudesPendientes,
   verificarEstadoSolicitud,
-  checkFriendship
+  checkFriendship,
+  obtenerSolicitudPorId
 };
 
 

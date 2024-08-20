@@ -13,6 +13,7 @@ const servicios = {
   stories: 'http://localhost:3003',
   communities: 'http://localhost:3004',
   friendships: 'http://localhost:3005',
+  notifications: 'http://localhost:3007',
   posts: 'http://localhost:3008',
   users: 'http://localhost:3009',
   auth: 'http://localhost:3010',
