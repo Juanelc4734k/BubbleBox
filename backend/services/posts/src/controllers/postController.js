@@ -5,7 +5,7 @@ const axios = require('axios');
 const getAllPosts = async (req, res) => {
     try {
         const posts = await postModel.obtenerTodasLasPublicaciones();
-        console.log('Posts obtenidos en el controlador:', JSON.stringify(posts, null, 2));
+        //console.log('Posts obtenidos en el controlador:', JSON.stringify(posts, null, 2));
         res.json(posts);
     } catch (error) {
         console.error('Error al obtener las publicaciones:', error);

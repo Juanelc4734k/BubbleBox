@@ -8,6 +8,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Friends from './pages/Friends';
 import Users from './pages/Users';
 import Profiles from './pages/Profiles';
+import RecoverPass from './pages/RecoverPass';
+import RecoverPassPage from './pages/ResetPass';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
@@ -30,6 +32,8 @@ export default function App() {
           <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path='/recover-password' element={<RecoverPass />} />
+          <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
           <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
           <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
           <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />

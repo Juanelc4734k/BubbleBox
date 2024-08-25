@@ -22,6 +22,16 @@ const findUserByEmail = (email) => {
     });
 };
 
+const findUserById = (userId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM usuarios WHERE id = ?';
+        db.query(query, [userId], (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0]);
+        });
+    });
+};
+
 const comparePassword = (plainPassword, hashedPassword) => {
     return bcrypt.compare(plainPassword, hashedPassword);
 };
@@ -70,13 +80,24 @@ const logoutUser = (userId) => {
     });
   };
   
+const actualizarContrasena = (userId, nuevaContrasena) => {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE usuarios SET contraseña = ? WHERE id = ?';
+    db.query(query, [nuevaContrasena, userId], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
 
 
 module.exports = {
     createUser,
     loginUser,
+    findUserById,
     findUserByEmail,
     comparePassword,
     logoutUser,
-    updateUserStatus
+    updateUserStatus,
+    actualizarContrasena
 };
