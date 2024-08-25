@@ -32,7 +32,7 @@ const obtenerTodasLasPublicaciones = () => {
                 console.error('Error al obtener publicaciones:', err);
                 return reject(err);
             }
-            console.log('Resultados de obtenerTodasLasPublicaciones:', results); // Asegúrate de que `nombre_usuario` está presente y tiene datos
+            //console.log('Resultados de obtenerTodasLasPublicaciones:', results); // Asegúrate de que `nombre_usuario` está presente y tiene datos
             resolve(results);
         });
     });

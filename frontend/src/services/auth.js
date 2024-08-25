@@ -21,3 +21,22 @@ export const login = async (userData) => {
         }
     }
 };
+
+export const recoverPassword = async (userData) => {
+    const response = await axios.post(`${API_URL}/auth/recover-password`, userData);
+    console.table(response.data);
+    return response.data;
+};
+
+export const resetPassword = async (token, newPassword) => {
+    try {
+        const response = await axios.post(`http://localhost:3000/auth/restablecer-contrasena/${token}`, {
+            nuevaContrasena: newPassword
+        });
+        return response.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+

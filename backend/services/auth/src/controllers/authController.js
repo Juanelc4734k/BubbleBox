@@ -1,5 +1,7 @@
 const authModel = require('../models/authModel');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const registerUser = async (req, res) => {
     const { nombre, username, email, contraseña } = req.body;
@@ -53,6 +55,68 @@ const loginUser = async (req, res) => {
   }
 };
 
+const recoverPassword = async (req, res) => {
+  const { email} = req.body;
+  try {
+    const user = await authModel.findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const transporter = nodemailer.createTransport({
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      }
+    });
+    const mailOptions = {
+      from: 'noreply@bubblebox.com',
+      to: email,
+      subject: 'Recuperación de contraseña',
+      text: `Haga clic en el siguiente enlace para recuperar su contraseña: http://localhost:5173/recuperar-contrasena?token=${token}`
+    };
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: 'Correo de recuperación enviado' });
+  }catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+const restablecerContrasena = async (req, res) => {
+  const { token } = req.params;
+  const { nuevaContrasena } = req.body;
+  console.log('Token recibido:', token);
+console.log('Nueva contraseña recibida:', nuevaContrasena);
+  try {
+    const decodificado = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decodificado.userId;
+    console.log('userId: '+ userId);
+    
+    const usuario = await authModel.findUserById(userId);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+    
+    const bcrypt = require('bcrypt');
+    const hashNuevaContrasena = await bcrypt.hash(nuevaContrasena, 10);
+    await authModel.actualizarContrasena(userId, hashNuevaContrasena);
+    
+    res.status(200).json({ mensaje: 'Contraseña restablecida exitosamente' });
+  } catch (error) {
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(400).json({ error: 'Token inválido' });
+    }
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Token expirado' });
+    }
+    console.error('Error en restablecerContrasena:', error);
+    res.status(500).json({ error: 'Error al restablecer la contraseña' });
+  }
+};
+
+
 const logoutUser = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -68,5 +132,7 @@ const logoutUser = async (req, res) => {
 module.exports = {
     registerUser,
     loginUser,
+    recoverPassword,
+    restablecerContrasena,
     logoutUser
 };
