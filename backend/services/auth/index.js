@@ -7,7 +7,15 @@ const authRoutes = require('./src/routes/authRoutes');
 const app = express();
 
 //middlewares
-app.use(cors());
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    methods: 'GET, POST, PUT',
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //routes
