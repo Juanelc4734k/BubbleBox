@@ -2,14 +2,19 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 const createUser = async (nombre, username, email, contraseña) => {
-    const hashedPassword = await bcrypt.hash(contraseña, 10);
-    return new Promise((resolve, reject) => {
-        const query = "INSERT INTO usuarios (nombre, username, email, contraseña) VALUES (?, ?, ?, ?)";
-        db.query(query, [nombre, username, email, hashedPassword], (err, result) => {
-            if(err) return reject(err);
-            resolve(result.insertId);
-        });
-    });
+  try {
+    if (!contraseña || typeof contraseña !== 'string') {
+      throw new Error('La contraseña es inválida');
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(contraseña, salt);
+    const query = "INSERT INTO usuarios (nombre, username, email, contraseña) VALUES (?, ?, ?, ?)";
+    const [result] = await db.promise().query(query, [nombre, username, email, hashedPassword]);
+    return result.insertId;
+  } catch (error) {
+    console.error('Error al crear el usuario:', error);
+    throw new Error('Error al crear el usuario: ' + error.message);
+  }
 };
 
 const findUserByEmail = (email) => {
@@ -90,6 +95,15 @@ const actualizarContrasena = (userId, nuevaContrasena) => {
   });
 };
 
+const guardarSecreto2FA = (userId, secret) => {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE usuarios SET secret2FA = ? WHERE id = ?';
+    db.query(query, [secret, userId], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
 
 module.exports = {
     createUser,
@@ -99,5 +113,6 @@ module.exports = {
     comparePassword,
     logoutUser,
     updateUserStatus,
-    actualizarContrasena
+    actualizarContrasena,
+    guardarSecreto2FA
 };
