@@ -95,6 +95,16 @@ const actualizarContrasena = (userId, nuevaContrasena) => {
   });
 };
 
+const guardarTokenRecuperacion = (userId, token, expiracion) => {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE usuarios SET token_recuperacion = ?, token_expiracion = ? WHERE id = ?';
+    db.query(query, [token, expiracion, userId], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+
 const guardarSecreto2FA = (userId, secret) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE usuarios SET secret2FA = ? WHERE id = ?';
@@ -114,5 +124,6 @@ module.exports = {
     logoutUser,
     updateUserStatus,
     actualizarContrasena,
+    guardarTokenRecuperacion,
     guardarSecreto2FA
 };
