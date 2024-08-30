@@ -9,10 +9,13 @@ const generar2FA = async (req, res) => {
   const userId = req.user.id;
   try {
     const secret = speakeasy.generateSecret();
+    console.log('Secreto 2FA generado:', secret.base32);
     await authModel.guardarSecreto2FA(userId, secret.base32);
+    console.log('Secreto 2FA guardado para el usuario:', userId);
     
     QRCode.toDataURL(secret.otpauth_url, (err, data_url) => {
       if (err) {
+        console.error('Error al generar el código QR:', err);
         return res.status(500).json({ error: 'Error al generar el código QR' });
       }
       res.json({ qrCode: data_url, secret: secret.base32 });
@@ -30,6 +33,12 @@ const verificar2FA = async (req, res) => {
     const user = await authModel.findUserById(userId);
     console.log('Usuario encontrado:', user);
     console.log('Token recibido:', token);
+    
+    if (!user || !user.secret2FA) {
+      console.log('Usuario no encontrado o sin secreto 2FA configurado');
+      return res.status(400).json({ error: 'Usuario no encontrado o 2FA no configurado' });
+    }
+    
     console.log('Secreto 2FA del usuario:', user.secret2FA);
     
     const verified = speakeasy.totp.verify({
