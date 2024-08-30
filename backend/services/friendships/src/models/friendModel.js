@@ -2,32 +2,39 @@ const db = require('../config/db');
 
 const crearSolicitudAmistad = (idUsuario1, idUsuario2) => {
   return new Promise((resolve, reject) => {
-    // Primero, verificamos si ya existe una amistad o solicitud pendiente
-    const checkQuery = `
-      SELECT * FROM amistades 
-      WHERE (id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?)
-    `;
-    db.query(checkQuery, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (checkError, checkResults) => {
-      if (checkError) {
-        reject(checkError);
-      } else if (checkResults.length > 0) {
-        // Ya existe una relación
-        const existingRelation = checkResults[0];
-        if (existingRelation.estado === 'aceptada') {
-          resolve({ mensaje: 'Ya son amigos', estado: 'aceptada' });
-        } else if (existingRelation.estado === 'pendiente') {
-          resolve({ mensaje: 'Ya existe una solicitud pendiente', estado: 'pendiente' });
-        } else {
-          resolve({ mensaje: 'La solicitud fue rechazada anteriormente', estado: 'rechazada' });
-        }
+    verificarBloqueo(idUsuario1, idUsuario2)
+    .then((bloqueado) => {
+      if (bloqueado) {
+        resolve({ mensaje: 'Los usuarios están bloqueados', estado: 'bloqueado' });
       } else {
-        // No existe relación, creamos una nueva solicitud
-        const insertQuery = 'INSERT INTO amistades (id_usuario1, id_usuario2, estado, fecha_creacion, fecha_actualizacion) VALUES (?, ?, "pendiente", NOW(), NOW())';
-        db.query(insertQuery, [idUsuario1, idUsuario2], (insertError, insertResults) => {
-          if (insertError) {
-            reject(insertError);
+        // Primero, verificamos si ya existe una amistad o solicitud pendiente
+        const checkQuery = `
+          SELECT * FROM amistades 
+          WHERE (id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?)
+        `;
+        db.query(checkQuery, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (checkError, checkResults) => {
+          if (checkError) {
+            reject(checkError);
+          } else if (checkResults.length > 0) {
+            // Ya existe una relación
+            const existingRelation = checkResults[0];
+            if (existingRelation.estado === 'aceptada') {
+              resolve({ mensaje: 'Ya son amigos', estado: 'aceptada' });
+            } else if (existingRelation.estado === 'pendiente') {
+              resolve({ mensaje: 'Ya existe una solicitud pendiente', estado: 'pendiente' });
+            } else {
+              resolve({ mensaje: 'La solicitud fue rechazada anteriormente', estado: 'rechazada' });
+            }
           } else {
-            resolve({ mensaje: 'Solicitud de amistad creada con éxito', estado: 'pendiente', id: insertResults.insertId });
+            // No existe relación, creamos una nueva solicitud
+            const insertQuery = 'INSERT INTO amistades (id_usuario1, id_usuario2, estado, fecha_creacion, fecha_actualizacion) VALUES (?, ?, "pendiente", NOW(), NOW())';
+            db.query(insertQuery, [idUsuario1, idUsuario2], (insertError, insertResults) => {
+              if (insertError) {
+                reject(insertError);
+              } else {
+                resolve({ mensaje: 'Solicitud de amistad creada con éxito', estado: 'pendiente', id: insertResults.insertId });
+              }
+            });
           }
         });
       }
@@ -137,6 +144,114 @@ const verificarEstadoSolicitud = (id) => {
     });
 };
 
+//Funciones para bloquear y desbloquear amigos
+const bloquearUsuario = (idUsuarioBloquea, idUsuarioBloqueado) => {
+  return new Promise((resolve, reject) => {
+    const queryEstadoAnterior = `
+      SELECT estado FROM amistades 
+      WHERE id_usuario1 = ? AND id_usuario2 = ?
+    `;
+
+    db.query(queryEstadoAnterior, [idUsuarioBloquea, idUsuarioBloqueado], (error, results) => {
+      if (error) {
+        console.error('Error al obtener estado anterior:', error);
+        reject(error);
+        return;
+      }
+
+      const estadoAnterior = results.length > 0 ? results[0].estado : 'neutral';
+
+      const queryBloqueo = `
+        INSERT INTO amistades (id_usuario1, id_usuario2, estado, estado_anterior, fecha_creacion, fecha_actualizacion)
+        VALUES (?, ?, 'bloqueado', ?, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE estado = 'bloqueado', estado_anterior = ?, fecha_actualizacion = NOW()
+      `;
+
+      db.query(queryBloqueo, [idUsuarioBloquea, idUsuarioBloqueado, estadoAnterior, estadoAnterior], (error, results) => {
+        if (error) {
+          console.error('Error al bloquear usuario:', error);
+          reject(error);
+        } else {
+          resolve({ mensaje: 'Usuario bloqueado con éxito', id: results.insertId || results.affectedRows });
+        }
+      });
+    });
+  });
+};
+
+const desbloquearUsuario = (idUsuarioDesbloquea, idUsuarioDesbloqueado) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      UPDATE amistades 
+      SET estado = COALESCE(estado_anterior, 'neutral'), 
+          estado_anterior = NULL, 
+          fecha_actualizacion = NOW() 
+      WHERE id_usuario1 = ? AND id_usuario2 = ? AND estado = 'bloqueado'
+    `;
+    db.query(query, [idUsuarioDesbloquea, idUsuarioDesbloqueado], (error, results) => {
+      if (error) {
+        console.error('Error al desbloquear usuario:', error);
+        reject(error);
+      } else {
+        if (results.affectedRows > 0) {
+          resolve({ mensaje: 'Usuario desbloqueado con éxito', affectedRows: results.affectedRows });
+        } else {
+          resolve({ mensaje: 'No se encontró un bloqueo para eliminar', affectedRows: 0 });
+        }
+      }
+    });
+  });
+};
+
+const verificarBloqueo = (idUsuario1, idUsuario2) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT * FROM amistades 
+      WHERE ((id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?))
+      AND estado = "bloqueado"
+    `;
+    db.query(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
+      if (error) reject(error);
+      else resolve(results.length > 0);
+    });
+  });
+};
+
+const obtenerSugerenciasAmigos = (idUsuario, limite = 20) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT 
+        v.id, 
+        v.nombre, 
+        v.amigos_en_comun,
+        v.es_amigo_de_amigo,
+        v.nombres_amigos_en_comun
+      FROM 
+        vista_sugerencias_amigos v
+      WHERE 
+        v.id != ?
+        AND v.id NOT IN (
+          SELECT IF(id_usuario1 = ?, id_usuario2, id_usuario1)
+          FROM amistades
+          WHERE (id_usuario1 = ? OR id_usuario2 = ?) AND estado IN ('aceptada', 'pendiente', 'bloqueado')
+        )
+        AND (v.es_amigo_de_amigo = 1 OR v.amigos_en_comun > 0)
+      ORDER BY v.amigos_en_comun DESC, v.es_amigo_de_amigo DESC
+      LIMIT ?
+    `;
+    db.query(query, [idUsuario, idUsuario, idUsuario, idUsuario, limite], (error, results) => {
+      if (error) reject(error);
+      else {
+        results = results.map(result => ({
+          ...result,
+          nombres_amigos_en_comun: result.nombres_amigos_en_comun ? result.nombres_amigos_en_comun.split(',') : []
+        }));
+        resolve(results);
+      }
+    });
+  });
+};
+
 module.exports = {
   crearSolicitudAmistad,
   aceptarSolicitudAmistad,
@@ -146,7 +261,11 @@ module.exports = {
   obtenerSolicitudesPendientes,
   verificarEstadoSolicitud,
   checkFriendship,
-  obtenerSolicitudPorId
+  obtenerSolicitudPorId,
+  bloquearUsuario,
+  desbloquearUsuario,
+  verificarBloqueo,
+  obtenerSugerenciasAmigos
 };
 
 
