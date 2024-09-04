@@ -19,9 +19,19 @@ const createUser = async (nombre, username, email, contraseña) => {
 
 const findUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
-      const query = 'SELECT * FROM usuarios WHERE email = ?';
+        console.log('Iniciando búsqueda de usuario por email:', email);
+        const query = 'SELECT * FROM usuarios WHERE email = ?';
         db.query(query, [email], (err, results) => {
-            if (err) return reject(err);
+            if (err) {
+                console.error('Error al buscar usuario por email:', err);
+                return reject(err);
+            }
+            console.log('Resultados de la búsqueda:', results);
+            if (results.length === 0) {
+                console.log('No se encontró usuario con el email:', email);
+                return resolve(null);
+            }
+            console.log('Usuario encontrado:', results[0]);
             resolve(results[0]);
         });
     });
@@ -43,22 +53,37 @@ const comparePassword = (plainPassword, hashedPassword) => {
 
 const loginUser = async (email, contraseña) => {
     return new Promise((resolve, reject) => {
+        console.log('Iniciando consulta a la base de datos');
         const query = 'SELECT * FROM usuarios WHERE email = ?';
         db.query(query, [email], async (err, results) => {
-            if (err) return reject(err);
-            if (results.length === 0) return resolve(null);
+            if (err) {
+                console.error('Error en la consulta:', err);
+                return reject(err);
+            }
+            if (results.length === 0) {
+                console.log('No se encontró usuario con ese email');
+                return resolve(null);
+            }
             
             const user = results[0];
+            console.log('Usuario encontrado, comparando contraseñas');
             const isMatch = await bcrypt.compare(contraseña, user.contraseña);
+            console.log('¿Contraseña coincide?', isMatch);
             
             if (isMatch) {
+                console.log('Actualizando estado del usuario');
                 const updateQuery = 'UPDATE usuarios SET estado = "conectado" WHERE id = ?';
                 db.query(updateQuery, [user.id], (updateErr) => {
-                    if (updateErr) return reject(updateErr);
+                    if (updateErr) {
+                        console.error('Error al actualizar estado:', updateErr);
+                        return reject(updateErr);
+                    }
                     user.estado = "conectado";
+                    console.log('Usuario actualizado correctamente');
                     resolve(user);
                 });
             } else {
+                console.log('Contraseña no coincide');
                 resolve(null);
             }
         });
@@ -115,6 +140,27 @@ const guardarSecreto2FA = (userId, secret) => {
   });
 };
 
+const asignarRol = async (userId, rol) => {
+  const query = 'UPDATE usuarios SET rol = ? WHERE id = ?';
+  await db.query(query, [rol, userId]);
+};
+
+const verificarRol = (userId) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT rol FROM usuarios WHERE id = ?';
+    db.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error('Error al verificar rol:', err);
+        return reject(err);
+      }
+      if (results.length === 0) {
+        return reject(new Error('Usuario no encontrado'));
+      }
+      resolve(results[0].rol);
+    });
+  });
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -125,5 +171,7 @@ module.exports = {
     updateUserStatus,
     actualizarContrasena,
     guardarTokenRecuperacion,
-    guardarSecreto2FA
+    guardarSecreto2FA,
+    asignarRol,
+    verificarRol
 };

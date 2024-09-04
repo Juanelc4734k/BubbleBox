@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const userController = require('../controllers/userController');
 const authMiddleware = require('../../../auth/src/middleware/auth');
+const checkRol = require('../../../auth/src/middleware/checkRole');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -20,7 +21,7 @@ router.get('/usuarios', userController.getAllUsers);
 router.get('/usuario/:id', userController.getUserById);
 router.post('/crear-usuario', userController.createUser);
 router.put('/actualizar-usuario/:id', userController.updateUser);
-router.delete('/eliminar-usuario/:id', userController.deleteUser);
+router.delete('/eliminar-usuario/:id', checkRol(['administrador']), userController.deleteUser);
 router.get('/buscar-usuarios/:query', userController.searchUsers);
 router.get('/perfil', authMiddleware, userController.getCurrentUserProfile);
 router.get('/perfil/:id', userController.getPublicUserProfile);

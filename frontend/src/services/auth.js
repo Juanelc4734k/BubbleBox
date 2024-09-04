@@ -9,16 +9,22 @@ export const register = async (userData) => {
 
 export const login = async (userData) => {
     try {
+        console.log('Enviando solicitud de login a:', `${API_URL}/auth/login`);
+        console.log('Credenciales:', userData);
         const response = await axios.post(`${API_URL}/auth/login`, userData);
+        console.log('Respuesta del servidor:', response.data);
         return response.data;
     } catch (error) {
+        console.error('Error en la función login:', error);
         if (error.response) {
-            throw new Error(error.response.data.message || 'Error en el servidor');
+            console.error('Respuesta del servidor:', error.response.data);
+            console.error('Estado HTTP:', error.response.status);
         } else if (error.request) {
-            throw new Error('No se pudo conectar con el servidor');
+            console.error('No se recibió respuesta del servidor');
         } else {
-            throw new Error('Error al procesar la solicitud');
+            console.error('Error al configurar la solicitud:', error.message);
         }
+        throw error;
     }
 };
 
@@ -36,6 +42,28 @@ export const resetPassword = async (token, newPassword) => {
         return response.data;
     } catch (error) {
         throw error.response.data;
+    }
+};
+
+export const verificarRol = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('No hay token');
+        }
+        const response = await fetch(`${API_URL}/auth/verify-role`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error al verificar el rol: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error en verificarRol:', error);
+        throw error;
     }
 };
 
