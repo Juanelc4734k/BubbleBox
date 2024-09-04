@@ -1,4 +1,3 @@
-// Configuración de la base de datos
 const mysql = require('mysql2');
 
 const connection = mysql.createConnection({
@@ -10,10 +9,10 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
     if (err) {
-        console.error('Error connecting to the database:', err);
+        console.error('Error al conectar a la base de datos:', err);
         return;
     }
-    console.log('Connected to the MySQL database');
+    console.log('Conectado a la base de datos MySQL');
 });
 
 module.exports = connection;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import User from '../components/users/User';
-import * as jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../services/users';
 
@@ -10,14 +9,24 @@ function Users() {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const fetchedUsers = await getUsers();
-            const token = localStorage.getItem('token');
-            const decoded = jwt_decode.jwtDecode(token);
-            const loggedInUserId = decoded.userId;
-            
-            // Filtrar los usuarios para excluir al usuario logueado
-            const filteredUsers = fetchedUsers.filter(user => user.id !== parseInt(loggedInUserId));
-            setUsers(filteredUsers);
+            try {
+                const fetchedUsers = await getUsers();
+                console.log('Todos los usuarios:', fetchedUsers);
+                const loggedInUserId = localStorage.getItem('userId');
+                console.log('ID del usuario logueado:', loggedInUserId);
+                
+                const filteredUsers = fetchedUsers.filter(user => {
+                    console.log(`Usuario ${user.id}:`, user);
+                    return user && 
+                           user.id !== parseInt(loggedInUserId) &&
+                           user.rol !== 'administrador' &&
+                           user.rol !== 'moderador';
+                });
+                console.log('Usuarios filtrados:', filteredUsers);
+                setUsers(filteredUsers);
+            } catch (error) {
+                console.error('Error al obtener usuarios:', error);
+            }
         };
         fetchUsers();
     }, []);
@@ -36,7 +45,7 @@ function Users() {
                     </div>
                 ))
             ) : (
-                <p>No hay otros usuarios para mostrar.</p>
+                <p>No hay usuarios para mostrar.</p>
             )}
         </div>
     );
