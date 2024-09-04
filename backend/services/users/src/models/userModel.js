@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT id, nombre, username, email, avatar, estado, created_at FROM usuarios', (error, results) => {
+    db.query('SELECT id, nombre, username, email, avatar, estado, created_at, rol FROM usuarios', (error, results) => {
       if (error) reject(error);
       resolve(results);
     });

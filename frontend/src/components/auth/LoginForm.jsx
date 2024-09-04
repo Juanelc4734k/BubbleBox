@@ -20,13 +20,45 @@ export default function LoginForm({ setIsAuthenticated }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            console.log('Intentando iniciar sesión con:', formData);
+            console.log('Llamando a la función login...');
             const response = await login(formData);
+            console.log('Respuesta recibida del servidor:', response);
+            
+            if (!response || !response.token) {
+                console.error('La respuesta no contiene un token:', response);
+                throw new Error('Respuesta inválida del servidor');
+            }
+            
             setMessage(response.message);
             localStorage.setItem('token', response.token);
+
+            console.log('Decodificando el token...');
+            const decodedToken = JSON.parse(atob(response.token.split('.')[1]));
+            console.log('Token decodificado:', decodedToken);
+            
+            localStorage.setItem('userId', decodedToken.userId);
+            localStorage.setItem('userRole', decodedToken.rol);
             setIsAuthenticated(true);
-            navigate('/home');
+
+            if (decodedToken.rol === 'administrador') {
+                navigate('/admin');
+            } else {
+                navigate('/home');
+            }
         } catch (error) {
-            setMessage(error.message);
+            console.error('Error completo:', error);
+            if (error.response) {
+                console.error('Respuesta del servidor:', error.response.data);
+                console.error('Estado HTTP:', error.response.status);
+                setMessage(error.response.data.mensaje || 'Error en la respuesta del servidor');
+            } else if (error.request) {
+                console.error('No se recibió respuesta del servidor');
+                setMessage('No se pudo conectar con el servidor');
+            } else {
+                console.error('Error al configurar la solicitud:', error.message);
+                setMessage('Error al intentar iniciar sesión');
+            }
         }
     };
     
@@ -46,7 +78,7 @@ export default function LoginForm({ setIsAuthenticated }) {
                     <label htmlFor="password">Contraseña</label>
                     <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />
                     <div className="recuperar">
-                        <Link to ="" className='recuperarContraseña'>Recuperar Contraseña</Link>
+                        <Link to ="/recover-password" className='recuperarContraseña'>Recuperar Contraseña</Link>
                     </div>
                     <div className="icons">
                         <div className="icono"><img src={iconGoogle} alt="Icono de Google"/></div>
@@ -60,7 +92,7 @@ export default function LoginForm({ setIsAuthenticated }) {
                <p>¿No tienes una cuenta?</p>
                 <Link to ="/register" className='registro'>Crear Cuenta</Link> 
             </div>
-            
+            {message && <p>{message}</p>}
         </div>
     );
 }
