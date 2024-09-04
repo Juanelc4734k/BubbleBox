@@ -4,7 +4,11 @@ const userModel = require('../models/userModel');
 const getAllUsers = async (req, res) => {
   try {
     const usuarios = await userModel.getAllUsers();
-    res.json(usuarios);
+    const usuariosConRol = usuarios.map(usuario => ({
+      ...usuario,
+      rol: usuario.rol || 'usuario'
+    }));
+    res.json(usuariosConRol);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener usuarios', error: error.message });
   }
@@ -137,8 +141,6 @@ const changePassword = async (req, res) => {
       return res.status(404).json({ mensaje: "Usuario no encontrado" });
     }
 
-    console.log('Usuario encontrado:', user); // Log para depuración
-
     if (!user.contraseña) {
       return res.status(400).json({ mensaje: "Error en los datos del usuario. Contacte al administrador." });
     }
@@ -172,24 +174,19 @@ const changePassword = async (req, res) => {
 
     res.json({ mensaje: "Contraseña actualizada con éxito" });
   } catch (error) {
-    console.error('Error al cambiar la contraseña:', error);
     res.status(500).json({ mensaje: "Error al cambiar la contraseña", error: error.message });
   }
 };
 
 const getCurrentUserProfile = async (req, res) => {
   try {
-    console.log('Usuario en la solicitud:', req.user);
-    
     if (!req.user || !req.user.id) {
       return res.status(401).json({ mensaje: "Usuario no autenticado" });
     }
 
     const userId = req.user.id;
-    console.log('ID del usuario:', userId);
 
     const userProfile = await userModel.getUserById(userId);
-    console.log('Perfil de usuario obtenido:', userProfile);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
@@ -197,7 +194,6 @@ const getCurrentUserProfile = async (req, res) => {
 
     res.json(userProfile);
   } catch (error) {
-    console.error('Error al obtener el perfil del usuario:', error);
     res.status(500).json({ mensaje: "Error al obtener el perfil del usuario", error: error.message });
   }
 };
@@ -223,7 +219,6 @@ const getPublicUserProfile = async (req, res) => {
 
     res.json(publicProfile);
   } catch (error) {
-    console.error('Error al obtener el perfil público del usuario:', error);
     res.status(500).json({ mensaje: "Error al obtener el perfil del usuario", error: error.message });
   }
 };

@@ -92,49 +92,49 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
+  console.log('Iniciando proceso de login');
   const { email, contraseña } = req.body;
+  console.log('Email recibido:', email);
+  console.log('Contraseña recibida:', contraseña ? '[REDACTED]' : 'No proporcionada');
 
   if (!email || !contraseña) {
+    console.log('Email o contraseña faltantes');
     return res.status(400).json({ mensaje: 'Email y contraseña son requeridos' });
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ mensaje: 'Email inválido' });
-  }
-
   try {
+    console.log('Buscando usuario en la base de datos');
     const user = await authModel.findUserByEmail(email);
-    //console.log('Usuario encontrado:', user ? 'Sí' : 'No');
+    console.log('Usuario encontrado:', user ? 'Sí' : 'No');
 
     if (!user) {
+      console.log('Usuario no encontrado');
       return res.status(401).json({ mensaje: 'Email o contraseña incorrectos' });
     }
 
-    //console.log('Contraseña proporcionada:', contraseña);
-    //console.log('Contraseña almacenada (hasheada):', user.contraseña);
-
+    console.log('Comparando contraseñas');
     const isMatch = await authModel.comparePassword(contraseña, user.contraseña);
-    //console.log('¿Contraseña coincide?', isMatch);
+    console.log('¿Contraseña coincide?', isMatch);
 
     if (!isMatch) {
+      console.log('Contraseña incorrecta');
       return res.status(401).json({ mensaje: 'Email o contraseña incorrectos' });
     }
     
-    // Actualizar el estado del usuario a "conectado"
+    console.log('Actualizando estado del usuario');
     await authModel.updateUserStatus(user.id, 'conectado');
     
-    if (!process.env.JWT_SECRET) {
-      console.error('JWT_SECRET no está definido en las variables de entorno');
-      return res.status(500).json({ error: 'Error de configuración del servidor' });
-    }
-    
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ mensaje: 'Usuario logueado', token, userId: user.id });
+    console.log('Generando token JWT');
+    const token = jwt.sign({ userId: user.id, rol: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log('Token generado');
+
+    console.log('Enviando respuesta');
+    res.status(200).json({ mensaje: 'Usuario logueado', token, userId: user.id, rol: user.rol });
   } catch (err) {
     console.error('Error en loginUser:', err);
     res.status(500).json({ error: err.message });
   }
-};
+}
 
 const recoverPassword = async (req, res) => {
   const { email } = req.body;
@@ -225,6 +225,20 @@ const logoutUser = async (req, res) => {
   }
 };
 
+const handleVerifyRole = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    if (!userId) {
+      return res.status(401).json({ error: 'Usuario no autenticado' });
+    }
+    const rol = await authModel.verificarRol(userId);
+    res.json({ rol });
+  } catch (error) {
+    console.error('Error en verificarRol:', error);
+    res.status(500).json({ error: 'Error al verificar el rol' });
+  }
+};
+
 
 module.exports = {
     registerUser,
@@ -233,5 +247,6 @@ module.exports = {
     restablecerContrasena,
     logoutUser,
     generar2FA,
-    verificar2FA
+    verificar2FA,
+    handleVerifyRole
 };

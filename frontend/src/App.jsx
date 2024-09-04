@@ -10,6 +10,8 @@ import Users from './pages/Users';
 import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
+import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
+import AdminDashboard from './dashboard/pages/AdminDashboard';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
@@ -37,6 +39,7 @@ export default function App() {
           <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
           <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
           <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
+          <Route path='/admin/*' element={<RoleProtectedRoute allowedRoles={['administrador']}><AdminDashboard /></RoleProtectedRoute>} />
         </Routes>
       </div>
     </Router>

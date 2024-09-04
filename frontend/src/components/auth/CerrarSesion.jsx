@@ -9,16 +9,16 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
     try {
       const token = localStorage.getItem('token');
       console.log(token);
-      await axios.put('http://localhost:3000/auth/logout', {}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      
+      // Eliminamos la petición al backend ya que no parece haber una ruta específica para logout
+      
       localStorage.removeItem('token');
       localStorage.removeItem('userId');
+      localStorage.removeItem('userRole');
       setIsAuthenticated(false);
       navigate('/login');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
-      // Puedes manejar el error aquí, por ejemplo, mostrando un mensaje al usuario
     }
   };
 
