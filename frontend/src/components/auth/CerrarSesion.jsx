@@ -1,11 +1,12 @@
 import React from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const CerrarSesion = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
+    e.preventDefault();
     try {
       const token = localStorage.getItem('token');
       console.log(token);
@@ -23,7 +24,7 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
   };
 
   return (
-    <button onClick={handleLogout}>Cerrar sesión</button>
+    <button onClick={handleLogout}><FaSignOutAlt /></button>
   );
 };
 

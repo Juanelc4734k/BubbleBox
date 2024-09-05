@@ -1,0 +1,123 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100vh;
+    padding-top: 60px; /* Espacio para el navbar */
+    z-index: 1000;
+  }
+  
+  /* Estilos específicos para el sidebar de usuario */
+  .user-sidebar {
+    background: linear-gradient(to bottom, #D29BFD, #4CC0AB);
+  }
+  
+  .menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .menu-item {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .menu-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+    font-size: 20px;
+    text-decoration: none;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .menu-link:hover,
+  .menu-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  
+  .back-button {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background-color: #ffffff;
+    border: none;
+    color: #4B0082;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(255,255,255,0.8);
+  }
+  
+  .menu-item[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 1001;
+  }
+  
+  .menu-item:hover[data-tooltip]::after {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Estilos específicos para el sidebar de administrador */
+  .admin-sidebar {
+    background-color: #240046;
+  }
+  
+  /* Ajuste para el botón de cerrar sesión */
+  .menu-item:last-child {
+    margin-top: auto;
+  }
+  
+  /* Estilo específico para el botón de cerrar sesión */
+  .menu-item:last-child .menu-link,
+  .menu-item:last-child button {
+    background-color: #ffffff;
+    color: #FF4136;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .menu-item:last-child .menu-link:hover,
+  .menu-item:last-child button:hover {
+    background-color: #ffffff;
+    color: #FF4136;
+    transform: scale(1.1);
+  }
