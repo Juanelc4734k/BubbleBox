@@ -1,0 +1,26 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .layout {
+    display: flex;
+    flex-grow: 1;
+  }
+  
+  .main-content {
+    flex-grow: 1;
+    margin-left: 60px;
+    padding-top: 60px;
+    padding: 80px 20px 20px;
+    overflow-y: auto;
+  }
+  
+  .app:not(:has(.sidebar)) .main-content {
+    margin-left: 0;
+  }
+  
+  .app:not(:has(.navbar)) .main-content {
+    padding-top: 20px;
+  }

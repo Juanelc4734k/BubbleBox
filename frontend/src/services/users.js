@@ -29,9 +29,6 @@ export const updateProfile = async (profile) => {
     return response.data;
 };
 
-
-
-
 // Obtener perfil de usuario público
 export const getUserProfile = async (userId) => {
     const response = await axios.get(`${API_URL}/users/perfil/${userId}`);

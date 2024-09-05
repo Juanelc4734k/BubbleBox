@@ -1,0 +1,101 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 20px 0 80px;
+  z-index: 1100;
+}
+
+/* Estilos específicos para el navbar de usuario */
+.user-navbar {
+  background: linear-gradient(to right, #D29BFD, #4CC0AB);
+}
+
+/* Estilos específicos para el navbar de administrador */
+.admin-navbar {
+  background-color: #240046;
+}
+
+.navbar-left {
+  position: absolute;
+  left: 10px; /* Ajusta según sea necesario */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.navbar-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.navbar-back-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-back-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-center {
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.navbar-search {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.navbar-search::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.navbar-icon {
+  font-size: 20px;
+  color: #ffffff;
+  margin-left: 20px;
+  cursor: pointer;
+}

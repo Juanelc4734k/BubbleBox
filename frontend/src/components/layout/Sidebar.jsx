@@ -1,53 +1,60 @@
-import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CerrarSesion from '../auth/CerrarSesion';
+import '../../assets/css/layout/sidebar.css';
+import { FaHome, FaUsers, FaComments, FaCog, FaChartBar, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { MdDashboard, MdGroup } from 'react-icons/md';
 
 const Sidebar = ({ setIsAuthenticated }) => {
   const userRole = localStorage.getItem('userRole');
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [activeIcon, setActiveIcon] = useState(null);
 
-  const handleGoBack = () => {
-    if (location.pathname.startsWith('/admin') && location.pathname !== '/admin') {
-      // Si estamos en una subruta de administración, volvemos a la página principal de admin
-      navigate('/admin');
-    } else if (window.history.length > 1) {
-      navigate(-1);
-    } else {
-      navigate('/home');
-    }
+  const renderMenuItem = (icon, path, tooltip, key) => {
+    const Icon = icon;
+    const isActive = activeIcon === key;
+    return (
+      <li 
+        className={`menu-item ${isActive ? 'active' : ''}`} 
+        data-tooltip={tooltip}
+        onClick={() => setActiveIcon(key)}
+      >
+        <Link className={`menu-link ${isActive ? 'active' : ''}`} to={path}>
+          <Icon />
+        </Link>
+      </li>
+    );
   };
-
-  const showBackButton = location.pathname !== '/home' && location.pathname !== '/admin';
 
   const renderAdminSidebar = () => (
     <nav className="sidebar admin-sidebar">
-      <ul>
-        {showBackButton && (
-          <li><button onClick={handleGoBack}>Volver</button></li>
-        )}
-        <li><Link to="/admin">Panel de Control</Link></li>
-        <li><Link to="/admin/usuarios">Gestión de Usuarios</Link></li>
-        <li><Link to="/admin/contenido">Gestión de Contenido</Link></li>
-        <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
-        <li><Link to="/admin/configuracion">Configuración</Link></li>
-        <li><CerrarSesion setIsAuthenticated={setIsAuthenticated} /></li>
+      <ul className="menu">
+        {renderMenuItem(MdDashboard, '/admin', 'Panel de Control', 'dashboard')}
+        {renderMenuItem(FaUsers, '/admin/usuarios', 'Usuarios', 'users')}
+        {renderMenuItem(MdGroup, '/admin/contenido', 'Contenido', 'content')}
+        {renderMenuItem(FaChartBar, '/admin/estadisticas', 'Estadísticas', 'stats')}
+        {renderMenuItem(FaCog, '/admin/configuracion', 'Configuración', 'settings')}
+        <li className="menu-item" data-tooltip="Cerrar Sesión">
+          <CerrarSesion setIsAuthenticated={setIsAuthenticated}>
+            <FaSignOutAlt />
+          </CerrarSesion>
+        </li>
       </ul>
     </nav>
   );
 
   const renderUserSidebar = () => (
-    <nav className="sidebar">
-      <ul>
-        {showBackButton && (
-          <li><button onClick={handleGoBack}>Volver</button></li>
-        )}
-        <li><Link to="/home">Inicio</Link></li>
-        <li><Link to="/users">Usuarios</Link></li>
-        <li><Link to="/chats">Chats</Link></li>
-        <li><Link to="/comunidades">Comunidades</Link></li>
-        <li><Link to="/perfil">Perfil</Link></li>
-        <li><CerrarSesion setIsAuthenticated={setIsAuthenticated} /></li>
+    <nav className="sidebar user-sidebar">
+      <ul className="menu">
+        {renderMenuItem(FaHome, '/home', 'Inicio', 'home')}
+        {renderMenuItem(FaUsers, '/users', 'Usuarios', 'users')}
+        {renderMenuItem(FaComments, '/chats', 'Chats', 'chats')}
+        {renderMenuItem(MdGroup, '/comunidades', 'Comunidades', 'communities')}
+        {renderMenuItem(FaUserCircle, '/perfil', 'Perfil', 'profile')}
+        <li className="menu-item" data-tooltip="Cerrar Sesión">
+          <CerrarSesion setIsAuthenticated={setIsAuthenticated}>
+            <FaSignOutAlt />
+          </CerrarSesion>
+        </li>
       </ul>
     </nav>
   );
