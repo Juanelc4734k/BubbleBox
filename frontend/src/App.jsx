@@ -31,7 +31,7 @@ export default function App() {
     <Router>
       <div className='app'>
         {isAuthenticated && <Navbar />}
-        {isAuthenticated && < Sidebar />}
+        {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
 
         <div className="layout">
           <main className="main-content">
