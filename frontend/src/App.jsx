@@ -31,8 +31,9 @@ export default function App() {
     <Router>
       <div className='app'>
         {isAuthenticated && <Navbar />}
+        {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
+
         <div className="layout">
-          {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
           <main className="main-content">
             <Routes>
               <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
