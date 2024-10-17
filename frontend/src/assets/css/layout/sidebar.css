@@ -10,9 +10,13 @@
   
   /* Estilos específicos para el sidebar de usuario */
   .user-sidebar {
-    background: linear-gradient(to bottom, #D29BFD, #4CC0AB);
+    background: linear-gradient(to bottom, #f2eef5, #a8aaaa);  
+    height: 65vh;
+    margin-top: 34vh;
+    margin-left: 1.3vh;
+    border-radius: 3vh;
+    box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
   }
-  
   .menu {
     list-style-type: none;
     padding: 0;
@@ -20,6 +24,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin-top: -10vh;
   }
   
   .menu-item {
@@ -28,6 +33,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    padding-top: 4vh;
   }
   
   .menu-link {
@@ -103,7 +109,7 @@
   .menu-item:last-child .menu-link,
   .menu-item:last-child button {
     background-color: #ffffff;
-    color: #FF4136;
+    color: #410770;
     width: 40px;
     height: 40px;
     display: flex;
