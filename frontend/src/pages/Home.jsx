@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllPosts } from '../services/posts';
 import Post from '../components/posts/Post';
+import '../assets/css/pages/home.css';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -21,7 +22,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
+    <>
+    <div className="home-container">
       <h1>Bienvenido a la página de inicio</h1>
       <p>Esta es la página principal de nuestra aplicación.</p>
       {error ? (
@@ -35,6 +37,8 @@ const Home = () => {
         </div>
       )}
     </div>
+      
+    </>
   );
 };
 
