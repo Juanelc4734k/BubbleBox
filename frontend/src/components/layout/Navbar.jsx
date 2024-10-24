@@ -55,7 +55,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-description">
           <h3>Nombre de usuario</h3>
-          <p>Una pequeña descripcion la cual sera puesta por el usuario, nostros le pondriamos un limite.</p>
+          <p>!Hola¡ Bienvenido a nuestra pagina BubbleBox, esperamos que puedas entretenerte.</p>
           < FaBell className="navbar-icon campana" />
         </div>
       </div>
