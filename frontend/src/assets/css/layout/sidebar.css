@@ -10,9 +10,14 @@
   
   /* Estilos específicos para el sidebar de usuario */
   .user-sidebar {
-    background: linear-gradient(to bottom, #D29BFD, #4CC0AB);
+    background-image: url(../../images/img/imFondo.jpeg);
+    height: 63vh;
+    margin-top: 35vh;
+    margin-left: 2.5vh;
+    border-radius: 3vh;
+    box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
+    Backdrop-filter: blur(1px);
   }
-  
   .menu {
     list-style-type: none;
     padding: 0;
@@ -20,6 +25,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin-top: -10vh;
   }
   
   .menu-item {
@@ -28,6 +34,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    padding-top: 4vh;
   }
   
   .menu-link {
@@ -36,7 +43,7 @@
     align-items: center;
     width: 40px;
     height: 40px;
-    color: #ffffff;
+    color: #5f5f5f;
     font-size: 20px;
     text-decoration: none;
     border-radius: 50%;
@@ -53,7 +60,7 @@
     width: 40px;
     height: 40px;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #000000;
     border: none;
     color: #4B0082;
     font-size: 20px;
@@ -72,8 +79,8 @@
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.8);
-    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 14px;
@@ -103,7 +110,7 @@
   .menu-item:last-child .menu-link,
   .menu-item:last-child button {
     background-color: #ffffff;
-    color: #FF4136;
+    color: #410770;
     width: 40px;
     height: 40px;
     display: flex;
