@@ -7,6 +7,8 @@ import logoAnimado from '../../assets/images/icon_login.png';
 import iconGoogle from '../../assets/images/cromo.png';
 import iconFacebook from '../../assets/images/facebook.png';
 import iconInstagram from '../../assets/images/instragram.png';
+import fondoLogin from  '../../assets/images/img/login.jpeg';
+
 
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
