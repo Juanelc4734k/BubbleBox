@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAllPosts } from '../services/posts';
 import Post from '../components/posts/Post';
 import '../assets/css/pages/home.css';
+import Chats from '../components/chats/Chats';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -24,8 +25,6 @@ const Home = () => {
   return (
     <>
     <div className="home-container">
-      <h1>Bienvenido a la página de inicio</h1>
-      <p>Esta es la página principal de nuestra aplicación.</p>
       {error ? (
         <p>{error}</p>
       ) : (
@@ -36,6 +35,9 @@ const Home = () => {
           ))}
         </div>
       )}
+    </div>
+    <div>
+      <Chats />
     </div>
       
     </>

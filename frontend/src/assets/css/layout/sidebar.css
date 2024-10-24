@@ -10,12 +10,13 @@
   
   /* Estilos específicos para el sidebar de usuario */
   .user-sidebar {
-    background: linear-gradient(to bottom, #f2eef5, #a8aaaa);  
-    height: 65vh;
-    margin-top: 34vh;
-    margin-left: 1.3vh;
+    background-image: url(../../images/img/imFondo.jpeg);
+    height: 63vh;
+    margin-top: 35vh;
+    margin-left: 2.5vh;
     border-radius: 3vh;
     box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
+    Backdrop-filter: blur(1px);
   }
   .menu {
     list-style-type: none;
@@ -42,7 +43,7 @@
     align-items: center;
     width: 40px;
     height: 40px;
-    color: #ffffff;
+    color: #5f5f5f;
     font-size: 20px;
     text-decoration: none;
     border-radius: 50%;
@@ -59,7 +60,7 @@
     width: 40px;
     height: 40px;
     padding: 0;
-    background-color: #ffffff;
+    background-color: #000000;
     border: none;
     color: #4B0082;
     font-size: 20px;
@@ -78,8 +79,8 @@
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0,0,0,0.8);
-    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 14px;

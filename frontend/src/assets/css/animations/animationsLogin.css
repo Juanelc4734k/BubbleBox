@@ -1,0 +1,7 @@
+.character {
+    transition: transform 0.5s ease; /* Transición suave para el salto */
+}
+
+.jump {
+    transform: translateY(-20px); /* Ajusta la distancia del salto como desees */
+}

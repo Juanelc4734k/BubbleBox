@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   height: 60px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   z-index: 1100;
@@ -15,13 +15,14 @@
 
 /* Estilos específicos para el navbar de usuario */
 .user-navbar {
-  background-image: url(../../images/img/fondo.jpg);                               
-  width: 99%;
+  background-image: url(../../images/img/imFondo.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 98%;
   height: 32vh;
   border-radius: 3vh;
-  margin-left: 1.3vh;
-  margin-top: 1vh;
-  box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
+  margin-left: 2.5vh;
+  margin-top: 1.5vh;
 }
 
 /* Estilos específicos para el navbar de administrador */
@@ -42,31 +43,46 @@
   height: 25vh;
   border-radius: 100%;
   margin: 3vh 13vh;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  background-color: rgba(174, 93, 228, 0.3);
+  Backdrop-filter: blur(15px);
+  padding: 1.5vh;
 }
 
 .navbar-description{
   display: flex;
   flex-wrap: wrap;
-  width: 45%;
+  width: 47%;
+  height: 26vh;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-top: 3vh;
+  padding: 2vh;
+  border-radius: 3vh;
+  Backdrop-filter: blur(10px);
+  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.1);
+
 }
 .navbar-description h3{
-  color: white;
+  color: rgb(71, 8, 80);
   position: relative;
-  top: 8vh;
-  font-size: 4vh;
+  top: 3vh;
+  font-size: 3.5vh;
   margin-bottom: 2vh;
+}
+
+.navbar-description p{
+  font-size: 2.5vh;
 }
 
 .navbar-description .campana{
   background: gainsboro;
-  color: black;
+  color: #5f5f5f;
   width: 5vh;
   height: 5vh;
   padding: 1vh;
   border-radius: 100%;
   position: absolute;
-  top: 8vh;
+  top: 4vh;
   margin-left: 40vh;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -93,6 +109,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-actions{

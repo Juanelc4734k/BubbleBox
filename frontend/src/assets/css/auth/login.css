@@ -9,9 +9,11 @@
     font-style: normal;
     font-variation-settings: "wdth" 100;
 }
-body{
-    background-image: url(../../images/img/login.jpeg);
-}
+/*body{
+    background-image: url(../../images/img/fondo1.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}*/
 .form{
     background-color: white;
     width: 100%;
