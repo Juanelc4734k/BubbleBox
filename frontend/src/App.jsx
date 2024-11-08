@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Communities from './pages/Communities.jsx';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -37,6 +38,7 @@ export default function App() {
           <main className="main-content">
             <Routes>
               <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+              <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
               <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
               <Route path='/register' element={<Register />} />
               <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
