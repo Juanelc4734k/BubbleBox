@@ -1,4 +1,3 @@
-```markdown:README.md
 # BubbleBox - Red Social 🫧
 
 ## Descripción
@@ -24,7 +23,7 @@ BubbleBox es una red social que unifica las distintas características de las re
 
 1. Clonar el repositorio:
 ```bash
-git clone [https://github.com/Juanelc4734k/BubbleBox.git]
+git clone https://github.com/Juanelc4734k/BubbleBox.git
 ```
 
 2. Configurar las variables de entorno:
@@ -81,7 +80,6 @@ La aplicación estará disponible en `http://localhost:5173`
 - `npm run dev`: Inicia el servidor en modo desarrollo
 - `npm run build`: Genera la versión de producción
 - `npm run preview`: Vista previa de la versión de producción
-
 
 ## Licencia 📄
 Este proyecto está bajo la Licencia [MIT]
