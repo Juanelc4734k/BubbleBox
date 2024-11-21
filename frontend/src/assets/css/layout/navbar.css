@@ -1,177 +1,161 @@
 *{
   box-sizing: border-box;
 }
+
+/*Esilos predeterminados para todos los navbars*/
 .navbar {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 1.5vh;
+  left: 1.5vh;
   right: 0;
-  height: 60px;
+  width: 96%;
+  height: 12vh;
+  border-radius: 2vh;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
   z-index: 1100;
+  padding: 1vh;
 }
-
-/* Estilos específicos para el navbar de usuario */
-.user-navbar {
+/*Estilos especificos para el navbar del usuario*/
+.user-navbar{
   background-image: url(../../images/img/imFondo.jpeg);
   background-repeat: no-repeat;
   background-size: cover;
-  width: 98%;
-  height: 32vh;
-  border-radius: 3vh;
-  margin-left: 2.5vh;
-  margin-top: 1.5vh;
-}
-
-/* Estilos específicos para el navbar de administrador */
-.admin-navbar {
-  background-color: #240046;
-}
-.navbar-left{
-  width: 50%;
-  height: 32vh;
   display: flex;
+  justify-content: space-around;
 }
-.navbar-left .navbar-img{
-  width: 45%;
-  height: 32vh;
-}
-.navbar-left .navbar-img img{
-  width: 55%;
-  height: 25vh;
-  border-radius: 100%;
-  margin: 3vh 13vh;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-  background-color: rgba(174, 93, 228, 0.3);
-  Backdrop-filter: blur(15px);
-  padding: 1.5vh;
-}
-
-.navbar-description{
+/*Vamos a aplicar los estilos a la parte izquierda del navbar del usuario*/
+.navbar-left{
+  width: 65%;
   display: flex;
   flex-wrap: wrap;
-  width: 47%;
-  height: 26vh;
+  border: 1px solid firebrick;
+}
+.navbar-left .navbar-img{
+  width: 23%;
+  height: 10vh;
+  margin-left: 1.5vh;
+  margin-top: 1vh;
+}
+.navbar-left .navbar-img img{
+  width: 95%;
+  height: 9vh;
+  border-radius: 50%;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
   background-color: rgba(255, 255, 255, 0.2);
-  margin-top: 3vh;
-  padding: 2vh;
+  padding: 0.5vh;
+}
+.navbar-description{
+  width: 70%;
+  height: 8vh;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 3vh;
   Backdrop-filter: blur(10px);
-  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.1);
-
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.2);
+  margin-top: 1.3vh;
+  padding: 1vh;
+  margin-left: 0.5vh;
+  justify-content: space-around;
 }
 .navbar-description h3{
-  color: rgb(71, 8, 80);
-  position: relative;
-  top: 3vh;
-  font-size: 3.5vh;
-  margin-bottom: 2vh;
+  font-size: 2.4vh; 
+  margin-top: 1.5vh;
+  color: rgb(0, 0, 0);
 }
-
-.navbar-description p{
-  font-size: 2.5vh;
+.text-navbar{
+  display: none;
 }
-
 .navbar-description .campana{
-  background: gainsboro;
-  color: #5f5f5f;
-  width: 5vh;
-  height: 5vh;
-  padding: 1vh;
-  border-radius: 100%;
-  position: absolute;
-  top: 4vh;
-  margin-left: 40vh;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-.navbar-right {
-  width: 50%;
-  height: 38vh;
-}
-
-.navbar-logo {
-  width: 10%;
-  height: 10vh;
+  background: rgb(143, 142, 142);
+  color: #161616;
+  width: 3.5vh;
+  height: 3.5vh;
+  margin-top: 1.3vh;
   border-radius: 50%;
-  overflow: hidden;
-  float: right;
-  position: relative;
-  right: 3vh;
-  top: 6vh;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 0.5vh;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
 }
-
-.navbar-logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+.navbar-sidebar{
+  background: #f5f2f8;
+  width: 18%;
+  height: 3.5vh;
+  color: #000000;
+  padding: 0.3vh 0.5vh;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+  margin-top: 81.5vh;
+  border-radius: 1.5vh;
 }
-
-.navbar-actions{
-  width: 7%;
-  height: 7vh;
-  border-radius: 100%;
-  background: gainsboro;
-  position: relative;
-  top: 7vh;
-  left: -5vh;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-}
-
-.navbar-actions .navbar-icon{
-  position: absolute;
-  right: 1.7vh;
-  font-size: 22px;
-}
-
-.navbar-back-button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #ffffff;
+.navbar-sidebar button{
   cursor: pointer;
-  padding: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
-}
-
-.navbar-back-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.navbar-center {
-  flex-grow: 1;
-  margin: 0 20px;
-}
-
-.navbar-search {
+  font-size: 3vh;
+  background: none;
+  height: 3.5vh;
   width: 100%;
-  padding: 8px 12px;
   border: none;
-  border-radius: 20px;
-  font-size: 14px;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
 }
-
-.navbar-search::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.navbar-actions {
+/*Vamos a aplicar los estilos del lado derecho del navbar del usuario*/
+.navbar-right{
+  width: 30%;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: auto;
+  flex-wrap: wrap;
+  padding: 0.5vh;
+  border: 1px solid firebrick;
+}
+.navbar-actions{
+  width: 30%;
+  height: 6vh;
+  border-radius: 100%;
+  background: rgb(175, 175, 175);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 1.5vh 1.8vh;
+  margin-left: 5vh;
+  border: 1px solid forestgreenx;
+}
+.navbar-acti{
+  width: 30%;
+  height: 6.2vh;
+  margin-left: 2.5vh;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.navbar-back-button{
+  border: 1px solid rgb(172, 170, 170);
+  background: rgba(224, 222, 222, 0.4);
+  color: #000000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 2.7vh;
+  transition: 0.5s ease;
+}
+.navbar-back-button:hover{
+  transform: scale(1.1);
+  transition: 0.5s ease;
+  background-color: rgba(189, 187, 194, 0.8);
+}
+.navbar-logo img{
+  width: 100%;
+  height: 6.2vh;
+  border-radius: 50%;
+}
+.buttonExpanded{
+  border: none;
+  background: #eddbfd;
+  border-radius: 50%;
+  font-size: 3.6vh;
+  padding: 0 0.4vh;
+  cursor: pointer;
+  margin-left: 65vh;
+  margin-top: 9vh;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  height: 3.5vh;
+}
+.navbar.expanded {
+  height: 20vh;/* Tamaño expandido */
+  margin-bottom: 10vh;
+}
+
+/*Estilos especificos para el navbar del administrador*/
+.admin-navbar {
+  background-color: #240046;
 }
 

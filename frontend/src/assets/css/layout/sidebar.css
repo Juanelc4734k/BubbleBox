@@ -1,19 +1,24 @@
 .sidebar {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 100vh;
+    top: 15vh;
+    left: 2vh;
+    width: 9vh;
+    height: 83vh;
     padding-top: 60px; /* Espacio para el navbar */
-    z-index: 1000;
+    z-index: 1000;  
+  }
+  .sidebar.expanded{
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  .sidebar.collapsed{
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   
   /* Estilos específicos para el sidebar de usuario */
-  .user-sidebar {
+  .userSidebar {
     background-image: url(../../images/img/imFondo.jpeg);
-    height: 63vh;
-    margin-top: 35vh;
-    margin-left: 2.5vh;
     border-radius: 3vh;
     box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
     Backdrop-filter: blur(1px);
@@ -78,11 +83,13 @@
     position: absolute;
     left: 100%;
     top: 50%;
+    margin-top: 2vh;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #ffffff;
+    background-color: rgba(189, 173, 215, 0.8);
+    backdrop-filter: blur(10px);
+    color: #000000;
     padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: 5px;
     font-size: 14px;
     white-space: nowrap;
     opacity: 0;
@@ -95,6 +102,27 @@
     opacity: 1;
     visibility: visible;
   }
+  .sidebar-toggle-button{
+    position: relative;
+    top: 91vh;
+    border-radius: 100%;
+    z-index: 9999;
+    transition: 0.3s ease-in;
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5);
+    background-color: rgba(188, 164, 225, 0.8);
+  }
+  .sidebar-toggle-button:hover{
+    transform: scale(1.1);
+    transition: 0.3s ease-in;
+  }
+  /* Aplica rotación al icono solamente */
+.sidebar-toggle-button .toggle-icon {
+  transition: transform 0.3s ease-in;
+}
+
+.sidebar-toggle-button:hover .toggle-icon {
+  transform: rotate(180deg);
+}
   
   /* Estilos específicos para el sidebar de administrador */
   .admin-sidebar {
@@ -104,6 +132,7 @@
   /* Ajuste para el botón de cerrar sesión */
   .menu-item:last-child {
     margin-top: auto;
+    margin-bottom: 2vh;
   }
   
   /* Estilo específico para el botón de cerrar sesión */
@@ -125,6 +154,7 @@
   .menu-item:last-child .menu-link:hover,
   .menu-item:last-child button:hover {
     background-color: #ffffff;
-    color: #FF4136;
+    color: #a83ff3;
     transform: scale(1.1);
   }
+  

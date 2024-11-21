@@ -9,11 +9,12 @@
     font-style: normal;
     font-variation-settings: "wdth" 100;
 }
-/*body{
+body{
     background-image: url(../../images/img/fondo1.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
-}*/
+}
+
 .form{
     background-color: white;
     width: 100%;
@@ -23,9 +24,10 @@
     border-radius: 2vh;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.3);
     align-items: center;
+    overflow: hidden;
 }
 .form .text{
-    background: linear-gradient(to bottom, #d46be9, #fff);
+    background: linear-gradient(to bottom,  rgb(186, 95, 223), #fff);
     width: 100%;
     height: 88vh;
     display: flex;
@@ -40,20 +42,16 @@
     width: 80%;
     border-radius: 3vh;
     font-size: 4.5vh;
+    color: #ffffff;
 }
-.form .text .animacion{
-    width: 30%;
+
+.form .text img{
+    width: 22vh;
     height: 20vh;
     border-radius: 100%;
+    border: 0.3vh solid rgb(204, 204, 203);
     background-color: white;
-    box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.5);
-    border: 1px solid rgb(204, 204, 203);
-}
-.form .text .animacion img{
-    width: 79%;
-    height: 15vh;
-    margin-left: 10%;
-    margin-top: 1vh;
+    box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
 
 /* Codigo de estilos del formulario de inicio de sesion*/
@@ -88,12 +86,12 @@
     padding: 0.5vh;
     width: 100%;
     height: 6vh;
-    border: 1px solid rgb(212, 212, 212);
+    border: 1px solid rgb(231, 230, 230);
     border-radius: 2vh;
-    background-color: rgb(226, 223, 223);
+    background-color: rgb(235, 232, 232);
+    padding-left: 7vh;
 }
 .form .formulario form input:focus{
-    border: 1px solid rgb(133, 133, 134);
     outline: none;
 }
 .recuperar{
@@ -137,12 +135,12 @@
     padding: 1.5vh;
     border-radius: 2vh;
     color: white;
-    box-shadow: 0px 5px 20px rgb(0, 0, 0, 0.5);
+    box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.5);
     cursor: pointer;
 }
 .form .formulario form button:hover{
-    background-color: rgb(145, 20, 145);
-    transition: 1s ease-out;
+    background-color: rgb(159, 42, 206);
+    transition: 0.5s ease;
 }
 .form .otro{
     display: flex;
@@ -163,9 +161,40 @@
     text-align: center;
 }
 .registro:hover{
-    text-decoration: 2px underline rgb(145, 20, 145) ;
-    color: rgb(145, 20, 145);
+    text-decoration: 2px underline rgb(159, 42, 206) ;
+    color: rgb(159, 42, 206);
 }
+.containerIcon{
+    position: relative;
+}
+
+.iconLogin{
+    background-color: rgb(186, 95, 223);
+    width: 15%;
+    height: 6vh;
+    position: absolute;
+    border-top-left-radius: 2vh;
+    border-bottom-left-radius: 2vh;
+    padding: 1.5vh 1.7vh;
+    color: white;
+}
+
+.line{
+    width: 0%;
+    position: absolute;
+    height: 4px;
+    background-color: rgb(186, 95, 223);
+    margin-top: -0.7vh;
+    margin-left: 3vh;
+    border-radius: 2vh;
+    transition: .7s ease;
+}
+
+input:focus ~ .line{
+    width: 90%;
+    transition: .7s ease;
+}
+
 @media (min-width: 1024px){
     .form{
         flex-direction: row;
@@ -184,20 +213,16 @@
         border-top-left-radius: 2vh;
         margin-top: -7.5vh;
         border-bottom-left-radius: 2vh;
+        
     }
     .form .text h1{
-        margin-top: -10%;
         font-size: 4vh;
     }
-    .form .text .animacion{
-        margin-top: -60%;
-        width: 40%;
-        height: 25vh;
-    }
-    .form .text .animacion img{
-        width: 80%;
-        height: 20vh;
-        margin-top: 1vh;
+    .form .text img{
+        width: 35vh;
+        height: 30vh;
+        position: relative;
+        top: -15vh;
     }
     .form .formulario{
         width: 55%;
@@ -221,7 +246,15 @@
         font-size: 2.5vh;
     }
     .form .formulario form input{
-        height: 8vh;
+        height: 7vh;
+        padding-left: 10vh;
+    }
+    .iconLogin{
+        height: 7vh;
+        padding: 2.2vh 3.5vh;
+    }
+    input:focus ~ .line{
+        width: 93%;
     }
     .recuperarContraseña{
         font-size: 2vh;
