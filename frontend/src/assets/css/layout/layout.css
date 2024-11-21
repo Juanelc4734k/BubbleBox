@@ -24,3 +24,6 @@
   .app:not(:has(.navbar)) .main-content {
     padding-top: 20px;
   }
+  .auths{
+    background-image: url(../../images/img/fondo1.jpeg);
+  }

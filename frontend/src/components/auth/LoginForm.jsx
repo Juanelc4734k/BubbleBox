@@ -7,7 +7,9 @@ import logoAnimado from '../../assets/images/icon_login.png';
 import iconGoogle from '../../assets/images/cromo.png';
 import iconFacebook from '../../assets/images/facebook.png';
 import iconInstagram from '../../assets/images/instragram.png';
-import fondoLogin from  '../../assets/images/img/login.jpeg';
+import fondoLogin from  '../../assets/images/img/fondo1.jpeg';
+import { HiOutlineMail } from 'react-icons/hi';
+import { SlLock } from 'react-icons/sl';
 
 
 export default function LoginForm({ setIsAuthenticated }) {
@@ -65,20 +67,29 @@ export default function LoginForm({ setIsAuthenticated }) {
     };
     
     return (
-        <div className="form">
+        <>
+        <div className="containerGeneral">
+            <div className="form">
             <div className="text">
                 <h1>Bienvenidos a BubbleBox</h1>
-                <div className="animacion">
-                    <img src={logoAnimado} alt="icono"/>
-                </div>
+                <img src={logoAnimado} alt="icono"/>
             </div>
             <div className="formulario">
                 <form onSubmit={handleSubmit}>
                     <h2>Iniciar Sesión</h2>
                     <label htmlFor="email">Correo</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                    <div className='containerIcon'>
+                        <div className='iconLogin'><HiOutlineMail/></div>
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} required /> 
+                        <div className='line'></div>
+                    </div>
                     <label htmlFor="password">Contraseña</label>
-                    <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />
+                    <div className='containerIcon'>
+                        <div className='iconLogin'><SlLock/></div>
+                        <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />   
+                        <div className='line'></div>
+                    </div>
+                    
                     <div className="recuperar">
                         <Link to ="/recover-password" className='recuperarContraseña'>Recuperar Contraseña</Link>
                     </div>
@@ -96,5 +107,9 @@ export default function LoginForm({ setIsAuthenticated }) {
             </div>
             {message && <p>{message}</p>}
         </div>
+        </div>
+        
+        </>
+        
     );
 }

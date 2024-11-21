@@ -1,10 +1,18 @@
+<<<<<<< HEAD
+import React,{useState, useEffect, useRef} from 'react';
+=======
 import React, { useState, useEffect } from 'react';
+>>>>>>> master
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft, FaBell, FaUser, FaCog, FaChartBar } from 'react-icons/fa';
 import logo from '../../assets/images/logo/logo.jfif';
 import '../../assets/css/layout/navbar.css';
+<<<<<<< HEAD
+import { BsThreeDotsVertical } from "react-icons/bs";
+=======
 import { getProfiles } from '../../services/users';
 import * as jwt_decode from 'jwt-decode';
+>>>>>>> master
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -42,32 +50,40 @@ const Navbar = () => {
   const showBackButton = (userRole === 'administrador' && location.pathname !== '/admin') || 
                          (userRole !== 'administrador' && location.pathname !== '/home');
 
-  // Navbar para administrador
-  const renderAdminNavbar = () => (
-    <nav className="navbar admin-navbar">
-      <div className="navbar-left">
-        {showBackButton ? (
-          <button className="navbar-back-button" onClick={handleGoBack}>
-            <FaArrowLeft />
-          </button>
-        ) : (
-          <div className="navbar-logo">
-            <img src={logo} alt="Logo" />
-          </div>
-        )}
-      </div>
-      <div className="navbar-actions">
-        <FaBell className="navbar-icon" />
-        <FaUser className="navbar-icon" />
-      </div>
-    </nav>
-  );
+    // Navbar para administrador
+    const renderAdminNavbar = () => (
+      <nav className="navbar admin-navbar">
+        <div className="navbar-left">
+          {showBackButton ? (
+            <button type='button' className="navbar-back-button" onClick={handleGoBack}>
+              <FaArrowLeft />
+            </button>
+          ) : (
+            <div className="navbar-logo">
+              <img src={logo} alt="Logo" />
+            </div>
+          )}
+        </div>
+        <div className="navbar-actions">
+          <FaBell className="navbar-icon" />
+          <FaUser className="navbar-icon" />
+        </div>
+      </nav>
+    );
 
   //  Navbar para usuario
   const renderUserNavbar = () => (
     <nav className="navbar user-navbar">
       <div className="navbar-left">
         <div className="navbar-img">
+<<<<<<< HEAD
+          <img src={img} alt="Logo"/> 
+        </div>
+        <div className="navbar-description">
+          <h3>Nombre de usuario</h3>
+          <p className='text-navbar'>!Hola¡ Bienvenido a nuestra pagina BubbleBox, esperamos que puedas entretenerte.</p>
+          < FaBell className="navbar-icon campana" />
+=======
           {userProfile && (
             <img 
               src={userProfile.avatar ? `http://localhost:3009${userProfile.avatar}` : avatarPorDefecto} 
@@ -79,21 +95,24 @@ const Navbar = () => {
           <h3>{userProfile ? userProfile.username : 'Cargando...'}</h3>
           <p>¡Hola! Bienvenido a nuestra página BubbleBox, esperamos que puedas entretenerte.</p>
           <FaBell className="navbar-icon campana" />
+>>>>>>> master
         </div>
+
       </div>
       <div className="navbar-right">
+        <div className="navbar-actions">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+        
         {showBackButton ? (
-          <button className="navbar-back-button" onClick={handleGoBack}>
-            <FaArrowLeft />
+          <button className="navbar-acti navbar-back-button" onClick={handleGoBack}>
+            <FaArrowLeft className='ml-2' />
           </button>
         ) : (
-          <div className="navbar-logo">
+          <div className="navbar-acti navbar-logo">
             <img src={logo} alt="Logo" />
           </div>
         )}
-        <div className="navbar-actions">
-          <FaUser className="navbar-icon" />
-        </div>
       </div>
     </nav>
   );
