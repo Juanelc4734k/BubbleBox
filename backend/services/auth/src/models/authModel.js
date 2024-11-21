@@ -26,12 +26,12 @@ const findUserByEmail = (email) => {
                 console.error('Error al buscar usuario por email:', err);
                 return reject(err);
             }
-            console.log('Resultados de la búsqueda:', results);
+            //console.log('Resultados de la búsqueda:', results);
             if (results.length === 0) {
                 console.log('No se encontró usuario con el email:', email);
                 return resolve(null);
             }
-            console.log('Usuario encontrado:', results[0]);
+            //console.log('Usuario encontrado:', results[0]);
             resolve(results[0]);
         });
     });
@@ -161,6 +161,32 @@ const verificarRol = (userId) => {
   });
 };
 
+const obtenerTokenRecuperacion = (token) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM usuarios WHERE token_recuperacion = ?';
+    db.query(query, [token], (err, results) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(results[0]);
+      }
+    });
+  });
+};
+
+const eliminarTokenRecuperacion = (token) => {
+  return new Promise((resolve, reject) => {
+    const query = 'UPDATE usuarios SET token_recuperacion = NULL WHERE token_recuperacion = ?';
+    db.query(query, [token], (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -173,5 +199,7 @@ module.exports = {
     guardarTokenRecuperacion,
     guardarSecreto2FA,
     asignarRol,
-    verificarRol
+    verificarRol,
+    obtenerTokenRecuperacion,
+    eliminarTokenRecuperacion
 };

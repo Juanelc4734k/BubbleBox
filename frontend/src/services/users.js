@@ -19,7 +19,7 @@ export const getProfiles = async () => {
     return response.data;
 };
 
-// Actualizar perfil de usuario privado
+// Actualizar perfil de usuario privado 
 export const updateProfile = async (profile) => {
     const token = localStorage.getItem('token');
     const config = {
