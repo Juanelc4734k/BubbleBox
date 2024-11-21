@@ -1,4 +1,5 @@
 import React from 'react'
+import '../../assets/css/user/user.css';
 
 function User({ user }) {
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -10,11 +11,14 @@ function User({ user }) {
         return avatarPorDefecto;
     };
     return (
-        <div className='user'>
-            <p>{user.username}</p>
-            <p>{user.nombre}</p>
-            <p>{user.estado}</p>
-            <img src={getAvatarSrc()} alt={user.username} width="100" style={{ borderRadius: '50%', objectFit: 'contain' }}/>
+        <div className='users'>
+            <div clasName='user'>
+                <p>{user.username}</p>
+                <p>{user.nombre}</p>
+                <p>{user.estado}</p>
+                <img src={getAvatarSrc()} alt={user.username} width="100" style={{ borderRadius: '50%', objectFit: 'contain' }}/> 
+            </div>
+            
         </div>
     )
 }
