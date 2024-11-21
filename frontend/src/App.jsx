@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -14,6 +15,7 @@ import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
 import './assets/css/layout/layout.css';
+import './assets/css/app/app.css';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
@@ -31,8 +33,8 @@ export default function App() {
     <Router>
       <div className='app'>
         {isAuthenticated && <Navbar />}
-        {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
-
+        {isAuthenticated && <Sidebar />}
+        
         <div className="layout">
           <main className="main-content">
             <Routes>
