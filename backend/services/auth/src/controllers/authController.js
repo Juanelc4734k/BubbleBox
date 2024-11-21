@@ -184,15 +184,29 @@ const recoverPassword = async (req, res) => {
 const restablecerContrasena = async (req, res) => {
   const { token } = req.params;
   const { nuevaContrasena } = req.body;
-  //console.log('Token recibido:', token);
-  //console.log('Nueva contraseña recibida:', nuevaContrasena);
+  console.log('Token recibido:', token);
+  console.log('Nueva contraseña recibida:', nuevaContrasena);
   try {
-    const decodificado = jwt.verify(token, process.env.JWT_SECRET);
-    const userId = decodificado.userId;
-    //console.log('userId: '+ userId);
-    
+    // Verificar si el token existe en la base de datos
+    const tokenInfo = await authModel.obtenerTokenRecuperacion(token);
+    if (!tokenInfo) {
+      console.log('Token no encontrado en la base de datos');
+      return res.status(400).json({ error: 'Token inválido o expirado' });
+    }
+
+    console.log('Información del token:', tokenInfo);
+
+    // Verificar si el token ha expirado
+    if (tokenInfo.token_expiracion < Date.now()) {
+      console.log('Token expirado');
+      await authModel.eliminarTokenRecuperacion(token);
+      return res.status(400).json({ error: 'Token expirado' });
+    }
+
+    const userId = tokenInfo.id;
     const usuario = await authModel.findUserById(userId);
     if (!usuario) {
+      console.log('Usuario no encontrado');
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
     
@@ -200,14 +214,12 @@ const restablecerContrasena = async (req, res) => {
     const hashNuevaContrasena = await bcrypt.hash(nuevaContrasena, 10);
     await authModel.actualizarContrasena(userId, hashNuevaContrasena);
     
+    // Eliminar el token de recuperación después de usarlo
+    await authModel.eliminarTokenRecuperacion(token);
+    
+    console.log('Contraseña restablecida exitosamente');
     res.status(200).json({ mensaje: 'Contraseña restablecida exitosamente' });
   } catch (error) {
-    if (error.name === 'JsonWebTokenError') {
-      return res.status(400).json({ error: 'Token inválido' });
-    }
-    if (error.name === 'TokenExpiredError') {
-      return res.status(400).json({ error: 'Token expirado' });
-    }
     console.error('Error en restablecerContrasena:', error);
     res.status(500).json({ error: 'Error al restablecer la contraseña' });
   }

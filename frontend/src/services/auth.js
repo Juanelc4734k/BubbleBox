@@ -39,6 +39,7 @@ export const resetPassword = async (token, newPassword) => {
         const response = await axios.post(`http://localhost:3000/auth/restablecer-contrasena/${token}`, {
             nuevaContrasena: newPassword
         });
+        console.log(response.data);
         return response.data;
     } catch (error) {
         throw error.response.data;
