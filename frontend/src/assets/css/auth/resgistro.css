@@ -1,12 +1,13 @@
 *{
     margin: 0;
     padding: 0;
+
 }
 .registerFrom{
     width: 100%;
-    height: 130vh;
+    height: 135vh;
     margin-top: -1vh;
-    margin-bottom: 3vh;
+    margin-bottom: 10vh;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -32,13 +33,13 @@
     width: 80%;
     font-size: 4.5vh;
     padding-bottom: 4vh;
-    margin-top: -11vh;
+    margin-top: -9vh;
 }
 .registerFrom .bienvenidoRegister .registerAnimation{
-    width: 15vh;
-    height: 15vh;
+    width: 20vh;
+    height: 20vh;
     border-radius: 100%;
-    border: 0.3vh solid rgb(204, 204, 203);
+    border: 0.5vh solid rgb(255, 255, 255);
     background-color: white;
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
@@ -51,7 +52,7 @@
 }
 .registerFrom .FormularioRegister form{
     width: 83%;
-    height: 70vh;
+    height: 75vh;
     margin-top: -6%;
     display: flex;
     padding: 4%;
@@ -63,25 +64,61 @@
 .registerFrom .FormularioRegister form h2{
     font-size: 3vh;
     text-align: center;
+    margin-bottom: 3vh;
 }
-.registerFrom .FormularioRegister form label{
-    font-size: 1.5vh;
-    padding-top: 2.5vh;
-    padding-bottom: 0.6vh;
-    margin-left: 3%;
-    color: black;
+.registerFrom .FormularioRegister form
+ .contaiName, 
+ .contaiUsername,
+ .contaiEmail,
+ .contaiPassword{
+    display: flex;
+    align-items: center;
+    margin-bottom: 3vh;
+    border-radius: 2vh;
+    width: 100%;
+    box-shadow: 0vh 0.1vh 0.5vh rgba(0, 0, 0, 0.438);
+    padding: 0%;
 }
+.registerFrom .FormularioRegister form 
+.contaiName .iconame,
+.contaiUsername .iconUsername,
+.contaiEmail .iconEmail,
+.contaiPassword .iconPass{
+    background-color: #87ded1;
+    padding: 2.2vh 2.1vh;
+    border-top-left-radius: 2vh;
+    border-bottom-left-radius: 2vh;
+    position: absolute;
+    margin-left: 0.2vh;
+    
+}
+
 .registerFrom .FormularioRegister form input{
     width: 100%;
-    height: 6vh;
+    height: 7.5vh;
     border-radius: 2vh;
-    padding-left: 2vh;
-    border: 0.1vh solid rgb(198, 196, 196);
+    padding-left: 7.3vh;
+    border: none;
     background-color: #e2dfdf;
-    font-size: 1.8vh;
+    font-size: 1.7vh;
 }
 .registerFrom .FormularioRegister form input:focus{
-    outline: 0.1vh solid gray ;
+    outline: none;
+}
+.registerFrom .FormularioRegister form .linea{
+    width: 0%;
+    position: absolute;
+    background-color: #87ded1;
+    margin-top: 6.8vh;
+    margin-left: 5vh;
+    height: 0.7vh;
+    border-bottom-right-radius: 2vh;
+    transition: .7s ease;
+
+}
+.registerFrom .FormularioRegister form  input:focus ~ .linea{
+    width: 60.9%;
+    transition: .7s ease;
 }
 .registerFrom .FormularioRegister form .iconos-register{
     width: 100%;
@@ -105,6 +142,7 @@
 .registerFrom .FormularioRegister form button{
     border: 0.3vh solid #87ded1;
     background-color: #A7EFE4;
+    margin-top: 1.2vh;
     width: 100%;
     height: 6.5vh;
     padding: 1.5vh;
@@ -118,9 +156,10 @@
     transition: 0.5s ease-out;
 }
 .Link-Sesion{
+    position: absolute;
     width: 26vh;
     margin-left: 28%;
-    margin-top: -21%;  
+    margin-top: -27%;  
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -172,6 +211,9 @@
         box-shadow: none;
         margin-top: 0;
         padding: 8vh;
+    }
+    .registerFrom .FormularioRegister form  input:focus ~ .linea{
+        width: 26.7%;
     }
 .Link-Sesion{
     margin-top: -18vh;
