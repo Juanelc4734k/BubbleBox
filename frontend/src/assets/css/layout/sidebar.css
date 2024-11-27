@@ -25,7 +25,7 @@
   }
   .menu {
     list-style-type: none;
-    padding: 0;
+    padding: 3vh 0  ;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -157,4 +157,23 @@
     color: #a83ff3;
     transform: scale(1.1);
   }
-  
+
+  @media (min-width: 1024px) {
+    .sidebar-toggle-button {
+      display: none;
+    }
+  }
+  /* Transición suave para el sidebar */
+  .sidebar {
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+  .sidebar.expanded {
+    margin-top: 18vh;
+    opacity: 1;
+    margin-left: 1vh;
+    height: 75vh;
+  }
+  .sidebar.collapsed {
+    width: 60px; /* Ancho del sidebar colapsado */
+    opacity: 0;
+} 
