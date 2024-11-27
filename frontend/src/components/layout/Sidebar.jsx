@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CerrarSesion from '../auth/CerrarSesion';
 import '../../assets/css/layout/sidebar.css';
 import { FaHome, FaUsers, FaComments, FaCog, FaChartBar, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
-import { MdDashboard, MdGroup, MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
+import { MdDashboard, MdGroup } from 'react-icons/md';
 import { TbSquareRoundedArrowLeft, TbSquareRoundedArrowRight } from "react-icons/tb";
 
 const Sidebar = ({ setIsAuthenticated }) => {
   const userRole = localStorage.getItem('userRole');
   const [activeIcon, setActiveIcon] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
 
   const toggleExpandedSidebar = () => {
     setIsExpanded(!isExpanded);
   };
+
+  // Detecta el tamaño de la ventana y actualiza el estado
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const renderMenuItem = (icon, path, tooltip, key) => {
     const Icon = icon;
@@ -60,17 +70,18 @@ const Sidebar = ({ setIsAuthenticated }) => {
 
   return (
     <div className="sidebar-container">
-      {/* Sidebar que se despliega condicionalmente */}
-      <nav className={`sidebar ${isExpanded ? 'expanded' : 'collapsed'}  transform transition-transform duration-300 ease-in-out `}>
-        {isExpanded && renderSidebarContent()}
+      <nav className={`sidebar ${isExpanded || isLargeScreen ? 'expanded' : 'collapsed'}`}>
+        {isExpanded || isLargeScreen ? renderSidebarContent() : null}
       </nav>
 
-      {/* Botón de despliegue */}
-      <div className="sidebar-toggle-button w-8 h-8 pt-1 ml-5 fixed">
-        <button onClick={toggleExpandedSidebar} className="toggle-sidebar w-full pt-1  flex justify-center items-center text-white ">
-          {isExpanded ? <TbSquareRoundedArrowLeft className='toggle-icon' /> : <TbSquareRoundedArrowRight />}
-        </button>
-      </div>
+      {/* Botón de despliegue, solo visible en pantallas pequeñas */}
+      {!isLargeScreen && (
+        <div className="sidebar-toggle-button">
+          <button onClick={toggleExpandedSidebar} className="toggle-sidebar">
+            {isExpanded ? <TbSquareRoundedArrowLeft className="toggle-icon" /> : <TbSquareRoundedArrowRight />}
+          </button>
+        </div>
+      )}
     </div>
   );
 };
