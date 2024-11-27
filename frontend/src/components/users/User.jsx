@@ -12,7 +12,7 @@ function User({ user }) {
     };
     return (
         <div className='users'>
-            <div clasName='user'>
+            <div className='user'>
                 <p>{user.username}</p>
                 <p>{user.nombre}</p>
                 <p>{user.estado}</p>

@@ -18,13 +18,14 @@ body{
 .form{
     background-color: white;
     width: 100%;
-    height: 110vh;
+    height: 120vh;
     display: flex;
     flex-direction: column;
     border-radius: 2vh;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.3);
     align-items: center;
     overflow: hidden;
+ 
 }
 .form .text{
     background: linear-gradient(to bottom,  rgb(186, 95, 223), #fff);
@@ -65,7 +66,7 @@ body{
 }
 .form .formulario form{
     width: 70%;
-    height: 54vh;
+    height: 58vh;
     display: flex;
     flex-direction: column;
     padding: 4%;
@@ -219,7 +220,7 @@ input:focus ~ .line{
         font-size: 4vh;
     }
     .form .text img{
-        width: 35vh;
+        width: 30vh;
         height: 30vh;
         position: relative;
         top: -15vh;
@@ -255,6 +256,9 @@ input:focus ~ .line{
     }
     input:focus ~ .line{
         width: 93%;
+    }
+    .line2{
+        margin-top: -0.6vh;
     }
     .recuperarContraseña{
         font-size: 2vh;

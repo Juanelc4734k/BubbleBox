@@ -1,18 +1,13 @@
-<<<<<<< HEAD
-import React,{useState, useEffect, useRef} from 'react';
-=======
-import React, { useState, useEffect } from 'react';
->>>>>>> master
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaArrowLeft, FaBell, FaUser, FaCog, FaChartBar } from 'react-icons/fa';
+import { FaArrowLeft, FaBell, FaUser} from 'react-icons/fa';
 import logo from '../../assets/images/logo/logo.jfif';
 import '../../assets/css/layout/navbar.css';
-<<<<<<< HEAD
-import { BsThreeDotsVertical } from "react-icons/bs";
-=======
 import { getProfiles } from '../../services/users';
 import * as jwt_decode from 'jwt-decode';
->>>>>>> master
+import { CiCirclePlus } from "react-icons/ci";
+import { CiBookmarkPlus } from "react-icons/ci";
+import { TbUsersPlus } from "react-icons/tb";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -76,14 +71,6 @@ const Navbar = () => {
     <nav className="navbar user-navbar">
       <div className="navbar-left">
         <div className="navbar-img">
-<<<<<<< HEAD
-          <img src={img} alt="Logo"/> 
-        </div>
-        <div className="navbar-description">
-          <h3>Nombre de usuario</h3>
-          <p className='text-navbar'>!Hola¡ Bienvenido a nuestra pagina BubbleBox, esperamos que puedas entretenerte.</p>
-          < FaBell className="navbar-icon campana" />
-=======
           {userProfile && (
             <img 
               src={userProfile.avatar ? `http://localhost:3009${userProfile.avatar}` : avatarPorDefecto} 
@@ -95,13 +82,23 @@ const Navbar = () => {
           <h3>{userProfile ? userProfile.username : 'Cargando...'}</h3>
           <p>¡Hola! Bienvenido a nuestra página BubbleBox, esperamos que puedas entretenerte.</p>
           <FaBell className="navbar-icon campana" />
->>>>>>> master
         </div>
+        <div className='acciones'>
+          <div className='link1'>
+            <p><CiCirclePlus className='icono0'/> Nueva Historia</p>
+          </div>
+          <div className='link2'>
+            <p><TbUsersPlus className='icono0' />Nueva Comunidad</p>
+          </div>
+          <div className='link3'>
+            <p><CiBookmarkPlus className='icono0' />Nueva publicacion</p>
+          </div>
 
+        </div>
       </div>
       <div className="navbar-right">
         <div className="navbar-actions">
-        <i class="fa-solid fa-ellipsis-vertical"></i>
+        <i className="fa-solid fa-ellipsis-vertical"></i>
         </div>
         
         {showBackButton ? (

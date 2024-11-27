@@ -10,7 +10,7 @@ import iconInstagram from '../../assets/images/instragram.png';
 import fondoLogin from  '../../assets/images/img/fondo1.jpeg';
 import { HiOutlineMail } from 'react-icons/hi';
 import { SlLock } from 'react-icons/sl';
-
+import logo from '../../assets/images/logo/logo.jfif'
 
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
@@ -72,7 +72,7 @@ export default function LoginForm({ setIsAuthenticated }) {
             <div className="form">
             <div className="text">
                 <h1>Bienvenidos a BubbleBox</h1>
-                <img src={logoAnimado} alt="icono"/>
+                <img src={logo} alt="icono"/>
             </div>
             <div className="formulario">
                 <form onSubmit={handleSubmit}>
@@ -87,7 +87,7 @@ export default function LoginForm({ setIsAuthenticated }) {
                     <div className='containerIcon'>
                         <div className='iconLogin'><SlLock/></div>
                         <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />   
-                        <div className='line'></div>
+                        <div className='line line2'></div>
                     </div>
                     
                     <div className="recuperar">
