@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
 
+
 }
 .registerFrom{
     width: 100%;
@@ -16,6 +17,7 @@
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.3);
     overflow: hidden;
 }
+
 
 .registerFrom .bienvenidoRegister{
     width: 100%;
@@ -67,7 +69,7 @@
     margin-bottom: 3vh;
 }
 .registerFrom .FormularioRegister form
- .contaiName, 
+ .contaiName,
  .contaiUsername,
  .contaiEmail,
  .contaiPassword{
@@ -79,7 +81,7 @@
     box-shadow: 0vh 0.1vh 0.5vh rgba(0, 0, 0, 0.438);
     padding: 0%;
 }
-.registerFrom .FormularioRegister form 
+.registerFrom .FormularioRegister form
 .contaiName .iconame,
 .contaiUsername .iconUsername,
 .contaiEmail .iconEmail,
@@ -90,8 +92,9 @@
     border-bottom-left-radius: 2vh;
     position: absolute;
     margin-left: 0.2vh;
-    
+   
 }
+
 
 .registerFrom .FormularioRegister form input{
     width: 100%;
@@ -114,6 +117,7 @@
     height: 0.7vh;
     border-bottom-right-radius: 2vh;
     transition: .7s ease;
+
 
 }
 .registerFrom .FormularioRegister form  input:focus ~ .linea{
@@ -138,6 +142,7 @@
     display: flex;
     justify-content: center;
 }
+
 
 .registerFrom .FormularioRegister form button{
     border: 0.3vh solid #87ded1;
@@ -219,5 +224,4 @@
     margin-top: -18vh;
     margin-left: 62%;
 }
-
 }
