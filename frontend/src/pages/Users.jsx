@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import User from '../components/users/User';
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../services/users';
+import '../assets/css/user/user.css';
 
 function Users() {
     const [users, setUsers] = useState([]);
@@ -36,8 +37,8 @@ function Users() {
     };
 
     return (
-        <div>
-            <h2>Usuarios</h2>
+        <>
+            <div className='container-usuarios'>
             {users.length > 0 ? (
                 users.map((user) => (
                     <div key={user.id} onClick={() => handleUserClick(user.id)}>
@@ -48,6 +49,8 @@ function Users() {
                 <p>No hay usuarios para mostrar.</p>
             )}
         </div>
+        
+        </>
     );
 }
 
