@@ -1,0 +1,59 @@
+.profile{
+    margin-top: 17vh;
+    width: 76%;
+    height: 63vh;
+    margin-left: 2vh;
+    padding-top: 5vh;
+}
+.infoProfile{
+    width: 90%;
+    height: 55vh;
+    background-color: rgb(243, 242, 243);
+    margin-left: 7.5vh;
+    border-radius: 2vh;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+}
+.imgU{
+    background-color: rgb(203, 148, 248);
+    width: 40%;
+    border-bottom-left-radius: 2vh;
+    border-top-left-radius: 2vh;
+}
+.imgU img{
+    width: 60%;
+    height: 34vh;
+    background-color: rgb(211, 166, 253);
+    padding: 2vh;
+    border-radius: 50%;
+    margin-left: 10vh;
+    margin-top: 3vh;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    transform: rotateY(0deg);
+    transition: transform 0.6s ease-in-out;
+    transform-style: preserve-3d;
+}
+.imgU:hover {
+    perspective: 1000px; /* Da profundidad al efecto */
+}
+
+.imgU img:hover {
+    transform: rotateY(180deg); /* Hace que gire 180 grados */
+    transition:  0.5s ease-in-out;
+}
+
+.container-us{
+    width: 55%;
+    background: rgb(225, 222, 226); 
+    height: 50vh;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
+.contentDen{
+    margin-top: 5%;
+    width: 90%;
+    height: 30vh;
+    border-left: 4px solid rgb(195, 130, 238);
+    margin-left: 3vh;
+    border-radius: 1vh;
+    padding-left: 2vh;
+}
