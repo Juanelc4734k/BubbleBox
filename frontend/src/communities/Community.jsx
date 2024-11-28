@@ -11,7 +11,7 @@ const Community = () => {
     }, []);
 
     return (
-        <div>
+        <div className="mt-32 ml-5 p-2 bg-purple-300 w-[50vh] rounded-b-md">
             {communities.map((community) => (
                 <div key={community.id}>
                     <h2>{community.nombre}</h2>

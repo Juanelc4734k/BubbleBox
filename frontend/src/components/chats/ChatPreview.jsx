@@ -4,11 +4,16 @@ import PropTypes from 'prop-types';
 
 function ChatPreview({ friend }) {
   return (
-    <Link to={`/chats/${friend.id}`} className="chat-preview">
-      <div className="chat-info">
-        <h3>{friend.name}</h3>
-      </div>
-    </Link>
+    <>
+    <div className="container mt-36">
+            <Link to={`/chats/${friend.id}`} className="chat-preview">
+        <div className="chat-info">
+          <h3>{friend.name}</h3>
+        </div>
+      </Link>
+    </div>
+
+    </>
   );
 }
 
