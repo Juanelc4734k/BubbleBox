@@ -28,11 +28,13 @@ const Home = () => {
       {error ? (
         <p>{error}</p>
       ) : (
-        <div>
+        <div className='divpostss'>
           <h2>Publicaciones recientes</h2>
+          <div className="postss">
           {posts.map(post => (
             <Post key={post.id} post={post} />
           ))}
+          </div>
         </div>
       )}
     </div>

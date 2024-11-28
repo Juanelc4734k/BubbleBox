@@ -1,4 +1,72 @@
 .posts{
-    width: 75%;
+    width: 45%;
     border: 1px solid rgb(196, 199, 196);
+    box-shadow: 0vh 0.2vh 1vh gray;
+    border-radius: 2vh;
+    overflow: hidden;
+    padding-bottom: 3vh;
+    font-size: 2.4vh;
+    background-color: #fff;
+
+}
+
+.posts .post .autor-info{
+    background-color: #b685e4bd;
+    box-shadow: 0vh 0.3vh 1.1vh gray;
+    padding: 2vh 4vh;
+}
+.posts .post .autor-info .fechacreate{
+    display: flex;
+    justify-content: end;
+    color: #e4e4e4;
+}
+.posts .post .autor-info .ft-name{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 3vh;
+    margin-bottom: 2vh;
+}
+.posts .post .autor-info .ft-name img{
+    border: 0.7vh solid #fff;
+    box-shadow: 0vh 0.1vh 1vh rgba(0, 0, 0, 0.623);
+
+}
+.posts .post .autor-info .ft-name .info-post p:nth-child(2){
+    font-size: 2.2vh;
+}
+.posts .post .autor-info .line{
+    width: 27.5%;
+    margin-left: -0.5vh;
+    height: 0.3vh;
+    background-color: #e2e2e2;
+}
+.posts .post  .contenido-post{
+    text-align: center;
+    padding: 5vh 3vh;
+}
+.posts .post .lineTwo{
+    width: 88%;
+    height: 0.3vh;
+    background-color: #ada9a9;
+    margin-left: 5.7%;
+    margin-bottom: 1vh;
+}
+.posts .post .aption{
+    display: flex;
+    justify-content: space-between;
+    padding: 0vh 3vh;
+    align-items: center;
+}
+.posts .post .aption .grup1{
+    display: flex;
+    gap: 2vh;
+}
+.posts .post .aption .reacciones, .comentarios, .reenviar{
+    background-color: #ada9a9;
+    padding: 1.5vh;
+    border-radius: 5vh;
+    font-size: 3vh;
+    box-shadow: 0vh 0.1vh 0.4vh rgba(0, 0, 0, 0.671);
+
 }
