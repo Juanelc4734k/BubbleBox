@@ -39,6 +39,7 @@ export default function App() {
         <div className="layout">
           <main className="main-content">
             <Routes>
+              <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
               <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
               <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
