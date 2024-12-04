@@ -47,10 +47,10 @@ body{
 }
 
 .form .text img{
-    width: 22vh;
+    width: 20vh;
     height: 20vh;
     border-radius: 100%;
-    border: 0.3vh solid rgb(204, 204, 203);
+    border: 0.5vh solid rgb(255, 255, 255);
     background-color: white;
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
@@ -83,6 +83,29 @@ body{
 .form .formulario form label{
     font-size: 2vh;
 }
+
+.form .formulario form 
+.containerIconEmail, 
+.containerIconPassword
+{
+    position: relative;
+}
+
+.form .formulario form 
+.iconLoginEmail,
+.iconLoginPassword
+{
+    background-color: rgb(186, 95, 223);
+    position: absolute;
+    border-top-left-radius: 2vh;
+    border-bottom-left-radius: 2vh;
+    padding: 1.5vh 1.7vh;
+    color: white;
+    height: 6vh;
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); /* Sombra en la parte inferior */
+    transition: box-shadow 0.3s ease; /* Suaviza la animación al enfocar */
+}
+
 .form .formulario form input{
     padding: 0.5vh;
     width: 100%;
@@ -91,9 +114,28 @@ body{
     border-radius: 2vh;
     background-color: rgb(235, 232, 232);
     padding-left: 7vh;
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); /* Sombra en la parte inferior */
+    transition: box-shadow 0.3s ease; /* Suaviza la animación al enfocar */
 }
 .form .formulario form input:focus{
     outline: none;
+}
+
+.line{
+    width: 0%;
+    position: absolute;
+    bottom: 0; /* Justo debajo del input */
+    left: 3.5vh; /* Alinear con el borde izquierdo del input */
+    height: 5px;
+    background-color: rgb(186, 95, 223);
+    transition: width 0.7s ease; /* Animación suave */
+    border-bottom-right-radius: 2vh;
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
+}
+
+input:focus ~ .line{
+    width: 90%;
+    transition: .7s ease;
 }
 .recuperar{
     display: flex;
@@ -119,14 +161,17 @@ body{
     width: 15%;
     height: 7vh;
     display: flex;
-    background: rgb(202, 202, 202);
+    background: rgb(223, 222, 222);
     padding: 1vh;
-    border-radius: 100%;
+    border-radius: 100%;    
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
 }
 .form .formulario form .icons .icono img{
-    width: 100%;
+    width: 90%;
     height: 5vh;
     border-radius: 100%;
+    margin-left: 0.2vh;
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
 } 
 .form .formulario form button{
     border: 1px solid rgb(198, 130, 238);
@@ -164,36 +209,6 @@ body{
 .registro:hover{
     text-decoration: 2px underline rgb(159, 42, 206) ;
     color: rgb(159, 42, 206);
-}
-.containerIcon{
-    position: relative;
-}
-
-.iconLogin{
-    background-color: rgb(186, 95, 223);
-    width: 15%;
-    height: 6vh;
-    position: absolute;
-    border-top-left-radius: 2vh;
-    border-bottom-left-radius: 2vh;
-    padding: 1.5vh 1.7vh;
-    color: white;
-}
-
-.line{
-    width: 0%;
-    position: absolute;
-    height: 4px;
-    background-color: rgb(186, 95, 223);
-    margin-top: -0.7vh;
-    margin-left: 3vh;
-    border-radius: 2vh;
-    transition: .7s ease;
-}
-
-input:focus ~ .line{
-    width: 90%;
-    transition: .7s ease;
 }
 
 @media (min-width: 1024px){
@@ -250,16 +265,21 @@ input:focus ~ .line{
         height: 7vh;
         padding-left: 10vh;
     }
-    .iconLogin{
+    .form .formulario form 
+    .iconLoginEmail,
+    .iconLoginPassword{
         height: 7vh;
         padding: 2.2vh 3.5vh;
     }
+
     input:focus ~ .line{
         width: 93%;
     }
-    .line2{
-        margin-top: -0.6vh;
+    .line{
+        position: absolute;
+        margin-top: 1vh;
     }
+
     .recuperarContraseña{
         font-size: 2vh;
     }
