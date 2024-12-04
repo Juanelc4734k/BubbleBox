@@ -6,6 +6,7 @@ import '../assets/css/auth/resgistro.css';
 const Register = () => {
   const [message, setMessage] = useState("");
   return (
+    
     <div className="linkLogin">
       <RegisterForm setMessage={setMessage} />
       {message && <p>{message}</p>}
