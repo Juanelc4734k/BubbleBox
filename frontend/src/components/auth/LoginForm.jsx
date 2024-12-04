@@ -15,31 +15,30 @@ import logo from '../../assets/images/logo/logo.jfif'
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        setError(''); // Limpiar error al cambiar los campos
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
         try {
             console.log('Intentando iniciar sesión con:', formData);
-            console.log('Llamando a la función login...');
             const response = await login(formData);
-            console.log('Respuesta recibida del servidor:', response);
             
             if (!response || !response.token) {
-                console.error('La respuesta no contiene un token:', response);
-                throw new Error('Respuesta inválida del servidor');
+                setError('Error: Respuesta inválida del servidor');
+                return;
             }
             
             setMessage(response.message);
             localStorage.setItem('token', response.token);
 
-            console.log('Decodificando el token...');
             const decodedToken = JSON.parse(atob(response.token.split('.')[1]));
-            console.log('Token decodificado:', decodedToken);
             
             localStorage.setItem('userId', decodedToken.userId);
             localStorage.setItem('userRole', decodedToken.rol);
@@ -53,15 +52,13 @@ export default function LoginForm({ setIsAuthenticated }) {
         } catch (error) {
             console.error('Error completo:', error);
             if (error.response) {
-                console.error('Respuesta del servidor:', error.response.data);
+                const errorMessage = error.response.data.mensaje || 'Error en la respuesta del servidor';
+                setError(errorMessage);
                 console.error('Estado HTTP:', error.response.status);
-                setMessage(error.response.data.mensaje || 'Error en la respuesta del servidor');
             } else if (error.request) {
-                console.error('No se recibió respuesta del servidor');
-                setMessage('No se pudo conectar con el servidor');
+                setError('No se pudo conectar con el servidor');
             } else {
-                console.error('Error al configurar la solicitud:', error.message);
-                setMessage('Error al intentar iniciar sesión');
+                setError('Error al intentar iniciar sesión');
             }
         }
     };
@@ -77,6 +74,7 @@ export default function LoginForm({ setIsAuthenticated }) {
             <div className="formulario">
                 <form onSubmit={handleSubmit}>
                     <h2>Iniciar Sesión</h2>
+                    {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
                     <label htmlFor="email">Correo</label>
                     <div className='containerIconEmail'>
                         <div className='iconLoginEmail'><HiOutlineMail/></div>
@@ -108,8 +106,6 @@ export default function LoginForm({ setIsAuthenticated }) {
             {message && <p>{message}</p>}
         </div>
         </div>
-        
         </>
-        
     );
 }
