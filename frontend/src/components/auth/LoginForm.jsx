@@ -78,14 +78,14 @@ export default function LoginForm({ setIsAuthenticated }) {
                 <form onSubmit={handleSubmit}>
                     <h2>Iniciar Sesión</h2>
                     <label htmlFor="email">Correo</label>
-                    <div className='containerIcon'>
-                        <div className='iconLogin'><HiOutlineMail/></div>
+                    <div className='containerIconEmail'>
+                        <div className='iconLoginEmail'><HiOutlineMail/></div>
                         <input type="email" name="email" value={formData.email} onChange={handleChange} required /> 
                         <div className='line'></div>
                     </div>
                     <label htmlFor="password">Contraseña</label>
-                    <div className='containerIcon'>
-                        <div className='iconLogin'><SlLock/></div>
+                    <div className='containerIconPassword'>
+                        <div className='iconLoginPassword'><SlLock/></div>
                         <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />   
                         <div className='line line2'></div>
                     </div>
