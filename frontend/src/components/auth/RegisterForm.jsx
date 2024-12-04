@@ -39,33 +39,33 @@ export default function RegisterForm({ setMessage }) {
 
                     <div className="contaiName">
                         <div className="iconame"><FaRegUser/></div>
-                        <input type="text" name='nombre' value={formData.nombre} onChange={handleChange} placeholder='Nombre' required/>
+                        <input type="text" name='nombre' className='inpuName' value={formData.nombre} onChange={handleChange} placeholder='Nombre' required/>
                         <div className='linea'></div>
                     </div>
 
                     <div className="contaiUsername">
                         <div className="iconUsername"><FaRegUser/></div>
-                        <input type="text" name='username' value={formData.username} onChange={handleChange} placeholder='User name' required/>
+                        <input type="text" name='username' className='inpuUsername' value={formData.username} onChange={handleChange} placeholder='User name' required/>
                         <div className='linea'></div>
                     </div>
 
                     <div className="contaiEmail">
                         <div className="iconEmail"><HiOutlineMail/></div>
-                        <input type="email" name='email' value={formData.email} onChange={handleChange} placeholder='Email' required/>
+                        <input type="email" name='email'  className='inpuEmail' value={formData.email} onChange={handleChange} placeholder='Email' required/>
                         <div className='linea'></div>
                     </div>
 
                     <div className="contaiPassword">
                         <div className="iconPass"><SlLock/></div>
-                        <input type="password" name='contraseña' value={formData.contraseña} onChange={handleChange} placeholder='Contraseña' required/>
+                        <input type="password" name='contraseña' className='inpuPass' value={formData.contraseña} onChange={handleChange} placeholder='Contraseña' required/>
                         <div className='linea'></div>
                     </div>
 
                    <div className="iconos-register">
 
                         <div className="icono"><img src={iconoGoogle} alt="Icono de Google"/></div>
-                        <div className="icono"><img src={iconoFacebook} alt="Icono de Facebook"/></div>
-                        <div className="icono"><img src={iconoInstagram} alt="Icono de Instagram"/></div>
+                        <div className="iconoo"><img src={iconoFacebook} alt="Icono de Facebook"/></div>
+                        <div className="iconoo"><img src={iconoInstagram} alt="Icono de Instagram"/></div>
                    </div>
                     <button type="submit">Registrate</button>
                 </form>
