@@ -5,17 +5,20 @@
     width: 9vh;
     height: 83vh;
     padding-top: 60px; /* Espacio para el navbar */
-    z-index: 1000;  
+
   }
   .sidebar.expanded{
     opacity: 1;
     transition: opacity 0.3s ease;
+    z-index: 9999;
   }
   .sidebar.collapsed{
     opacity: 0;
     transition: opacity 0.3s ease;
+    z-index: 9999;
   }
   
+
   /* Estilos específicos para el sidebar de usuario */
   .userSidebar {
     background-image: url(../../images/img/imFondo.jpeg);
@@ -164,16 +167,3 @@
     }
   }
   /* Transición suave para el sidebar */
-  .sidebar {
-    transition: width 0.3s ease, opacity 0.3s ease;
-  }
-  .sidebar.expanded {
-    margin-top: 18vh;
-    opacity: 1;
-    margin-left: 1vh;
-    height: 75vh;
-  }
-  .sidebar.collapsed {
-    width: 60px; /* Ancho del sidebar colapsado */
-    opacity: 0;
-} 

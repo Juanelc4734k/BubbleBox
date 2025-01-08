@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CerrarSesion from '../auth/CerrarSesion';
 import '../../assets/css/layout/sidebar.css';
 import { FaHome, FaUsers, FaComments, FaCog, FaChartBar, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { MdDashboard, MdGroup } from 'react-icons/md';
-import { TbSquareRoundedArrowLeft, TbSquareRoundedArrowRight } from "react-icons/tb";
 
-const Sidebar = ({ setIsAuthenticated }) => {
+const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const userRole = localStorage.getItem('userRole');
   const [activeIcon, setActiveIcon] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1024);
-
-  const toggleExpandedSidebar = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  // Detecta el tamaño de la ventana y actualiza el estado
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const renderMenuItem = (icon, path, tooltip, key) => {
     const Icon = icon;
@@ -70,18 +54,9 @@ const Sidebar = ({ setIsAuthenticated }) => {
 
   return (
     <div className="sidebar-container">
-      <nav className={`sidebar ${isExpanded || isLargeScreen ? 'expanded' : 'collapsed'}`}>
-        {isExpanded || isLargeScreen ? renderSidebarContent() : null}
+      <nav className={`sidebar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+        {renderSidebarContent()}
       </nav>
-
-      {/* Botón de despliegue, solo visible en pantallas pequeñas */}
-      {!isLargeScreen && (
-        <div className="sidebar-toggle-button">
-          <button onClick={toggleExpandedSidebar} className="toggle-sidebar">
-            {isExpanded ? <TbSquareRoundedArrowLeft className="toggle-icon" /> : <TbSquareRoundedArrowRight />}
-          </button>
-        </div>
-      )}
     </div>
   );
 };

@@ -14,6 +14,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   z-index: 1100;
   padding: 1vh;
+  transition: height 0.5s ease;
 }
 /*Estilos especificos para el navbar del usuario*/
 .user-navbar{
@@ -57,7 +58,7 @@
 }
 .navbar-description h3{
   font-size: 2.4vh; 
-  margin-top: 1.5vh;
+  margin-top: 1rem;
   color: rgb(0, 0, 0);
 }
 .text-navbar{
@@ -94,6 +95,7 @@
 
 .acciones{
   display: none;
+  margin-top: 1rem;
 }
 
 
@@ -152,7 +154,7 @@
   height: 3.5vh;
 }
 .navbar.expanded {
-  height: 20vh;/* Tamaño expandido */
+  height: auto;/* Tamaño expandido */
   margin-bottom: 10vh;
 }
 
@@ -260,4 +262,3 @@
   }
 
 }
-
