@@ -19,6 +19,7 @@ import './assets/css/layout/layout.css';
 import './assets/css/app/app.css';
 
 export default function App() {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 1024);
   const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
 
   useEffect(() => {
@@ -30,11 +31,15 @@ export default function App() {
     return () => window.removeEventListener('storage', checkAuth);
   }, []);
 
+  const toggleSidebar = () => {
+    setIsSidebarExpanded(!isSidebarExpanded);
+  }
+
   return (
     <Router>
       <div className='app'>
-        {isAuthenticated && <Navbar />}
-        {isAuthenticated && <Sidebar setIsAuthenticated={setIsAuthenticated} />}
+        {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
+        {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
         
         <div className="layout">
           <main className="main-content">
