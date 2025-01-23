@@ -38,7 +38,7 @@ const RecoverPass = () => {
                     <div className="linee bg-purple-500"></div>
                 </div>
                     <button 
-                        className='bg-purple-500 mt-5 p-2 pl-6 pr-8 ml-52 flex text-white rounded-lg' type="submit">
+                        className='bg-purple-500 mt-5 p-2 pl-6 pr-8 ml-52 flex text-white rounded-lg buttonPass' type="submit">
                         <MdLockReset className="text-lg mr-2 mt-[3px]" />
                         Recuperar
                     </button>

@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CerrarSesion from '../auth/CerrarSesion';
 import '../../assets/css/layout/sidebar.css';
-import { FaHome, FaUsers, FaComments, FaCog, FaChartBar, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaUsers, FaCog, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
 import { MdDashboard, MdGroup } from 'react-icons/md';
+import { AiOutlineHome, AiOutlineTeam  } from "react-icons/ai";
+import { CgSearch } from "react-icons/cg";
+import { PiVideo } from "react-icons/pi";
+import { HiOutlineUserGroup } from "react-icons/hi2";
+import { IoMdMusicalNote } from "react-icons/io";
+import { IoChatbubblesOutline } from "react-icons/io5";
 
 const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const userRole = localStorage.getItem('userRole');
@@ -37,11 +43,13 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
         </>
       ) : (
         <>
-          {renderMenuItem(FaHome, '/home', 'Inicio', 'home')}
-          {renderMenuItem(FaUsers, '/users', 'Usuarios', 'users')}
-          {renderMenuItem(FaComments, '/chats', 'Chats', 'chats')}
-          {renderMenuItem(MdGroup, '/comunidades', 'Comunidades', 'communities')}
-          {renderMenuItem(FaUserCircle, '/perfil', 'Perfil', 'profile')}
+          {renderMenuItem(AiOutlineHome, '/home', 'Inicio', 'home')}
+          {renderMenuItem(CgSearch, '/home', 'Buscar', 'search')}
+          {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
+          {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
+          {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
+          {renderMenuItem(PiVideo, '/perfil', 'Reels', 'reels')}
+          {renderMenuItem(IoMdMusicalNote,'/home', 'Musica', 'music')}
         </>
       )}
       <li className="menu-item" data-tooltip="Cerrar Sesión">
