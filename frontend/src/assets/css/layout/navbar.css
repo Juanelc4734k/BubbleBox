@@ -189,10 +189,10 @@
   align-items: center;
   gap: 0.5rem;
   color: #a545ff;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 .icono0 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
 }
 /* Tablet styles */
 @media (min-width: 768px) {
