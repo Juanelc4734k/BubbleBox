@@ -9,6 +9,7 @@ import { getProfiles } from "../../services/users";
 import logo from "../../assets/images/logo/logo.jfif";
 import "../../assets/css/layout/navbar.css";
 import CreatePost from "../posts/CreatePost";
+import CreateComunity from "../comunity/CreateComunity";
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate()
@@ -127,13 +128,11 @@ const Navbar = ({ toggleSidebar }) => {
           <div className="link1">
             <p>
               <CreatePost/> 
-              Nueva Publicación
             </p>
           </div>
           <div className="link2">
             <p>
-              <TbUsersPlus className="icono0" />
-              Nueva Comunidad
+              <CreateComunity/>
             </p>
           </div>
           <div className="link3">

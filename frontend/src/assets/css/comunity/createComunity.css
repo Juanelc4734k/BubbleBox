@@ -1,9 +1,9 @@
-.create-post {
+.create-comunity {
     position: relative;
     display: inline-block;
   }
   
-  .create-post-button {
+  .create-comunity-button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -13,22 +13,22 @@
     transition: all 0.3s ease;
   }
   
-  .create-post-button:hover {
+  .create-comunity-button:hover {
     transform: translateY(-2px);
   }
   
-  .create-post-button .icono0 {
+  .create-comunity-button .icono0 {
     font-size: 1.2rem;
   }
   
-  .formPost {
+  .formComunity {
     position: fixed;
     top: 25rem;
     left: 50%;
-    transform: translate(-50%, 100%);
+    transform: translate(-50%, -50%);
     width: 90%;
     max-width: 500px;
-    max-height: 80vh; /* Altura máxima del formulario */
+    max-height: 80vh;
     overflow-y: auto; /* Barra de desplazamiento vertical si es necesario */
     background: rgba(255, 255, 255, 0.95);
     border-radius: 1rem;
@@ -36,19 +36,21 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     opacity: 0;
-    pointer-events: none; /* Evita interacción */
-    visibility: hidden; /* Oculta cuando no está activo */
-    scrollbar-width: thin; /* Reduce el ancho de la barra */
-    scrollbar-color: rgba(151, 71, 255, 0.5) rgba(151, 71, 255, 0.1); 
+    pointer-events: none;
+    visibility: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(151, 71, 255, 0.5) rgba(151, 71, 255, 0.1);
     transition: transform 0.5s ease, opacity 0.3s ease;
   }
-  .create-post.active .formPost{
+  
+  .create-comunity.active .formComunity {
     opacity: 1;
-    pointer-events: auto; /* Permite interacción */
-    visibility: visible; /* Asegura que sea visible */
-    transform: translate(-50%, -50%); /* Desliza hacia el centro */
+    pointer-events: auto;
+    visibility: visible;
+    transform: translate(-50%, -50%);
   }
-  .create-post .formPost:not(.active) {
+  
+  .create-comunity .formComunity:not(.active) {
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
   
@@ -64,16 +66,6 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(151, 71, 255, 0.2);
   }
-  .form-header::after{
-    content: "";
-    position: absolute;
-    top: -1.5rem;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1.5rem;
-    background: rgba(255, 255, 255, 0.95);
-  }
   
   .form-header h2 {
     color: #a665fc;
@@ -81,11 +73,12 @@
     font-weight: 600;
     display: flex;
   }
-
-  .form-header h2 .iconoPublicacion{
+  
+  .form-header h2 .iconoComunity {
     margin-right: 5px;
     margin-top: 4.5px;
   }
+  
   .close-button {
     background: none;
     border: none;
@@ -95,13 +88,11 @@
     padding: 0.5rem;
     border-radius: 50%;
     transition: all 0.3s ease;
-
   }
   
   .close-button:hover {
     background: rgba(151, 71, 255, 0.1);
     color: #9747ff;
-    transition: all 0.3s ease;
   }
   
   .form-group {
@@ -161,15 +152,14 @@
     position: relative;
     border-radius: 0.75rem;
     overflow: hidden;
-    max-height: 200px; /* Altura máxima de la vista previa */
-    overflow-y: auto; /* Barra de desplazamiento interna si la imagen es muy grande */
+    max-height: 200px;
+    overflow-y: auto;
   }
   
   .image-preview img {
     width: 100%;
     height: auto;
     border-radius: 0.75rem;
-    display: block;
   }
   
   .remove-image {
@@ -226,7 +216,7 @@
   }
   
   @media (max-width: 768px) {
-    .formPost {
+    .formComunity {
       width: 95%;
       padding: 1rem;
       margin-top: -10rem;
@@ -247,8 +237,9 @@
   }
   
   @media (min-width: 1024px) {
-    .formPost {
+    .formComunity {
       max-width: 600px;
       top: 50%;
     }
   }
+  
