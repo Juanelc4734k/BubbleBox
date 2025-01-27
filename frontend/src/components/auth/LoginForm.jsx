@@ -96,7 +96,7 @@ export default function LoginForm({ setIsAuthenticated }) {
                         <div className="icono"><img src={iconFacebook} alt="Icono de Facebook"/></div>
                         <div className="icono"><img src={iconInstagram} alt="Icono de Instagram"/></div>
                     </div>
-                    <button type="submit">Login</button>
+                    <button className='buttonLogin' type="submit">Login</button>
                 </form>
             </div>
             <div className="otro">
