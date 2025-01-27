@@ -50,7 +50,7 @@ const getPostById = async (req, res) => {
 const createPost = async (req, res) => {
     try {
         const { titulo, contenido, idUsuario } = req.body;
-        const imagen = req.file ? req.file.path : null;
+        const imagen = req.file ? req.file.filename : null;
 
         const nuevoPostId = await postModel.crearPublicacion(titulo, contenido, idUsuario, imagen);
 
