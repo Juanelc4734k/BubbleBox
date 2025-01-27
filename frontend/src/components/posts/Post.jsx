@@ -10,7 +10,7 @@ const Post = ({ post }) => {
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
-            return `http://localhost:3009${post.avatar_usuario}`;
+            return `http://localhost:3008${post.avatar_usuario}`;
         }
         return avatarPorDefecto;
     };
@@ -38,7 +38,16 @@ const Post = ({ post }) => {
                     </div>
                     <div className="contenido-post">
                     <p>{post.contenido}</p>
-                    {post.imagen && <img src={post.imagen} alt={post.titulo} />}
+                    {post.imagen && (
+    <img
+        src={`http://localhost:3008/uploads/${post.imagen}`}  // Usa la ruta relativa almacenada en la base de datos
+        alt={post.titulo}
+        className="imagen-post"
+    />
+)}
+
+
+
                     </div>
                     <div className="lineTwo"></div>
                     <div className="aption">
