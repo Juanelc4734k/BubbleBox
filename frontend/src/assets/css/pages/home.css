@@ -1,5 +1,5 @@
 .home-container{
-    width: 76%;
+    width: 95%;
     margin-top: 20vh;
     margin-left: 2vh;
     padding-top: 5vh;
@@ -14,8 +14,16 @@
 }
 .postss{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 5vh;
     justify-content: center;
+    padding: 2vh;
+    transition: all 0.5s ease-in-out;
+
+}
+@media (min-width: 768px) {
+    .postss{
+        flex-direction: row;
+    }
 }

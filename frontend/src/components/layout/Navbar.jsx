@@ -80,6 +80,7 @@ const Navbar = ({ toggleSidebar }) => {
 
   // Navbar para usuario
   const renderUserNavbar = () => (
+<<<<<<< HEAD
     <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""}`}>
       <div className="navbar-content">
         <div className="navbar-left">
@@ -113,6 +114,16 @@ const Navbar = ({ toggleSidebar }) => {
             <div className="navbar-acti navbar-logo">
               <img src={logo || "/placeholder.svg"} alt="Logo de BubbleBox" />
             </div>
+=======
+    <nav className={`navbar user-navbar ${isDescriptionVisible ? 'navbar-expanded' : ''}`}>
+      <div className="navbar-left">
+        <div className="navbar-img">
+          {userProfile && (
+            <img 
+              src={userProfile.avatar ? `${userProfile.avatar}` : avatarPorDefecto} 
+              alt="Avatar del usuario" 
+            />
+>>>>>>> 17776f74 (recumperando cambios de el stash)
           )}
         </div>
       </div>
