@@ -81,7 +81,7 @@ const Navbar = ({ toggleSidebar }) => {
         <div className="navbar-img">
           {userProfile && (
             <img 
-              src={userProfile.avatar ? `http://localhost:3009${userProfile.avatar}` : avatarPorDefecto} 
+              src={userProfile.avatar ? `${userProfile.avatar}` : avatarPorDefecto} 
               alt="Avatar del usuario" 
             />
           )}
