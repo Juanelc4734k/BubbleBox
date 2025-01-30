@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../assets/css/layout/post.css';
 import { BsHandThumbsUp } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { IoArrowRedoOutline } from "react-icons/io5";
-
+import { TiDeleteOutline } from "react-icons/ti";
 
 const Post = ({ post }) => {
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
+   
+    const [imgaiAmplia, setImgAmplia] = useState(null);
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
             return `http://localhost:3008${post.avatar_usuario}`;
+            return `${post.avatar_usuario}`;
         }
         return avatarPorDefecto;
     };
-    
+
+        const imgAbrir = (src) => {
+            setImgAmplia(src);
+        };
+
+        const imgCerrar = () => {
+            setImgAmplia(null);
+        }
+
+
     return (
         <>
             <div className="posts">
@@ -22,19 +34,20 @@ const Post = ({ post }) => {
                     <div className="autor-info">
                         <p className='fechacreate'>{post.fecha_creacion ? new Date(post.fecha_creacion).toLocaleString() : 'Fecha desconocida'}</p>
                        <div className="ft-name">
-                        <img 
-                            src={getAvatarSrc()} 
-                            alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
-                            className="avatar-usuario"
-                            width="100"
-                            style={{ borderRadius: '50%', objectFit: 'contain' }}
-                            />
+                        <div className="imguser">
+                            <img 
+                                src={getAvatarSrc()} 
+                                alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
+                                className="avatar-usuario"
+                                width="100"
+                                style={ {objectFit: 'contain' }} 
+                                />
+                        </div>
                         <div className="info-post">
                         <p>{post.nombre_usuario || 'Usuario desconocido'}</p>
                         <p>{post.titulo}</p>
                         </div>
                        </div>
-                        <div className='line'></div>
                     </div>
                     <div className="contenido-post">
                     <p>{post.contenido}</p>
@@ -66,7 +79,23 @@ const Post = ({ post }) => {
                         </div>
                     </div>
                 </div>
+
             </div>
+
+            {imgaiAmplia && (
+                <div className={`contImagenPost ${imgaiAmplia ? 'imagen' :''}`} >
+
+                    <TiDeleteOutline className='salir' onClick={imgCerrar}/>
+                    <div className="fondo">
+
+                    <div  className='imgpost'>
+                        <img src={imgaiAmplia} alt="imagen ampliada" />
+                    </div>
+                    </div>
+
+                </div>
+            )}
+
         </>
         
     );
