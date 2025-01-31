@@ -4,14 +4,31 @@ import * as jwt_decode from "jwt-decode";
 import "../../assets/css/comunity/createComunity.css";
 import { TbUsersPlus } from "react-icons/tb";
 import { CiImageOn } from "react-icons/ci";
+import { createCommunity } from "../../services/comunity";
 
 const CreateComunity = () => {
     const [openComunity, setOpenComunity] = useState(false);
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [imagen, setImagen] = useState(null);
+    const [idCreador, setIdCreador] = useState("");
     const [imagenPreview, setImagenPreview] = useState(null);
     const [mensaje, setMensaje] = useState("");
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const decoded = jwt_decode.jwtDecode(token);
+                setIdCreador(decoded.userId);
+            }
+        } catch (error) {
+            console.error("Error al obtener el id del usuario:", error);
+        }
+        };
+        fetchUserProfile();
+    }, [])
 
     const toggleComunity = () => {
         setOpenComunity(!openComunity);
@@ -36,12 +53,15 @@ const CreateComunity = () => {
         const comunityData = new FormData();
         comunityData.append("nombre", nombre.trim());
         comunityData.append("descripcion", descripcion);
+        if (idCreador) {
+            comunityData.append("idCreador", idCreador);
+        }
         if(imagen){
             comunityData.append("imagen", imagen);
         }
 
         try{
-            const response = await createComunity(comunityData);
+            const response = await createCommunity(comunityData);
             setMensaje("Comunidad creada exitosamente");
             setTimeout(() => {
                 toggleComunity();

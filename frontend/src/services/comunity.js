@@ -12,7 +12,7 @@ export const getCommunityById = async (id) => {
     return response.data;
 }
 
-export const createCommunity = async (community) => {
-    const response = await axios.post(`${API_URL}/communities/crear`, community);
+export const createCommunity = async (comunityData) => {
+    const response = await axios.post(`${API_URL}/communities/crear`, comunityData);
     return response.data;
 }
