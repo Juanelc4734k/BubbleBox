@@ -1,0 +1,91 @@
+/* General */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Botón del menú */
+.dropdown-toggle {
+    width: 3.6vh;
+    margin-left: -0.5vh;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Contenedor de opciones */
+.dro {
+    position: absolute;
+    top: 3rem;
+    left: -0.8rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 1rem 0.7rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown.active .dro {
+    opacity: 1;
+    pointer-events: all;
+    transform: scale(1.1);
+}
+
+/* Opciones del menú */
+.dropdown-item {
+    position: relative;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 50% 50% 57% 43% / 53% 41% 59% 47%;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #7b6fca, #ba87eb);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: gradient-animate 5s infinite alternate;
+}
+
+/* Animación de burbuja que estalla */
+.dropdown-item.explode {
+    animation: explode 0.5s ease forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Hover dinámico */
+.dropdown-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+@media (min-width: 768px) {
+    .dropdown-toggle {
+        width: 35px;
+        height: 35px;
+
+    }
+}

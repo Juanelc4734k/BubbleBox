@@ -1,66 +1,70 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { FaArrowLeft, FaBell, FaUser, FaBars, FaChevronDown, FaChevronUp } from 'react-icons/fa';
-import logo from '../../assets/images/logo/logo.jfif';
-import '../../assets/css/layout/navbar.css';
-import { getProfiles } from '../../services/users';
-import * as jwt_decode from 'jwt-decode';
-import { CiCirclePlus } from "react-icons/ci";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { FaArrowLeft, FaBell, FaUser, FaBars, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { TbUsersPlus } from "react-icons/tb";
+import * as jwt_decode from "jwt-decode";
+import Dropdown from "./Dropdown";
+import { getProfiles } from "../../services/users";
+import logo from "../../assets/images/logo/logo.jfif";
+import "../../assets/css/layout/navbar.css";
+import CreatePost from "../posts/CreatePost";
+import CreateComunity from "../comunity/CreateComunity";
 
 const Navbar = ({ toggleSidebar }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const userRole = localStorage.getItem('userRole');
-  const [userProfile, setUserProfile] = useState(null);
-  const [isDescriptionVisible, setIsDescriptionVisible] = useState(true);
-  const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
+  const navigate = useNavigate()
+  const location = useLocation()
+  const userRole = localStorage.getItem("userRole")
+  const [userProfile, setUserProfile] = useState(null)
+  const [isExpanded, setIsExpanded] = useState(false)
+  const avatarPorDefecto =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s"
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const decoded = jwt_decode.jwtDecode(token);
-        const loggedInUserId = decoded.userId;
-        const profile = await getProfiles();
-        setUserProfile(profile);
+        const token = localStorage.getItem("token")
+        const decoded = jwt_decode.jwtDecode(token)
+        const loggedInUserId = decoded.userId
+        const profile = await getProfiles()
+        setUserProfile(profile)
       } catch (error) {
-        console.error('Error al obtener el perfil del usuario:', error);
+        console.error("Error al obtener el perfil del usuario:", error)
       }
-    };
+    }
 
-    fetchUserProfile();
-  }, []);
+    fetchUserProfile()
+  }, [])
 
   const handleGoBack = () => {
-    if (location.pathname.startsWith('/admin') && location.pathname !== '/admin') {
-      navigate('/admin');
+    if (location.pathname.startsWith("/admin") && location.pathname !== "/admin") {
+      navigate("/admin")
     } else if (window.history.length > 1) {
-      navigate(-1);
+      navigate(-1)
     } else {
-      navigate(userRole === 'administrador' ? '/admin' : '/home');
+      navigate(userRole === "administrador" ? "/admin" : "/home")
     }
-  };
+  }
 
-  const showBackButton = (userRole === 'administrador' && location.pathname !== '/admin') || 
-                         (userRole !== 'administrador' && location.pathname !== '/home');
+  const showBackButton =
+    (userRole === "administrador" && location.pathname !== "/admin") ||
+    (userRole !== "administrador" && location.pathname !== "/home")
 
-  const toggleDescriptionVisibility = () => {
-    setIsDescriptionVisible(!isDescriptionVisible);
-  };
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded)
+  }
 
   // Navbar para administrador
   const renderAdminNavbar = () => (
     <nav className="navbar admin-navbar">
       <div className="navbar-left">
         {showBackButton ? (
-          <button type='button' className="navbar-back-button" onClick={handleGoBack}>
+          <button type="button" className="navbar-back-button" onClick={handleGoBack}>
             <FaArrowLeft />
           </button>
         ) : (
           <div className="navbar-logo">
-            <img src={logo} alt="Logo" />
+            <img src={logo || "/placeholder.svg"} alt="Logo" />
           </div>
         )}
       </div>
@@ -72,65 +76,78 @@ const Navbar = ({ toggleSidebar }) => {
         </button>
       </div>
     </nav>
-  );
+  )
 
   // Navbar para usuario
   const renderUserNavbar = () => (
-    <nav className={`navbar user-navbar ${isDescriptionVisible ? 'navbar-expanded' : ''}`}>
-      <div className="navbar-left">
-        <div className="navbar-img">
-          {userProfile && (
-            <img 
-              src={userProfile.avatar ? `${userProfile.avatar}` : avatarPorDefecto} 
-              alt="Avatar del usuario" 
-            />
+    <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""}`}>
+      <div className="navbar-content">
+        <div className="navbar-left">
+          <div className="navbar-img">
+            <button className="navbar-toggle-button" onClick={toggleSidebar} aria-label="Toggle Sidebar">
+              <FaBars />
+            </button>
+            {userProfile && (
+              <img
+                src={userProfile.avatar ? `http://localhost:3009${userProfile.avatar}` : avatarPorDefecto}
+                alt="Avatar del usuario"
+              />
+            )}
+          </div>
+          <div className="navbar-description">
+            <h3>{userProfile ? userProfile.username : "Cargando..."}</h3>
+            <button className="navbar-icon campana" aria-label="Notificaciones">
+              <FaBell />
+            </button>
+          </div>
+        </div>
+        <div className="navbar-right">
+          <div className="navbar-actions">
+            <Dropdown />
+          </div>
+          {showBackButton ? (
+            <button className="navbar-acti navbar-back-button" onClick={handleGoBack} aria-label="Volver">
+              <FaArrowLeft />
+            </button>
+          ) : (
+            <div className="navbar-acti navbar-logo">
+              <img src={logo || "/placeholder.svg"} alt="Logo de BubbleBox" />
+            </div>
           )}
         </div>
-        <button className="navbar-toggle-description" onClick={toggleDescriptionVisibility}>
-          {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
-        </button>
-        {isDescriptionVisible && (
-          <div className="navbar-description">
-            <h3>{userProfile ? userProfile.username : 'Cargando...'}</h3>
-            <p>¡Hola! Bienvenido a nuestra página BubbleBox, esperamos que puedas entretenerte.</p>
-            <FaBell className="navbar-icon campana" />
-          </div>
-        )}
-        {isDescriptionVisible && (
-          <div className='acciones'>
-            <div className='link1'>
-              <p><CiCirclePlus className='icono0'/> Nueva Historia</p>
-            </div>
-            <div className='link2'>
-              <p><TbUsersPlus className='icono0' />Nueva Comunidad</p>
-            </div>
-            <div className='link3'>
-              <p><CiBookmarkPlus className='icono0' />Nueva publicacion</p>
-            </div>
-          </div>
-        )}
       </div>
-      <div className="navbar-right">
-        <div className="navbar-actions">
-          <i className="fa-solid fa-ellipsis-vertical"></i>
+      <button className="navbar-toggle-description" onClick={toggleExpanded} aria-expanded={isExpanded}>
+        {isExpanded ? <FaChevronUp className="icono01" /> : <FaChevronDown className="icono01" />}
+        <span className="sr-only">{isExpanded ? "Ocultar detalles" : "Mostrar detalles"}</span>
+      </button>
+      <div className="navbar-expanded-content">
+        <div className="navbar-description-p">
+          <p>¡Hola! Bienvenido a nuestra página BubbleBox, esperamos que puedas entretenerte.sdfghjklwertyuiop´+</p>
         </div>
-        {showBackButton ? (
-          <button className="navbar-acti navbar-back-button" onClick={handleGoBack}>
-            <FaArrowLeft className='ml-2' />
-          </button>
-        ) : (
-          <div className="navbar-acti navbar-logo">
-            <img src={logo} alt="Logo" />
+        <div className="acciones">
+          <div className="link1">
+            <p>
+              <CreatePost/> 
+            </p>
           </div>
-        )}
-        <button className="navbar-toggle-button" onClick={toggleSidebar}>
-          <FaBars />
-        </button>
+          <div className="link2">
+            <p>
+              <CreateComunity/>
+            </p>
+          </div>
+          <div className="link3">
+            <p>
+              <CiBookmarkPlus className="icono0" />
+              Nueva Historia
+            </p>
+          </div>
+        </div>
       </div>
     </nav>
-  );
+  )
 
-  return userRole === 'administrador' ? renderAdminNavbar() : renderUserNavbar();
-};
+  return userRole === "administrador" ? renderAdminNavbar() : renderUserNavbar()
+}
 
-export default Navbar;
+export default Navbar
+

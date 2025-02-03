@@ -26,7 +26,9 @@ const getCommunityById = async (req, res) => {
 
 const createCommunity = async (req, res) => {
     try {
-        const { nombre, descripcion, idCreador, imagen } = req.body;
+        const { nombre, descripcion, idCreador } = req.body;
+        const imagen = req.file ? req.file.filename : null;
+        
         const idComunidad = await communityModel.crearComunidad(nombre, descripcion, idCreador, imagen);
         res.status(201).json({ mensaje: 'Comunidad creada con éxito', id: idComunidad });
     } catch (error) {

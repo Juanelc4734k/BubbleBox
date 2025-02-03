@@ -49,7 +49,9 @@ const getPostById = async (req, res) => {
 
 const createPost = async (req, res) => {
     try {
-        const { titulo, contenido, idUsuario, imagen } = req.body;
+        const { titulo, contenido, idUsuario } = req.body;
+        const imagen = req.file ? req.file.filename : null;
+
         const nuevoPostId = await postModel.crearPublicacion(titulo, contenido, idUsuario, imagen);
 
         const amigos = await friendModel.obtenerAmistades(idUsuario);
@@ -86,7 +88,9 @@ const createPost = async (req, res) => {
 
 const crearPublicacionComunidad = async (req, res) => {
     try {
-        const { titulo, contenido, idUsuario, idComunidad, imagen } = req.body;
+        const { titulo, contenido, idUsuario, idComunidad } = req.body;
+        const imagen = req.file ? req.file.path : null;
+        
         const nuevoPostId = await postModel.crearPublicacionComunidad(titulo, contenido, idUsuario, idComunidad, imagen);
         res.status(201).json({ mensaje: 'Publicación de comunidad creada con éxito', id: nuevoPostId });
     } catch (error) {
