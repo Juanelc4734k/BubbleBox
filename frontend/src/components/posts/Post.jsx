@@ -12,7 +12,11 @@ const Post = ({ post }) => {
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
+<<<<<<< HEAD
             return `${post.avatar_usuario}`;
+=======
+            return `http://localhost:3008${post.avatar_usuario}`;
+>>>>>>> 8adb1486d926a83478dd3b5371344efd5e2ed47b
         }
         return avatarPorDefecto;
     };
@@ -53,6 +57,16 @@ const Post = ({ post }) => {
                     <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] max-h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh] pb-[1vh] mx-3 mx-[2%] overflow-hidden rounded-md shadow-lg">
                         {post.imagen && <img src={post.imagen} alt={post.titulo} className="  w-full h-full object-contain cursor-pointer" onClick={() => imgAbrir (post.imagen)} />}
                     </div>
+                    {post.imagen && (
+    <img
+        src={`http://localhost:3008/uploads/${post.imagen}`}  // Usa la ruta relativa almacenada en la base de datos
+        alt={post.titulo}
+        className="imagen-post"
+    />
+)}
+
+
+
                     </div>
                     <div className="lineTwo"></div>
                     <div className="aption">
