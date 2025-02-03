@@ -81,7 +81,10 @@ const Post = ({ post }) => {
                     <div className="fondo">
 
                     <div  className='imgpost'>
-                        <img src={imgaiAmplia} alt="imagen ampliada" />
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <img src={imgaiAmplia} alt="imagen ampliada" />
                     </div>
                     </div>
 
@@ -91,6 +94,7 @@ const Post = ({ post }) => {
         </>
         
     );
+    
 };
 
 export default Post;
