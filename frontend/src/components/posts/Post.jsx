@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState }, { useState } from 'react';
 import '../../assets/css/layout/post.css';
 import { BsHandThumbsUp } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { IoArrowRedoOutline } from "react-icons/io5";
-import { TiDeleteOutline } from "react-icons/ti";
+import { TiDeleteOutline } from "react-icons/ti";import { TiDeleteOutline } from "react-icons/ti";
 
 const Post = ({ post }) => {
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -12,6 +12,7 @@ const Post = ({ post }) => {
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
+            return `${post.avatar_usuario}`;
             return `http://localhost:3008${post.avatar_usuario}`;
             return `${post.avatar_usuario}`;
         }
@@ -51,6 +52,9 @@ const Post = ({ post }) => {
                     </div>
                     <div className="contenido-post">
                     <p>{post.contenido}</p>
+                    <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] max-h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh] pb-[1vh] mx-3 mx-[2%] overflow-hidden rounded-md shadow-lg">
+                        {post.imagen && <img src={post.imagen} alt={post.titulo} className="  w-full h-full object-contain cursor-pointer" onClick={() => imgAbrir (post.imagen)} />}
+                    </div>
                     {post.imagen && (
     <img
         src={`http://localhost:3008/uploads/${post.imagen}`}  // Usa la ruta relativa almacenada en la base de datos
