@@ -1,24 +1,28 @@
 .posts{
-    width: 45%;
+    width: 100%;
     border: 1px solid rgb(196, 199, 196);
     box-shadow: 0vh 0.2vh 1vh gray;
     border-radius: 2vh;
     overflow: hidden;
     padding-bottom: 3vh;
-    font-size: 2.4vh;
+    font-size: 2.vh;
     background-color: #fff;
-
+    transition: all 0.5s ease-in-out; 
 }
 
 .posts .post .autor-info{
     background-color: #b685e4bd;
     box-shadow: 0vh 0.3vh 1.1vh gray;
-    padding: 2vh 4vh;
+    padding: 0.1vh 1.5vh;
+    text-align:left;
 }
 .posts .post .autor-info .fechacreate{
     display: flex;
     justify-content: end;
     color: #e4e4e4;
+    text-decoration:underline 0.3vh solid #e4e4e4dc;
+    text-underline-offset: 0.3vh;
+    padding-top: 0.5vh;
 }
 .posts .post .autor-info .ft-name{
     width: 100%;
@@ -27,10 +31,13 @@
     gap: 3vh;
     margin-bottom: 2vh;
 }
-.posts .post .autor-info .ft-name img{
-    border: 0.7vh solid #fff;
+.posts .post .autor-info .ft-name .imguser{
+    width: 11vh;
+    height: 11vh;
+    overflow: hidden;
+    border: 0.6vh solid #fff;
     box-shadow: 0vh 0.1vh 1vh rgba(0, 0, 0, 0.623);
-
+    border-radius: 10vh;
 }
 .posts .post .autor-info .ft-name .info-post p:nth-child(2){
     font-size: 2.2vh;
@@ -42,8 +49,11 @@
     background-color: #e2e2e2;
 }
 .posts .post  .contenido-post{
-    text-align: center;
-    padding: 5vh 3vh;
+    padding: 2vh 3vh;
+}
+.posts .post  .contenido-post p{
+    padding: 2vh 0vh 0.3vh 1.8vh;
+
 }
 .posts .post .lineTwo{
     width: 88%;
@@ -68,5 +78,166 @@
     border-radius: 5vh;
     font-size: 3vh;
     box-shadow: 0vh 0.1vh 0.4vh rgba(0, 0, 0, 0.671);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+}
+.posts .post .aption .reacciones:hover,
+ .comentarios:hover, .reenviar:hover{
+    background-color: #7a7777 ;
+    
 
 }
+
+.posts .post .aption .reenviar:hover {
+    transform: translateY(-0.5vh); 
+    box-shadow: 0vh 0.3vh 0.6vh rgba(0, 0, 0, 0.8);
+}
+
+.contImagenPost {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1101;
+
+  }
+  .contImagenPost .salir {
+    position: absolute;
+    top: 1vh;
+    left: 2vh;
+    color: white;
+    font-size: 2.7rem;
+    cursor: pointer;
+    transition: trasnsform 0.4s ease-in-out, color 0.4s ease-in-out;
+
+  }
+  .salir:hover {
+    transform: scale(1.1); 
+    color: #bb6cfc;
+}
+.contImagenPost .fondo {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .contImagenPost .imgpost {
+    background: linear-gradient(45deg, rgb(184, 128, 248) 0%, rgb(88, 41, 141) 50%, rgb(118, 38, 209) 100%);
+    background-size: 300% 300%;
+    animation: cambioColor 5s ease-in-out infinite;
+    border-radius: 1.5vh;
+    padding: 2vh;
+    max-width: 85%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    align-items: center;
+    box-shadow: 0.2vh 0.2vh 1vh rgb(48, 48, 48);
+  }
+
+
+  .contImagenPost .imgpost::before,
+  .contImagenPost .imgpost::after,
+  .contImagenPost .imgpost .bubble {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+  }
+  
+  .contImagenPost .imgpost::before {
+    width: 5vh;
+    height: 5vh;
+    left: 10%;
+    bottom: -2.5vh;
+    animation: bubbleRise 3s linear infinite;
+  }
+  
+  .contImagenPost .imgpost::after {
+    width: 3vh;
+    height: 3vh;
+    right: 20%;
+    bottom: -1vh;
+    animation: bubbleRise 5s linear infinite;
+  }
+  
+  .contImagenPost .imgpost .bubble:nth-child(1) {
+    width: 4vh;
+    height: 4vh;
+    left: 30%;
+    bottom: -2vh;
+    animation: bubbleRise 12s linear infinite;
+  }
+  
+  .contImagenPost .imgpost .bubble:nth-child(2) {
+    width: 6vh;
+    height: 6vh;
+    right: 35%;
+    bottom: -3vh;
+    animation: bubbleRise 9s linear infinite;
+  }
+  
+  .contImagenPost .imgpost .bubble:nth-child(3) {
+    width: 2vh;
+    height: 2vh;
+    left: 50%;
+    bottom: -1vh;
+    animation: bubbleRise 11s linear infinite;
+  }
+  
+  .contImagenPost .imgpost img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 1vh;
+    box-shadow: 0.2vh 0.2vh 1vh rgb(48, 48, 48);
+  }
+
+  @keyframes cambioColor {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 40%;
+    }
+    100% {
+      background-position: 0% 60%;
+    }
+  }
+
+  @keyframes bubbleRise {
+    0% {
+      transform: translateY(0) rotate(0deg);
+    }
+    100% {
+      transform: translateY(-100vh) rotate(360deg);
+    }
+  }
+@media (min-width: 768px) {
+    .posts{
+        width: 45%;
+    }
+    .contImagenPost .fondo {
+        width: 85%;
+        height: 85%;
+      }
+    
+      .contImagenPost .imgpost {
+        width:auto;
+        height: 100%;
+        padding: 3vh;
+      }
+      .contImagenPost .salir {
+        top: 3vh;
+        left: 2.7vh;
+        font-size: 3.3rem;
+      }
+    }
