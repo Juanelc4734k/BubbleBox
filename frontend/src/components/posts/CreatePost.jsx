@@ -1,89 +1,135 @@
-// Componente CreatePost.js
-import React, { useEffect, useState } from "react";
-import { createPost } from "../../services/posts";
-import { CiCirclePlus, CiImageOn } from "react-icons/ci";
-import { IoClose } from "react-icons/io5";
-import "../../assets/css/posts/createPost.css";
-import * as jwt_decode from "jwt-decode";
+import React, { useEffect, useState, useRef } from "react"
+import { createPost } from "../../services/posts"
+import { CiCirclePlus, CiImageOn } from "react-icons/ci"
+import { IoClose } from "react-icons/io5"
+import "../../assets/css/posts/createPost.css"
+import * as jwt_decode from "jwt-decode"
 
 const CreatePost = () => {
-  const [titulo, setTitulo] = useState("");
-  const [contenido, setContenido] = useState("");
-  const [imagen, setImagen] = useState(null);
-  const [mensaje, setMensaje] = useState("");
-  const [openPost, setOpenPost] = useState(false);
-  const [idUsuario, setIdUsuario] = useState(null);
-  const [imagenPreview, setImagenPreview] = useState(null);
+  const [titulo, setTitulo] = useState("")
+  const [contenido, setContenido] = useState("")
+  const [imagen, setImagen] = useState(null)
+  const [mensaje, setMensaje] = useState("")
+  const [openPost, setOpenPost] = useState(false)
+  const [idUsuario, setIdUsuario] = useState(null)
+  const [imagenPreview, setImagenPreview] = useState(null)
+  const [animateMessage, setAnimateMessage] = useState(false)
+  const [showBubbles, setShowBubbles] = useState(false)
+  const scrollableRef = useRef(null); // Ref para el contenedor scrollable
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token")
         if (token) {
-          const decoded = jwt_decode.jwtDecode(token);
-          setIdUsuario(decoded.userId);
+          const decoded = jwt_decode.jwtDecode(token)
+          setIdUsuario(decoded.userId)
         }
       } catch (error) {
-        console.error("Error al obtener el id del usuario:", error);
+        console.error("Error al obtener el id del usuario:", error)
       }
-    };
-    fetchUserProfile();
-  }, []);
+    }
+    fetchUserProfile()
+  }, [])
+
+  useEffect(() => {
+    if (mensaje) {
+      setAnimateMessage(true)
+      const timer = setTimeout(() => {
+        setAnimateMessage(false)
+      }, 2000) // Duration of the animation
+      return () => clearTimeout(timer)
+    }
+  }, [mensaje])
+
+  useEffect(() => {
+    if (mensaje) {
+      setMensaje(""); 
+    }
+  }, [titulo, contenido]);
 
   const togglePost = () => {
-    setOpenPost(!openPost);
+    setOpenPost(!openPost)
     if (!openPost) {
-      // Resetear el formulario al abrirlo
-      setTitulo("");
-      setContenido("");
-      setImagen(null);
-      setImagenPreview(null);
-      setMensaje("");
+      setTitulo("")
+      setContenido("")
+      setImagen(null)
+      setImagenPreview(null)
+      setMensaje("")
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setMensaje("");
+    e.preventDefault()
+    setMensaje("")
 
     if (!titulo || !contenido) {
-      setMensaje("Por favor, completa todos los campos");
-      return;
+      setMensaje("Error, Por favor completa todos los campos");
+      if (scrollableRef.current) {
+        scrollableRef.current.scrollTop = 0;
+      }
+      setTimeout(() => {
+        setMensaje("");
+      }, 3000);
+      return
     }
 
-    const postData = new FormData();
-    postData.append("titulo", titulo.trim());
-    postData.append("contenido", contenido);
+    const postData = new FormData()
+    postData.append("titulo", titulo.trim())
+    postData.append("contenido", contenido)
     if (imagen) {
-      postData.append("imagen", imagen);
+      postData.append("imagen", imagen)
     }
     if (idUsuario) {
-      postData.append("idUsuario", idUsuario);
+      postData.append("idUsuario", idUsuario)
     }
 
     try {
-      const response = await createPost(postData);
+      const response = await createPost(postData)
       setMensaje("Publicación creada exitosamente");
+      if (scrollableRef.current) {
+        scrollableRef.current.scrollTop = 0;
+      }
+      setShowBubbles(true)
+      setTimeout(() => {
+        setShowBubbles(false);
+        togglePost();
+      }, 3000);
+    } catch (error) {
+      setMensaje("Error al crear la publicación");
+      if (scrollableRef.current) {
+        scrollableRef.current.scrollTop = 0;
+      }
       setTimeout(() => {
         togglePost();
       }, 2000);
-    } catch (error) {
-      setMensaje("Error al crear la publicación");
-      console.error("Error:", error);
+      console.error("Error: ", error);
     }
-  };
+  }
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file) {
-      setImagen(file);
-      const reader = new FileReader();
+      setImagen(file)
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setImagenPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+        setImagenPreview(reader.result)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
+
+  const createBubbles = () => {
+    return Array.from({ length: 10 }).map((_, index) => {
+      const style = {
+        left: `${Math.random() * 90 + 5}%`, // Evita valores extremos en los bordes
+      "--tx": `${(Math.random() - 0.5) * 40}px`, // Movimiento horizontal más suave
+      "--ty": `${-100 - Math.random() * 100}px`, // Asegura que suban más uniformemente
+      animationDelay: `${Math.random() * 1}s`, // Aumenta la variación del delay
+      }
+      return <div key={index} className="bubble" style={style}></div>
+    })
+  }
 
   return (
     <div className={`create-post ${openPost ? "active" : ""}`}>
@@ -92,15 +138,20 @@ const CreatePost = () => {
         <span>Nueva Publicación</span>
       </button>
       {openPost && (
-        <div className="formPost">
+        <div  ref={scrollableRef} className="formPost">
           <div className="form-header">
-            <h2><CiCirclePlus className="iconoPublicacion" /> Crear Publicación</h2>
+            <h2>
+              <CiCirclePlus className="iconoPublicacion" /> Crear Publicación
+            </h2>
             <button className="close-button" onClick={togglePost}>
               <IoClose />
             </button>
           </div>
           {mensaje && (
-            <p className={`mensaje ${mensaje.includes("error") ? "error" : "success"}`}>{mensaje}</p>
+            <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
+              {mensaje}
+              {showBubbles && createBubbles()}
+            </div>
           )}
           <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="form-group">
@@ -110,7 +161,6 @@ const CreatePost = () => {
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 placeholder="Título de la publicación"
-                required
               />
             </div>
             <div className="form-group">
@@ -120,7 +170,6 @@ const CreatePost = () => {
                 onChange={(e) => setContenido(e.target.value)}
                 placeholder="¿Qué estás pensando?"
                 rows={5}
-                required
               />
             </div>
             <div className="form-group file-input">
@@ -136,13 +185,12 @@ const CreatePost = () => {
                     type="button"
                     className="remove-image"
                     onClick={() => {
-                      setImagen(null);
-                      setImagenPreview(null);
-                        // Reiniciar el input de archivo
-                        const fileInput = document.getElementById("imagen");
-                        if (fileInput) {
-                        fileInput.value = ""; // Esto permite volver a cargar la misma imagen
-                        }
+                      setImagen(null)
+                      setImagenPreview(null)
+                      const fileInput = document.getElementById("imagen")
+                      if (fileInput) {
+                        fileInput.value = ""
+                      }
                     }}
                   >
                     <IoClose />
@@ -157,7 +205,7 @@ const CreatePost = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CreatePost;
+export default CreatePost

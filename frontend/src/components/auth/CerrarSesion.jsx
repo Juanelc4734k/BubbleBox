@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { logoutUser } from '../../services/auth';
 
 const CerrarSesion = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
@@ -9,15 +10,19 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      console.log(token);
+      if(token){
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const userId = decodedToken.userId;
+        console.log(userId);
+
+        await logoutUser(userId);      
       
-      // Eliminamos la petición al backend ya que no parece haber una ruta específica para logout
-      
-      localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('userRole');
-      setIsAuthenticated(false);
-      navigate('/login');
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userRole');
+        setIsAuthenticated(false);
+        navigate('/login');
+      }
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }

@@ -5,6 +5,7 @@
     width: 9vh;
     height: 88vh;
     padding-top: 60px; /* Espacio para el navbar */
+    z-index: 1000;
   }
   .sidebar.expanded{
     opacity: 1;
@@ -84,7 +85,7 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s, visibility 0.3s;
-    z-index: 1001;
+    z-index: 9999;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
@@ -92,6 +93,7 @@
   .menu-item:hover[data-tooltip]::after {
     opacity: 1;
     visibility: visible;
+    z-index: 9999;
   }
   /* Aplica rotación al icono solamente */
 .sidebar-toggle-button .toggle-icon {
