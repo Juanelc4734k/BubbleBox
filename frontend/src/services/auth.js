@@ -68,4 +68,20 @@ export const verificarRol = async () => {
     }
 };
 
+export const logoutUser = async (userId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.put(`${API_URL}/auth/logout`, { userId }, {
+            headers: {
+                'Authorization' : `Bearer ${token}`
+            }
+        });
+        console.log(response.data);
+        return response.data;
+        
+    } catch (error) {
+        console.log('Error en logoutUser: ', error);
+        throw error;
+    }
+}
 

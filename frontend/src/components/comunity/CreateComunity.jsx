@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { IoClose } from "react-icons/io5";
 import * as jwt_decode from "jwt-decode";
 import "../../assets/css/comunity/createComunity.css";
@@ -14,6 +14,9 @@ const CreateComunity = () => {
     const [idCreador, setIdCreador] = useState("");
     const [imagenPreview, setImagenPreview] = useState(null);
     const [mensaje, setMensaje] = useState("");
+    const [showBubbles, setShowBubbles] = useState(false);
+    const [animateMessage, setAnimateMessage] = useState(false)
+    const scrollableRef = useRef(null);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -29,6 +32,22 @@ const CreateComunity = () => {
         };
         fetchUserProfile();
     }, [])
+
+    useEffect(() =>{
+        if(mensaje){
+            setAnimateMessage(true)
+            const timer = setTimeout(() => {
+                setAnimateMessage(false)
+            }, 2000)
+            return () => clearTimeout(timer)
+        }
+    }, [mensaje])
+
+    useEffect(() => {
+        if(mensaje) {
+            setMensaje("");
+        }
+    }, [nombre, descripcion])
 
     const toggleComunity = () => {
         setOpenComunity(!openComunity);
@@ -46,8 +65,14 @@ const CreateComunity = () => {
         setMensaje("");
 
         if(!nombre || !descripcion){
-            setMensaje("Por favor, completa todos los campos");
-            return;
+            setMensaje("Error, Por favor completa todos los campos");
+            if (scrollableRef.current) {
+            scrollableRef.current.scrollTop = 0;
+            }
+            setTimeout(() => {
+            setMensaje("");
+            }, 3000);
+            return
         }
 
         const comunityData = new FormData();
@@ -63,11 +88,22 @@ const CreateComunity = () => {
         try{
             const response = await createCommunity(comunityData);
             setMensaje("Comunidad creada exitosamente");
+            if (scrollableRef.current) {
+                scrollableRef.current.scrollTop = 0;
+            }
+            setShowBubbles(true);
+            setTimeout(() => {
+                setShowBubbles(false);
+                toggleComunity();
+            }, 3000);
+        }catch(error){
+            setMensaje("Error al crear la comunidad");
+            if (scrollableRef.current) {
+                scrollableRef.current.scrollTop = 0;
+            }
             setTimeout(() => {
                 toggleComunity();
             }, 2000);
-        }catch(error){
-            setMensaje("Error al crear la comunidad");
             console.error("Error:", error);
         }
     };
@@ -84,6 +120,18 @@ const CreateComunity = () => {
         }
     };
 
+    const createBubbles = () => {
+        return Array.from({ length: 10 }).map((_, index) => {
+          const style = {
+            left: `${Math.random() * 90 + 5}%`, // Evita valores extremos en los bordes
+          "--tx": `${(Math.random() - 0.5) * 40}px`, // Movimiento horizontal más suave
+          "--ty": `${-100 - Math.random() * 100}px`, // Asegura que suban más uniformemente
+          animationDelay: `${Math.random() * 1}s`, // Aumenta la variación del delay
+          }
+          return <div key={index} className="bubble" style={style}></div>
+        })
+      }
+
     return(
         <div className={`create-comunity ${openComunity ? "active" : ""}`} >
             <button className="create-comunity-button" onClick={toggleComunity}>
@@ -91,7 +139,7 @@ const CreateComunity = () => {
                 <span>Nueva Comunidad</span>
             </button>
             {openComunity && (
-                <div className="formComunity">
+                <div ref={scrollableRef} className="formComunity">
                     <div className="form-header">
                         <h2><TbUsersPlus className="iconoComunity" /> Crear Comunidad</h2>
                         <button className="close-button" onClick={toggleComunity}>
@@ -99,7 +147,10 @@ const CreateComunity = () => {
                         </button>
                     </div>
                     {mensaje && (
-                        <p className={`mensaje ${mensaje.includes("error") ? "error" : "success"}`}>{mensaje}</p>
+                        <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
+                        {mensaje}
+                        {showBubbles && createBubbles()}
+                        </div>
                     )}
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div className="form-group">
@@ -109,7 +160,6 @@ const CreateComunity = () => {
                                 value={nombre} 
                                 onChange={(e) => setNombre(e.target.value)} 
                                 placeholder="Nombre de la comunidad" 
-                                required 
                             />
                         </div>
                         <div className="form-group">
@@ -119,7 +169,6 @@ const CreateComunity = () => {
                                 onChange={(e) => setDescripcion(e.target.value)}
                                 placeholder="Descripción de la comunidad"
                                 rows={5}
-                                required
                             />
                         </div>
                         <div className="form-group file-input">
