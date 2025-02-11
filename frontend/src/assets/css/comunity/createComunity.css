@@ -197,22 +197,61 @@
     background: #8034ff;
     transform: translateY(-2px);
   }
+  @keyframes messageBounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  @keyframes bubbleFloat {
+    0% {
+      transform: translate(0, 0) scale(0.8); /* Evita que aparezcan de repente con scale(0) */
+      opacity: 0;
+    }
+    30% {
+      opacity: 1; /* Hace que aparezcan gradualmente */
+      transform: translate(var(--tx), var(--ty)) scale(1);
+    }
+    100% {
+      transform: translate(var(--tx), calc(var(--ty) - 20px)) scale(1.2); /* Un poco más de movimiento */
+      opacity: 0;
+    }
+  }
   
   .mensaje {
     padding: 1rem;
     border-radius: 0.75rem;
     margin-bottom: 1rem;
     text-align: center;
+    animation: messageBounce 0.5s ease-in-out;
+    position: relative;
   }
   
   .mensaje.success {
-    background: rgba(72, 187, 120, 0.1);
-    color: #38a169;
+    background: rgba(141, 72, 187, 0.1);
+    color: #6e38a1;
   }
   
   .mensaje.error {
     background: rgba(245, 101, 101, 0.1);
     color: #e53e3e;
+  }
+  
+  .bubble {
+    position: absolute;
+    bottom: -20px; /* 📌 Se genera debajo del mensaje */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(151, 71, 255, 0.6);
+    backdrop-filter: blur(8px);
+    animation: bubbleFloat 2.5s ease-out forwards;
   }
   
   @media (max-width: 768px) {
