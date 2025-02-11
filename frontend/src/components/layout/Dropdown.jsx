@@ -11,6 +11,7 @@ const Dropdown = () => {
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
+    
     const handleBubbleClick = (e) => {
         const bubble = e.target;
         bubble.classList.add("explode");
@@ -32,10 +33,10 @@ const Dropdown = () => {
                 <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <div className="dro">
-                <Link className="dropdown-item bubble" onClick={handleBubbleClick} to="/users">
+                <Link className="dropdown-item bubblee" onClick={handleBubbleClick} to="/users">
                     <TbSettings />
                 </Link>
-                <Link className="dropdown-item bubble" onClick={handleBubbleClick} to="/profile">
+                <Link className="dropdown-item bubblee" onClick={handleBubbleClick} to="/perfil">
                     <AiOutlineUser />
                 </Link>
             </div>
