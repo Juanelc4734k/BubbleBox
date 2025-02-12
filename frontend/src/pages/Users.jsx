@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import User from '../components/users/User';
-import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../services/users';
 import '../assets/css/user/user.css';
 
 function Users() {
     const [users, setUsers] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -32,16 +30,12 @@ function Users() {
         fetchUsers();
     }, []);
 
-    const handleUserClick = (userId) => {
-        navigate(`/perfil/${userId}`);
-    };
-
     return (
         <>
             <div className='container-usuarios'>
             {users.length > 0 ? (
                 users.map((user) => (
-                    <div key={user.id} onClick={() => handleUserClick(user.id)}>
+                    <div key={user.id}>
                         <User user={user} />
                     </div>
                 ))
