@@ -1,11 +1,11 @@
-const Chats = () => {
-    return (
-        <>
-        <h1>Holi los chats</h1>
-        </>
+import React from "react";
 
-    );
+const Chats = ()=>  {
+    return(
+        <div>
+            <h2>Holi los chats</h2>
+        </div>
+    )
+}
 
-};
-
-export default Chats;
+export default Chats
