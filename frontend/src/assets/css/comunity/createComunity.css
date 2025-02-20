@@ -25,7 +25,7 @@
     position: fixed;
     top: 25rem;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.8);
     width: 90%;
     max-width: 500px;
     max-height: 80vh;
@@ -41,13 +41,14 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(151, 71, 255, 0.5) rgba(151, 71, 255, 0.1);
     transition: transform 0.5s ease, opacity 0.3s ease;
+    
   }
   
   .create-comunity.active .formComunity {
     opacity: 1;
     pointer-events: auto;
     visibility: visible;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(1);
   }
   
   .create-comunity .formComunity:not(.active) {
@@ -68,7 +69,7 @@
   }
   
   .form-header h2 {
-    color: #a665fc;
+    color: #866bb8;
     font-size: 1.5rem;
     font-weight: 600;
     display: flex;
@@ -183,7 +184,7 @@
   .submit-button {
     width: 100%;
     padding: 1rem;
-    background: #9747ff;
+    background-color:  #bda7f1;
     color: white;
     border: none;
     border-radius: 0.75rem;
@@ -197,6 +198,7 @@
     background: #8034ff;
     transform: translateY(-2px);
   }
+
   @keyframes messageBounce {
     0%,
     100% {

@@ -75,14 +75,14 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
-.form-header h2 {
-  color: #a665fc;
+.form-header .textPubli {
+  color: #bda7f1;
   font-size: 1.5rem;
   font-weight: 600;
   display: flex;
 }
 
-.form-header h2 .iconoPublicacion{
+.form-header .textPubli .iconoPublicacion{
   margin-right: 5px;
   margin-top: 4.5px;
 }
