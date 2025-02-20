@@ -1,13 +1,48 @@
 .home-container{
-    width: 95%;
-    margin-top: 20vh;
+    width: 82%;
+    margin-top: 10vh;
     margin-left: 2vh;
-    padding-top: 5vh;
     padding-bottom: 4vh;
     border-radius: 2vh;
     box-shadow: 0vh 0.3vh 1.5vh gray;
     background-color: #f3f3f3;
+    overflow: hidden;
 }
+.home-container .divpostss .textOcul h2{
+    background-color: #C1A6FF;
+    width: 100%;
+    padding: 4vh;
+    text-align: center;
+    transition: opacity 1.5s ease-in-out;
+    box-shadow: 0vh 0.3vh 1.5vh gray;
+
+}
+.home-container .divpostss .textOcul .ver {
+    opacity: 1; 
+}
+
+.home-container .divpostss .textOcul .noVer {
+    opacity: 0; 
+}
+.escritura {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid black;
+    width: 0;
+    font-size: 24px;
+    animation: escribir 3s steps(20, end) forwards, parpadear 0.5s step-end infinite;
+}
+
+@keyframes escribir {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes parpadear {
+    50% { border-color: transparent; }
+}
+
+
 .home-container .divpostss h2{
     text-align: center;
     margin-bottom: 4vh;
@@ -18,12 +53,20 @@
     flex-wrap: wrap;
     gap: 5vh;
     justify-content: center;
+    align-items: center;
     padding: 2vh;
     transition: all 0.5s ease-in-out;
 
 }
+
+
 @media (min-width: 768px) {
     .postss{
         flex-direction: row;
+    }
+    .home-container{
+        margin-top: 22vh;
+        width: 75%;
+
     }
 }
