@@ -1,0 +1,294 @@
+.createStories {
+  position: relative;
+  display: inline-block;
+}
+
+.openStoriesButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.openStoriesButton:hover {
+  transform: translateY(-2px);
+}
+
+.openStoriesButton .icono000 {
+  font-size: 1.2rem;
+}
+
+.formStories {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(151, 71, 255, 0.5) rgba(151, 71, 255, 0.1);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.createStories.active .formStories {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.formheaderstories {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(151, 71, 255, 0.2);
+}
+
+.formheaderstories::after {
+  content: "";
+  position: absolute;
+  top: -1rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.formheaderstories .textForm {
+  color: #bda7f1;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.formheaderstories .textForm .iconoHistoria {
+  margin-right: 0.5rem;
+}
+
+.closeStories {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.closeStories:hover {
+  background: rgba(151, 71, 255, 0.1);
+  color: #9747ff;
+}
+
+.formInputMedia {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  background: rgba(148, 116, 170, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  margin: 0 auto 1rem;
+  transition: background 0.3s ease-in-out;
+  border: 2px solid white;
+}
+
+.formInputMedia .mediaInput {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.multimedia {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.formInputMedia:hover {
+  background: rgba(59, 24, 82, 0.5);
+}
+
+.previewImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 0.30rem;
+  right: 1.7rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-radius: 50%;
+  padding: 0.25rem;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.remove-image-button:hover {
+  background: white;
+  color: #ff4444;
+}
+
+.buttonSubmit {
+  width: 100%;
+  background-color: #bda7f1;
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.buttonSubmit:hover {
+  background-color: #a665fc;
+}
+
+.mensajeStories {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.mensajeStories.success {
+  background-color: rgba(72, 187, 120, 0.2);
+  color: #2f855a;
+}
+
+.mensajeStories.error {
+  background-color: rgba(245, 101, 101, 0.2);
+  color: #c53030;
+}
+
+.modeToggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.modeButton {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0.25rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.iconButton {
+  margin-right: 0.3rem;
+  font-size: 1rem;
+}
+
+.modeButton.active {
+  background-color: #bda7f1;
+  color: white;
+}
+
+.modeButton:hover {
+  background-color: #e0e0e0;
+}
+
+.modeButton.active:hover {
+  background-color: #a665fc;
+}
+
+@media (min-width: 768px) {
+  .openStoriesButton {
+    font-size: 1rem;
+  }
+
+  .formStories {
+    padding: 1.5rem;
+    max-width: 600px;
+  }
+
+  .formheaderstories .textForm {
+    font-size: 1.4rem;
+  }
+
+  .closeStories {
+    font-size: 1.5rem;
+  }
+
+  .formInputMedia {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  .multimedia {
+    font-size: 2rem;
+  }
+
+  .buttonSubmit {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .mensajeStories {
+    font-size: 1rem;
+  }
+
+  .modeButton {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .iconButton {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .formStories {
+    max-width: 700px;
+    transform: translate( -50% , -50%);
+    width: 45%;
+  }
+
+  .formInputMedia {
+    width: 12rem;
+    height: 12rem;
+  }
+}
+
+

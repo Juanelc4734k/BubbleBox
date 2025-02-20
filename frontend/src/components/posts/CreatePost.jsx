@@ -140,7 +140,7 @@ const CreatePost = () => {
       {openPost && (
         <div  ref={scrollableRef} className="formPost">
           <div className="form-header">
-            <h2>
+            <h2 className="textPubli">
               <CiCirclePlus className="iconoPublicacion" /> Crear Publicación
             </h2>
             <button className="close-button" onClick={togglePost}>
@@ -208,4 +208,4 @@ const CreatePost = () => {
   )
 }
 
-export default CreatePost
+export default CreatePost;

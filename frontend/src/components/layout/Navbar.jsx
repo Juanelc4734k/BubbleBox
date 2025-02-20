@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaArrowLeft, FaBell, FaUser, FaBars, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
-import { TbUsersPlus } from "react-icons/tb";
 import * as jwt_decode from "jwt-decode";
 import Dropdown from "./Dropdown";
 import { getProfiles } from "../../services/users";
@@ -10,6 +9,8 @@ import logo from "../../assets/images/logo/logo.jfif";
 import "../../assets/css/layout/navbar.css";
 import CreatePost from "../posts/CreatePost";
 import CreateComunity from "../comunity/CreateComunity";
+import CreateStories from "../stories/CreateStories";
+import Notifications from "./Notifications";
 
 const Navbar = ({ toggleSidebar }) => {
   const navigate = useNavigate()
@@ -96,9 +97,7 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
           <div className="navbar-description">
             <h3>{userProfile ? userProfile.username : "Cargando..."}</h3>
-            <button className="navbar-icon campana" aria-label="Notificaciones">
-              <FaBell />
-            </button>
+            <Notifications/>
           </div>
         </div>
         <div className="navbar-right">
@@ -137,8 +136,7 @@ const Navbar = ({ toggleSidebar }) => {
           </div>
           <div className="link3">
             <p>
-              <CiBookmarkPlus className="icono0" />
-              Nueva Historia
+              <CreateStories/>
             </p>
           </div>
         </div>
