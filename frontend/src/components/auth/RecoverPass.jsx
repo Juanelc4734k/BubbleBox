@@ -23,7 +23,7 @@ const RecoverPass = () => {
     return (
         <div className='bg-zinc-200 p-6 rounded-xl shadow'>
             <form onSubmit={handleSubmit}>
-                <div className='Recover'>
+                <div className='Recover overflow-hidden'>
                     <div className="iconEma bg-purple-500">
                         <MdOutlineMarkEmailUnread/>
                     </div>
@@ -33,12 +33,12 @@ const RecoverPass = () => {
                         onChange={(e) => setEmail(e.target.value)} 
                         placeholder="Email" 
                         required 
-                        className='w-full pl-12 p-2 rounded-xl '
+                        className='w-full pl-12 p-2 rounded-xl overflow-hidden'
                     />
                     <div className="linee bg-purple-500"></div>
                 </div>
                     <button 
-                        className='bg-purple-500 mt-5 p-2 pl-6 pr-8 ml-52 flex text-white rounded-lg buttonPass' type="submit">
+                        className='bg-purple-500 mt-7 lg:ml-56 ml-14 p-2 pl-6 pr-8  flex text-white rounded-lg buttonPass' type="submit">
                         <MdLockReset className="text-lg mr-2 mt-[3px]" />
                         Recuperar
                     </button>
