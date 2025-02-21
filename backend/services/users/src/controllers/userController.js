@@ -53,17 +53,41 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const actualizado = await userModel.updateUser(req.params.id, req.body);
+    console.log('Datos recibidos:', req.params.id, req.body);
+    
+    // Validate that we have an ID and data
+    if (!req.params.id) {
+      return res.status(400).json({ mensaje: 'ID de usuario requerido' });
+    }
+
+    // Explicitly extract the fields we want to update
+    const updateData = {
+      nombre: req.body.nombre,
+      username: req.body.username,
+      email: req.body.email,
+      descripcion_usuario: req.body.descripcion_usuario,
+      estado: req.body.estado
+    };
+
+    console.log('Datos a actualizar:', updateData);
+
+    const actualizado = await userModel.updateUser(req.params.id, updateData);
+    
     if (actualizado) {
-      res.json({ mensaje: 'Usuario actualizado' });
+      // Get updated user data to confirm changes
+      const usuarioActualizado = await userModel.getUserById(req.params.id);
+      res.json({ 
+        mensaje: 'Usuario actualizado',
+        usuario: usuarioActualizado
+      });
     } else {
       res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
   } catch (error) {
+    console.error('Error en updateUser:', error);
     res.status(500).json({ mensaje: 'Error al actualizar usuario', error: error.message });
   }
 };
-
 const deleteUser = async (req, res) => {
   try {
     const eliminado = await userModel.deleteUser(req.params.id);
@@ -88,34 +112,38 @@ const searchUsers = async (req, res) => {
 
 const updateProfilePhoto = async (req, res) => {
     try {
-      const userId = req.user.id;
-      let avatarUrl;
-  
-      if (req.file) {
-        // Si se subió un archivo
-        avatarUrl = `/uploads/${req.file.filename}`; // Ajusta esto según tu configuración de servidor
-      } else if (req.body.avatarUrl) {
-        // Si se proporcionó una URL
-        avatarUrl = req.body.avatarUrl;
-      } else {
-        return res.status(400).json({ mensaje: "No se ha proporcionado ni archivo ni URL para la foto de perfil" });
-      }
-  
-      // Validar la URL si es necesario
-      if (req.body.avatarUrl && !isValidUrl(req.body.avatarUrl)) {
-        return res.status(400).json({ mensaje: "La URL proporcionada no es válida" });
-      }
-  
-      // Actualiza la URL del avatar en la base de datos
-      await userModel.updateAvatar(userId, avatarUrl);
-  
-      res.json({ mensaje: "Foto de perfil actualizada con éxito", avatarUrl });
-    } catch (error) {
-      console.error('Error al actualizar la foto de perfil:', error);
-      res.status(500).json({ mensaje: "Error al actualizar la foto de perfil", error: error.message });
-    }
-  };
+        const userId = req.user.id;
+        const avatarUrl = req.file ? req.file.filename : null;
+        
+        if (!avatarUrl && !req.body.avatarUrl) {
+            return res.status(400).json({ 
+                mensaje: "Se requiere una imagen para actualizar el perfil" 
+            });
+        }
 
+        const updated = await userModel.updateAvatar(
+            userId, 
+            avatarUrl ? `/uploads/${avatarUrl}` : req.body.avatarUrl
+        );
+
+        if (!updated) {
+            return res.status(404).json({ 
+                mensaje: "No se pudo actualizar la foto de perfil" 
+            });
+        }
+
+        res.json({ 
+            mensaje: "Foto de perfil actualizada con éxito",
+            avatarUrl: avatarUrl ? `/uploads/${avatarUrl}` : req.body.avatarUrl
+        });
+    } catch (error) {
+        console.error('Error al actualizar la foto de perfil:', error);
+        res.status(500).json({ 
+            mensaje: "Error al actualizar la foto de perfil",
+            error: error.message 
+        });
+    }
+};
   function isValidUrl(string) {
     try {
       new URL(string);
@@ -213,6 +241,7 @@ const getPublicUserProfile = async (req, res) => {
       id: userProfile.id,
       nombre: userProfile.nombre,
       username: userProfile.username,
+      email: userProfile.email,
       avatar: userProfile.avatar,
       estado: userProfile.estado
     };

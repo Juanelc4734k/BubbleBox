@@ -8,6 +8,7 @@ function Profiles() {
     const [profile, setProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isOwnProfile, setIsOwnProfile] = useState(false);
     const { userId } = useParams();
 
     useEffect(() => {
@@ -19,11 +20,13 @@ function Profiles() {
                 const decoded = jwt_decode.jwtDecode(token);
                 const loggedInUserId = decoded.userId;
 
-                if (userId && userId !== loggedInUserId.toString()) {
-                    // Si hay un userId en la URL y no es el usuario logueado, obtener perfil público
+                // Determine if this is the user's own profile
+                const isOwn = !userId || userId === loggedInUserId.toString();
+                setIsOwnProfile(isOwn);
+
+                if (!isOwn) {
                     fetchedProfile = await getUserProfile(userId);
                 } else {
-                    // Si no hay userId o es el usuario logueado, obtener perfil completo
                     fetchedProfile = await getProfiles();
                 }
                 setProfile(fetchedProfile);
@@ -44,7 +47,7 @@ function Profiles() {
         <div>
             <h2>Perfil</h2>
             {profile ? (
-                <Profile profile={profile} />
+                <Profile profile={profile} isOwnProfile={isOwnProfile} />
             ) : (
                 <p>No se encontró el perfil.</p>
             )}

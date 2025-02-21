@@ -7,6 +7,12 @@ import Chats from '../components/chats/Chats';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const parrafoComm =" PPublicaciónes recientes";
+
+  const [mostrarT, setMostrarT] = useState(true);
+  const [noVer, setNoVer] = useState(false);
+  const [textoM, setTextoM] = useState("");
+
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,6 +28,31 @@ const Home = () => {
     fetchPosts();
   }, []);
 
+
+ useEffect(() => {
+        const timer = setTimeout(() => {
+            setMostrarT(false);
+            setTimeout(() => setNoVer(true), 1500);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+
+    useEffect(() => {
+        let i = 0;
+        const escribir = setInterval(() => {
+            if (i < parrafoComm.length) {
+                setTextoM((prev) => (prev !== undefined ? prev + (parrafoComm[i] || '') : parrafoComm[i]));
+                        i++;
+            } else {
+                clearInterval(escribir);
+            }
+        }, 100);
+        
+        return () => clearInterval(escribir);
+    }, []);
+
   return (
     <>
     <div className="home-container">
@@ -29,8 +60,10 @@ const Home = () => {
         <p>{error}</p>
       ) : (
         <div className='divpostss'>
-          <h2>Publicaciones recientes</h2>
-          <div className="postss">
+          <div className="textOcul">
+            {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
+          </div>
+            <div className="postss">
           {posts.map(post => (
             <Post key={post.id} post={post} />
           ))}
@@ -39,7 +72,6 @@ const Home = () => {
       )}
     </div>
     <div>
-      <Chats />
     </div>
       
     </>

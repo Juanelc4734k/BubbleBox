@@ -4,6 +4,7 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env'
 const db = require('./src/config/db');
 const chatRoutes = require('./src/routes/chatsRoutes');
 const friendshipModel = require('../friendships/src/models/friendModel');
+const chatModel = require('./src/models/chatsModel'); // Move require to top level
 const http = require('http');
 const socketIO = require('socket.io');
 
@@ -26,12 +27,34 @@ app.use('/chats', chatRoutes);
 io.on('connection', (socket) => {
     console.log('Nuevo cliente conectado');
 
-    socket.on('send_message', async ({ senderId, receiverId, message }) => {
+    socket.on('join_chat', ({ senderId, receiverId }) => {
+        const roomId = [senderId, receiverId].sort().join('-');
+        socket.join(roomId);
+        console.log(`User ${senderId} joined room ${roomId}`);
+    });
+
+    socket.on('send_private_message', async ({ senderId, receiverId, message, temp_id }) => {
         try {
             const areFriends = await friendshipModel.checkFriendship(senderId, receiverId);
             if (areFriends) {
-                const savedMessage = await require('./src/models/chatModel').saveMessage(senderId, receiverId, message);
-                io.emit('receive_message', savedMessage);
+                const savedMessage = await chatModel.saveMessage(senderId, receiverId, message);
+                const roomId = [senderId, receiverId].sort().join('-');
+                
+                // Broadcast to all clients in the room, including sender
+                io.in(roomId).emit('receive_private_message', {
+                    id: savedMessage.id,
+                    senderId,
+                    receiverId,
+                    message,
+                    created_at: savedMessage.createdAt,
+                    temp_id
+                });
+
+                // Send confirmation back to sender
+                socket.emit('message_sent_confirmation', {
+                    temp_id,
+                    id: savedMessage.id
+                });
             } else {
                 socket.emit('error', 'No puedes enviar mensajes a usuarios que no son tus amigos');
             }

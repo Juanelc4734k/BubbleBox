@@ -12,7 +12,10 @@ const Post = ({ post }) => {
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
-            return `${post.avatar_usuario}`;
+            // Check if the avatar URL is already complete or needs the base URL
+            return post.avatar_usuario.startsWith('http') 
+                ? post.avatar_usuario 
+                : `http://localhost:3009${post.avatar_usuario}`;
         }
         return avatarPorDefecto;
     };
@@ -30,40 +33,37 @@ const Post = ({ post }) => {
         <>
             <div className="posts">
                 <div className='post'>
+
                     <div className="autor-info">
                         <p className='fechacreate'>{post.fecha_creacion ? new Date(post.fecha_creacion).toLocaleString() : 'Fecha desconocida'}</p>
                        <div className="ft-name">
-                        <div className="imguser">
-                            <img 
-                                src={getAvatarSrc()} 
-                                alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
-                                className="avatar-usuario"
-                                width="100"
-                                style={ {objectFit: 'contain' }} 
-                                />
-                        </div>
-                        <div className="info-post">
-                        <p>{post.nombre_usuario || 'Usuario desconocido'}</p>
-                        <p>{post.titulo}</p>
-                        </div>
+                            <div className="imguser">
+                                <img 
+                                    src={getAvatarSrc()} 
+                                    alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
+                                    className="avatar-usuario"
+                                    width="100"
+                                    style={ {objectFit: 'contain' }} 
+                                    />
+                            </div>
+                            <div className="info-post">
+                                <p>{post.nombre_usuario || 'Usuario desconocido'}</p>
+                                <p>{post.titulo}</p>
+                            </div>
                        </div>
                     </div>
+
                     <div className="contenido-post">
                     <p>{post.contenido}</p>
-                    <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] max-h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh] pb-[1vh] mx-3 mx-[2%] overflow-hidden rounded-md shadow-lg">
-                        {post.imagen && <img src={post.imagen} alt={post.titulo} className="  w-full h-full object-contain cursor-pointer" onClick={() => imgAbrir (post.imagen)} />}
+                    <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh]  mx-3 overflow-hidden rounded-md shadow-lg">
+                    {post.imagen && <img 
+                    src={`http://localhost:3008/uploads/${post.imagen}`} 
+                    alt={post.titulo} 
+                    className="w-full h-full object-cover cursor-pointer rounded-md shadow-lg" 
+                    onClick={() => imgAbrir (`http://localhost:3008/uploads/${post.imagen}`)} />}
+                </div>
                     </div>
-                    {post.imagen && (
-    <img
-        src={`http://localhost:3008/uploads/${post.imagen}`}  // Usa la ruta relativa almacenada en la base de datos
-        alt={post.titulo}
-        className="imagen-post"
-    />
-)}
 
-
-
-                    </div>
                     <div className="lineTwo"></div>
                     <div className="aption">
                         <div className="grup1">
@@ -83,9 +83,8 @@ const Post = ({ post }) => {
                 </div>
 
             </div>
-
             {imgaiAmplia && (
-                <div className={`contImagenPost ${imgaiAmplia ? 'imagen' :''}`} >
+                <div className= {`contImagenPost ${imgaiAmplia ? 'imagen' :''}`} >
 
                     <TiDeleteOutline className='salir' onClick={imgCerrar}/>
                     <div className="fondo">
@@ -94,7 +93,14 @@ const Post = ({ post }) => {
                     <div className="bubble"></div>
                     <div className="bubble"></div>
                     <div className="bubble"></div>
-                    <img src={imgaiAmplia} alt="imagen ampliada" />
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    <div className="bubble"></div>
+                    
+                    <img src={imgaiAmplia} alt="imagen ampliada"/>
                     </div>
                     </div>
 
