@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'http://localhost:3000/notifications';
 
 export const getNotification = async () => {
     const token = localStorage.getItem('token');
-    const usuarioId = localStorage.getItem('usuarioId'); // Asegúrate de guardar esto al hacer login
+    const usuarioId = localStorage.getItem('userId'); // Asegúrate de guardar esto al hacer login
 
     if (!usuarioId) {
         console.error("No se encontró usuarioId en localStorage");

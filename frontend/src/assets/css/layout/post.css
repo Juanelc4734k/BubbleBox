@@ -1,5 +1,7 @@
+
+
 .posts{
-    width: 100%;
+    width: 93%;
     border: 1px solid rgb(196, 199, 196);
     box-shadow: 0vh 0.2vh 1vh gray;
     border-radius: 2vh;
@@ -7,7 +9,7 @@
     padding-bottom: 3vh;
     font-size: 2.vh;
     background-color: #fff;
-    transition: all 0.5s ease-in-out; 
+    transition: all 0.5s ease-in-out;
 }
 
 .posts .post .autor-info{
@@ -40,7 +42,8 @@
     border-radius: 10vh;
 }
 .posts .post .autor-info .ft-name .info-post p:nth-child(2){
-    font-size: 2.2vh;
+    font-size: 2vh;
+    color: #141414;
 }
 .posts .post .autor-info .line{
     width: 27.5%;
@@ -48,6 +51,7 @@
     height: 0.3vh;
     background-color: #e2e2e2;
 }
+
 .posts .post  .contenido-post{
     padding: 2vh 3vh;
 }
@@ -55,6 +59,10 @@
     padding: 2vh 0vh 0.3vh 1.8vh;
 
 }
+.posts .post  .contenido-post .imgconten{
+  overflow: hidden;
+}
+
 .posts .post .lineTwo{
     width: 88%;
     height: 0.3vh;
@@ -103,7 +111,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1101;
+    z-index: 1110;
 
   }
   .contImagenPost .salir {
@@ -111,7 +119,7 @@
     top: 1vh;
     left: 2vh;
     color: white;
-    font-size: 2.7rem;
+    font-size: 3rem;
     cursor: pointer;
     transition: trasnsform 0.4s ease-in-out, color 0.4s ease-in-out;
 
@@ -128,13 +136,13 @@
     align-items: center;
   }
   
-  .contImagenPost .imgpost {
+  .contImagenPost .fondo .imgpost {
     background: linear-gradient(45deg, rgb(184, 128, 248) 0%, rgb(88, 41, 141) 50%, rgb(118, 38, 209) 100%);
     background-size: 300% 300%;
     animation: cambioColor 5s ease-in-out infinite;
     border-radius: 1.5vh;
-    padding: 2vh;
-    max-width: 85%;
+    padding: 2.5vh;
+    max-width: 100%;
     max-height: 100%;
     display: flex;
     justify-content: center;
@@ -143,14 +151,20 @@
     box-shadow: 0.2vh 0.2vh 1vh rgb(48, 48, 48);
   }
 
-
+  .contImagenPost .fondo .imgpost img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: cover;
+}
+  
   .contImagenPost .imgpost::before,
   .contImagenPost .imgpost::after,
   .contImagenPost .imgpost .bubble {
     content: "";
     position: absolute;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.7);
+    border: 0.5vh solid rgba(255, 255, 255, 0.7);
+    z-index: -1;
   }
   
   .contImagenPost .imgpost::before {
@@ -170,29 +184,73 @@
   }
   
   .contImagenPost .imgpost .bubble:nth-child(1) {
-    width: 4vh;
-    height: 4vh;
+    width: 4.5vh;
+    height: 4.5vh;
     left: 30%;
     bottom: -2vh;
-    animation: bubbleRise 12s linear infinite;
+    animation: bubbleRise 13s linear infinite;
   }
   
   .contImagenPost .imgpost .bubble:nth-child(2) {
-    width: 6vh;
-    height: 6vh;
+    width: 6.5vh;
+    height: 6.5vh;
     right: 35%;
     bottom: -3vh;
     animation: bubbleRise 9s linear infinite;
   }
   
   .contImagenPost .imgpost .bubble:nth-child(3) {
-    width: 2vh;
-    height: 2vh;
+    width: 2.5vh;
+    height: 2.5vh;
     left: 50%;
     bottom: -1vh;
-    animation: bubbleRise 11s linear infinite;
+    animation: bubbleRise 10s linear infinite;
+  }
+  .contImagenPost .imgpost .bubble:nth-child(4) {
+    width: 6vh;
+    height: 6vh;
+    left: 20%;
+    bottom: -10vh;
+    animation: bubbleRise 13s linear infinite;
   }
   
+  .contImagenPost .imgpost .bubble:nth-child(5) {
+    width: 6vh;
+    height: 6vh;
+    right: 40%;
+    bottom: -20vh;
+    animation: bubbleRise 9s linear infinite;
+    }
+  
+  .contImagenPost .imgpost .bubble:nth-child(6) {
+    width: 2.5vh;
+    height: 2.5vh;
+    left: 60%;
+    bottom: -9vh;
+    animation: bubbleRise 10s linear infinite;
+  }
+  .contImagenPost .imgpost .bubble:nth-child(7) {
+    width: 5vh;
+    height: 5vh;
+    left: 70%;
+    bottom: -1vh;
+    animation: bubbleRise 14s linear infinite;
+  } 
+  
+  .contImagenPost .imgpost .bubble:nth-child(8) {
+    width: 2vh;
+    height: 2vh;
+    left: 80%;
+    bottom: -10vh;
+    animation: bubbleRise 15s linear infinite;
+  }  
+  .contImagenPost .imgpost .bubble:nth-child(9) {
+    width: 3.5vh;
+    height: 3.5vh;
+    left: 90%;
+    bottom: -9vh;
+    animation: bubbleRise 10s linear infinite;
+  }
   .contImagenPost .imgpost img {
     max-width: 100%;
     max-height: 100%;
@@ -228,12 +286,6 @@
     .contImagenPost .fondo {
         width: 85%;
         height: 85%;
-      }
-    
-      .contImagenPost .imgpost {
-        width:auto;
-        height: 100%;
-        padding: 3vh;
       }
       .contImagenPost .salir {
         top: 3vh;

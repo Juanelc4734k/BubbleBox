@@ -4,8 +4,12 @@ import "../../assets/css/profile/updateProfile.css"
 import { TbUserEdit } from "react-icons/tb"
 import { IoClose } from "react-icons/io5"
 import { FaCamera } from "react-icons/fa"
+import axios from 'axios'
 
 const UpdateProfile = () => {
+  // Add new state for preview
+  const [previewImage, setPreviewImage] = useState(null);
+  
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState({
     username: "",
@@ -13,10 +17,11 @@ const UpdateProfile = () => {
     avatar: "",
     newPassword: "",
     confirmPassword: "",
+    descripcion_usuario: "",
   })
   const [message, setMessage] = useState("")
   const fileInputRef = useRef(null)
-
+  
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -33,7 +38,7 @@ const UpdateProfile = () => {
     }
     fetchProfile()
   }, [])
-
+  
   const toggleModal = () => {
     setIsOpen(!isOpen)
     if (!isOpen) {
@@ -42,7 +47,7 @@ const UpdateProfile = () => {
       document.body.style.overflow = "unset"
     }
   }
-
+  
   const handleChange = (e) => {
     const { name, value } = e.target
     setProfile((prevProfile) => ({
@@ -50,47 +55,97 @@ const UpdateProfile = () => {
       [name]: value,
     }))
   }
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
+  
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setProfile((prevProfile) => ({
-          ...prevProfile,
-          avatar: reader.result,
-        }))
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewImage(previewUrl);
+  
+      const formData = new FormData();
+      formData.append('imagen', file);
+  
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.put(
+          'http://localhost:3009/users/actualizar-foto-perfil', 
+          formData, 
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+        );
+  
+        if (response.data.avatarUrl) {
+          setProfile(prev => ({
+            ...prev,
+            avatar: `http://localhost:3009${response.data.avatarUrl}`
+          }));
+          setMessage("Foto de perfil actualizada con éxito");
+          // Delay clearing the preview until the new image is loaded
+          setTimeout(() => {
+            URL.revokeObjectURL(previewUrl);
+            setPreviewImage(null);
+          }, 1000);
+        }
+      } catch (error) {
+        console.error("Error al actualizar la foto de perfil:", error);
+        setMessage("Error al actualizar la foto de perfil");
+        // Keep the preview on error so user can see what they selected
+        setPreviewImage(previewUrl);
       }
-      reader.readAsDataURL(file)
     }
-  }
-
+  };
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (profile.newPassword !== profile.confirmPassword) {
-      setMessage("Las contraseñas no coinciden")
-      return
-    }
+    
     try {
-      await updateProfile(profile)
-      setMessage("Perfil actualizado con éxito")
-      setTimeout(() => {
-        setMessage("")
-        toggleModal()
-      }, 2000)
-    } catch (error) {
-      console.error("Error al actualizar el perfil:", error)
-      setMessage("Error al actualizar tu perfil")
-    }
-  }
+      const updateData = {
+        nombre: profile.nombre,
+        username: profile.username,
+        email: profile.email,
+        descripcion_usuario: profile.descripcion_usuario,
+        estado: profile.estado
+      };
 
+      console.log('Datos a actualizar:', updateData); // Debug log
+      
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        throw new Error('No se encontró el ID del usuario');
+      }
+
+      await updateProfile(updateData);
+      
+      // Refresh profile data after update
+      const userData = await getProfiles();
+      setProfile(prev => ({
+        ...prev,
+        ...userData,
+        newPassword: "",
+        confirmPassword: "",
+      }));
+
+      setMessage("Perfil actualizado con éxito");
+      setTimeout(() => {
+        setMessage("");
+        toggleModal();
+      }, 2000);
+    } catch (error) {
+      console.error("Error al actualizar el perfil:", error);
+      setMessage("Error al actualizar tu perfil");
+    }
+  };
   return (
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
       <button className="w-full md:w-auto px-5 lg:px-7 lg:py-2  py-1 bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium" onClick={toggleModal}>
         <TbUserEdit className="icon" />
         Actualizar
       </button>
-
+  
       <div className="fromUpdate">
         <div className="form-header">
           <h2>Actualiza Tu perfil</h2>
@@ -102,7 +157,14 @@ const UpdateProfile = () => {
         <form onSubmit={handleSubmit}>
           <div className="imgProfile">
             <div className="avatar-container">
-              <img src={profile.avatar || "/placeholder.svg"} alt="Profile" className="avatar" />
+              <img 
+                src={previewImage || (profile.avatar ? `http://localhost:3009${profile.avatar}` : "/placeholder.svg")} 
+                alt="Profile" 
+                className="avatar"
+                onError={(e) => {
+                  e.target.src = "/placeholder.svg";
+                }}
+              />
               <button type="button" className="change-avatar" onClick={() => fileInputRef.current.click()}>
                 <FaCamera />
               </button>
@@ -120,8 +182,9 @@ const UpdateProfile = () => {
               type="text"
               id="username"
               name="username"
-              value={profile.nombre}
+              value={profile.nombre || ''}
               onChange={handleChange}
+              placeholder="Nombre completo"
             />
           </div>
           <div className="form-group">
@@ -129,9 +192,13 @@ const UpdateProfile = () => {
           </div>
           <div className="form-group">
             <textarea
-              id="contenido"
+              id="descripcion_usuario"
+              name="descripcion_usuario"
               rows={3}
-              className="texttarea"
+              className="texttarea w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+              value={profile.descripcion_usuario || ''}
+              onChange={handleChange}
+              placeholder="Cuéntanos sobre ti..."
             />
           </div>
           <button type="submit" className="submit-button">

@@ -1,0 +1,148 @@
+.community-Conten{
+    width: 85%;
+    background-color: #D9D9D9;
+    border-radius: 1.5vh;
+    overflow: hidden;
+    margin-top: 10vh;
+    box-shadow: 0vh 0.1vh 1vh rgb(102, 102, 102);
+}
+.community-Conten .textOcul h2{
+    background-color: #C1A6FF;
+    width: 100%;
+    padding: 4vh;
+    text-align: center;
+    transition: opacity 1.5s ease-in-out;
+
+
+}
+.community-Conten .textOcul .ver {
+    opacity: 1; 
+}
+
+.community-Conten .textOcul .noVer {
+    opacity: 0; 
+}
+.escritura {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid black;
+    width: 0;
+    font-size: 24px;
+    animation: escribir 3s steps(20, end) forwards, parpadear 0.5s step-end infinite;
+}
+
+@keyframes escribir {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes parpadear {
+    50% { border-color: transparent; }
+}
+
+.community-Conten .communitys{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    
+}
+.community-Conten .communitys .communitys-Info{
+    background-size: cover;  
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-color: aliceblue;
+    width: 80%;
+    height: 45vh;
+    border-radius: 1.5vh;
+    margin: 1vh;
+    overflow: hidden;
+    box-shadow: 0vh 0.1vh 1vh rgb(75, 75, 75);
+
+
+    
+}
+.community-Conten .communitys .communitys-Info .datosOne{
+    background-color:#BCA4E2;
+    padding: 2vh;
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    box-shadow: 0vh 0.1vh 1vh rgb(75, 75, 75);
+
+}
+
+.community-Conten .communitys .communitys-Info .datosOne .datostwo{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5vh;
+    width: 90%;
+
+}
+
+.community-Conten .communitys .communitys-Info .datosOne .datostwo .datoIcon{
+    width: 8vh;
+    height: 8vh;
+    background-color: rgb(255, 255, 255);
+    padding: 0.6vh;
+    border-radius: 10vh;
+    border: 0.4vh solid #8258c7;
+    box-shadow: 0vh 0.1vh 1vh rgb(75, 75, 75);
+    overflow: hidden;
+
+}
+.community-Conten .communitys .communitys-Info .datosOne .datostwo .infouser {
+    width: 70%;
+}
+.community-Conten .communitys .communitys-Info .datosOne .datostwo .infouser h3{
+    font-size: 2.4vh;
+    width: 100%;
+}
+.community-Conten .communitys .communitys-Info .datosOne .datostwo .infouser p{
+    width: 100%;
+    font-size: 2vh;
+    color: rgb(54, 54, 54);
+    margin-top: 0.2vh;
+    
+}
+.community-Conten .communitys .communitys-Info .datosOne button{
+    background-color: aliceblue;
+    padding: 0vh 1.5vh 0vh 1.5vh;
+    height: 6vh;
+    border-radius: 2vh;
+    border: 0.4vh solid #8258c7;
+    box-shadow: 0vh 0.1vh 0.6vh   rgb(75, 75, 75);
+}
+
+.infoCommunity{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+}
+.infoCommunity p{
+    background-color: #ffffff96;
+    margin: 0vh 5vh 0vh 5vh;
+    padding: 3vh;
+    border-radius: 2vh;
+        box-shadow: 0vh 0.1vh 1vh rgba(0, 0, 0, 0.863);
+}
+@media (min-width: 768px) {
+    .community-Conten{
+        margin-top: 22vh;
+    }
+    .community-Conten .communitys{
+        flex-direction: row;
+        justify-content:space-evenly;
+    }
+     .community-Conten .communitys .communitys-Info {
+        width:45%;
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+    }
+
+}

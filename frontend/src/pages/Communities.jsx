@@ -1,10 +1,9 @@
-import Community from '../communities/Community';
+import Community from '../components/comunity/Community';
 
 const Communities = () => {
   return (
-    <div className='container'>
-      <h1>Comunidades</h1>
-      <Community />
+    <div className='containerCommunities'>
+      <Community  />
     </div>
   )
 }
