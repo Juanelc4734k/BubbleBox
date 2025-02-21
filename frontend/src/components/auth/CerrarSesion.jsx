@@ -13,23 +13,37 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
       if(token){
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.userId;
-        console.log(userId);
 
-        await logoutUser(userId);      
-      
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userRole');
+        try {
+          await logoutUser(userId);
+        } catch (error) {
+          console.error('Error en logoutUser:', error);
+        }
+
+        // Clear all localStorage items
+        localStorage.clear();
+        
+        // Update authentication state
         setIsAuthenticated(false);
-        navigate('/login');
+        
+        // Force a page reload after navigation
+        navigate('/login', { replace: true });
+        window.location.reload();
       }
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
+      // If there's an error, clear everything and redirect anyway
+      localStorage.clear();
+      setIsAuthenticated(false);
+      navigate('/login', { replace: true });
+      window.location.reload();
     }
   };
 
   return (
-    <button onClick={handleLogout}><FaSignOutAlt /></button>
+    <button onClick={handleLogout} className="logout-button">
+      <FaSignOutAlt />
+    </button>
   );
 };
 

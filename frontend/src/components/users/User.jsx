@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../../assets/css/user/user.css';
 import { CiStar, CiUser  } from "react-icons/ci";
 import { GoHeart } from "react-icons/go";
 import { useNavigate } from 'react-router-dom';
+import { sendFriendRequest } from '../../services/friends';
 
 function User({ user }) {
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
     const navigate = useNavigate();
+    const [requestSent, setRequestSent] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSendRequest = async () => {
+      try {
+        const loggedUserId = localStorage.getItem('userId');
+        if (!loggedUserId) {
+          setError('Debes estar logueado para enviar solicitudes');
+          return;
+        }
+        await sendFriendRequest({idUsuario1: parseInt(loggedUserId), idUsuario2: user.id});
+        setRequestSent(true);
+        setError('');
+      } catch (error) {
+        console.error('Error al enviar la solicitud:', error);
+        setError('Error al enviar la solicitud');
+      }
+    }
 
     const getAvatarSrc = () => {
         if (user.avatar) {
@@ -31,10 +50,15 @@ function User({ user }) {
             <h2 className="user-name"> <CiUser className="user-icon" />{user.username}</h2>
           </div>
         </div>
-        <button className="request-button">
+        <button 
+          className={`request-button ${requestSent ? 'sent' : ''}`}
+          onClick={handleSendRequest}
+          disabled={requestSent}
+        >
           <GoHeart className="heart-icon" />
-          Agregar
+          {requestSent ? 'Solicitud enviada' : 'Agregar'}
         </button>
+        {error && <p className="error-message">{error}</p>}
       </div>
     )
 }

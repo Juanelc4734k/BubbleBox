@@ -188,3 +188,11 @@
     }
   }
   /* Transición suave para el sidebar */
+
+  /* Large desktop styles */
+  @media (min-width: 1440px) {
+    .sidebar {
+      top: 28vh;
+      height: 80vh;
+    }
+  }

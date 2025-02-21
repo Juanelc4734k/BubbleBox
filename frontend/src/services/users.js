@@ -22,10 +22,11 @@ export const getProfiles = async () => {
 // Actualizar perfil de usuario privado 
 export const updateProfile = async (profile) => {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-    const response = await axios.put(`${API_URL}/users/perfil`, profile, config);
+    const response = await axios.put(`${API_URL}/users/actualizar-usuario/${userId}`, profile, config);
     return response.data;
 };
 
