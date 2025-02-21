@@ -12,7 +12,10 @@ const Post = ({ post }) => {
 
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
-            return `${post.avatar_usuario}`;
+            // Check if the avatar URL is already complete or needs the base URL
+            return post.avatar_usuario.startsWith('http') 
+                ? post.avatar_usuario 
+                : `http://localhost:3009${post.avatar_usuario}`;
         }
         return avatarPorDefecto;
     };

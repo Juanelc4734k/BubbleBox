@@ -10,18 +10,18 @@ const Notifications = () => {
     const [isNotification, setIsNotification] = useState([]);
     
     useEffect(() => {
-        //Obtener las notificaciones al cargar el componente 
         const fetchNotification = async () => {
             try {
                 const data = await getNotification();
                 setIsNotification(data);  
-                
             } catch (error) {
                 console.error("Error obteniendo las notificaciones", error);
             }
         };
+
         fetchNotification();
-        socket.compress("nueva_notificacion", (nuevaNotificacion) => {
+        // Fix: Changed compress to on
+        socket.on("nueva_notificacion", (nuevaNotificacion) => {
             setIsNotification(prev => [nuevaNotificacion, ...prev]);
         });
 
@@ -67,4 +67,4 @@ const Notifications = () => {
     );
 };
 
-export default Notifications
+export default Notifications;

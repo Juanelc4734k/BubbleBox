@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT id, nombre, username, email, avatar, estado, created_at, rol FROM usuarios', (error, results) => {
+    db.query('SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at, rol FROM usuarios', (error, results) => {
       if (error) reject(error);
       resolve(results);
     });
@@ -25,8 +25,8 @@ const getUserById = (id) => {
 
 const createUser = (userData) => {
     return new Promise((resolve, reject) => {
-      db.query('INSERT INTO usuarios (nombre, username, email, contraseña, avatar, estado) VALUES (?, ?, ?, ?, ?, ?)', 
-        [userData.nombre, userData.username, userData.email, userData.contraseña, userData.avatar, userData.estado], 
+      db.query('INSERT INTO usuarios (nombre, username, email, contraseña, avatar, estado, descripcion_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+        [userData.nombre, userData.username, userData.email, userData.contraseña, userData.avatar, userData.estado, userData.descripcion_usuario], 
         (error, result) => {
           if (error) {
             reject(error);
@@ -42,33 +42,39 @@ const createUser = (userData) => {
 
   const updateUser = (id, userData) => {
     return new Promise((resolve, reject) => {
-      // Primero, obtenemos los datos actuales del usuario
-      getUserById(id)
-        .then(currentUser => {
-          if (!currentUser) {
-            reject(new Error('Usuario no encontrado'));
-            return;
-          }
-  
-          // Creamos un objeto con los datos actualizados, manteniendo los valores existentes si no se proporcionan nuevos
-          const updatedData = {
-            nombre: userData.nombre || currentUser.nombre,
-            username: userData.username || currentUser.username,
-            email: userData.email || currentUser.email,
-            avatar: userData.avatar !== undefined ? userData.avatar : currentUser.avatar,
-            estado: userData.estado || currentUser.estado
-          };
-  
-          // Realizamos la actualización con los datos combinados
-          db.query('UPDATE usuarios SET nombre = ?, username = ?, email = ?, avatar = ?, estado = ? WHERE id = ?', 
-            [updatedData.nombre, updatedData.username, updatedData.email, updatedData.avatar, updatedData.estado, id], 
-            (error, result) => {
-              if (error) reject(error);
-              resolve(result.affectedRows > 0);
-            }
-          );
-        })
-        .catch(reject);
+      console.log('Actualizando usuario:', id, 'con datos:', userData);
+      
+      const query = `
+        UPDATE usuarios 
+        SET nombre = ?, 
+            username = ?, 
+            email = ?, 
+            descripcion_usuario = ?, 
+            estado = ?
+        WHERE id = ?
+      `;
+      
+      const values = [
+        userData.nombre,
+        userData.username,
+        userData.email,
+        userData.descripcion_usuario,
+        userData.estado,
+        id
+      ];
+      
+      console.log('Query values:', values);
+      
+      db.query(query, values, (error, result) => {
+        if (error) {
+          console.error('Error en la actualización:', error);
+          reject(error);
+          return;
+        }
+        
+        console.log('Resultado de la actualización:', result);
+        resolve(result.affectedRows > 0);
+      });
     });
   };
 
@@ -83,7 +89,7 @@ const deleteUser = (id) => {
 
 const searchUsers = (query) => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT id, nombre, username, email, avatar, estado, created_at FROM usuarios WHERE nombre LIKE ? OR username LIKE ? OR email LIKE ?', 
+    db.query('SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at FROM usuarios WHERE nombre LIKE ? OR username LIKE ? OR email LIKE ?', 
       [`%${query}%`, `%${query}%`, `%${query}%`], 
       (error, results) => {
         if (error) reject(error);

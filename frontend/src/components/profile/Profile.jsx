@@ -4,16 +4,18 @@ import { CiUser } from "react-icons/ci";
 import { TbUserEdit } from "react-icons/tb";
 import UpdateProfile from "./UpdateProfile";
 
-function Profile({ profile }) {
+function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
+  const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
 
   const getAvatarSrc = () => {
     if (profile.avatar) {
-      return `http:localhost:3009${profile.avatar}`;
+      return `http://localhost:3009${profile.avatar}`;
     }
     return avatarPorDefecto;
   };
+  console.log(profile);
 
   return (
     <div className="min-h-screen pt-10  lg:pt-32 lg:-ml-72 px-4 bg-gradient-to-b profile">
@@ -48,7 +50,7 @@ function Profile({ profile }) {
                 Sobre mi
               </h3>
               <p className="text-gray-600 text-sm lg:text-lg ">
-                Soy una persona inteligente y me agrada mucho salir a caminar
+                {profile.descripcion_usuario || defaultDescription}
               </p>
             </div>
 
@@ -71,7 +73,7 @@ function Profile({ profile }) {
 
             {/* Update Profile Section */}
             <div className="mt-3 pt-6 border-t border-gray-200">
-              <UpdateProfile/>
+              {isOwnProfile && <UpdateProfile />} {/* Only show if it's the user's own profile */}
             </div>
           </div>
         </div>

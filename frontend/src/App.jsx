@@ -10,6 +10,7 @@ import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Friends from './pages/Friends';
 import Users from './pages/Users';
+import Chats from './pages/Chats.jsx';
 import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
@@ -20,15 +21,41 @@ import './assets/css/app/app.css';
 
 export default function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 1024);
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token') !== null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
-      setIsAuthenticated(localStorage.getItem('token') !== null);
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const decodedToken = JSON.parse(atob(token.split('.')[1]));
+          const expirationTime = decodedToken.exp * 1000;
+          
+          if (Date.now() >= expirationTime) {
+            localStorage.clear();
+            setIsAuthenticated(false);
+          } else {
+            setIsAuthenticated(true);
+          }
+        } catch (error) {
+          localStorage.clear();
+          setIsAuthenticated(false);
+        }
+      } else {
+        setIsAuthenticated(false);
+      }
     };
 
+    checkAuth();
     window.addEventListener('storage', checkAuth);
-    return () => window.removeEventListener('storage', checkAuth);
+    
+    // Check auth status every minute
+    const interval = setInterval(checkAuth, 60000);
+
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+      clearInterval(interval);
+    };
   }, []);
 
   const toggleSidebar = () => {
@@ -53,6 +80,7 @@ export default function App() {
               <Route path='/recover-password' element={<RecoverPass />} />
               <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
               <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
+              <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>}></Route>
               <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
               <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
               <Route path='/admin/*' element={<RoleProtectedRoute allowedRoles={['administrador']}><AdminDashboard /></RoleProtectedRoute>} />

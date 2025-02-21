@@ -7,13 +7,14 @@ const userRoutes = require('./src/routes/userRoutes');
 
 const app = express();
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 //Middlewares
 app.use(cors());
 app.use(express.json());
 
-//Routes
+// Update the static files path
 app.use('/users', userRoutes);
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const PORT = process.env.USERS_PORT || 3009;
 

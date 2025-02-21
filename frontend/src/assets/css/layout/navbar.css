@@ -336,44 +336,61 @@
     display: none;
   }
 }
+
 /* Large desktop styles */
 @media (min-width: 1440px) {
   .navbar {
-    padding: 1.5rem;
+    top: 0.7rem;
+    padding: 0.7rem;
   }
+
   .navbar-img img {
-    width: 6rem;
-    height: 6rem;
+    width: 4rem;
+    height: 4rem;
   }
+
   .navbar-description {
-    padding: 1rem 2rem;
+    padding: 0.7rem 1.2rem;
+    margin-left: 0.8rem;
   }
+
   .navbar-description h3 {
-    font-size: 1.75rem;
+    font-size: 1.1rem;
+    line-height: 1;
   }
-  .navbar-actions {
-    margin-right: 1.5rem;
+
+  .navbar-description::after {
+    left: 11rem;
+    height: 3.6rem;
   }
-  .navbar-acti {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-  .navbar-back-button {
-    width: 3.5rem;
-    height: 3.5rem;
-    font-size: 1.5rem;
-  }
+
   .navbar-expanded-content {
-    padding: 2rem;
+    margin-left: 16rem;
+    margin-top: -4.2rem;
+    padding: 1rem;
   }
+
+  .navbar-description-p > p {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
   .acciones {
-    gap: 3rem;
+    gap: 1.5rem;
+    margin-top: 0.3rem;
   }
+
   .acciones p {
-    font-size: 1.25rem;
+    font-size: 0.9rem;
   }
+
   .icono0 {
-    font-size: 1.75rem;
+    font-size: 1.1rem;
+  }
+
+  .navbar-back-button {
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.1rem;
   }
 }
-
