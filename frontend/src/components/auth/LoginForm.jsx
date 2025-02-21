@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import { login } from '../../services/auth';
 import '../../assets/css/auth/login.css';
 import logoAnimado from '../../assets/images/icon_login.png';
-import iconGoogle from '../../assets/images/cromo.png';
-import iconFacebook from '../../assets/images/facebook.png';
-import iconInstagram from '../../assets/images/instragram.png';
 import fondoLogin from  '../../assets/images/img/fondo1.jpeg';
 import { HiOutlineMail } from 'react-icons/hi';
 import { SlLock } from 'react-icons/sl';
 import logo from '../../assets/images/logo/logo.jfif'
+import { RiInstagramFill } from "react-icons/ri";
+import { FaGoogle } from "react-icons/fa";
+import { FaFacebookF } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
@@ -42,13 +43,27 @@ export default function LoginForm({ setIsAuthenticated }) {
             
             localStorage.setItem('userId', decodedToken.userId);
             localStorage.setItem('userRole', decodedToken.rol);
-            setIsAuthenticated(true);
+            //setIsAuthenticated(true);
 
-            if (decodedToken.rol === 'administrador') {
-                navigate('/admin');
-            } else {
-                navigate('/home');
-            }
+            // Muestra la alerta sin cerrar automáticamente
+            Swal.fire({
+                title: '¡Inicio de sesión exitoso!',
+                text: 'Bienvenido a BubbleBox',
+                icon: 'success',
+                allowOutsideClick: false, // Evita que se cierre haciendo clic fuera
+                allowEscapeKey: false, // Evita que se cierre con la tecla Escape
+
+            }).then(() => {
+                // Redirección solo cuando el usuario haga clic en "Ir a la página"
+                if (decodedToken.rol === 'administrador') {
+                    setIsAuthenticated(true);
+                    navigate('/admin');
+                } else {
+                    setIsAuthenticated(true);
+                    navigate('/home');
+                }
+            });
+
         } catch (error) {
             console.error('Error completo:', error);
             if (error.response) {
@@ -74,17 +89,17 @@ export default function LoginForm({ setIsAuthenticated }) {
             <div className="formulario">
                 <form onSubmit={handleSubmit}>
                     <h2>Iniciar Sesión</h2>
-                    {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
+                    {error && <div className="error-message">{error}</div>}
                     <label htmlFor="email">Correo</label>
                     <div className='containerIconEmail'>
                         <div className='iconLoginEmail'><HiOutlineMail/></div>
-                        <input type="email" name="email" value={formData.email} onChange={handleChange} required /> 
+                        <input type="email" name="email" value={formData.email} onChange={handleChange}/> 
                         <div className='line'></div>
                     </div>
                     <label htmlFor="password">Contraseña</label>
                     <div className='containerIconPassword'>
                         <div className='iconLoginPassword'><SlLock/></div>
-                        <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange} required />   
+                        <input type="password" name="contraseña" value={formData.contraseña} onChange={handleChange}/>   
                         <div className='line line2'></div>
                     </div>
                     
@@ -92,9 +107,9 @@ export default function LoginForm({ setIsAuthenticated }) {
                         <Link to ="/recover-password" className='recuperarContraseña'>Recuperar Contraseña</Link>
                     </div>
                     <div className="icons">
-                        <div className="icono"><img src={iconGoogle} alt="Icono de Google"/></div>
-                        <div className="icono"><img src={iconFacebook} alt="Icono de Facebook"/></div>
-                        <div className="icono"><img src={iconInstagram} alt="Icono de Instagram"/></div>
+                        <FaFacebookF className='icono'/>
+                        <FaGoogle className='icono'/>
+                        <RiInstagramFill className='icono'/>
                     </div>
                     <button className='buttonLogin' type="submit">Login</button>
                 </form>
