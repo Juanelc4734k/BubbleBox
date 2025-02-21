@@ -53,9 +53,13 @@ const Notifications = () => {
                             <p className="textNotNoti">No tienes notificaciones</p>
                         </div>
                     ) : (
-                        <ul>
+                        <ul className="ulNoti">
                             {isNotification.map((noti) => (
-                                <li key={noti.id}>
+                                <li 
+                                    key={noti.id} 
+                                    className="noti"
+                                
+                                >
                                     {noti.contenido}
                                 </li>
                             ))}
