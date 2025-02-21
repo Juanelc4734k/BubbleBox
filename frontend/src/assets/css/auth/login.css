@@ -13,12 +13,11 @@ body{
     background-image: url(../../images/img/fondo1.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
-}
+}   
 
 .form{
     background-color: white;
     width: 100%;
-    height: 120vh;
     display: flex;
     flex-direction: column;
     border-radius: 2vh;
@@ -30,7 +29,6 @@ body{
 .form .text{
     background: linear-gradient(to bottom,  rgb(186, 95, 223), #fff);
     width: 100%;
-    height: 88vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,22 +57,20 @@ body{
 
 .form .formulario{
     width: 100%;
-    height: 57vh;
     display: flex;
     justify-content: center;
     margin-bottom: 5%;
 }
 .form .formulario form{
-    width: 70%;
-    height: 58vh;
+    width: 80%;
     display: flex;
     flex-direction: column;
     padding: 4%;
-    gap: 4%;
+    gap: 1rem;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
     border-radius: 5vh;
     background-color: white;
-    margin-top: 2%;
+    margin-top: 1rem;
 }
 .form .formulario form h2{
     font-size: 3vh;
@@ -152,27 +148,20 @@ input:focus ~ .line{
 }
 .form .formulario form .icons{
     width: 100%;
-    height: 9vh;
     display: flex;
     border-radius: 4vh;
     justify-content: space-around;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 .form .formulario form .icons .icono{
-    width: 15%;
-    height: 7vh;
     display: flex;
-    background: rgb(223, 222, 222);
-    padding: 1vh;
     border-radius: 100%;    
     box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
+    font-size: 2.5rem;
+    padding: 0.4rem;
+    background-color: rgb(198, 130, 238, 0.4);
 }
-.form .formulario form .icons .icono img{
-    width: 90%;
-    height: 5vh;
-    border-radius: 100%;
-    margin-left: 0.2vh;
-    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
-} 
 .form .formulario form .buttonLogin{
     border: 1px solid rgb(198, 130, 238);
     background-color: rgb(186, 95, 223);
@@ -210,21 +199,29 @@ input:focus ~ .line{
     text-decoration: 2px underline rgb(159, 42, 206) ;
     color: rgb(159, 42, 206);
 }
+.error-message{
+    background: rgba(245, 101, 101, 0.2);
+    color: #e53e3e;
+    padding: 0.75rem;
+    backdrop-filter: blur(10px);
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+}
 
 @media (min-width: 1024px){
     .form{
         flex-direction: row;
         flex-wrap: wrap;
         width: 70%;
-        height: 80vh;
         margin: 0 auto;
-        margin-top: 4.5%;
+        margin-top: 2rem;
         border-radius: 2vh;
     }
     .form .text{
         flex-direction: row;
         flex-wrap: wrap;
-        height: 80vh;
+        height: 89vh;
         width: 45%;
         border-top-left-radius: 2vh;
         margin-top: -7.5vh;
@@ -242,13 +239,11 @@ input:focus ~ .line{
     }
     .form .formulario{
         width: 55%;
-        height: 80vh;
         align-items: flex-start;
         border-radius: 2vh;
     }
     .form .formulario form{
         width: 100%;
-        height: 80vh;
         border-radius: 0;
         box-shadow: none;
         margin-top: 0;
@@ -271,7 +266,6 @@ input:focus ~ .line{
         height: 7vh;
         padding: 2.2vh 3.5vh;
     }
-
     input:focus ~ .line{
         width: 93%;
     }
@@ -284,10 +278,13 @@ input:focus ~ .line{
         font-size: 2vh;
     }
     .form .formulario form .icons .icono{
-        width: 12%;
+        font-size: 2.8rem;
+    }
+    .form .formulario form .buttonLogin{
+        margin-top: 1rem;
     }
     .form .otro{
-        margin-top: -30%;
+        margin-top: -22%;
         margin-left: 15%;
         display: flex;
         flex-direction: column;

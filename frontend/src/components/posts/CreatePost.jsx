@@ -161,6 +161,7 @@ const CreatePost = () => {
                 value={titulo}
                 onChange={(e) => setTitulo(e.target.value)}
                 placeholder="Título de la publicación"
+                min={20}
               />
             </div>
             <div className="form-group">
@@ -170,6 +171,7 @@ const CreatePost = () => {
                 onChange={(e) => setContenido(e.target.value)}
                 placeholder="¿Qué estás pensando?"
                 rows={5}
+                min={150}
               />
             </div>
             <div className="form-group file-input">
