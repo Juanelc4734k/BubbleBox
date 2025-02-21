@@ -67,7 +67,6 @@ export default function App() {
       <div className='app'>
         {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
         {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
-        
         <div className="layout">
           <main className="main-content">
             <Routes>
