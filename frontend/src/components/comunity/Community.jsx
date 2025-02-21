@@ -5,7 +5,7 @@ import '../../assets/css/comunity/community.css';
 
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
-    const parrafoComm =" nÚnete a una comunidad";
+    const parrafoComm =" Únete a una comunidad";
 
     const [mostrarT, setMostrarT] = useState(true);
     const [noVer, setNoVer] = useState(false);
@@ -58,9 +58,10 @@ const Community = () => {
                                 <div className="datostwo">
                                     <div className="datoIcon">
                                         {creador && (
-                                            <img
-                                                src={`http://localhost:3004/uploads/${creador.avatar || avatarUsuario}`}
+                                            <img 
+                                                src={creador.avatar ? `http://localhost:3009${creador.avatar}` : avatarUsuario}
                                                 alt={`${creador.nombre}'s avatar`}
+                                                className="avatar-image"
                                             />
                                         )}
                                     </div>

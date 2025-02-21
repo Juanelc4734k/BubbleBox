@@ -7,7 +7,7 @@ import Chats from '../components/chats/Chats';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const parrafoComm =" PPublicaciónes recientes";
+  const parrafoComm =" Publicaciónes recientes";
 
   const [mostrarT, setMostrarT] = useState(true);
   const [noVer, setNoVer] = useState(false);
