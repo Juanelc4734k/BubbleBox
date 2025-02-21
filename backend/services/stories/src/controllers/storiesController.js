@@ -1,23 +1,41 @@
 const storiesModel = require('../models/storiesModel');
+const path = require('path');
 
 const crearHistoria = async (req, res) => {
     try {
-      let contenido;
-      if (req.file) {
-        contenido = req.file.path; 
-      } else {
-        contenido = req.body.contenido;
-      }
-      const nuevaHistoria = await storiesModel.crear({
-        usuario_id: req.body.usuario_id,
-        contenido: contenido,
-        tipo: req.body.tipo
-      });
-      res.status(201).json({ id: nuevaHistoria, mensaje: 'Historia creada con éxito' });
+        if (!req.body.usuario_id) {
+            return res.status(400).json({ error: 'Se requiere el ID del usuario' });
+        }
+
+        let mediaType = 'texto';
+        let contenido = req.body.contenido;
+
+        // Only check for file if content type is not text
+        if (req.body.tipo !== 'texto') {
+            if (!req.file) {
+                return res.status(400).json({ error: 'Se requiere un archivo de imagen o video' });
+            }
+            mediaType = req.file.mimetype.startsWith('image/') ? 'imagen' : 'video';
+            contenido = `/uploads/${req.file.filename}`;
+        }
+
+        const nuevaHistoria = await storiesModel.crear({
+            usuario_id: req.body.usuario_id,
+            contenido: contenido,
+            tipo: mediaType
+        });
+
+        res.status(201).json({ 
+            id: nuevaHistoria, 
+            mensaje: 'Historia creada con éxito',
+            contenido: contenido,
+            tipo: mediaType
+        });
     } catch (error) {
-      res.status(500).json({ error: 'Error al crear la historia' });
+        console.error('Error al crear historia:', error);
+        res.status(500).json({ error: 'Error al crear la historia' });
     }
-  };
+};
 
 const obtenerHistoriasPorUsuario = async (req, res) => {
   try {

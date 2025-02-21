@@ -5,6 +5,7 @@ import * as jwt_decode from "jwt-decode"
 import { CiBookmarkPlus, CiImageOn } from "react-icons/ci"
 import { IoClose } from "react-icons/io5"
 import { MdTextFields } from "react-icons/md"
+import { createStorieMulti, createStorieText } from "../../services/stories"
 import TextStories from "./TextStories"
 import "../../assets/css/stories/createStories.css"
 
@@ -52,26 +53,31 @@ const CreateStories = () => {
       setTextModal(false)
     }
   }
-
   const handleSubmitStories = async (e) => {
     e.preventDefault()
     setMessage("")
-
-    if (!text && !media) {
-      setMessage("Error: Por favor inserta un texto o una imagen")
+  
+    if (!idUsuario) {
+      setMessage("Error: Usuario no autenticado")
       if (scrollableRef.current) {
         scrollableRef.current.scrollTop = 0
       }
       return
     }
-
-    const storiesData = new FormData()
-    if (text) storiesData.append("contenido", text.trim())
-    if (media) storiesData.append("media", media)
-
+  
     try {
-      // Placeholder for API call
-      // const response = await CreateStories(storiesData);
+      if (textModal && text) {
+        await createStorieText(idUsuario, text)
+      } else if (media) {
+        await createStorieMulti(idUsuario, media)
+      } else {
+        setMessage("Error: Por favor inserta un texto o una imagen")
+        if (scrollableRef.current) {
+          scrollableRef.current.scrollTop = 0
+        }
+        return
+      }
+      
       setMessage("Historia creada exitosamente")
       if (scrollableRef.current) {
         scrollableRef.current.scrollTop = 0
@@ -86,8 +92,7 @@ const CreateStories = () => {
       }
       console.error("Error: ", error)
     }
-  }
-
+}
   const handleFileChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -146,19 +151,31 @@ const CreateStories = () => {
               </button>
             </div>
             {textModal ? (
-              <TextStories text={text} setText={setText} />
+              <TextStories text={text} setText={setText} idUsuario={idUsuario} />
             ) : (
               <div className="formInputMedia">
                 <input
                   type="file"
                   id="imgStories"
-                  accept="image/*"
+                  accept="image/*, video/*"
                   className="mediaInput"
                   onChange={handleFileChange}
                 />
                 {preview ? (
                   <>
-                    <img className="previewImage" src={preview || "/placeholder.svg"} alt="Preview" />
+                    {media?.type.startsWith('video/') ? (
+                      <video 
+                        className="previewImage" 
+                        src={preview} 
+                        controls
+                      />
+                    ) : (
+                      <img 
+                        className="previewImage" 
+                        src={preview || "/placeholder.svg"} 
+                        alt="Preview" 
+                      />
+                    )}
                     <button type="button" className="remove-image-button" onClick={removeImage}>
                       <IoClose />
                     </button>
