@@ -61,32 +61,48 @@ export default function App() {
   const toggleSidebar = () => {
     setIsSidebarExpanded(!isSidebarExpanded);
   }
-
   return (
     <Router>
-      <div className='app'>
-        {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
-        {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
-        <div className="layout">
-          <main className="main-content">
-            <Routes>
-              <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
-              <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
-              <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
-              <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path='/recover-password' element={<RecoverPass />} />
-              <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
-              <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
-              <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>}></Route>
-              <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
-              <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
-              <Route path='/admin/*' element={<RoleProtectedRoute allowedRoles={['administrador']}><AdminDashboard /></RoleProtectedRoute>} />
-            </Routes>
-          </main>
-        </div>
-      </div>
+      {/* Separate route rendering for admin dashboard */}
+      <Routes>
+        <Route
+          path="/admin/*"
+          element={
+            <RoleProtectedRoute allowedRoles={['administrador']}>
+              <AdminDashboard />
+            </RoleProtectedRoute>
+          }
+        />
+        
+        {/* Regular app routes wrapped in the app layout */}
+        <Route
+          path="/*"
+          element={
+            <div className='app'>
+              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
+              {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
+              <div className="layout">
+                <main className="main-content">
+                  <Routes>
+                    <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
+                    <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                    <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
+                    <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
+                    <Route path='/register' element={<Register />} />
+                    <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+                    <Route path='/recover-password' element={<RecoverPass />} />
+                    <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
+                    <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
+                    <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                    <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
+                    <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
+                  </Routes>
+                </main>
+              </div>
+            </div>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

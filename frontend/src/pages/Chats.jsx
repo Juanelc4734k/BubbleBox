@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ChatPreview from '../components/chats/ChatPreview'
 import ChatDetail from '../components/chats/ChatDetail'
 import { getFriends } from '../services/friends'
+import '../assets/css/layout/sidebarChats.css'
 
 const Chats = () => {
     const [friends, setFriends] = useState([]);
@@ -48,41 +49,11 @@ const Chats = () => {
 
     return (
         <div className='flex h-screen pt-16'>
-            <div className='w-1/3 border-r'>
-                {isLoading ? (
-                    <div className="p-4 text-center text-gray-600">
-                        <p>Cargando chats...</p>
-                    </div>
-                ) : error ? (
-                    <div className="p-4 text-center text-gray-600">
-                        <p>{error}</p>
-                        <p className="mt-2 text-sm">¡Agrega amigos para comenzar a chatear!</p>
-                    </div>
-                ) : (
-                    friends.map(friend => (
-                        <ChatPreview 
-                            key={friend.id_usuario1 + '-' + friend.id_usuario2} 
-                            friend={friend} 
-                            onSelect={() => {
-                                const currentUserId = localStorage.getItem('userId');
-                                const friendId = friend.id_usuario1 === parseInt(currentUserId) 
-                                    ? friend.id_usuario2 
-                                    : friend.id_usuario1;
-                                setSelectedFriend(friendId);
-                            }} 
-                            isSelected={selectedFriend === (friend.id_usuario1 === parseInt(userId) 
-                                ? friend.id_usuario2 
-                                : friend.id_usuario1)}
-                        />
-                    ))
-                )}
-            </div>
-            <div className='w-2/3'>
+            <div className='flex-1'>
                 {selectedFriend ? (
                     <ChatDetail 
                         chatId={selectedFriend} 
                         onMessageSent={() => {
-                            // Refresh friends list to update last messages
                             loadFriends();
                         }}
                     />
@@ -91,6 +62,39 @@ const Chats = () => {
                         Selecciona un chat para comenzar
                     </div>
                 )}
+            </div>
+            <div className='sidebar-chats'>
+                <div className='chats-container'>
+                    {isLoading ? (
+                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                            <p>Cargando chats...</p>
+                        </div>
+                    ) : error ? (
+                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                            <p>{error}</p>
+                            <p className="mt-2 text-sm">¡Agrega amigos para comenzar a chatear!</p>
+                        </div>
+                    ) : (
+                        <div className="pt-4">
+                            {friends.map(friend => (
+                                <ChatPreview 
+                                    key={friend.id_usuario1 + '-' + friend.id_usuario2} 
+                                    friend={friend} 
+                                    onSelect={() => {
+                                        const currentUserId = localStorage.getItem('userId');
+                                        const friendId = friend.id_usuario1 === parseInt(currentUserId) 
+                                            ? friend.id_usuario2 
+                                            : friend.id_usuario1;
+                                        setSelectedFriend(friendId);
+                                    }} 
+                                    isSelected={selectedFriend === (friend.id_usuario1 === parseInt(userId) 
+                                        ? friend.id_usuario2 
+                                        : friend.id_usuario1)}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
