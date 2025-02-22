@@ -24,39 +24,36 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
       fetchAvatar();
     }
   }, [friend.id]);
-
   return (
     <div 
-      className={`p-4 border-b cursor-pointer transition-colors ${
-        isSelected ? 'bg-purple-100' : 'hover:bg-purple-50'
-      }`}
-      onClick={onSelect}
+        className={`chat-preview ${isSelected ? 'active' : ''}`}
+        onClick={onSelect}
     >
-      <div className="flex items-center space-x-4">
-        <img 
-          src={avatarUrl}
-          alt={friend.nombre_usuario2 || friend.nombre_usuario1 || 'User avatar'}
-          className="w-12 h-12 rounded-full object-cover"
-          onError={() => setAvatarUrl(avatarDefault)}
-        />
-        <div className="flex-1">
-          <h3 className="font-semibold text-gray-800">
-            {localStorage.getItem('userId') === friend.id_usuario1.toString() 
-              ? friend.nombre_usuario2 
-              : friend.nombre_usuario1
-            }
-          </h3>
-          {friend.lastMessage && (
-            <p className="text-sm text-gray-500 truncate max-w-[200px]">
-              {friend.lastMessage}
-            </p>
-          )}
+        <div className="flex items-center space-x-4">
+            <img 
+                src={avatarUrl}
+                alt={friend.nombre_usuario2 || friend.nombre_usuario1 || 'User avatar'}
+                className="chat-avatar"
+                onError={() => setAvatarUrl(avatarDefault)}
+            />
+            <div className="flex-1 min-w-0">
+                <h3 className="chat-name truncate">
+                    {localStorage.getItem('userId') === friend.id_usuario1.toString() 
+                        ? friend.nombre_usuario2 
+                        : friend.nombre_usuario1
+                    }
+                </h3>
+                {friend.lastMessage && (
+                    <p className="chat-message truncate">
+                        {friend.lastMessage}
+                    </p>
+                )}
+            </div>
         </div>
-      </div>
     </div>
-  );
+);
 };
-
+// Define prop types for the component
 ChatPreview.propTypes = {
   friend: PropTypes.shape({
     id_usuario1: PropTypes.number.isRequired,

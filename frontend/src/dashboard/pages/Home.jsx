@@ -14,6 +14,8 @@ const Home = () => {
   return (
     <>
         <div className='home-container'>
+            <Navbar />
+            <Sidebar />
             <div className="buscador">
                 <input type="text" placeholder="Buscar" />
                 <button>Buscar</button>

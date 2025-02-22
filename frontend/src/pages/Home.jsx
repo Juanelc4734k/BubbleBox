@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { getAllPosts } from '../services/posts';
 import Post from '../components/posts/Post';
 import '../assets/css/pages/home.css';
-import Chats from '../components/chats/Chats';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
