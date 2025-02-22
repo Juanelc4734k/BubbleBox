@@ -2,72 +2,96 @@ const friendModel = require('../models/friendModel');
 const axios = require('axios');
 
 const crearSolicitudAmistad = async (req, res) => {
-  try {
-    const { idUsuario1, idUsuario2 } = req.body;
-    
-    if (!idUsuario1 || !idUsuario2) {
-      return res.status(400).json({ mensaje: 'Se requieren ambos IDs de usuario' });
-    }
-
-    const resultado = await friendModel.crearSolicitudAmistad(idUsuario1, idUsuario2);
-
-    if (resultado.estado === 'pendiente') {
-      let nombreSolicitante = 'Usuario';
-      try {
-        const respuestaUsuario = await axios.get(`http://localhost:3000/users/usuario/${idUsuario1}`);
-        if (respuestaUsuario.data && respuestaUsuario.data.nombre) {
-          nombreSolicitante = respuestaUsuario.data.nombre;
-        } else {
-          console.warn('No se pudo obtener el nombre del usuario solicitante');
+    try {
+        const { idUsuario1, idUsuario2 } = req.body;
+        
+        if (!idUsuario1 || !idUsuario2) {
+            return res.status(400).json({ mensaje: 'Se requieren ambos IDs de usuario' });
         }
-      } catch (error) {
-        console.error('Error al obtener el nombre del usuario solicitante:', error.message);
-        // No interrumpimos el flujo, continuamos con el nombre por defecto
-      }
 
-      try {
-        await axios.post(`http://localhost:3000/notifications/send`, {
-          usuario_id: idUsuario2,
-          tipo: 'solicitud_amistad',
-          contenido: `${nombreSolicitante} te ha enviado una solicitud de amistad`
+        // Verificar que ambos usuarios existen antes de crear la solicitud
+        try {
+            const [usuario1Response, usuario2Response] = await Promise.all([
+                axios.get(`http://localhost:3000/users/usuario/${idUsuario1}`),
+                axios.get(`http://localhost:3000/users/usuario/${idUsuario2}`)
+            ]);
+
+            if (!usuario1Response.data || !usuario2Response.data) {
+                return res.status(404).json({ 
+                    mensaje: 'Uno o ambos usuarios no existen',
+                    error: 'USER_NOT_FOUND'
+                });
+            }
+
+            const resultado = await friendModel.crearSolicitudAmistad(idUsuario1, idUsuario2);
+
+            if (resultado.estado === 'pendiente' && resultado.id) {
+                const nombreSolicitante = usuario1Response.data.nombre || 'Usuario';
+
+                try {
+                    await axios.post(`http://localhost:3000/notifications/send`, {
+                        usuario_id: idUsuario2,
+                        tipo: 'solicitud_amistad',
+                        contenido: `${nombreSolicitante} te ha enviado una solicitud de amistad`,
+                        referencia_id: resultado.id
+                    });
+                    console.log('Notificación enviada con referencia_id:', resultado.id);
+                } catch (error) {
+                    console.error('Error al enviar la notificación:', error.message);
+                }
+            }
+
+            res.status(201).json(resultado);
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                return res.status(404).json({ 
+                    mensaje: 'Uno o ambos usuarios no existen',
+                    error: 'USER_NOT_FOUND'
+                });
+            }
+            throw error; // Re-throw other errors to be caught by the outer catch
+        }
+    } catch (error) {
+        console.error('Error en crearSolicitudAmistad:', error);
+        res.status(500).json({ 
+            mensaje: 'Error interno al procesar la solicitud de amistad', 
+            error: error.message 
         });
-      } catch (error) {
-        console.error('Error al enviar la notificación:', error.message);
-        // Podríamos considerar informar al cliente sobre este error
-      }
     }
-
-    res.status(201).json(resultado);
-  } catch (error) {
-    console.error('Error en crearSolicitudAmistad:', error);
-    if (error.response && error.response.status === 404) {
-      res.status(404).json({ mensaje: 'Uno o ambos usuarios no encontrados' });
-    } else {
-      res.status(500).json({ mensaje: 'Error interno al procesar la solicitud de amistad', error: error.message });
-    }
-  }
 };
-
 const aceptarSolicitudAmistad = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
-      return res.status(400).json({ mensaje: 'Se requiere el ID de la solicitud de amistad' });
+      return res.status(400).json({ 
+        success: false,
+        mensaje: 'Se requiere el ID de la solicitud de amistad' 
+      });
     }
 
     const resultado = await friendModel.aceptarSolicitudAmistad(id);
     if (!resultado.success) {
-      return res.status(400).json({ mensaje: 'No se pudo aceptar la solicitud', resultado });
+      return res.status(400).json({ 
+        success: false,
+        mensaje: 'No se pudo aceptar la solicitud', 
+        resultado 
+      });
     }
 
     const estadoActual = await friendModel.verificarEstadoSolicitud(id);
     if (!estadoActual) {
-      return res.status(404).json({ mensaje: 'No se encontró la solicitud de amistad' });
+      return res.status(404).json({ 
+        success: false,
+        mensaje: 'No se encontró la solicitud de amistad' 
+      });
     }
 
     const solicitud = await friendModel.obtenerSolicitudPorId(id);
     if (!solicitud) {
-      return res.status(404).json({ mensaje: 'No se encontró la solicitud de amistad' });
+      return res.status(404).json({ 
+        success: false,
+        mensaje: 'No se encontró la solicitud de amistad' 
+      });
     }
 
     const idSolicitante = solicitud.id_usuario1;
@@ -89,16 +113,27 @@ const aceptarSolicitudAmistad = async (req, res) => {
       await axios.post(`http://localhost:3000/notifications/send`, {
         usuario_id: idSolicitante,
         tipo: 'amistad_aceptada',
-        contenido: `${nombreAceptante} ha aceptado tu solicitud de amistad`
+        contenido: `${nombreAceptante} ha aceptado tu solicitud de amistad`,
+        referencia_id: id
       });
     } catch (error) {
       console.error('Error al enviar la notificación:', error.message);
     }
 
-    res.status(200).json({ mensaje: 'Solicitud de amistad aceptada', resultado, estadoActual });
+    res.status(200).json({ 
+      success: true,
+      mensaje: 'Solicitud de amistad aceptada',
+      resultado,
+      estadoActual,
+      solicitud
+    });
   } catch (error) {
     console.error('Error en aceptarSolicitudAmistad:', error);
-    res.status(500).json({ mensaje: 'Error interno al aceptar la solicitud de amistad', error: error.message });
+    res.status(500).json({ 
+      success: false,
+      mensaje: 'Error interno al aceptar la solicitud de amistad', 
+      error: error.message 
+    });
   }
 };
 
