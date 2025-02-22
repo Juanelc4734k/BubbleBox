@@ -3,19 +3,36 @@ const notificationModel = require('../models/notificationModel');
 const enviarNotificacion = (io) => async (req, res) => {
     console.log('Recibiendo solicitud de notificacion');
     try {
-        const { usuario_id, tipo, contenido } = req.body;
-        const notificacionId = await notificationModel.crearNotificacion({ usuario_id, tipo, contenido });
+        const { usuario_id, tipo, contenido, referencia_id } = req.body;
+        const notificacionId = await notificationModel.crearNotificacion({ 
+            usuario_id, 
+            tipo, 
+            contenido, 
+            referencia_id 
+        });
         
         console.log('Notificacion creada con exito');
 
         if (io) {
-            io.to(usuario_id.toString()).emit('nueva_notificacion', { id: notificacionId, tipo, contenido });
-            console.log('Notificacion enviada a usuario');
+            io.to(usuario_id.toString()).emit('nueva_notificacion', { 
+                id: notificacionId, 
+                tipo, 
+                contenido, 
+                referencia_id,
+                fecha_creacion: new Date(),
+                leida: false,
+                usuario_id
+            });
+            console.log('Notificacion enviada a usuario con referencia_id:', referencia_id);
         } else {
             console.error('El objeto io no está definido');
         }
         
-        res.status(201).json({ mensaje: 'Notificación enviada con éxito', id: notificacionId });
+        res.status(201).json({ 
+            mensaje: 'Notificación enviada con éxito', 
+            id: notificacionId,
+            referencia_id 
+        });
     } catch (error) {
         console.error('Error al enviar notificación:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
