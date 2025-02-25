@@ -1,0 +1,184 @@
+.reels-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.reel {
+    background: #cab3e5;
+    border-radius: 24px;
+    padding: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.reel-header {
+    margin-bottom: 16px;
+}
+
+.reel-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.reel-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reel-author img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.reel-author-info p {
+    margin: 0;
+}
+
+.reel-author-info p:first-child {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.reel-author-info p:last-child {
+    font-size: 12px;
+    color: #666;
+}
+
+.reel-description {
+    font-size: 14px;
+    color: #333;
+    margin: 16px 0 0 0;
+    padding: 0 16px;
+    line-height: 1.4;
+}
+
+.reel-content {
+    position: relative;
+    display: flex;
+    gap: 16px;
+}
+
+.reel-video-container {
+    flex-grow: 1;
+    position: relative;
+    height: 0;
+    padding-bottom: 133.33%;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.reel-actions-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.reel-action-button {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.2s;
+}
+
+.reel-action-button span {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Keep existing video controls styles */
+.reel-action-button:hover {
+    transform: scale(1.1);
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.video-progress {
+    flex-grow: 1;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.video-progress-filled {
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+}
+
+.video-control-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* Horizontal video specific styles */
+.reel-video-container.horizontal {
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    width: 100%;
+    height: auto;
+}
+
+.horizontal .reel-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.reel.horizontal {
+    max-width: 500px;
+}
+
+.horizontal .reel-content {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+}
+
+.horizontal .reel-actions-vertical {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.horizontal .reel-content {
+    position: relative;
+    margin: 0 -16px; /* Extend video to edges */
+    padding: 0 16px;
+}
