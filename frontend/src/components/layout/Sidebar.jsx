@@ -48,7 +48,7 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
           {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
           {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
           {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
-          {renderMenuItem(PiVideo, '/perfil', 'Reels', 'reels')}
+          {renderMenuItem(PiVideo, '/reels', 'Reels', 'reels')}
           {renderMenuItem(IoMdMusicalNote,'/home', 'Musica', 'music')}
         </>
       )}

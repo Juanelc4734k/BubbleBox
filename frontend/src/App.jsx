@@ -11,6 +11,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Friends from './pages/Friends';
 import Users from './pages/Users';
 import Chats from './pages/Chats.jsx';
+import Reels from './pages/Reels.jsx';
 import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
@@ -94,6 +95,7 @@ export default function App() {
                     <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
                     <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
                     <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                    <Route path='/reels' element={<ProtectedRoute><Reels /></ProtectedRoute>} />
                     <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                     <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                   </Routes>
