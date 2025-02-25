@@ -10,6 +10,20 @@ const getAllCommunities = async (req, res) => {
     }
 };
 
+const getCommunityMembers = async (req, res) => {
+    try {
+        const miembros = await communityModel.obtenerMiembrosDeComunidad(req.params.id);
+        if (miembros) {
+            res.json(miembros);
+        } else {
+            res.status(404).json({ mensaje: 'Comunidad no encontrada' });
+        }
+    } catch (error) {
+        console.error('Error al obtener los miembros de la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
 const getCommunityById = async (req, res) => {
     try {
         const comunidad = await communityModel.obtenerComunidadPorId(req.params.id);
@@ -33,6 +47,38 @@ const createCommunity = async (req, res) => {
         res.status(201).json({ mensaje: 'Comunidad creada con éxito', id: idComunidad });
     } catch (error) {
         console.error('Error al crear la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
+const joinCommunity = async (req, res) => {
+    try {
+        const { idUsuario } = req.body;
+        const idComunidad = req.params.id;
+        const unido = await communityModel.unirseAComunidad(idUsuario, idComunidad);
+        if (unido) {
+            res.json({ mensaje: 'Te has unido a la comunidad con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Comunidad no encontrada' });
+        }
+    } catch (error) {
+        console.error('Error al unirse a la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
+const leaveCommunity = async (req, res) => {
+    try {
+        const { idUsuario } = req.body;
+        const idComunidad = req.params.id;
+        const salido = await communityModel.salirDeComunidad(idUsuario, idComunidad);
+        if (salido) {
+            res.json({ mensaje: 'Has salido de la comunidad con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Comunidad no encontrada' });
+        }
+    } catch (error) {
+        console.error('Error al salir de la comunidad:', error);
         res.status(500).json({ mensaje: 'Error interno del servidor' });
     }
 };
@@ -68,8 +114,11 @@ const deleteCommunity = async (req, res) => {
 
 module.exports = {
     getAllCommunities,
+    getCommunityMembers,
     getCommunityById,
     createCommunity,
+    joinCommunity,
+    leaveCommunity,
     updateCommunity,
     deleteCommunity
 };

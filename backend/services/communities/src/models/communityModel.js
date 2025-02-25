@@ -10,6 +10,26 @@ const crearComunidad = (nombre, descripcion, idCreador, imagen = null) => {
     });
 };
 
+const unirseAComunidad = (idUsuario, idComunidad) => {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO usuarios_comunidades (id_usuario, id_comunidad) VALUES (?,?)';
+        db.query(query, [idUsuario, idComunidad], (err, result) => {
+            if(err) return reject(err);
+            resolve(result.affectedRows > 0);
+        });
+    });
+};
+
+const salirDeComunidad = (idUsuario, idComunidad) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM usuarios_comunidades WHERE id_usuario =? AND id_comunidad =?';
+        db.query(query, [idUsuario, idComunidad], (err, result) => {
+            if(err) return reject(err);
+            resolve(result.affectedRows > 0);
+        });
+    });
+};
+
 const obtenerTodasLasComunidades = () => {
     return new Promise((resolve, reject) => {
         const query = `
@@ -20,6 +40,24 @@ const obtenerTodasLasComunidades = () => {
         db.query(query, (err, results) => {
             if (err) {
                 console.error('Error al obtener comunidades:', err);
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+};
+
+const obtenerMiembrosDeComunidad = (idComunidad) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT u.*
+            FROM usuarios u
+            INNER JOIN usuarios_comunidades uc ON u.id = uc.id_usuario
+            WHERE uc.id_comunidad = ?;
+        `;
+        db.query(query, [idComunidad], (err, results) => {
+            if (err) {
+                console.error('Error al obtener miembros de la comunidad:', err);
                 return reject(err);
             }
             resolve(results);
@@ -64,6 +102,9 @@ const eliminarComunidad = (id) => {
 module.exports = {
     crearComunidad,
     obtenerTodasLasComunidades,
+    obtenerMiembrosDeComunidad,
+    unirseAComunidad,
+    salirDeComunidad,
     obtenerComunidadPorId,
     actualizarComunidad,
     eliminarComunidad
