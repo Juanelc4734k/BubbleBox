@@ -33,6 +33,16 @@ const getCommunityPosts = async (req, res) => {
     }
 };
 
+const getCommunityPostsById = async (req, res) => {
+    try {
+        const posts = await postModel.obtenerPublicacionesDeComunidad(req.params.id);
+        res.json(posts);
+    } catch (error) {
+        console.error('Error al obtener las publicaciones de comunidades:', error);
+        res.status(500).json({ mensaje: 'Error al obtener las publicaciones de comunidades', error: error.message });
+    }
+};
+
 
 const getPostById = async (req, res) => {
     try {
@@ -135,5 +145,6 @@ module.exports = {
     updatePost,
     deletePost,
     getUserPosts,
-    getCommunityPosts
+    getCommunityPosts,
+    getCommunityPostsById
 };

@@ -74,6 +74,24 @@ const obtenerPublicacionesDeComunidades = () => {
     });
 };
 
+const obtenerPublicacionesDeComunidad = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT p.*, c.nombre AS nombre_comunidad
+            FROM publicaciones p
+            LEFT JOIN comunidades c ON p.id_comunidad = c.id
+            WHERE p.es_comunidad = TRUE AND p.id_comunidad = ?;
+        `;
+        db.query(query, [id], (err, results) => {
+            if (err) {
+                console.error('Error al obtener publicaciones de comunidades:', err);
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+};
+
 
 const obtenerPublicacionPorId = (id) => {
     return new Promise((resolve, reject) => {
@@ -123,5 +141,6 @@ module.exports = {
     eliminarPublicacion,
     obtenerPublicacionesDeUsuarios,
     obtenerPublicacionesDeComunidades,
+    obtenerPublicacionesDeComunidad,
     crearPublicacionComunidad
 };
