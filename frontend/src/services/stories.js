@@ -2,8 +2,8 @@ import axios from "axios";
 
 const API_URL = 'http://127.0.0.1:3000/stories';
 
-const getAllStories = () => {
-    return axios.get(`${API_URL}/todas`);
+const getStoriesFriends = (id) => {
+    return axios.get(`${API_URL}/amigos/${id}`);
 };
 
 const getStoriesByUser = (userId) => {
@@ -44,7 +44,7 @@ const getVista = (storieId) => {
 };
 
 export {
-    getAllStories,
+    getStoriesFriends,
     getStoriesByUser,
     createStorieText,
     createStorieMulti,
