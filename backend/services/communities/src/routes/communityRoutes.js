@@ -11,5 +11,6 @@ router.get('/obtener/:id', communityController.getCommunityById);
 router.post('/crear', upload.single('imagen'), communityController.createCommunity);
 router.put('/actualizar/:id', communityController.updateCommunity);
 router.delete('/eliminar/:id', communityController.deleteCommunity);
+router.get('/esMiembro/:idComunidad/:idUsuario', communityController.isMemberOfCommunity)
 
 module.exports = router;

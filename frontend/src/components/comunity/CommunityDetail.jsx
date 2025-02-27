@@ -4,27 +4,32 @@ import {
   getCommunityById,
   getCommunityByPostId,
   getCommunityMembers,
+  joinCommunity,
+  leaveCommunity,
+  isMember
 } from "../../services/comunity";
+import Swal from 'sweetalert2';
 
 const CommunityDetail = () => {
   const { id } = useParams();
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
   const [members, setMembers] = useState([]);
+  const [isMemberStatus, setIsMemberStatus] = useState(false);
+  const userId = parseInt(localStorage.getItem('userId'));
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
-
   useEffect(() => {
     const fetchCommunityData = async () => {
       try {
-        const data = await getCommunityById(id);
-        setCommunity(data);
+        const communityData = await getCommunityById(id);
+        const membershipStatus = await isMember(id, userId);
+        setCommunity(communityData);
+        setIsMemberStatus(membershipStatus);
       } catch (error) {
         console.error("Error al obtener la comunidad", error);
       }
     };
-
-
     const fetchCommunityPosts = async () => {
       try {
         const data = await getCommunityByPostId(id);
@@ -33,7 +38,6 @@ const CommunityDetail = () => {
         console.error("Error al obtener publicaciones de la comunidad", error);
       }
     };
-
     const fetchCommunityMembers = async () => {
       try {
         const data = await getCommunityMembers(id);
@@ -42,25 +46,61 @@ const CommunityDetail = () => {
         console.error("Error al obtener los miembros de la comunidad", error);
       }
     };
-
     fetchCommunityData();
     fetchCommunityPosts();
     fetchCommunityMembers();
-  }, [id]);
-
+  }, [id, userId]);
+  const handleMembership = async (e) => {
+    e.preventDefault();
+    try {
+      if (isMemberStatus) {
+        await leaveCommunity(id, userId);
+        setIsMemberStatus(false);
+        // Refresh members list
+        const updatedMembers = await getCommunityMembers(id);
+        setMembers(updatedMembers);
+        Swal.fire({
+          icon: 'success',
+          title: 'Has dejado la comunidad',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } else {
+        await joinCommunity(id, userId);
+        setIsMemberStatus(true);
+        // Refresh members list
+        const updatedMembers = await getCommunityMembers(id);
+        setMembers(updatedMembers);
+        Swal.fire({
+          icon: 'success',
+          title: 'Te has unido a la comunidad',
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ha ocurrido un error al unirse o dejar la comunidad.',
+      });
+    }
+  };
   if (!community) {
     return <div>Cargando...</div>;
   }
-
-  const getAvatarSrc = () => {
-    if (members.avatar_usuario) {
-        return members.avatar_usuario.startsWith('http') 
-            ? members.avatar_usuario 
-            : `http://localhost:3009${post.avatar_usuario}`;
+const getAvatarSrc = () => {
+    // Find the member that matches the current user ID
+    const currentMember = members.find(member => member.id === userId);
+    
+    if (currentMember && currentMember.avatar) {
+        return currentMember.avatar.startsWith('http') 
+            ? currentMember.avatar 
+            : `http://localhost:3009${currentMember.avatar}`;
     }
     return avatarPorDefecto;
 };
-
   return (
     <div className="communityDetail">
            <div className="imagenCommunity" >
@@ -88,27 +128,31 @@ const CommunityDetail = () => {
                                 </div>
             </div>
             <span>{members.length} miembros</span>
-            <button type="button">Unirme</button>
-        </div> 
-      <div className="communityPublic">
-        <div className="communityPublicConten">
+            <button 
+              type="button"
+              onClick={handleMembership}
+              className={isMemberStatus ? 'leave-btn' : 'join-btn'}
+            >
+              {isMemberStatus ? 'Dejar' : 'Unirme'}
+            </button>
+        </div>
+      {isMemberStatus && (
+        <div className="communityPublic">
+          <div className="communityPublicConten">
             <div className="communityPublicConten1">
-                {/* imagen del usuario para publicar una publicacion en la comunidad */}
-                <img/> 
-                <textarea name="" id="">Escribe algo...</textarea>
+              <img src={getAvatarSrc()} alt="User avatar"/> 
+              <textarea name="" id="" placeholder="Escribe algo..."></textarea>
             </div>
             <div className="communityPublicConten2">
-                {/* falta icono */}
-                <p>Foto</p>
-                <p>Video</p>
+              <p>Foto</p>
+              <p>Video</p>
             </div>
-           <div className="communityPublicConten3">
-             {/* icono para abrir y cerrar , este contenedor es para la descripcion que se escondera*/}
-             <p>{community.descripcion}</p>
-           </div>
+            <div className="communityPublicConten3">
+              <p>{community.descripcion}</p>
+            </div>
+          </div>
         </div>
-
-      </div>
+      )}
       {/* Este es el codigo para las publicaciones de la comunidad */}
       <div className="community-content">
                 <div className="posts-section">

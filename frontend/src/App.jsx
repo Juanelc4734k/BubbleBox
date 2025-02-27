@@ -17,6 +17,7 @@ import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
+import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
 
 import { logoutUser } from './services/auth.js';
@@ -94,7 +95,7 @@ export default function App() {
                     <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
                     <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
                     <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
-                    <Route path='/comunidad/:id' element={<ProtectedRoute><CommunityDetail /></ProtectedRoute>} />
+                    <Route path='/comunidad/:id' element={<ProtectedRoute><ProtectedRouteCommunity><CommunityDetail /></ProtectedRouteCommunity></ProtectedRoute>} />
                     <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { getCommunities } from '../../services/comunity';
+import { getCommunities, joinCommunity, leaveCommunity, isMember } from '../../services/comunity';
 import { getUsers } from '../../services/users';
 import '../../assets/css/comunity/community.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { use } from 'react';
 
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -12,6 +14,9 @@ const Community = () => {
     const [textoM, setTextoM] = useState("");
     const [communities, setCommunities] = useState([]);
     const [users, setUsers] = useState([]);
+    const [membershipStatus, setMembershipStatus] = useState({}); // [communityId: boolean
+    const userId = parseInt(localStorage.getItem('userId'));
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -39,6 +44,15 @@ const Community = () => {
     }, []);
 
     useEffect(() => {
+        const fetchMembershipStatus = async (communities) => {
+            const statusPromises = communities.map(async (community) => {
+                const status = await isMember(community.id, userId);
+                return { [community.id]: status };
+            });
+            const statuses = await Promise.all(statusPromises);
+            setMembershipStatus(Object.assign({}, ...statuses));
+        };
+
         getCommunities()
             .then(fetchedCommunities => {
                 // Sort communities by date, newest first
@@ -46,9 +60,64 @@ const Community = () => {
                     new Date(b.fecha_creacion) - new Date(a.fecha_creacion)
                 );
                 setCommunities(sortedCommunities);
+                fetchMembershipStatus(sortedCommunities);
             });
         getUsers().then(setUsers);
-    }, []);
+    }, [userId]);
+
+    const handleMembership = async (e, communityId) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+            if (membershipStatus[communityId]) {
+                await leaveCommunity(communityId, userId);
+                setMembershipStatus(prev => ({ ...prev, [communityId]: false}));
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Has dejado la comunidad',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            } else {
+                await joinCommunity(communityId, userId);
+                setMembershipStatus(prev => ({...prev, [communityId]: true}));
+                Swal.fire({
+                    icon:'success',
+                    title: 'Te has unido la comunidad',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            }   
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ha ocurrido un error al unirse o dejar la comunidad.',
+            });
+        }
+    }
+
+    const handleCommunityClick = (e, community) => {
+        if (community.tipo_privacidad === 'privada' && !membershipStatus[community.id]) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'info',
+                title: 'Comunidad Privada',
+                text: 'Esta comunidad es privada. Debes unirte para ver su contenido.',
+                showCancelButton: true,
+                confirmButtonText: 'Unirme',
+                cancelButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    handleMembership(e, community.id);
+                    navigate(`/comunidad/${community.id}`);
+                }
+            });
+        } else {
+            navigate(`/comunidad/${community.id}`);
+        }
+    }
 
     return (
         <div className="community-Conten">
@@ -66,6 +135,7 @@ const Community = () => {
                         to={`/comunidad/${community.id}`}
                         key={community.id}
                         className='communitys-Info'
+                        onClick={(e) => handleCommunityClick(e, community)}
                         style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.imagen})` }}>
 
 
@@ -88,7 +158,12 @@ const Community = () => {
                                         </p>
                                     </div>
                                 </div>
-                                <button type="button">Unirme</button>
+                                <button 
+                                type="button"
+                                onClick={(e) => handleMembership(e, community.id)}
+                                className={membershipStatus [community.id] ? 'leave-btn' : 'join-btn'}>
+                                   {membershipStatus [community.id]? 'Dejar' : 'Unirse'}
+                                </button>
                             </div>
 
                             <div className="infoCommunity">

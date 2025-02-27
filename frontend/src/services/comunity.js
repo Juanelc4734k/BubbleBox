@@ -29,3 +29,26 @@ export const createCommunity = async (comunityData) => {
     const response = await axios.post(`${API_URL}/communities/crear`, comunityData);
     return response.data;
 }
+
+export const joinCommunity = async (communityId, idUsuario) => {
+    const response = await axios.post(`${API_URL}/communities/unirse/${communityId}`, {
+        idUsuario: idUsuario
+    });
+    return response.data;
+};
+
+export const leaveCommunity = async (communityId, idUsuario) => {
+    const response = await axios.post(`${API_URL}/communities/salir/${communityId}`, {
+        idUsuario: idUsuario
+    });
+    return response.data;
+};
+
+export const isMember = async (communityId, idUsuario) => {
+    const response = await axios.get(`${API_URL}/communities/esMiembro/${communityId}/${idUsuario}`, {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    return response.data.esMiembro;
+};

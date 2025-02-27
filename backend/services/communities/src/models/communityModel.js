@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const crearComunidad = (nombre, descripcion, idCreador, imagen = null) => {
+const crearComunidad = (nombre, descripcion, idCreador, imagen = null, privacidad) => {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO comunidades (nombre, descripcion, id_creador, imagen) VALUES (?, ?, ?, ?)";
-        db.query(query, [nombre, descripcion, idCreador, imagen], (err, result) => {
+        const query = "INSERT INTO comunidades (nombre, descripcion, id_creador, imagen, tipo_privacidad) VALUES (?, ?, ?, ?, ?)";
+        db.query(query, [nombre, descripcion, idCreador, imagen, privacidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.insertId);
         });
@@ -99,6 +99,16 @@ const eliminarComunidad = (id) => {
     });
 };
 
+const isMember = (userId, communityId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT COUNT(*) as count FROM usuarios_comunidades WHERE id_usuario = ? AND id_comunidad = ?';
+        db.query(query, [userId, communityId], (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0].count > 0);
+        });
+    });
+};
+
 module.exports = {
     crearComunidad,
     obtenerTodasLasComunidades,
@@ -107,5 +117,6 @@ module.exports = {
     salirDeComunidad,
     obtenerComunidadPorId,
     actualizarComunidad,
-    eliminarComunidad
+    eliminarComunidad,
+    isMember
 };
