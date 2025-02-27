@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const upload = require('../middleware/multer')
+const upload = require ('../middleware/multer')
 const communityController = require('../controllers/communityController');
 
 router.get('/obtener-todas', communityController.getAllCommunities);
