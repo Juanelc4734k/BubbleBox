@@ -11,7 +11,7 @@ import logo from '../../assets/images/logo/logo.jfif'
 import { RiInstagramFill } from "react-icons/ri";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebookF } from "react-icons/fa";
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2';
 
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });

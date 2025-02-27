@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { getCommunities } from '../../services/comunity';
 import { getUsers } from '../../services/users';
 import '../../assets/css/comunity/community.css';
-
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
     const parrafoComm =" Únete a una comunidad";
