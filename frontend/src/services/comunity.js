@@ -12,6 +12,19 @@ export const getCommunityById = async (id) => {
     return response.data;
 }
 
+
+export const getCommunityByPostId = async (idComunidad) => {
+
+    const response = await axios.get(`${API_URL}/posts/comunidad/${idComunidad}`);
+    return response.data;
+}
+
+export const getCommunityMembers = async (idComunidad) =>{
+
+    const response = await axios.get(`${API_URL}/communities/obtener-miembros/${idComunidad}`);
+    return response.data;
+}
+
 export const createCommunity = async (comunityData) => {
     const response = await axios.post(`${API_URL}/communities/crear`, comunityData);
     return response.data;
