@@ -1,8 +1,8 @@
 [build]
 builder = "nixpacks"
 buildCommand = """
-cd backend/gateway && npm install &&
-cd ../services && npm install &&
+cd backend/gateway && npm install
+cd ../services && npm install
 cd ../../frontend && npm install
 """
 
