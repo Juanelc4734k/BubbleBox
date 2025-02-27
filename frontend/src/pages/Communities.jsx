@@ -1,5 +1,4 @@
 import Community from '../components/comunity/Community';
-
 const Communities = () => {
   return (
     <div className='containerCommunities'>
