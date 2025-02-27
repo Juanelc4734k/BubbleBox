@@ -26,19 +26,26 @@ const Community = () => {
     useEffect(() => {
         let i = 0;
         const escribir = setInterval(() => {
-            if (i < parrafoComm.length) {
-                setTextoM((prev) => (prev !== undefined ? prev + (parrafoComm[i] || '') : parrafoComm[i]));
-                        i++;
-            } else {
-                clearInterval(escribir);
-            }
+          if (i <= parrafoComm.length) {
+            setTextoM(parrafoComm.substring(0, i));
+            i++;
+          } else {
+            clearInterval(escribir);
+          }
         }, 100);
         
         return () => clearInterval(escribir);
     }, []);
 
     useEffect(() => {
-        getCommunities().then(setCommunities);
+        getCommunities()
+            .then(fetchedCommunities => {
+                // Sort communities by date, newest first
+                const sortedCommunities = fetchedCommunities.sort((a, b) => 
+                    new Date(b.fecha_creacion) - new Date(a.fecha_creacion)
+                );
+                setCommunities(sortedCommunities);
+            });
         getUsers().then(setUsers);
     }, []);
 

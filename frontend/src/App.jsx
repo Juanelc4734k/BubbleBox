@@ -17,6 +17,9 @@ import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
+
+import { logoutUser } from './services/auth.js';
+
 import './assets/css/layout/layout.css';
 import './assets/css/app/app.css';
 
@@ -25,7 +28,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -33,12 +36,14 @@ export default function App() {
           const expirationTime = decodedToken.exp * 1000;
           
           if (Date.now() >= expirationTime) {
+            await logoutUser();
             localStorage.clear();
             setIsAuthenticated(false);
           } else {
             setIsAuthenticated(true);
           }
         } catch (error) {
+          await logoutUser();
           localStorage.clear();
           setIsAuthenticated(false);
         }
