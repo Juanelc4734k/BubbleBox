@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { getAllPosts } from '../services/posts';
+import { getStoriesFriends } from '../services/stories';
 import Post from '../components/posts/Post';
 import '../assets/css/pages/home.css';
+import Storie from '../components/stories/Storie';
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [stories, setStories] = useState([]);
   const [error, setError] = useState(null);
   const parrafoComm = "Publicaciones recientes";
   const [mostrarT, setMostrarT] = useState(true);
   const [noVer, setNoVer] = useState(false);
   const [textoM, setTextoM] = useState("");
+  const userId = localStorage.getItem('userId');
   
   useEffect(() => {
     const fetchPosts = async () => {
@@ -23,8 +27,23 @@ const Home = () => {
       }
     };
 
+    const fetchStories = async () => {
+      try {
+        const response = await getStoriesFriends(userId);
+        const fetchedStories = response.data || [];
+        const sortedStories = fetchedStories.sort((a, b) => 
+          new Date(b.fecha_creacion) - new Date(a.fecha_creacion)
+        );
+        setStories(sortedStories);
+      } catch (error) {
+        console.error('Error al obtener las historias:', error);
+        setError('Ocurrió un error al cargar las historias. Por favor, intenta de nuevo más tarde.');
+      }
+    }
+
+    fetchStories();
     fetchPosts();
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
         const timer = setTimeout(() => {
@@ -50,6 +69,11 @@ const Home = () => {
 
   return (
     <>
+      <div className="stories">
+        {stories.map(story => (
+          <Storie key={story.id} story={story} />
+        ))}
+      </div>
     <div className="home-container">
       {error ? (
         <p>{error}</p>
