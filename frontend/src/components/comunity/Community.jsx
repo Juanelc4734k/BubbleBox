@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import { getCommunities } from '../../services/comunity';
 import { getUsers } from '../../services/users';
 import '../../assets/css/comunity/community.css';
+import { Link } from 'react-router-dom';
 
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
     const parrafoComm =" Únete a una comunidad";
-
     const [mostrarT, setMostrarT] = useState(true);
     const [noVer, setNoVer] = useState(false);
     const [textoM, setTextoM] = useState("");
     const [communities, setCommunities] = useState([]);
     const [users, setUsers] = useState([]);
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -52,7 +53,14 @@ const Community = () => {
                 {communities.map((community) => {
                     const creador = users.find(user => user.id === community.id_creador);
                     return (
-                        <div key={community.id} className='communitys-Info' style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.imagen})` }}>
+
+                        <Link
+
+                        to={`/comunidad/${community.id}`}
+                        key={community.id}
+                        className='communitys-Info'
+                        style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.imagen})` }}>
+
 
                             <div className="datosOne">
                                 <div className="datostwo">
@@ -79,7 +87,7 @@ const Community = () => {
                             <div className="infoCommunity">
                                 <p>{community.descripcion}</p>
                             </div>
-                        </div>
+                        </Link>
                     );
                 })}
             </div>
