@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
+import '../../assets/css/chats/chatsPreview.css';
 const ChatPreview = ({ friend, onSelect, isSelected }) => {
   const avatarDefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const [avatarUrl, setAvatarUrl] = useState(avatarDefault);
+  const [connectionStatus, setConnectionStatus] = useState('offline');
   useEffect(() => {
     const fetchAvatar = async () => {
       try {
@@ -13,6 +14,10 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
         const userData = await response.json();
         if (userData.avatar) {
           setAvatarUrl(`http://localhost:3009${userData.avatar}`);
+        }
+        // Update connection status if available in the response
+        if (userData.estado) {
+          setConnectionStatus(userData.estado);
         }
       } catch (error) {
         console.error('Error fetching avatar:', error);
@@ -24,19 +29,26 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
       fetchAvatar();
     }
   }, [friend.id]);
+
   return (
     <div 
         className={`chat-preview ${isSelected ? 'active' : ''}`}
         onClick={onSelect}
     >
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-5">
+          <div className="imgstado">
             <img 
                 src={avatarUrl}
                 alt={friend.nombre_usuario2 || friend.nombre_usuario1 || 'User avatar'}
                 className="chat-avatar"
                 onError={() => setAvatarUrl(avatarDefault)}
             />
-            <div className="flex-1 min-w-0">
+            <span className={`status-indicator-chat ${
+                    connectionStatus === 'conectado' ? 'bg-green-500' : 'bg-red-500'
+             }`}></span>
+          </div>
+
+            <div className="flex-1 PreviewChat">
                 <h3 className="chat-name truncate">
                     {localStorage.getItem('userId') === friend.id_usuario1.toString() 
                         ? friend.nombre_usuario2 
@@ -62,6 +74,7 @@ ChatPreview.propTypes = {
     nombre_usuario2: PropTypes.string.isRequired,
     avatar: PropTypes.string,
     lastMessage: PropTypes.string,
+    estado: PropTypes.string,
   }).isRequired,
   onSelect: PropTypes.func.isRequired,
   isSelected: PropTypes.bool,

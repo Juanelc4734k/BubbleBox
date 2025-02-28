@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { login } from '../../services/auth';
 import '../../assets/css/auth/login.css';
-import logoAnimado from '../../assets/images/icon_login.png';
 import fondoLogin from  '../../assets/images/img/fondo1.jpeg';
 import { HiOutlineMail } from 'react-icons/hi';
 import { SlLock } from 'react-icons/sl';

@@ -7,6 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 
 const Dropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [tooltip, setTooltip] = useState("");
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -33,12 +34,30 @@ const Dropdown = () => {
                 <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <div className="dro">
-                <Link className="dropdown-item bubblee" onClick={handleBubbleClick} to="/users">
+            <div className="tooltip-container">
+                <Link
+                    className="dropdown-item bubblee"
+                    onClick={handleBubbleClick}
+                    to="/users"
+                    onMouseEnter={() => setTooltip("Configuraciones")}
+                    onMouseLeave={() => setTooltip("")}
+                >
                     <TbSettings />
                 </Link>
-                <Link className="dropdown-item bubblee" onClick={handleBubbleClick} to="/perfil">
+                {tooltip === "Configuraciones" && <span className="tooltip">Configuraciones</span>}
+            </div>
+            <div className="tooltip-container">
+                <Link
+                    className="dropdown-item bubblee"
+                    onClick={handleBubbleClick}
+                    to="/perfil"
+                    onMouseEnter={() => setTooltip("Perfil")}
+                    onMouseLeave={() => setTooltip("")}
+                >
                     <AiOutlineUser />
                 </Link>
+                {tooltip === "Perfil" && <span className="tooltip tooltipPerfil">Perfil</span>}
+            </div>
             </div>
         </div>
     );

@@ -23,7 +23,7 @@
   
   .formComunity {
     position: fixed;
-    top: 25rem;
+    top: 32rem;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
     width: 90%;
@@ -255,6 +255,19 @@
     backdrop-filter: blur(8px);
     animation: bubbleFloat 2.5s ease-out forwards;
   }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+}
   
   @media (max-width: 768px) {
     .formComunity {
