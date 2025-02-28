@@ -20,7 +20,7 @@ const Navbar = ({ toggleSidebar }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s"
-  const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
+  const defaultDescription = "¡Holaaaa! Soy nuevo en BubbleBox y estoy muy emocionado por conectar con nuevos amigos.";
 
   useEffect(() => {
     const fetchUserProfile = async () => {
