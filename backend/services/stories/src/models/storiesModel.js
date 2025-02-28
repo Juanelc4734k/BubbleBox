@@ -41,6 +41,36 @@ const obtenerTodas = () => {
   });
 };
 
+const ObtenerHistoriasAmigos = (usuario_id) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      WITH amigos AS (
+        SELECT 
+          CASE 
+            WHEN id_usuario1 = ? THEN id_usuario2 
+            WHEN id_usuario2 = ? THEN id_usuario1 
+          END AS amigo_id
+        FROM amistades
+        WHERE (id_usuario1 = ? OR id_usuario2 = ?)
+        AND estado = 'aceptada'
+      )
+      SELECT h.*, u.username AS nombre_usuario
+      FROM historias h
+      JOIN usuarios u ON h.usuario_id = u.id
+      JOIN amigos a ON h.usuario_id = a.amigo_id
+      WHERE h.fecha_expiracion > NOW()
+      ORDER BY h.fecha_creacion DESC
+    `;
+    db.query(query, [usuario_id, usuario_id, usuario_id, usuario_id], (error, results) => {
+      if (error) {
+        console.error('Error en ObtenerHistoriasAmigos:', error);
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
+  });
+};
 const registrarVista = (historia_id, usuario_id) => {
   return new Promise((resolve, reject) => {
     const query = `
@@ -80,22 +110,12 @@ const eliminar = (historia_id) => {
   });
 };
 
-const eliminarExpiradas = () => {
-  return new Promise((resolve, reject) => {
-    const query = 'DELETE FROM historias WHERE fecha_expiracion <= NOW()';
-    db.query(query, (error, results) => {
-      if (error) reject(error);
-      else resolve(results);
-    });
-  });
-};
-
 module.exports = {
   crear,
   obtenerPorUsuario,
   obtenerTodas,
+  ObtenerHistoriasAmigos,
   registrarVista,
   obtenerVistas,
   eliminar,
-  eliminarExpiradas
 };

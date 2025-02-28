@@ -1,4 +1,5 @@
 const reelsModel = require('../models/reelsModel');
+const path = require('path');
 
 const crearReel = async (req, res) => {
     try {
@@ -11,7 +12,8 @@ const crearReel = async (req, res) => {
         }
 
         // Crear la ruta relativa del archivo
-        const relativePath = `reels/${path.basename(req.file.path)}`;
+        // In crearReel function
+        const relativePath = `${path.basename(req.file.path)}`;
         
         const nuevoReel = {
             usuario_id: req.body.usuario_id,
@@ -49,9 +51,10 @@ const actualizarReel = async (req, res) => {
             return res.status(404).json({ mensaje: "Reel no encontrado" });
         }
 
+        // In actualizarReel function
         let relativePath = reelActual.archivo_video;
         if (req.file) {
-            relativePath = `reels/${path.basename(req.file.path)}`;
+            relativePath = `${path.basename(req.file.path)}`;
         }
 
         const reelActualizado = {
@@ -110,37 +113,6 @@ const obtenerReelsPorUsuario = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener los reels del usuario', error: error.message });
   }
 };
-
-const actualizarReel = async (req, res) => {
-    try {
-      const id = req.params.id;
-      
-      // Primero, obtener el reel actual
-      const reelActual = await reelsModel.obtenerPorId(id);
-      if (!reelActual) {
-        return res.status(404).json({ mensaje: "Reel no encontrado" });
-      }
-  
-      // Preparar el objeto de actualización
-      const reelActualizado = {
-        archivo_video: req.file ? req.file.path : reelActual.archivo_video,
-        descripcion: req.body.descripcion !== undefined ? req.body.descripcion : reelActual.descripcion,
-        usuario_id: req.body.usuario_id || reelActual.usuario_id
-      };
-  
-      // Realizar la actualización
-      const resultado = await reelsModel.actualizar(id, reelActualizado);
-      
-      if (resultado.affectedRows === 0) {
-        return res.status(404).json({ mensaje: "No se pudo actualizar el reel" });
-      }
-      
-      res.json({ mensaje: "Reel actualizado con éxito", reel: reelActualizado });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ mensaje: "Error al actualizar el reel", error: error.message });
-    }
-  };
 
 const eliminarReel = async (req, res) => {
   try {

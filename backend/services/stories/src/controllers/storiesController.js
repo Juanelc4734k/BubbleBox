@@ -55,6 +55,15 @@ const obtenerTodasLasHistorias = async (req, res) => {
   }
 };
 
+const obtenerHistoriasAmigos = async (req, res) => {
+  try {
+    const historias = await storiesModel.ObtenerHistoriasAmigos(req.params.usuario_id);
+    res.json(historias);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener las historias de amigos' });
+  }
+};
+
 const registrarVistaHistoria = async (req, res) => {
   try {
     await storiesModel.registrarVista(req.params.historia_id, req.body.usuario_id);
@@ -95,8 +104,8 @@ module.exports = {
   crearHistoria,
   obtenerHistoriasPorUsuario,
   obtenerTodasLasHistorias,
+  obtenerHistoriasAmigos,
   registrarVistaHistoria,
   obtenerVistasHistoria,
-  eliminarHistoria,
-  eliminarHistoriasExpiradas
+  eliminarHistoria
 };

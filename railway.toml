@@ -1,0 +1,22 @@
+[build]
+builder = "nixpacks"
+buildCommand = """
+cd backend/gateway && npm install
+cd ../services && npm install
+cd ../../frontend && npm install
+"""
+
+[deploy]
+startCommand = "node scripts/startAllServices.cjs"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
+[[services]]
+name = "backend"
+directory = "backend"
+startCommand = "node scripts/startAllServices.cjs"
+
+[[services]]
+name = "frontend"
+directory = "frontend"

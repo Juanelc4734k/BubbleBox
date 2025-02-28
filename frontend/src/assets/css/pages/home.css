@@ -1,3 +1,16 @@
+.stories {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 5vh;
+    justify-content: center;
+    position: relative;
+    top: 15vh;
+    left: 4.5vh;
+    width: 72%;
+    padding-left: 2vh;
+    padding-right: 2vh;
+}
 .home-container{
     width: 82%;
     margin-top: 10vh;
