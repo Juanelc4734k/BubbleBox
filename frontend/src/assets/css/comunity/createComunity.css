@@ -12,7 +12,21 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
+  .privacy-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      font-size: 16px;
+      color: #333;
+      cursor: pointer;
+  }
   
+  .privacy-select:focus {
+      outline: none;
+      border-color: #007bff;
+  }
   .create-comunity-button:hover {
     transform: translateY(-2px);
   }
@@ -20,7 +34,6 @@
   .create-comunity-button .icono0 {
     font-size: 1.2rem;
   }
-  
   .formComunity {
     position: fixed;
     top: 32rem;
@@ -43,18 +56,15 @@
     transition: transform 0.5s ease, opacity 0.3s ease;
     
   }
-  
   .create-comunity.active .formComunity {
     opacity: 1;
     pointer-events: auto;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
   }
-  
   .create-comunity .formComunity:not(.active) {
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
-  
   .form-header {
     position: sticky;
     top: 0;
@@ -67,19 +77,16 @@
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(151, 71, 255, 0.2);
   }
-  
   .form-header h2 {
     color: #866bb8;
     font-size: 1.5rem;
     font-weight: 600;
     display: flex;
   }
-  
   .form-header h2 .iconoComunity {
     margin-right: 5px;
     margin-top: 4.5px;
   }
-  
   .close-button {
     background: none;
     border: none;
@@ -90,16 +97,13 @@
     border-radius: 50%;
     transition: all 0.3s ease;
   }
-  
   .close-button:hover {
     background: rgba(151, 71, 255, 0.1);
     color: #9747ff;
   }
-  
   .form-group {
     margin-bottom: 1.5rem;
   }
-  
   .form-group input,
   .form-group textarea {
     width: 100%;
@@ -111,7 +115,6 @@
     transition: all 0.3s ease;
     color: #a193af;
   }
-  
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
@@ -119,15 +122,12 @@
     background: white;
     box-shadow: 0 0 0 3px rgba(151, 71, 255, 0.1);
   }
-  
   .file-input {
     position: relative;
   }
-  
   .hidden-input {
     display: none;
   }
-  
   .file-label {
     display: flex;
     align-items: center;
@@ -139,15 +139,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
   .file-label:hover {
     background: rgba(151, 71, 255, 0.2);
   }
-  
   .file-label svg {
     font-size: 1.5rem;
   }
-  
   .image-preview {
     margin-top: 1rem;
     position: relative;
@@ -156,13 +153,11 @@
     max-height: 200px;
     overflow-y: auto;
   }
-  
   .image-preview img {
     width: 100%;
     height: auto;
     border-radius: 0.75rem;
   }
-  
   .remove-image {
     position: absolute;
     top: 0.5rem;
@@ -175,12 +170,10 @@
     color: #666;
     transition: all 0.3s ease;
   }
-  
   .remove-image:hover {
     background: white;
     color: #ff4444;
   }
-  
   .submit-button {
     width: 100%;
     padding: 1rem;
@@ -193,7 +186,6 @@
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
   .submit-button:hover {
     background: #8034ff;
     transform: translateY(-2px);
@@ -208,8 +200,7 @@
       transform: translateY(-10px);
     }
   }
-  
-  @keyframes bubbleFloat {
+  .@keyframes bubbleFloat {
     0% {
       transform: translate(0, 0) scale(0.8); /* Evita que aparezcan de repente con scale(0) */
       opacity: 0;
@@ -223,7 +214,6 @@
       opacity: 0;
     }
   }
-  
   .mensaje {
     padding: 1rem;
     border-radius: 0.75rem;
@@ -232,17 +222,14 @@
     animation: messageBounce 0.5s ease-in-out;
     position: relative;
   }
-  
   .mensaje.success {
     background: rgba(141, 72, 187, 0.1);
     color: #6e38a1;
   }
-  
   .mensaje.error {
     background: rgba(245, 101, 101, 0.1);
     color: #e53e3e;
   }
-  
   .bubble {
     position: absolute;
     bottom: -20px; /* 📌 Se genera debajo del mensaje */
@@ -255,7 +242,6 @@
     backdrop-filter: blur(8px);
     animation: bubbleFloat 2.5s ease-out forwards;
   }
-
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -275,22 +261,18 @@
       padding: 1rem;
       margin-top: -10rem;
     }
-  
-    .form-header h2 {
+  .form-header h2 {
       font-size: 1.25rem;
     }
-  
-    .form-group input,
+  .form-group input,
     .form-group textarea {
       padding: 0.75rem;
     }
-  
-    .submit-button {
+  .submit-button {
       padding: 0.75rem;
     }
   }
-  
-  @media (min-width: 1024px) {
+  .@media (min-width: 1024px) {
     .formComunity {
       max-width: 600px;
       top: 50%;

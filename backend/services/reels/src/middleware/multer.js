@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const folderPath = path.join(__dirname, '../../uploads/reels');
+        const folderPath = path.join(__dirname, '../../uploads');
         const fs = require('fs');
         if (!fs.existsSync(folderPath)) {
             fs.mkdirSync(folderPath, { recursive: true });
@@ -30,9 +30,28 @@ const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: { 
-        fileSize: 50 * 1024 * 1024, // 50MB
-        files: 1 // Solo un archivo por solicitud
+        fileSize: 50 * 1024 * 1024
     }
 });
 
-module.exports = upload;
+// Create a wrapper middleware to handle multer errors
+const uploadMiddleware = (req, res, next) => {
+    const uploadSingle = upload.single('archivo_video');  // Changed from 'video' to 'archivo_video'
+    
+    uploadSingle(req, res, function(err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({
+                mensaje: "Error en la subida del archivo",
+                error: err.message
+            });
+        } else if (err) {
+            return res.status(400).json({
+                mensaje: "Error en la subida del archivo",
+                error: err.message
+            });
+        }
+        next();
+    });
+};
+
+module.exports = uploadMiddleware;

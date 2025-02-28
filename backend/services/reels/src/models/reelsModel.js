@@ -14,14 +14,20 @@ const crear = (reel) => {
     });
   };
 
-const obtenerTodos = () => {
-  return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM reels ORDER BY fecha_creacion DESC', (error, results) => {
-      if (error) reject(error);
-      else resolve(results);
+  const obtenerTodos = () => {
+    return new Promise((resolve, reject) => {
+      const query = `
+        SELECT r.*, u.username, u.avatar
+        FROM reels r
+        LEFT JOIN usuarios u ON r.usuario_id = u.id
+        ORDER BY r.fecha_creacion DESC
+      `;
+      db.query(query, (error, results) => {
+        if (error) reject(error);
+        else resolve(results);
+      });
     });
-  });
-};
+  };
 
 const obtenerPorId = (id) => {
     return new Promise((resolve, reject) => {

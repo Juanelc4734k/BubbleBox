@@ -5,17 +5,23 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Communities from './pages/Communities.jsx';
+import CommunityDetail from './components/comunity/communitydetail.jsx';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import Friends from './pages/Friends';
 import Users from './pages/Users';
 import Chats from './pages/Chats.jsx';
+import Reels from './pages/Reels.jsx';
 import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
+import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
+
+import { logoutUser } from './services/auth.js';
+
 import './assets/css/layout/layout.css';
 import './assets/css/app/app.css';
 
@@ -24,7 +30,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -32,12 +38,14 @@ export default function App() {
           const expirationTime = decodedToken.exp * 1000;
           
           if (Date.now() >= expirationTime) {
+            await logoutUser();
             localStorage.clear();
             setIsAuthenticated(false);
           } else {
             setIsAuthenticated(true);
           }
         } catch (error) {
+          await logoutUser();
           localStorage.clear();
           setIsAuthenticated(false);
         }
@@ -87,6 +95,7 @@ export default function App() {
                     <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
                     <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
                     <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
+                    <Route path='/comunidad/:id' element={<ProtectedRoute><ProtectedRouteCommunity><CommunityDetail /></ProtectedRouteCommunity></ProtectedRoute>} />
                     <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
@@ -94,6 +103,7 @@ export default function App() {
                     <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
                     <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
                     <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                    <Route path='/reels' element={<ProtectedRoute><Reels /></ProtectedRoute>} />
                     <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                     <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                   </Routes>

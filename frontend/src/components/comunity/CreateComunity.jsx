@@ -14,6 +14,7 @@ const CreateComunity = () => {
     const [idCreador, setIdCreador] = useState("");
     const [imagenPreview, setImagenPreview] = useState(null);
     const [mensaje, setMensaje] = useState("");
+    const [privacidad, setPrivacidad] = useState('publica'); // Add this new state
     const [showBubbles, setShowBubbles] = useState(false);
     const [animateMessage, setAnimateMessage] = useState(false);
     const [isCommunitySub, setIsCommunitySub] = useState(false);
@@ -98,18 +99,19 @@ const CreateComunity = () => {
         if(!nombre || !descripcion){
             setMensaje("Error, Por favor completa todos los campos");
             if (scrollableRef.current) {
-            scrollableRef.current.scrollTop = 0;
+                scrollableRef.current.scrollTop = 0;
             }
             setTimeout(() => {
-            setMensaje("");
+                setMensaje("");
             }, 3000);
-            setIsCommunitySub(false);
+            setIsCommunityub(false);
             return
         }
 
         const comunityData = new FormData();
         comunityData.append("nombre", nombre.trim());
         comunityData.append("descripcion", descripcion);
+        comunityData.append("privacidad", privacidad); // Add this line
         if (idCreador) {
             comunityData.append("idCreador", idCreador);
         }
