@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { FaBell } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { MdMessage, MdPersonAdd, MdPeople, MdPhoto, MdComment, MdFavorite, MdDelete } from "react-icons/md";
+import { MdMessage, MdPersonAdd, MdPeople, MdPhoto, MdComment, MdFavorite, MdDelete, MdMoreVert  } from "react-icons/md";
 import { getNotification, markAsRead, deleteNotification } from "../../services/notification";
 import { acceptFriendRequest, rejectFriendRequest } from "../../services/friends";
 import socket from "../../services/socket";
 import "../../assets/css/layout/notification.css";
 
-// Notification Tab Configuration
+// Configuración de pestañas de notificaciones
 const NOTIFICATION_TABS = [
     { id: 'all', label: 'Todas', icon: <FaBell /> },
+];
+
+const EXTRA_TABS = [
     { id: 'message', label: 'Mensajes', icon: <MdMessage /> },
     { id: 'amistad_aceptada', label: 'Solicitudes Aceptadas', icon: <MdPeople /> },
     { id: 'solicitud_amistad', label: 'Solicitudes de Amistad', icon: <MdPersonAdd /> },
@@ -38,8 +41,10 @@ const NotificationHeader = ({ onClose }) => (
 );
 
 // NotificationTabs Component
-const NotificationTabs = ({ activeTab, onTabChange }) => (
-    <div className="notification-tabs">
+const NotificationTabs = ({ activeTab, onTabChange }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    return(
+        <div className={`notification-tabs ${isMenuOpen ? "menu-open" : ""}`}>
         {NOTIFICATION_TABS.map(tab => (
             <button
                 key={tab.id}
@@ -50,8 +55,32 @@ const NotificationTabs = ({ activeTab, onTabChange }) => (
                 <span>{tab.label}</span>
             </button>
         ))}
+
+        {/* Botón de tres puntos para mostrar más opciones */}
+        <div className="extra-options">
+            <button className={`menu-button ${isMenuOpen ? "active" : ""}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                <MdMoreVert />
+            </button>
+            {isMenuOpen && (
+                <div className={`menu-dropdown ${isMenuOpen ? "open" : ""} `}>
+                    {EXTRA_TABS.map(tab => (
+                        <button
+                            key={tab.id}
+                            className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => {
+                                onTabChange(tab.id);
+                                setIsMenuOpen(false); // Cerrar menú al seleccionar
+                            }}
+                        >
+                            {tab.icon} {tab.label}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
     </div>
-);
+    )
+};
 
 // EmptyNotifications Component
 const EmptyNotifications = () => (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { createPost } from "../../services/posts"
 import { CiCirclePlus, CiImageOn } from "react-icons/ci"
 import { IoClose } from "react-icons/io5"
@@ -15,7 +15,35 @@ const CreatePost = () => {
   const [imagenPreview, setImagenPreview] = useState(null)
   const [animateMessage, setAnimateMessage] = useState(false)
   const [showBubbles, setShowBubbles] = useState(false)
-  const scrollableRef = useRef(null); // Ref para el contenedor scrollable
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const scrollableRef = useRef(null); 
+  const modalRef = useRef(null);
+
+  const combinedRef = useCallback((node) => {
+    if (node) {
+      modalRef.current = node;
+      scrollableRef.current = node;
+    }
+  }, []);
+
+  useEffect(() => {
+    // Detectar clics fuera del modal
+    const handleClickOutside = (event) => {
+        if (modalRef.current && !modalRef.current.contains(event.target)) {
+            setOpenPost(false);
+        }
+    };
+    if (openPost) {
+        document.addEventListener("mousedown", handleClickOutside);
+    } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+}, [openPost]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -61,6 +89,9 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (isSubmitting) return; // Evita múltiples clics
+
+    setIsSubmitting(true); // Desactiva el botón mientras se envía
     setMensaje("")
 
     if (!titulo || !contenido) {
@@ -71,6 +102,7 @@ const CreatePost = () => {
       setTimeout(() => {
         setMensaje("");
       }, 3000);
+      setIsSubmitting(false); // Reactiva el botón
       return
     }
 
@@ -104,6 +136,8 @@ const CreatePost = () => {
         togglePost();
       }, 2000);
       console.error("Error: ", error);
+    }finally {
+      setIsSubmitting(false); // Reactiva el botón después de la petición
     }
   }
 
@@ -135,75 +169,77 @@ const CreatePost = () => {
     <div className={`create-post ${openPost ? "active" : ""}`}>
       <button className="create-post-button" onClick={togglePost}>
         <CiCirclePlus className="icono0" />
-        <span>Nueva Publicación</span>
+        <span>Publicación</span>
       </button>
       {openPost && (
-        <div  ref={scrollableRef} className="formPost">
-          <div className="form-header">
-            <h2 className="textPubli">
-              <CiCirclePlus className="iconoPublicacion" /> Crear Publicación
-            </h2>
-            <button className="close-button" onClick={togglePost}>
-              <IoClose />
-            </button>
+        <div className="modal-overlay">
+          <div  ref={combinedRef} className="formPost">
+            <div className="form-header">
+              <h2 className="textPubli">
+                <CiCirclePlus className="iconoPublicacion" /> Crear Publicación
+              </h2>
+              <button className="close-button" onClick={togglePost}>
+                <IoClose />
+              </button>
+            </div>
+            {mensaje && (
+              <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
+                {mensaje}
+                {showBubbles && createBubbles()}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+              <div className="form-group">
+                <input
+                  type="text"
+                  id="titulo"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  placeholder="Título de la publicación"
+                  min={20}
+                />
+              </div>
+              <div className="form-group">
+                <textarea
+                  id="contenido"
+                  value={contenido}
+                  onChange={(e) => setContenido(e.target.value)}
+                  placeholder="¿Qué estás pensando?"
+                  rows={5}
+                  min={150}
+                />
+              </div>
+              <div className="form-group file-input">
+                <input type="file" id="imagen" accept="image/*" onChange={handleFileChange} className="hidden-input" />
+                <label htmlFor="imagen" className="file-label">
+                  <CiImageOn />
+                  <span>Agregar imagen</span>
+                </label>
+                {imagenPreview && (
+                  <div className="image-preview">
+                    <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
+                    <button
+                      type="button"
+                      className="remove-image"
+                      onClick={() => {
+                        setImagen(null)
+                        setImagenPreview(null)
+                        const fileInput = document.getElementById("imagen")
+                        if (fileInput) {
+                          fileInput.value = ""
+                        }
+                      }}
+                    >
+                      <IoClose />
+                    </button>
+                  </div>
+                )}
+              </div>
+              <button type="submit" className="submit-button" disabled={isSubmitting}>
+                {isSubmitting ? "Subiendo..." : "Publicar"}
+              </button>
+            </form>
           </div>
-          {mensaje && (
-            <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
-              {mensaje}
-              {showBubbles && createBubbles()}
-            </div>
-          )}
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
-            <div className="form-group">
-              <input
-                type="text"
-                id="titulo"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                placeholder="Título de la publicación"
-                min={20}
-              />
-            </div>
-            <div className="form-group">
-              <textarea
-                id="contenido"
-                value={contenido}
-                onChange={(e) => setContenido(e.target.value)}
-                placeholder="¿Qué estás pensando?"
-                rows={5}
-                min={150}
-              />
-            </div>
-            <div className="form-group file-input">
-              <input type="file" id="imagen" accept="image/*" onChange={handleFileChange} className="hidden-input" />
-              <label htmlFor="imagen" className="file-label">
-                <CiImageOn />
-                <span>Agregar imagen</span>
-              </label>
-              {imagenPreview && (
-                <div className="image-preview">
-                  <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
-                  <button
-                    type="button"
-                    className="remove-image"
-                    onClick={() => {
-                      setImagen(null)
-                      setImagenPreview(null)
-                      const fileInput = document.getElementById("imagen")
-                      if (fileInput) {
-                        fileInput.value = ""
-                      }
-                    }}
-                  >
-                    <IoClose />
-                  </button>
-                </div>
-              )}
-            </div>
-            <button type="submit" className="submit-button">
-              Publicar
-            </button>
-          </form>
         </div>
       )}
     </div>
