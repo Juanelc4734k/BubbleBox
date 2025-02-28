@@ -54,6 +54,10 @@ const UpdateProfile = () => {
       ...prevProfile,
       [name]: value,
     }))
+      // Limpiar el mensaje cuando el usuario empieza a escribir
+    if (message) {
+      setMessage("");
+    }
   }
   
   const handleImageChange = async (e) => {
@@ -84,7 +88,6 @@ const UpdateProfile = () => {
             ...prev,
             avatar: `http://localhost:3009${response.data.avatarUrl}`
           }));
-          setMessage("Foto de perfil actualizada con éxito");
           // Delay clearing the preview until the new image is loaded
           setTimeout(() => {
             URL.revokeObjectURL(previewUrl);
@@ -100,7 +103,12 @@ const UpdateProfile = () => {
     }
   };
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+     // Validación de la descripción antes de enviar el formulario
+    if (profile.descripcion_usuario.length < 100) {
+      setMessage("La descripción debe tener al menos 10 caracteres.");
+      return; // Detiene la ejecución de la función y no envía el formulario
+    }
     
     try {
       const updateData = {
@@ -145,7 +153,8 @@ const UpdateProfile = () => {
         <TbUserEdit className="icon" />
         Actualizar
       </button>
-  
+      {isOpen && <div className="modal-overlay" onClick={toggleModal}></div>}
+      {isOpen && (
       <div className="fromUpdate">
         <div className="form-header">
           <h2>Actualiza Tu perfil</h2>
@@ -161,9 +170,7 @@ const UpdateProfile = () => {
                 src={previewImage || (profile.avatar ? `http://localhost:3009${profile.avatar}` : "/placeholder.svg")} 
                 alt="Profile" 
                 className="avatar"
-                onError={(e) => {
-                  e.target.src = "/placeholder.svg";
-                }}
+                onError={(e) => { e.target.src = "/placeholder.svg"; }}
               />
               <button type="button" className="change-avatar" onClick={() => fileInputRef.current.click()}>
                 <FaCamera />
@@ -180,8 +187,8 @@ const UpdateProfile = () => {
           <div className="form-group">
             <input
               type="text"
-              id="username"
-              name="username"
+              id="nombre"
+              name="nombre"
               value={profile.nombre || ''}
               onChange={handleChange}
               placeholder="Nombre completo"
@@ -199,6 +206,7 @@ const UpdateProfile = () => {
               value={profile.descripcion_usuario || ''}
               onChange={handleChange}
               placeholder="Cuéntanos sobre ti..."
+              maxLength={153}
             />
           </div>
           <button type="submit" className="submit-button">
@@ -206,6 +214,7 @@ const UpdateProfile = () => {
           </button>
         </form>
       </div>
+    )}
     </div>
   )
 }

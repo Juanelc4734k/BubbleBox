@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { IoClose } from "react-icons/io5";
 import * as jwt_decode from "jwt-decode";
 import "../../assets/css/comunity/createComunity.css";
@@ -16,8 +16,19 @@ const CreateComunity = () => {
     const [mensaje, setMensaje] = useState("");
     const [privacidad, setPrivacidad] = useState('publica'); // Add this new state
     const [showBubbles, setShowBubbles] = useState(false);
-    const [animateMessage, setAnimateMessage] = useState(false)
+    const [animateMessage, setAnimateMessage] = useState(false);
+    const [isCommunitySub, setIsCommunitySub] = useState(false);
+
     const scrollableRef = useRef(null);
+    const modalRef = useRef(null);
+
+    // Combinar ambas referencias en una sola función de ref
+    const combinedRef = useCallback((node) => {
+        if (node) {
+            modalRef.current = node;
+            scrollableRef.current = node;
+        }
+    }, []);
 
     useEffect(() => {
         const fetchUserProfile = async () => {
@@ -61,8 +72,28 @@ const CreateComunity = () => {
         }
     };
 
+    useEffect(() => {
+        // Detectar clics fuera del modal
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setOpenComunity(false);
+            }
+        };
+        if (openComunity) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [openComunity]);
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(isCommunitySub) return; //Evita multiples clics
+        setIsCommunitySub(true); //Desactiva el boton mientras se envia
         setMensaje("");
 
         if(!nombre || !descripcion){
@@ -73,7 +104,8 @@ const CreateComunity = () => {
             setTimeout(() => {
                 setMensaje("");
             }, 3000);
-            return;
+            setIsCommunityub(false);
+            return
         }
 
         const comunityData = new FormData();
@@ -107,6 +139,8 @@ const CreateComunity = () => {
                 toggleComunity();
             }, 2000);
             console.error("Error:", error);
+        } finally {
+            setIsCommunitySub(false);
         }
     };
 
@@ -134,85 +168,78 @@ const CreateComunity = () => {
         })
       }
 
+      
+
     return(
         <div className={`create-comunity ${openComunity ? "active" : ""}`} >
             <button className="create-comunity-button" onClick={toggleComunity}>
                 <TbUsersPlus className="icono0" />
-                <span>Nueva Comunidad</span>
+                <span>Comunidad</span>
             </button>
             {openComunity && (
-                <div ref={scrollableRef} className="formComunity">
-                    <div className="form-header">
-                        <h2><TbUsersPlus className="iconoComunity" /> Crear Comunidad</h2>
-                        <button className="close-button" onClick={toggleComunity}>
-                            <IoClose />
-                        </button>
+                <div className="modal-overlay">
+                    <div ref={combinedRef}  className="formComunity">
+                        <div className="form-header">
+                            <h2><TbUsersPlus className="iconoComunity" /> Crear Comunidad</h2>
+                            <button className="close-button" onClick={toggleComunity}>
+                                <IoClose />
+                            </button>
+                        </div>
+                        {mensaje && (
+                            <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
+                            {mensaje}
+                            {showBubbles && createBubbles()}
+                            </div>
+                        )}
+                        <form onSubmit={handleSubmit} encType="multipart/form-data">
+                            <div className="form-group">
+                                <input 
+                                    type="text" 
+                                    id="nombre" 
+                                    value={nombre} 
+                                    onChange={(e) => setNombre(e.target.value)} 
+                                    placeholder="Nombre de la comunidad" 
+                                />
+                            </div>
+                            <div className="form-group">
+                                <textarea  
+                                    id="descripcion"
+                                    value={descripcion}
+                                    onChange={(e) => setDescripcion(e.target.value)}
+                                    placeholder="Descripción de la comunidad"
+                                    rows={5}
+                                />
+                            </div>
+                            <div className="form-group file-input">
+                                <input type="file" id="imagen" accept="image/*" onChange={handleFileChange} className="hidden-input" />
+                                <label htmlFor="imagen" className="file-label">
+                                    <CiImageOn />
+                                    <span>Agregar imagen</span>
+                                </label>
+                                {imagenPreview && (
+                                    <div className="image-preview">
+                                        <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
+                                        <button 
+                                            type="button" 
+                                            className="remove-image" 
+                                            onClick={() => {
+                                                setImagen(null);
+                                                setImagenPreview(null);
+                                                const fileInput = document.getElementById("imagen");
+                                                if(fileInput){
+                                                    fileInput.value = "";
+                                                }
+                                            }}>
+                                                <IoClose />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                            <button type="submit" className="submit-button" disabled={isCommunitySub}>
+                                {isCommunitySub ? "Creando..." : "Crear Comunidad"}
+                            </button>
+                        </form>
                     </div>
-                    {mensaje && (
-                        <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
-                        {mensaje}
-                        {showBubbles && createBubbles()}
-                        </div>
-                    )}
-                    <form onSubmit={handleSubmit} encType="multipart/form-data">
-                        <div className="form-group">
-                            <input 
-                                type="text" 
-                                id="nombre" 
-                                value={nombre} 
-                                onChange={(e) => setNombre(e.target.value)} 
-                                placeholder="Nombre de la comunidad" 
-                            />
-                        </div>
-                        <div className="form-group">
-                            <textarea  
-                                id="descripcion"
-                                value={descripcion}
-                                onChange={(e) => setDescripcion(e.target.value)}
-                                placeholder="Descripción de la comunidad"
-                                rows={5}
-                            />
-                        </div>
-                        <div className="form-group file-input">
-                            <input type="file" id="imagen" accept="image/*" onChange={handleFileChange} className="hidden-input" />
-                            <label htmlFor="imagen" className="file-label">
-                                <CiImageOn />
-                                <span>Agregar imagen</span>
-                            </label>
-                            {imagenPreview && (
-                                <div className="image-preview">
-                                    <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
-                                    <button 
-                                        type="button" 
-                                        className="remove-image" 
-                                        onClick={() => {
-                                            setImagen(null);
-                                            setImagenPreview(null);
-                                            const fileInput = document.getElementById("imagen");
-                                            if(fileInput){
-                                                fileInput.value = "";
-                                            }
-                                        }}>
-                                            <IoClose />
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                        <div className="form-group">
-                            <select
-                                id="privacidad"
-                                value={privacidad}
-                                onChange={(e) => setPrivacidad(e.target.value)}
-                                className="privacy-select"
-                            >
-                                <option value="publica">Pública</option>
-                                <option value="privada">Privada</option>
-                            </select>
-                        </div>
-                        <button type="submit" className="submit-button">
-                            Crear Comunidad
-                        </button>
-                    </form>
                 </div>
             )}
         </div>

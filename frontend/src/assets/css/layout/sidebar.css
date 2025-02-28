@@ -75,9 +75,8 @@
     margin-top: 0.1rem;
     margin-left: 0.5rem;
     transform: translateY(-50%);
-    background-color: rgba(76, 25, 124, 0.2);
-    backdrop-filter: blur(10px);
-    color: #4e4d4d;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #7b6fca;
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 14px;
@@ -138,28 +137,27 @@
   }
   @media (min-width: 768px) {
     .sidebar{
-      top: 22vh;
+      top: 28vh;
       left: 1vh;
-      width: 7vh;
-      height: 85vh;
+      width: 8vh;
+      height: 79vh;
     }
     .menu{
-      gap: 1.5rem;
+      gap: 0.5rem;
       align-items: center;
       justify-content: center;
     }
     .menu-link{
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
     }
     .menu li:nth-child(6){
-      margin-top: 8rem;
+      margin-top: 4rem;
     }
     .menu-item:last-child .menu-link,
     .menu-item:last-child button {
-      width: 55px;
-      height: 55px;
-
+      width: 35px;
+      height: 35px;
     }
   }
 

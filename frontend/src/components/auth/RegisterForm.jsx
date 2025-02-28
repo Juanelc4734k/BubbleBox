@@ -95,7 +95,7 @@ export default function RegisterForm({ setMessage }) {
 
                     <div className="contaiUsername">
                         <div className="iconUsername"><FaRegUser/></div>
-                        <input type="text" name='username' className='inpuUsername' value={formData.username} onChange={handleChange} placeholder='User name'/>
+                        <input type="text" name='username' className='inpuUsername' value={formData.username} onChange={handleChange} placeholder='User name' maxLength={9}/>
                         <div className='linea'></div>
                     </div>
 

@@ -23,7 +23,7 @@
 
 .formPost {
   position: fixed;
-  top: 25rem;
+  top: 32rem;
   left: 50%;
   transform: translate(-50%, 100%);
   width: 90%;
@@ -205,6 +205,10 @@
 .submit-button:hover {
   background: #8034ff;
   transform: translateY(-2px);
+}
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 @keyframes messageBounce {
