@@ -35,8 +35,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9998 !important;
     backdrop-filter: blur(4px);
+    z-index: 9998;
   }
   .formGroup {
     position: relative; /* Changed from fixed to relative */
@@ -47,7 +47,7 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     animation: modalAppear 0.3s ease-out;
-    z-index: 9999 !important;
+    z-index: 9999 ;
   }
   .tooltipGroupContainer{
     position: relative;
@@ -103,7 +103,7 @@
     font-size: 1.5rem;
     color: #8034ff;
   }
-  .close-button {
+  .close-buttonGro {
     background: none;
     border: none;
     color: #666;
@@ -116,7 +116,7 @@
     align-items: center;
     justify-content: center;
   }
-  .close-button:hover {
+  .close-buttonGro:hover {
     background: rgba(151, 71, 255, 0.1);
     color: #9747ff;
   }

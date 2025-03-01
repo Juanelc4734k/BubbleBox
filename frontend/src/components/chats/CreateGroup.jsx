@@ -130,7 +130,7 @@ const CreateGroup = () => {
               <h2>
                 <AiOutlineUsergroupAdd className="iconoGrupo" /> Crear Grupo
               </h2>
-              <button className="close-button" onClick={toggleGroup}>
+              <button className="close-buttonGro" onClick={toggleGroup}>
                 <IoClose />
               </button>
             </div>
