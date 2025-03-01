@@ -96,7 +96,28 @@
     justify-content: center;
     cursor: pointer;
     color: #333;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.reel-action-button.liked {
+    color: #2563eb;
+    animation: likedAnimation 0.5s ease forwards;
+}
+
+@keyframes likedAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.reel-action-button:hover {
+    transform: scale(1.1);
 }
 
 .reel-action-button span {
@@ -105,9 +126,7 @@
 }
 
 /* Keep existing video controls styles */
-.reel-action-button:hover {
-    transform: scale(1.1);
-}
+
 
 .video-controls {
     position: absolute;
