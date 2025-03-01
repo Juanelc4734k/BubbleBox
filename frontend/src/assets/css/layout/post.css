@@ -11,13 +11,23 @@
     background-color: #fff;
     transition: all 0.5s ease-in-out;
 }
-
 .posts .post .autor-info{
     background-color: #b685e4bd;
     box-shadow: 0vh 0.3vh 1.1vh gray;
     padding: 0.1vh 1.5vh;
     text-align:left;
 }
+
+.posts .post .info-post .post-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+    background-color: white;
+    padding: 3px;
+    border-radius: 1vh;
+}
+
 .posts .post .autor-info .fechacreate{
     display: flex;
     justify-content: end;
@@ -52,17 +62,43 @@
     background-color: #e2e2e2;
 }
 
-.posts .post  .contenido-post{
-    padding: 2vh 3vh;
+
+
+.description p {
+  transition: all 0.3s ease;
 }
+
+.description button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
 .posts .post  .contenido-post p{
     padding: 2vh 0vh 0.3vh 1.8vh;
-
+    max-height: 150px;
+    overflow-y: auto;
+    line-height: 1.5;
+    /* Estilizar scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #b685e4bd #f0f0f0;
 }
-.posts .post  .contenido-post .imgconten{
-  overflow: hidden;
-}
 
+/* Estilos para el scrollbar en navegadores webkit */
+.posts .post  .contenido-post p::-webkit-scrollbar {
+    width: 6px;
+}
+.posts .post  .contenido-post p::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+.posts .post  .contenido-post p::-webkit-scrollbar-thumb {
+    background-color: #b685e4bd;
+    border-radius: 10px;
+}
 .posts .post .lineTwo{
     width: 88%;
     height: 0.3vh;
@@ -88,8 +124,76 @@
     box-shadow: 0vh 0.1vh 0.4vh rgba(0, 0, 0, 0.671);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+}.reacciones button {
+    padding: 4px;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
 }
-.posts .post .aption .reacciones:hover,
+
+.reactions-menu {
+  position: absolute;
+  bottom: 2.3rem;
+  left: 610%;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.reaction-emoji {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1px; /* Fixed size */
+}
+
+.animate-reaction {
+  animation: popIn 0.3s ease-out;
+  transform-origin: center;
+}
+
+@keyframes popIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.5);
+  }
+  70% {
+      opacity: 1;
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+.reactions-menu button {
+  transition: transform 0.2s ease;
+  font-size: 1.25rem;
+  padding: 0.25rem;
+}
+
+.reactions-menu button:hover {
+  transform: scale(1.25);
+}
+
+@media (min-width: 640px) {
+  .reactions-menu {
+      gap: 0.75rem;
+  }
+}
+
+.reacciones .absolute {
+    white-space: nowrap;
+}
  .comentarios:hover, .reenviar:hover{
     background-color: #7a7777 ;
     
@@ -100,7 +204,50 @@
     transform: translateY(-0.5vh); 
     box-shadow: 0vh 0.3vh 0.6vh rgba(0, 0, 0, 0.8);
 }
+.posts {
+    width: 93%;
+    min-height: 400px;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
 
+.posts .post {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.posts .post .contenido-post {
+    display: flex;
+    flex-direction: column;
+    padding: 1vh 3vh;
+    flex: 1;
+    min-height: 200px;
+}
+
+.posts .post .contenido-post p {
+    padding: 1vh 2vh;
+    min-height: 65px;
+    max-height: 0;
+    overflow-y: auto;
+    line-height: 1.5;
+    margin-bottom: 1vh;
+}
+
+.posts .post .imgconten {
+    min-height: 200px;
+    max-height: 400px;
+    margin: 1vh auto;
+    width: 90%;
+}
+
+@media (min-width: 768px) {
+    .posts {
+        width: 45%;
+        min-height: 450px;
+    }
+}
 .contImagenPost {
     position: fixed;
     top: 0;

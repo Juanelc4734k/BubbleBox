@@ -18,13 +18,17 @@ const crearReaccion = async (req, res) => {
       return res.status(404).json({ mensaje: 'Contenido no encontrado', error: error.message });
     }
 
+    // Convert IDs to numbers for proper comparison
+    const autorId = Number(idAutor);
+    const usuarioId = Number(id_usuario);
+
     // Crear la reacción
     console.log('Creando la reacción');
     const resultado = await reactionsModel.crearReaccion(req.body);
     console.log('Reacción creada con éxito');
 
     // Enviar notificación solo si el autor es diferente al usuario que reacciona
-    if (idAutor && idAutor !== id_usuario) {
+    if (autorId && usuarioId && autorId !== usuarioId) {
       console.log('El autor del contenido es diferente al usuario que reacciona');
       let nombreUsuario = 'Usuario';
       try {
@@ -54,7 +58,7 @@ const crearReaccion = async (req, res) => {
         console.error('Detalles del error:', error.response ? error.response.data : 'No hay datos de respuesta');
       }
     } else {
-      console.log('El autor del contenido es el mismo que el usuario que reacciona o no se encontró el autor');
+      console.log('El autor del contenido es el mismo que el usuario que reacciona');
     }
 
     res.status(201).json({ mensaje: 'Reacción creada con éxito', resultado });

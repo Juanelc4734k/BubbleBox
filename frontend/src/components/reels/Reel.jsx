@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { createReactionReel, getReactionsReels, deleteReaction } from '../../services/reactions';
 import { BsHandThumbsUp, BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { IoArrowRedoOutline } from 'react-icons/io5';
@@ -8,6 +9,9 @@ const Reel = ({ reel }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isHorizontal, setIsHorizontal] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const [reactions, setReactions] = useState([]);
+    const userId = localStorage.getItem('userId');
     const videoRef = useRef(null);
 
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -54,6 +58,53 @@ const Reel = ({ reel }) => {
         }
     };
 
+    const handleReaction = async () => {
+        try {
+            if (!isLiked) {
+                const reactionData = {
+                    tipo: "like",
+                    id_usuario: userId,
+                    id_contenido: reel.id,
+                    tipo_contenido: "reel"
+                };
+                await createReactionReel(reactionData);
+                setReactions(prevReactions => [...prevReactions, reactionData]);
+            } else {
+                const deleteData = {
+                    id_usuario: userId,
+                    id_contenido: reel.id,
+                    tipo_contenido: "reel"
+                };
+                await deleteReaction(deleteData);
+                setReactions(prevReactions => 
+                    prevReactions.filter(reaction => 
+                        reaction.id_usuario !== Number(userId)
+                    )
+                );
+            }
+            setIsLiked(!isLiked);
+        } catch (error) {
+            console.error('Error handling reaction:', error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchReactions = async () => {
+            try {
+                const reactionsData = await getReactionsReels(reel.id);
+                setReactions(reactionsData);
+                const userHasLiked = reactionsData.some(reaction => reaction.id_usuario === Number(userId) && reaction.tipo === "like");
+                setIsLiked(userHasLiked);
+            } catch (error) {
+                console.error('Error al obtener las reacciones:', error);
+            }
+        };
+
+        if (reel.id) {
+            fetchReactions();
+        }
+    }, [reel.id, userId])
+
     return (
         <div className="reel">
             <div className="reel-header">
@@ -92,8 +143,12 @@ const Reel = ({ reel }) => {
                 </div>
 
                 <div className={`reel-actions-vertical ${isHorizontal ? 'horizontal' : ''}`}>
-                    <button className="reel-action-button">
-                        <BsHandThumbsUp size={24} />
+                    <button 
+                        className={`reel-action-button ${isLiked ? 'liked' : ''}`} 
+                        onClick={handleReaction}>
+                        <BsHandThumbsUp 
+                            size={24} 
+                            className={isLiked ? 'text-blue-500' : ''}/>
                     </button>
                     <button className="reel-action-button">
                         <MdOutlineInsertComment size={24} />
