@@ -5,7 +5,9 @@ import "../../assets/css/chats/createGroup.css";
 import * as jwt_decode from "jwt-decode";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
-const CreateGroup = () => {
+const CreateGroup = ({ isCreateGroupOpen, setIsCreateGroupOpen }) => {
+  console.log("isCreateGroupOpen:", isCreateGroupOpen);
+  console.log("setIsCreateGroupOpen:", setIsCreateGroupOpen);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -60,6 +62,7 @@ const CreateGroup = () => {
 
   const toggleGroup = () => {
     setOpenGroup(!openGroup);
+    setIsCreateGroupOpen(!openGroup);
     if (!openGroup) {
       setNombre("");
       setDescripcion("");

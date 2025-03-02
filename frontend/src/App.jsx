@@ -28,6 +28,8 @@ import './assets/css/app/app.css';
 export default function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 1024);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false); // Estado para el modal
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -87,7 +89,7 @@ export default function App() {
           path="/*"
           element={
             <div className='app'>
-              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
+              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} />}
               {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
               <div className="layout">
                 <main className="main-content">
@@ -102,7 +104,7 @@ export default function App() {
                     <Route path='/recover-password' element={<RecoverPass />} />
                     <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
                     <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
-                    <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                    <Route path='/chats' element={<ProtectedRoute><Chats isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} /></ProtectedRoute>} />
                     <Route path='/reels' element={<ProtectedRoute><Reels /></ProtectedRoute>} />
                     <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                     <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
