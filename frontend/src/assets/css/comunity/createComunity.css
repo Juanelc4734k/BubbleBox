@@ -47,7 +47,7 @@
     border-radius: 1rem;
     padding: 1.5rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 1300;
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
@@ -87,7 +87,7 @@
     margin-right: 5px;
     margin-top: 4.5px;
   }
-  .close-button {
+  .close-buttonComi {
     background: none;
     border: none;
     color: #666;
@@ -97,7 +97,7 @@
     border-radius: 50%;
     transition: all 0.3s ease;
   }
-  .close-button:hover {
+  .close-buttonComi:hover {
     background: rgba(151, 71, 255, 0.1);
     color: #9747ff;
   }
@@ -200,7 +200,7 @@
       transform: translateY(-10px);
     }
   }
-  .@keyframes bubbleFloat {
+  @keyframes bubbleFloat {
     0% {
       transform: translate(0, 0) scale(0.8); /* Evita que aparezcan de repente con scale(0) */
       opacity: 0;
@@ -252,7 +252,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1200;
+    z-index: 1250;
 }
   
   @media (max-width: 768px) {
@@ -272,7 +272,7 @@
       padding: 0.75rem;
     }
   }
-  .@media (min-width: 1024px) {
+  @media (min-width: 1024px) {
     .formComunity {
       max-width: 600px;
       top: 50%;
