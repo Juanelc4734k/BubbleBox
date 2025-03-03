@@ -178,7 +178,7 @@ const CreatePost = () => {
               <h2 className="textPubli">
                 <CiCirclePlus className="iconoPublicacion" /> Crear Publicación
               </h2>
-              <button className="close-button" onClick={togglePost}>
+              <button className="close-buttonPos" onClick={togglePost}>
                 <IoClose />
               </button>
             </div>

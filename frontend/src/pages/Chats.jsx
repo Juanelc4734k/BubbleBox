@@ -8,7 +8,7 @@ import { IoIosArrowBack, IoIosArrowForward  } from "react-icons/io";
 import CreateGroup from '../components/chats/CreateGroup';
 
 
-const Chats = () => {
+const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
     const [friends, setFriends] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [error, setError] = useState(null);
@@ -119,7 +119,7 @@ const Chats = () => {
                             <div className="hederChat">
                                 <h2 className="textChat">Tus Chats</h2>  
                                 {(isSidebarVisibleChat || window.innerWidth >= 1024) && (
-                                    <CreateGroup />
+                                    <CreateGroup isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen}/>
                                 )} 
                             </div>
                             {friends.map((friend) => (
