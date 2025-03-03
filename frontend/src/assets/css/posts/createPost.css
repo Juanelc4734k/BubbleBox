@@ -86,7 +86,7 @@
   margin-right: 5px;
   margin-top: 4.5px;
 }
-.close-button {
+.close-buttonPos {
   background: none;
   border: none;
   color: #666;
@@ -97,7 +97,7 @@
   transition: all 0.3s ease;
 }
 
-.close-button:hover {
+.close-buttonPos:hover {
   background: rgba(151, 71, 255, 0.1);
   color: #9747ff;
   transition: all 0.3s ease;

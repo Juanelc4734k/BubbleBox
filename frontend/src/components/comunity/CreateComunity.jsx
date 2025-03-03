@@ -181,7 +181,7 @@ const CreateComunity = () => {
                     <div ref={combinedRef}  className="formComunity">
                         <div className="form-header">
                             <h2><TbUsersPlus className="iconoComunity" /> Crear Comunidad</h2>
-                            <button className="close-button" onClick={toggleComunity}>
+                            <button className="close-buttonComi" onClick={toggleComunity}>
                                 <IoClose />
                             </button>
                         </div>
