@@ -2,8 +2,11 @@ const groupChatModel = require('../models/groupChatModel');
 
 const createGroup = async (req, res) => {
     try {
-        const { name, imagen, userId } = req.body;
-        const group = await groupChatModel.createGroup(name, imagen);
+        const { name, descripcion, userId } = req.body;
+        const imagen = req.file ? req.file.filename : null;
+        console.log('Datos recibidos:', name, descripcion, userId, imagen);
+        console.log('req.file:', req.file);
+        const group = await groupChatModel.createGroup(userId, name, descripcion, imagen);
         await groupChatModel.addUserToGroup(userId, group.id);
         res.status(201).json(group);
     } catch (error) {
@@ -11,10 +14,26 @@ const createGroup = async (req, res) => {
     }
 };
 
+const createGroupMessage = async (req, res) => {
+    try {
+        const { groupId } = req.params;
+        const { senderId, message } = req.body;
+        const saved = await groupChatModel.saveGroupMessageWithTimestamp(senderId, groupId, message);
+        if (saved) {
+            res.json({ message: 'Mensaje enviado exitosamente' });
+        } else {
+            res.status(400).json({ message: 'No se pudo enviar el mensaje' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error al enviar el mensaje', error: error.message });
+    }
+}
+
 const addMember = async (req, res) => {
     try {
         const { userId, groupId } = req.body;
-        const added = await groupChatModel.addUserToGroup(userId, groupId);
+        // Changed order of parameters to match model's expected order (groupId, userId)
+        const added = await groupChatModel.addUserToGroup(groupId, userId);
         if (added) {
             res.json({ message: 'Usuario agregado al grupo exitosamente' });
         } else {
@@ -35,12 +54,25 @@ const getGroups = async (req, res) => {
     }
 };
 
-const getGroupMessages = async (req, res) => {
+const getGroup = async (req, res) => {
     try {
         const { groupId } = req.params;
-        const { userId } = req.query;
+        const group = await groupChatModel.getGroup(groupId);
+        if (!group) {
+            return res.status(404).json({ message: 'Grupo no encontrado' });
+        }
+        res.json(group);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener grupo', error: error.message });
+    }
+};
+
+const getGroupMessages = async (req, res) => {
+    try {
+        const { groupId, userId } = req.params;
+        console.log('Checking membership for:', { groupId, userId }); // Debug log
         
-        const isMember = await groupChatModel.isMember(userId, groupId);
+        const isMember = await groupChatModel.isMember(groupId, userId);
         if (!isMember) {
             return res.status(403).json({ message: 'No eres miembro de este grupo' });
         }
@@ -48,6 +80,7 @@ const getGroupMessages = async (req, res) => {
         const messages = await groupChatModel.getGroupMessages(groupId);
         res.json(messages);
     } catch (error) {
+        console.error('Error in getGroupMessages:', error); // Debug log
         res.status(500).json({ message: 'Error al obtener mensajes', error: error.message });
     }
 };
@@ -64,8 +97,10 @@ const getGroupUsers = async (req, res) => {
 
 module.exports = {
     createGroup,
+    createGroupMessage,
     addMember,
     getGroups,
+    getGroup,
     getGroupMessages,
     getGroupUsers
 };
