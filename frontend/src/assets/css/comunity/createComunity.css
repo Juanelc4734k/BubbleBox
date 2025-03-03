@@ -200,7 +200,7 @@
       transform: translateY(-10px);
     }
   }
-  .@keyframes bubbleFloat {
+  @keyframes bubbleFloat {
     0% {
       transform: translate(0, 0) scale(0.8); /* Evita que aparezcan de repente con scale(0) */
       opacity: 0;
@@ -272,7 +272,7 @@
       padding: 0.75rem;
     }
   }
-  .@media (min-width: 1024px) {
+  @media (min-width: 1024px) {
     .formComunity {
       max-width: 600px;
       top: 50%;
