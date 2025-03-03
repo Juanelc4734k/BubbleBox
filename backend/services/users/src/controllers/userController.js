@@ -241,6 +241,7 @@ const getPublicUserProfile = async (req, res) => {
       id: userProfile.id,
       nombre: userProfile.nombre,
       username: userProfile.username,
+      descripcion_usuario: userProfile.descripcion_usuario,
       email: userProfile.email,
       avatar: userProfile.avatar,
       estado: userProfile.estado

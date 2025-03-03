@@ -11,6 +11,8 @@ const Reels = () => {
   const [mostrarT, setMostrarT] = useState(true)
   const [noVer, setNoVer] = useState(false)
   const [textoM, setTextoM] = useState("")
+  const [activeTab, setActiveTab] = useState('all') // New state for active tab
+  const userId = parseInt(localStorage.getItem('userId')) // Add userId
 
   useEffect(() => {
     const fetchReels = async () => {
@@ -49,6 +51,11 @@ const Reels = () => {
     return () => clearInterval(escribir)
   }, [])
 
+  // Filter reels based on active tab
+  const filteredReels = activeTab === 'my' 
+    ? reels.filter(reel => reel.usuario_id === userId)
+    : reels;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -63,10 +70,37 @@ const Reels = () => {
           <div className="textOcul">
             {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
           </div>
+
+          {/* Tab Navigation */}
+          <div className="tabs-container">
+            <div className="tabs">
+              <button 
+                className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                onClick={() => setActiveTab('all')}
+              >
+                Todos los Reels
+              </button>
+              <button 
+                className={`tab ${activeTab === 'my' ? 'active' : ''}`}
+                onClick={() => setActiveTab('my')}
+              >
+                Mis Reels
+              </button>
+            </div>
+          </div>
+
           <div className="reels-container">
-            {reels.map(reel => (
-              <Reel key={reel.id} reel={reel} />
-            ))}
+            {filteredReels.length > 0 ? (
+              filteredReels.map(reel => (
+                <Reel key={reel.id} reel={reel} isMyReelsTab={activeTab === 'my'} />
+              ))
+            ) : (
+              <div className="no-reels">
+                {activeTab === 'my' 
+                  ? 'No has creado ningún reel todavía.' 
+                  : 'No hay reels disponibles.'}
+              </div>
+            )}
           </div>
         </div>
       )}

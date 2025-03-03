@@ -103,22 +103,42 @@ const obtenerPublicacionPorId = (id) => {
     });
 };
 
+const isPostEditable = (creationDate, timeLimit = 24) => {
+    const postDate = new Date(creationDate);
+    const currentDate = new Date();
+    const hoursDifference = (currentDate - postDate) / (1000 * 60 * 60);
+    return hoursDifference <= timeLimit;
+}
+
 const actualizarPublicacion = (id, titulo, contenido, imagen = null) => {
     return new Promise((resolve, reject) => {
-        let query = 'UPDATE publicaciones SET titulo = ?, contenido = ?';
-        let params = [titulo, contenido];
-
-        if (imagen !== null) {
-            query += ', imagen = ?';
-            params.push(imagen);
-        }
-
-        query += ' WHERE id = ?';
-        params.push(id);
-
-        db.query(query, params, (err, result) => {
+        // First check if the post exists and is still editable
+        db.query('SELECT fecha_creacion FROM publicaciones WHERE id = ?', [id], (err, results) => {
             if (err) return reject(err);
-            resolve(result.affectedRows > 0);
+            if (results.length === 0) return resolve(false);
+            
+            const post = results[0];
+            // Check if post is still within editable time frame (24 hours)
+            if (!isPostEditable(post.fecha_creacion)) {
+                return resolve({ updated: false, reason: 'expired' });
+            }
+            
+            // If post is editable, proceed with update
+            let query = 'UPDATE publicaciones SET titulo = ?, contenido = ?';
+            let params = [titulo, contenido];
+
+            if (imagen !== null) {
+                query += ', imagen = ?';
+                params.push(imagen);
+            }
+
+            query += ' WHERE id = ?';
+            params.push(id);
+
+            db.query(query, params, (err, result) => {
+                if (err) return reject(err);
+                resolve({ updated: result.affectedRows > 0, reason: 'success' });
+            });
         });
     });
 };

@@ -90,6 +90,7 @@ const leaveCommunity = async (req, res) => {
 const updateCommunity = async (req, res) => {
     try {
         const { nombre, descripcion, imagen } = req.body;
+        console.log('Data:', nombre, descripcion)
         const actualizado = await communityModel.actualizarComunidad(req.params.id, nombre, descripcion, imagen);
         if (actualizado) {
             res.json({ mensaje: 'Comunidad actualizada con éxito' });
