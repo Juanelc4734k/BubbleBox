@@ -1,4 +1,9 @@
 /* Base styles - Mobile first */
+
+html, body {
+  overflow-x: hidden; /* Evita el scroll horizontal */
+}
+
 .conSide {
   display: flex;
   position: relative;
@@ -12,7 +17,6 @@
   flex: 1;
   position: relative;
   height: calc(100vh - 7rem);
-  overflow: hidden;
   padding: 1rem;
   padding-top: 4rem;
 }
@@ -113,14 +117,12 @@
 
 /* Desktop styles */
 @media (min-width: 1024px) {
-  .conSide {
-    padding-right: 18rem; /* Ajustamos el espacio para el sidebar */
+  .conSide{
+    align-items: normal;
   }
-
   .dideChat {
     height: calc(100vh - 11rem);
   }
-
   .sidebar-wrapper {
     top: 13.2rem;
     height: calc(100vh - 14.5rem);
@@ -134,8 +136,7 @@
 /* Large Desktop styles */
 @media (min-width: 1440px) {
   .conSide {
-    padding-right: 23rem; /* Aumentamos el espacio para el sidebar */
-    margin: 0 1rem; /* Margen en los lados */
+    align-items: normal;
   }
 
   .sidebar-wrapper {

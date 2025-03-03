@@ -164,6 +164,10 @@
 
 /* Tablet styles */
 @media (min-width: 768px) {
+  .chat-detail-container {
+    width: calc(100% - 30px); /* 250px sidebar + 50px margin */
+    margin: 0 1.5rem;
+  }
   .message-bubble {
     max-width: 60%;
     font-size: 1rem;
@@ -177,6 +181,10 @@
 
 /* Desktop styles */
 @media (min-width: 1024px) {
+  .chat-detail-container {
+    width: calc(100% - 350px); /* 400px sidebar + 20px margin */
+    margin: 0 3.5rem;
+  }
   .chat-header {
     padding: 1.5rem;
   }
@@ -215,11 +223,7 @@
 @media (min-width: 1440px) {
   .chat-detail-container {
     width: calc(100% - 420px); /* 400px sidebar + 20px margin */
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 420px; /* Sidebar width + margin */
+    margin: 0 3.5rem;
   }
 }
 
