@@ -9,6 +9,9 @@
   z-index: 1100;
   padding: 0.5rem;
   transition: all 0.5s ease;
+}
+  .navbar.modal-open {
+    z-index: 1200; /* Reducir la prioridad cuando el modal está abierto */
   }
   .user-navbar {
   background-image: url(../../images/img/imFondo.jpeg);
