@@ -1,14 +1,25 @@
 const db = require('../config/db');
 
-const createGroup = (name, imagen) => {
+const createGroup = (userId, name, descripcion, imagen) => {
     return new Promise((resolve, reject) => {
-        const query = 'INSERT INTO grupos (name, imagen) VALUES (?, ?)';
-        db.query(query, [name, imagen], (error, result) => {
+        const query = 'INSERT INTO grupos (id_creador, name, descripcion, imagen) VALUES (?, ?, ?, ?)';
+        db.query(query, [userId, name, descripcion, imagen], (error, result) => {
             if (error) reject(error);
             else resolve({ id: result.insertId, name, imagen });
         });
     });
 }
+
+const saveGroupMessage = (senderId, groupId, message) => {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO mensajes_grupos (group_id, sender_id, message) VALUES (?, ?, ?)';
+        db.query(query, [groupId, senderId, message], (error, result) => {
+            if (error) reject(error);
+            else resolve(result.affectedRows > 0);
+        });
+    });
+}
+
 
 const addUserToGroup = (userId, groupId) => {
     return new Promise((resolve, reject) => {
@@ -22,13 +33,28 @@ const addUserToGroup = (userId, groupId) => {
 
 const getGroups = (userId) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM grupos WHERE id IN (SELECT group_id FROM miembros_grupos WHERE user_id = ?)';
-        db.query(query, [userId], (error, results) => {
+        const query = `
+            SELECT DISTINCT g.* 
+            FROM grupos g 
+            LEFT JOIN miembros_grupos mg ON g.id = mg.group_id 
+            WHERE g.id_creador = ? OR mg.user_id = ?`;
+        db.query(query, [userId, userId], (error, results) => {
             if (error) reject(error);
             else resolve(results);
         });
     });
 }
+
+const getGroup = (groupId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM grupos WHERE id =?';
+        db.query(query, [groupId], (error, results) => {
+            if (error) reject(error);
+            else resolve(results[0]);
+        });
+    });
+}
+
 
 const getUsersByGroup = (groupId) => {
     return new Promise((resolve, reject) => {
@@ -40,7 +66,7 @@ const getUsersByGroup = (groupId) => {
     });
 }
 
-const saveGroupMessage = (senderId, groupId, message) => {
+const saveGroupMessageWithTimestamp = (senderId, groupId, message) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO mensajes_grupos (sender_id, group_id, message) VALUES (?, ?, ?)';
         db.query(query, [senderId, groupId, message], (error, result) => {
@@ -70,10 +96,10 @@ const deleteGroupMessage = (messageId) => {
     });
 }
 
-const isMember = (userId, groupId) => {
+const isMember = (groupId, userId) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM miembros_grupos WHERE user_id = ? AND group_id = ?';
-        db.query(query, [userId, groupId], (error, results) => {
+        const query = 'SELECT * FROM miembros_grupos WHERE group_id = ? AND user_id = ?';
+        db.query(query, [groupId, userId], (error, results) => {
             if (error) reject(error);
             else resolve(results.length > 0);
         });
@@ -82,8 +108,10 @@ const isMember = (userId, groupId) => {
 
 module.exports = {
     createGroup,
+    saveGroupMessageWithTimestamp,
     addUserToGroup,
     getGroups,
+    getGroup,
     getUsersByGroup,
     saveGroupMessage,
     getGroupMessages,
