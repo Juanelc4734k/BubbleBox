@@ -122,22 +122,25 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                                     <CreateGroup isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen}/>
                                 )} 
                             </div>
-                            {friends.map((friend) => (
-                            <ChatPreview
-                                key={friend.id_usuario1 + "-" + friend.id_usuario2}
-                                friend={friend}
-                                onSelect={() => {
-                                const currentUserId = localStorage.getItem("userId")
-                                const friendId =
-                                    friend.id_usuario1 === Number.parseInt(currentUserId) ? friend.id_usuario2 : friend.id_usuario1
-                                setSelectedFriend(friendId)
-                                }}
-                                isSelected={
-                                selectedFriend ===
-                                (friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1)
-                                }
-                            />
-                            ))}
+                            <div className="chat-list">
+                                {friends.map((friend) => (
+                                <ChatPreview
+                                    key={friend.id_usuario1 + "-" + friend.id_usuario2}
+                                    friend={friend}
+                                    onSelect={() => {
+                                    const currentUserId = localStorage.getItem("userId")
+                                    const friendId =
+                                        friend.id_usuario1 === Number.parseInt(currentUserId) ? friend.id_usuario2 : friend.id_usuario1
+                                    setSelectedFriend(friendId)
+                                    }}
+                                    isSelected={
+                                    selectedFriend ===
+                                    (friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1)
+                                    }
+                                />
+                                ))}
+                            </div>
+                            
                         </div>
                         )}
                     </div>

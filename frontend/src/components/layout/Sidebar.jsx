@@ -49,7 +49,6 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
           {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
           {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
           {renderMenuItem(PiVideo, '/reels', 'Reels', 'reels')}
-          {renderMenuItem(IoMdMusicalNote,'/home', 'Musica', 'music')}
         </>
       )}
       <li className="menu-item" data-tooltip="Cerrar Sesión">
