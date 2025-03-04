@@ -62,15 +62,26 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                         try {
                             const response = await fetch(`http://localhost:3001/chats/messages/${userId}/${friendId}`);
                             const messages = await response.json();
-                            const lastMessage = messages[messages.length - 1]?.message || '';
-                            return { ...friend, lastMessage };
+                            const lastMsg = messages[messages.length - 1];
+                            return { 
+                                ...friend, 
+                                lastMessage: lastMsg?.message || '',
+                                lastMessageTimestamp: lastMsg ? new Date(lastMsg.created_at).getTime() : 0
+                            };
                         } catch (error) {
-                            return { ...friend, lastMessage: '' };
+                            return { 
+                                ...friend, 
+                                lastMessage: '',
+                                lastMessageTimestamp: 0 
+                            };
                         }
                     })
                 );
                 
-                setFriends(friendsWithLastMessage);
+                const sortedFriends = friendsWithLastMessage.sort((a, b) => 
+                    b.lastMessageTimestamp - a.lastMessageTimestamp
+                );
+                setFriends(sortedFriends);
                 setError(null);
             } catch (error) {
                 console.error('Error al obtener los amigos:', error);
