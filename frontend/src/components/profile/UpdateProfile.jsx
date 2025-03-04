@@ -105,7 +105,7 @@ const UpdateProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
      // Validación de la descripción antes de enviar el formulario
-    if (profile.descripcion_usuario.length < 100) {
+    if (profile.descripcion_usuario.length < 10) {
       setMessage("La descripción debe tener al menos 10 caracteres.");
       return; // Detiene la ejecución de la función y no envía el formulario
     }

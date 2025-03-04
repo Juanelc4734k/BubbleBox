@@ -16,9 +16,8 @@ import Reels from './pages/Reels.jsx';
 import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
-import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
-import AdminDashboard from './dashboard/pages/AdminDashboard';
+
 
 import { logoutUser } from './services/auth.js';
 
@@ -73,16 +72,7 @@ export default function App() {
   }
   return (
     <Router>
-      {/* Separate route rendering for admin dashboard */}
       <Routes>
-        <Route
-          path="/admin/*"
-          element={
-            <RoleProtectedRoute allowedRoles={['administrador']}>
-              <AdminDashboard />
-            </RoleProtectedRoute>
-          }
-        />
         
         {/* Regular app routes wrapped in the app layout */}
         <Route
