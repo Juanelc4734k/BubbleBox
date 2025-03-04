@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 const db = require('./src/config/db');
 const chatRoutes = require('./src/routes/chatsRoutes');
 const friendshipModel = require('../friendships/src/models/friendModel');
 const chatModel = require('./src/models/chatsModel'); // Move require to top level
+const groupChatModel = require('./src/models/groupChatModel');
 const http = require('http');
 const socketIO = require('socket.io');
 
@@ -16,6 +18,8 @@ const io = socketIO(server, {
     methods: ["GET", "POST"]
   }
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //middlewares
 app.use(cors());
@@ -64,6 +68,45 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('join_group', async ({ userId, groupId }) => {
+        try {
+            const isMember = await groupChatModel.isMember(groupId, userId);
+            if(isMember) {
+                socket.join(`group_${groupId}`);
+                console.log(`User ${userId} joined group ${groupId}`);
+            } else {
+                socket.emit('error', 'No puedes unirte a un grupo del que no eres miembro');
+            }
+        } catch (error) {
+            console.error('Error al unirse al grupo: ', error);
+            socket.emit('error', 'Error al unirse al grupo');
+        }
+    });
+    socket.on('send_group_message', async ({senderId, groupId, message, temp_id}) => {
+        try {
+            const isMember = await groupChatModel.isMember(groupId, senderId);
+            if(isMember) {
+                const savedMessage = await groupChatModel.saveGroupMessage(senderId, groupId, message);
+                io.in(`group_${groupId}`).emit('receive_group_message', {
+                    id: savedMessage.id,
+                    senderId: savedMessage.senderId,
+                    groupId: savedMessage.groupId,
+                    message: savedMessage.message,
+                    created_at: savedMessage.createdAt,
+                    temp_id
+                });
+                socket.emit('message_sent_confirmation', {
+                    temp_id,
+                    id: savedMessage.id
+                });
+            } else {
+                socket.emit('error', 'No puedes enviar mensajes a grupos a los que no perteneces');
+            }
+        } catch (error) {
+            console.error('Error al enviar mensaje de grupo:', error);
+            socket.emit('error', 'Error al enviar el mensaje de grupo')
+        }
+    });
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
     });

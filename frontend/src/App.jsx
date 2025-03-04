@@ -17,16 +17,22 @@ import Profiles from './pages/Profiles';
 import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
+import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
+
+import { logoutUser } from './services/auth.js';
+
 import './assets/css/layout/layout.css';
 import './assets/css/app/app.css';
 
 export default function App() {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(window.innerWidth > 1024);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false); // Estado para el modal
+
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
@@ -34,12 +40,14 @@ export default function App() {
           const expirationTime = decodedToken.exp * 1000;
           
           if (Date.now() >= expirationTime) {
+            await logoutUser();
             localStorage.clear();
             setIsAuthenticated(false);
           } else {
             setIsAuthenticated(true);
           }
         } catch (error) {
+          await logoutUser();
           localStorage.clear();
           setIsAuthenticated(false);
         }
@@ -81,7 +89,7 @@ export default function App() {
           path="/*"
           element={
             <div className='app'>
-              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} />}
+              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} />}
               {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
               <div className="layout">
                 <main className="main-content">
@@ -89,14 +97,14 @@ export default function App() {
                     <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
                     <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
                     <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
-                    <Route path='/comunidad/:id' element={<ProtectedRoute><CommunityDetail /></ProtectedRoute>} />
+                    <Route path='/comunidad/:id' element={<ProtectedRoute><ProtectedRouteCommunity><CommunityDetail /></ProtectedRouteCommunity></ProtectedRoute>} />
                     <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
                     <Route path='/recover-password' element={<RecoverPass />} />
                     <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
                     <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
-                    <Route path='/chats' element={<ProtectedRoute><Chats /></ProtectedRoute>} />
+                    <Route path='/chats' element={<ProtectedRoute><Chats isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} /></ProtectedRoute>} />
                     <Route path='/reels' element={<ProtectedRoute><Reels /></ProtectedRoute>} />
                     <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                     <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />

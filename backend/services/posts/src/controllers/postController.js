@@ -70,13 +70,19 @@ const createPost = async (req, res) => {
         try {
             const usuarioCreador = await axios.get(`http://localhost:3000/users/usuario/${idUsuario}`);
             nombreUsuarioCreador = usuarioCreador.data.nombre;
-            //console.log(nombreUsuarioCreador);
         } catch (error) {
             console.error('Error al obtener el usuario creador:', error.message);
         }
 
+        // Send notifications to friends, excluding the post creator
         for (const amigo of amigos) {
-            const amigoId = amigo.id_usuario1 === idUsuario ? amigo.id_usuario2 : amigo.id_usuario1;
+            // Determine which ID in the friendship is the friend's ID
+            let amigoId;
+            if (amigo.id_usuario1 === parseInt(idUsuario)) {
+                amigoId = amigo.id_usuario2;
+            } else if (amigo.id_usuario2 === parseInt(idUsuario)) {
+                amigoId = amigo.id_usuario1;
+            }
             
             try {
                 await axios.post(`http://localhost:3000/notifications/send`, {
@@ -113,9 +119,12 @@ const updatePost = async (req, res) => {
     try {
         const { id } = req.params;
         const { titulo, contenido, imagen } = req.body;
-        const actualizado = await postModel.actualizarPublicacion(id, titulo, contenido, imagen);
-        if (actualizado) {
+        const result = await postModel.actualizarPublicacion(id, titulo, contenido, imagen);
+        
+        if (result.updated) {
             res.json({ mensaje: 'Publicación actualizada con éxito' });
+        } else if (result.reason === 'expired') {
+            res.status(403).json({ mensaje: 'No se puede editar la publicación después de 24 horas' });
         } else {
             res.status(404).json({ mensaje: 'Publicación no encontrada' });
         }

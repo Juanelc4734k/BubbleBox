@@ -1,0 +1,114 @@
+.story-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 10px;
+    cursor: pointer;
+    position: relative;
+    border: 3px solid #0095f6;
+    overflow: hidden;
+}
+
+.story-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.story-user-preview {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.user-avatar-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.username-preview {
+    font-size: 12px;
+    color: white;
+    text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.story-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Increased z-index to appear above navbar */
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10000; /* Ensure close button is above modal */
+}
+
+.story-modal-content {
+    position: relative;
+    z-index: 10000; /* Ensure content is above modal background */
+    max-width: 90%;
+    max-height: 90vh;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.story-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: #262626;
+}
+
+.user-avatar-large {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.user-info {
+    color: white;
+}
+
+.user-info h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.story-timestamp {
+    margin: 0;
+    font-size: 12px;
+    color: #8e8e8e;
+}
+
+.story-image-container {
+    width: 100%;
+    max-height: calc(90vh - 72px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-image-full {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}

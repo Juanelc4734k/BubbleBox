@@ -11,16 +11,18 @@ import CreatePost from "../posts/CreatePost";
 import CreateComunity from "../comunity/CreateComunity";
 import CreateStories from "../stories/CreateStories";
 import Notifications from "./Notifications";
+import CreateGroup from "../chats/CreateGroup";
 
-const Navbar = ({ toggleSidebar }) => {
+const Navbar = ({ toggleSidebar, isCreateGroupOpen, setIsCreateGroupOpen }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const userRole = localStorage.getItem("userRole")
   const [userProfile, setUserProfile] = useState(null)
   const [isExpanded, setIsExpanded] = useState(false)
+
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s"
-  const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
+  const defaultDescription = "¡Holaaaa! Soy nuevo en BubbleBox y estoy muy emocionado por conectar con nuevos amigos.";
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -56,6 +58,8 @@ const Navbar = ({ toggleSidebar }) => {
     setIsExpanded(!isExpanded)
   }
 
+  console.log("Estado de isCreateGroupOpen:", isCreateGroupOpen);
+
   // Navbar para administrador
   const renderAdminNavbar = () => (
     <nav className="navbar admin-navbar">
@@ -82,7 +86,7 @@ const Navbar = ({ toggleSidebar }) => {
 
   // Navbar para usuario
   const renderUserNavbar = () => (
-    <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""}`}>
+    <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""} ${isCreateGroupOpen ? "modal-open" : ""} `}>
       <div className="navbar-content">
         <div className="navbar-left">
           <div className="navbar-img">

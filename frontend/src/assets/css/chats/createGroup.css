@@ -1,0 +1,201 @@
+.create-group {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .create-group-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgb(224, 224, 224);
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
+  }
+  
+  .create-group-button:hover {
+    transform: translateY(-2px);
+    background-color: #c6a3f3;
+  }
+  
+  .create-group-button .icono0 {
+    font-size: 1.2rem;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    z-index: 9998;
+  }
+  .formGroup {
+    position: relative; /* Changed from fixed to relative */
+    width: 90%;
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    animation: modalAppear 0.3s ease-out;
+    z-index: 9999 ;
+  }
+  .tooltipGroupContainer{
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .tooltipGroup {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #7b6fca;
+    padding: 0.25rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Eliminar opacity y visibility */
+}  
+  @keyframes modalAppear {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .form-header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(151, 71, 255, 0.2);
+  }
+  .form-header h2 {
+    color: #8034ff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .iconoGrupo {
+    font-size: 1.5rem;
+    color: #8034ff;
+  }
+  .close-buttonGro {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .close-buttonGro:hover {
+    background: rgba(151, 71, 255, 0.1);
+    color: #9747ff;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(151, 71, 255, 0.2);
+    border-radius: 0.75rem;
+    background: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    color: #333;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #9747ff;
+    box-shadow: 0 0 0 3px rgba(151, 71, 255, 0.1);
+  }
+  .submit-button {
+    width: 100%;
+    padding: 1rem;
+    background: #9747ff;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .submit-button:hover:not(:disabled) {
+    background: #8034ff;
+    transform: translateY(-2px);
+  }
+  .submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  .mensaje {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+  }
+  .mensaje.success {
+    background-color: rgba(72, 187, 120, 0.1);
+    color: #38a169;
+  }
+  .mensaje.error {
+    background-color: rgba(245, 101, 101, 0.1);
+    color: #e53e3e;
+  }
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .formGroup {
+      width: 95%;
+      padding: 1rem;
+      max-height: 80vh;
+    }
+  .form-header h2 {
+      font-size: 1.1rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .create-group-button{
+      padding: 0.5rem;
+    }
+    .formGroup {
+      max-width: 600px;
+      padding: 2rem;
+    }
+  .form-header h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  

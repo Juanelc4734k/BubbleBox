@@ -1,4 +1,126 @@
+/* Edit Modal styles */
+.edit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
 
+.edit-form-post {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.edit-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.edit-text-publi {
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-icono-publicacion {
+  color: #b685e4;
+}
+
+.edit-close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+}
+
+.edit-close-button:hover {
+  color: #333;
+}
+
+.edit-form-group {
+  margin-bottom: 15px;
+}
+
+.edit-form-group input,
+.edit-form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.edit-form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.edit-image-preview {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.edit-submit-button {
+  background-color: #b685e4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.edit-submit-button:hover {
+  background-color: #9b6bc7;
+}
+
+.edit-submit-button:disabled {
+  background-color: #d4b8f0;
+  cursor: not-allowed;
+}
+
+.edit-mensaje {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.edit-mensaje.error {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.edit-mensaje.success {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
 
 .posts{
     width: 93%;
@@ -18,6 +140,17 @@
     padding: 1vh 1.5vh;
     text-align:left;
 }
+
+.posts .post .info-post .post-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+    background-color: white;
+    padding: 3px;
+    border-radius: 1vh;
+}
+
 .posts .post .autor-info .fechacreate{
     display: flex;
     justify-content: end;
@@ -61,6 +194,7 @@
     background-color: #e2e2e2;
 }
 
+
 .posts .post  .contenido-post{
 margin: 2vh;
 }
@@ -83,12 +217,50 @@ margin: 2vh;
   padding-left: 2vh;
   padding-right: 2vh;
   padding-top: 1vh;
-
 }
+
+
+.description p {
+  transition: all 0.3s ease;
+}
+
+.description button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.posts .post  .contenido-post p{
+    padding: 2vh 0vh 0.3vh 1.8vh;
+    max-height: 150px;
+    overflow-y: auto;
+    line-height: 1.5;
+    /* Estilizar scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #b685e4bd #f0f0f0;
+}
+
+
+/* Estilos para el scrollbar en navegadores webkit */
+.posts .post  .contenido-post p::-webkit-scrollbar {
+    width: 6px;
+}
+
 .posts .post  .contenido-post .principalContenImg .imgconten{
   overflow: hidden;
-}
 
+.posts .post  .contenido-post p::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+.posts .post  .contenido-post p::-webkit-scrollbar-thumb {
+    background-color: #b685e4bd;
+    border-radius: 10px;
+  
+}
 .posts .post .lineTwo{
     width: 88%;
     height: 0.3vh;
@@ -114,8 +286,76 @@ margin: 2vh;
     box-shadow: 0vh 0.1vh 0.4vh rgba(0, 0, 0, 0.671);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+}.reacciones button {
+    padding: 4px;
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
 }
-.posts .post .aption .reacciones:hover,
+
+.reactions-menu {
+  position: absolute;
+  bottom: 2.3rem;
+  left: 610%;
+  transform: translateX(-50%);
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid #e5e7eb;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.reaction-emoji {
+  display: inline-block;
+  cursor: pointer;
+  font-size: 1px; /* Fixed size */
+}
+
+.animate-reaction {
+  animation: popIn 0.3s ease-out;
+  transform-origin: center;
+}
+
+@keyframes popIn {
+  0% {
+      opacity: 0;
+      transform: scale(0.5);
+  }
+  70% {
+      opacity: 1;
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+.reactions-menu button {
+  transition: transform 0.2s ease;
+  font-size: 1.25rem;
+  padding: 0.25rem;
+}
+
+.reactions-menu button:hover {
+  transform: scale(1.25);
+}
+
+@media (min-width: 640px) {
+  .reactions-menu {
+      gap: 0.75rem;
+  }
+}
+
+.reacciones .absolute {
+    white-space: nowrap;
+}
  .comentarios:hover, .reenviar:hover{
     background-color: #7a7777 ;
     
@@ -126,7 +366,100 @@ margin: 2vh;
     transform: translateY(-0.5vh); 
     box-shadow: 0vh 0.3vh 0.6vh rgba(0, 0, 0, 0.8);
 }
+.posts {
+    width: 93%;
+    min-height: 400px;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+}
 
+/* Post options menu styles */
+.post-options {
+  position: relative;
+}
+
+.options-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.options-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+}
+
+.options-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.options-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.options-menu button:hover {
+  background-color: #f5f5f5;
+}
+
+.options-menu button.delete {
+  color: #e53e3e;
+}
+
+.posts .post {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.posts .post .contenido-post {
+    display: flex;
+    flex-direction: column;
+    padding: 1vh 3vh;
+    flex: 1;
+    min-height: 200px;
+}
+
+.posts .post .contenido-post p {
+    padding: 1vh 2vh;
+    min-height: 65px;
+    max-height: 0;
+    overflow-y: auto;
+    line-height: 1.5;
+    margin-bottom: 1vh;
+}
+
+.posts .post .imgconten {
+    min-height: 200px;
+    max-height: 400px;
+    margin: 1vh auto;
+    width: 90%;
+}
+
+@media (min-width: 768px) {
+    .posts {
+        width: 45%;
+        min-height: 450px;
+    }
+}
 .contImagenPost {
     position: fixed;
     top: 0;
