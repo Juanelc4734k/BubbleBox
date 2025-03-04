@@ -6,9 +6,8 @@
   width: calc(100% - 1rem);
   border-radius: 3vh;
   box-shadow: 0 0.25rem 0.625rem rgba(15, 14, 14, 0.3);
-  z-index: 1100;
+  z-index: 1250;
   padding: 0.5rem;
-  transition: all 0.5s ease;
 }
   .navbar.modal-open {
     z-index: 1200; /* Reducir la prioridad cuando el modal está abierto */

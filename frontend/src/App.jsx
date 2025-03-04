@@ -5,7 +5,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Communities from './pages/Communities.jsx';
-import CommunityDetail from './components/comunity/communitydetail.jsx';
+import CommunityDetail from './components/comunity/communityDetail.jsx';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -19,6 +19,7 @@ import RecoverPassPage from './pages/ResetPass';
 import RoleProtectedRoute from './components/auth/RoleProtectedRoute';
 import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
 import AdminDashboard from './dashboard/pages/AdminDashboard';
+import SidebarChat from './components/chats/SidebarChat.jsx';
 
 import { logoutUser } from './services/auth.js';
 
@@ -89,8 +90,14 @@ export default function App() {
           path="/*"
           element={
             <div className='app'>
-              {isAuthenticated && <Navbar toggleSidebar={toggleSidebar} isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} />}
-              {isAuthenticated && <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />}
+               {isAuthenticated && (
+                  <>
+                    <Navbar toggleSidebar={toggleSidebar} isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} />
+                    <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />
+                    {/* Renderizar SidebarChat en todas las rutas excepto en /chats */}
+                    {window.location.pathname !== '/chats' && <SidebarChat />}
+                  </>
+                )}
               <div className="layout">
                 <main className="main-content">
                   <Routes>

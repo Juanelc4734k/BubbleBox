@@ -61,6 +61,20 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         const userData = await userResponse.json();
         console.log(userData);
         setFriendUser(userData);
+        setAvatarUrl(userData.avatar ? `http://localhost:3009${userData.avatar}` : avatarDefault);
+
+            // Obtener el avatar del usuario actual
+      const currentUserResponse = await fetch(`http://localhost:3000/users/usuario/${senderId}`);
+      const currentUserData = await currentUserResponse.json();
+      const currentUserAvatar = currentUserData.avatar ? `http://localhost:3009${currentUserData.avatar}` : avatarDefault;
+
+            // Agregar avatares a los mensajes
+      const messagesWithAvatars = data.map(msg => ({
+        ...msg,
+        avatar: msg.sender_id === parseInt(senderId) ? currentUserAvatar : (userData.avatar ? `http://localhost:3009${userData.avatar}` : avatarDefault)
+      }));
+
+      setMessages(messagesWithAvatars);
         setAvatarUrl(
           userData.avatar
             ? `http://localhost:3009${userData.avatar}`
