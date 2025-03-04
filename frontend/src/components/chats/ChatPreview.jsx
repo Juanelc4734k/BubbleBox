@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../../assets/css/chats/chatsPreview.css';
+
 const ChatPreview = ({ friend, onSelect, isSelected }) => {
   const avatarDefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const [avatarUrl, setAvatarUrl] = useState(avatarDefault);
-  const [connectionStatus, setConnectionStatus] = useState('offline');
+  const [connectionStatus, setConnectionStatus] = useState('desconectado');
   useEffect(() => {
     const fetchAvatar = async () => {
       try {

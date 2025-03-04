@@ -1,18 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createReactionReel, getReactionsReels, deleteReaction } from '../../services/reactions';
+import { deleteReel } from '../../services/reels';
 import { BsHandThumbsUp, BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { IoArrowRedoOutline } from 'react-icons/io5';
+import { FiMoreVertical, FiTrash2 } from 'react-icons/fi';
 import '../../assets/css/layout/reels.css';
+import Swal from 'sweetalert2';
 
-const Reel = ({ reel }) => {
+const Reel = ({ reel, isMyReelsTab }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isHorizontal, setIsHorizontal] = useState(false);
     const [isLiked, setIsLiked] = useState(false);
     const [reactions, setReactions] = useState([]);
-    const userId = localStorage.getItem('userId');
     const videoRef = useRef(null);
+    const [showOptionsMenu, setShowOptionsMenu] = useState(false);
+    const userId = localStorage.getItem('userId');
+    const isMyReel = reel.usuario_id === parseInt(userId);
 
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
 
@@ -103,7 +108,76 @@ const Reel = ({ reel }) => {
         if (reel.id) {
             fetchReactions();
         }
-    }, [reel.id, userId])
+    }, [reel.id, userId]);
+
+    const handleDeleteReel = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#b685e4',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            backdrop: `rgba(0,0,0,0.5)`,
+            allowOutsideClick: false,
+            zIndex: 10000
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteReel(reel.id);
+                    
+                    Swal.fire({
+                        title: '¡Eliminado!',
+                        text: 'Tu reel ha sido eliminado.',
+                        icon: 'success',
+                        confirmButtonColor: '#b685e4',
+                        backdrop: `rgba(0,0,0,0.5)`,
+                        allowOutsideClick: false,
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } catch (error) {
+                    console.error('Error al eliminar el reel:', error);
+                    
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'No se pudo eliminar el reel.',
+                        icon: 'error',
+                        confirmButtonColor: '#b685e4',
+                        backdrop: `rgba(0,0,0,0.5)`,
+                        allowOutsideClick: false,
+                        zIndex: 10000
+                    });
+                }
+            }
+        });
+    };
+
+    // Add toggle menu function
+    const toggleOptionsMenu = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowOptionsMenu(!showOptionsMenu);
+    };
+
+    // Add click outside handler
+    useEffect(() => {
+        const handleClickOutside = () => {
+            if (showOptionsMenu) {
+                setShowOptionsMenu(false);
+            }
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showOptionsMenu]);
 
     return (
         <div className="reel">
@@ -115,6 +189,28 @@ const Reel = ({ reel }) => {
                             <p>{reel.username || 'Usuario desconocido'}</p>
                             <p>{new Date(reel.fecha_creacion).toLocaleString()}</p>
                         </div>
+                        {isMyReel && isMyReelsTab && (
+                            <div className="reel-options relative ml-auto">
+                                <button 
+                                    className="options-button p-1 rounded-full hover:bg-gray-100"
+                                    onClick={toggleOptionsMenu}
+                                >
+                                    <FiMoreVertical className="text-xl text-gray-600" />
+                                </button>
+                                
+                                {showOptionsMenu && (
+                                    <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                        <button 
+                                            className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                            onClick={handleDeleteReel}
+                                        >
+                                            <FiTrash2 />
+                                            <span>Eliminar</span>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

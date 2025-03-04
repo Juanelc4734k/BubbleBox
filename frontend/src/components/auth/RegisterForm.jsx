@@ -78,7 +78,7 @@ export default function RegisterForm({ setMessage }) {
 
     return (
 
-        <div className="registerFrom">
+ <div className="registerFrom">
             <div className="bienvenidoRegister">
                 <h1>Bienvenido a BubbleBox</h1>
                 <img src={Animation} alt="" className="registerAnimation" />
@@ -120,7 +120,8 @@ export default function RegisterForm({ setMessage }) {
                 </form>
             </div>
            
-        </div>
+           
+           </div>          
         
     );
 }
