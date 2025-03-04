@@ -38,6 +38,19 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         const userData = await  userResponse.json();
         setFriendUser(userData);
         setAvatarUrl(userData.avatar ? `http://localhost:3009${userData.avatar}` : avatarDefault);
+
+            // Obtener el avatar del usuario actual
+      const currentUserResponse = await fetch(`http://localhost:3000/users/usuario/${senderId}`);
+      const currentUserData = await currentUserResponse.json();
+      const currentUserAvatar = currentUserData.avatar ? `http://localhost:3009${currentUserData.avatar}` : avatarDefault;
+
+            // Agregar avatares a los mensajes
+      const messagesWithAvatars = data.map(msg => ({
+        ...msg,
+        avatar: msg.sender_id === parseInt(senderId) ? currentUserAvatar : (userData.avatar ? `http://localhost:3009${userData.avatar}` : avatarDefault)
+      }));
+
+      setMessages(messagesWithAvatars);
       } catch (err) {
         setError('Error loading messages');
         console.error('Error:', err);
@@ -126,7 +139,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         receiver_id: parseInt(chatId),
         message: newMessage.trim(),
         created_at: new Date().toISOString(),
-        pending: true
+        pending: true, 
       }]);
 
       socketRef.current.emit('send_private_message', messageData);
@@ -172,19 +185,18 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       </div>
       <div className="chat-messages">
         {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`message-bubble ${
-              message.sender_id === parseInt(senderId) ? 'sent' : 'received'
-            }`}
-          >
-            <div className="flex items-end gap-2">
-              <span>{message.message}</span>
-              {message.pending && (
-                <span className="text-xs opacity-70">Sending...</span>
-              )}
-            </div>
-          </div>
+         <div
+         key={message.id}
+         className={`message-wrapper ${message.sender_id === Number.parseInt(senderId) ? "sent" : "received"}`}
+        >
+         <img src={message.avatar || "/placeholder.svg"} alt="Avatar" className="message-avatar" />
+         <div className="message-content-wrapper">
+           <div className="message-bubble">
+             <span className="message-text">{message.message}</span>
+           </div>
+           {message.pending && <span className="message-status">Sending...</span>}
+         </div>
+       </div>
         ))}
         <div ref={messagesEndRef} />
       </div>

@@ -51,16 +51,18 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Ajustes para el contenedor de mensajes */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: #dcadf8 #f1f1f1;
+  width: 100%;
 }
 
 .chat-messages::-webkit-scrollbar {
@@ -82,26 +84,96 @@
   background: #c68df3;
 }
 
+/* Contenedor del mensaje */
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+
+/* Mensaje enviado */
+.message-wrapper.sent {
+  margin-left: auto; /* Empuja el mensaje a la derecha */
+  flex-direction: row-reverse;
+}
+
+/* Mensaje recibido */
+.message-wrapper.received {
+  margin-right: auto; /* Empuja el mensaje a la izquierda */
+}
+
+/* Contenedor del contenido del mensaje */
+.message-content-wrapper {
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sent .message-content-wrapper {
+  align-items: flex-end;
+}
+
+.received .message-content-wrapper {
+  align-items: flex-start;
+}
+
+/* Avatar */
+.message-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Burbuja del mensaje */
 .message-bubble {
-  max-width: 70%;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 1rem;
   font-size: 0.9rem;
   line-height: 1.4;
   word-wrap: break-word;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  width: fit-content;
+  max-width: 100%;
 }
 
-.sent {
-  align-self: flex-end;
+/* Estilos específicos para mensajes enviados */
+.sent .message-bubble {
   background-color: #dcadf8;
   border-bottom-right-radius: 0;
+  margin-left: auto; /* Alinea la burbuja a la derecha */
 }
 
-.received {
-  align-self: flex-start;
+/* Estilos específicos para mensajes recibidos */
+.received .message-bubble {
   background-color: #dbdada;
   border-bottom-left-radius: 0;
+  margin-right: auto; /* Alinea la burbuja a la izquierda */
+}
+
+/* Texto del mensaje */
+.message-text {
+  color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Estado del mensaje */
+.message-status {
+  font-size: 0.75rem;
+  color: #666;
+  opacity: 0.7;
+  margin-top: 0.25rem;
+  text-align: right; /* Alinea el estado a la derecha para mensajes enviados */
+}
+
+.received .message-status {
+  text-align: left; /* Alinea el estado a la izquierda para mensajes recibidos */
 }
 
 .chat-input-form {
@@ -162,14 +234,35 @@
   background-color: #9747ff;
 }
 
-/* Tablet styles */
+/* Pantallas pequeñas (hasta 640px) */
+@media (max-width: 640px) {
+  .message-content-wrapper {
+    max-width: 75%;
+  }
+
+  .message-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .chat-detail-container {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+/* Tablet styles (768px y superiores) */
 @media (min-width: 768px) {
   .chat-detail-container {
-    width: calc(100% - 30px); /* 250px sidebar + 50px margin */
+    width: calc(100% - 30px);
     margin: 0 1.5rem;
   }
+
+  .message-content-wrapper {
+    max-width: 70%;
+  }
+
   .message-bubble {
-    max-width: 60%;
     font-size: 1rem;
   }
 
@@ -177,14 +270,20 @@
   .send-button {
     font-size: 1rem;
   }
+
+  /* Ajuste cuando el sidebar está cerrado */
+  .sidebar-wrapper.closed ~ .chat-detail-container {
+    width: calc(100% - 4rem);
+  }
 }
 
-/* Desktop styles */
+/* Desktop styles (1024px y superiores) */
 @media (min-width: 1024px) {
   .chat-detail-container {
-    width: calc(100% - 350px); /* 400px sidebar + 20px margin */
+    width: calc(100% - 350px);
     margin: 0 3.5rem;
   }
+
   .chat-header {
     padding: 1.5rem;
   }
@@ -193,7 +292,7 @@
     padding: 1.5rem;
   }
 
-  .message-bubble {
+  .message-content-wrapper {
     max-width: 50%;
   }
 
@@ -219,23 +318,17 @@
   }
 }
 
-/* Large Desktop styles */
+/* Large Desktop styles (1440px y superiores) */
 @media (min-width: 1440px) {
   .chat-detail-container {
-    width: calc(100% - 420px); /* 400px sidebar + 20px margin */
-    margin: 0 3.5rem;
+    width: calc(100% - 400px);
+    margin: 0 3rem;
   }
 }
 
-/* Ensure chat container adjusts when sidebar is closed */
+/* Ajuste general cuando el sidebar está cerrado */
 .sidebar-wrapper.closed ~ .chat-detail-container {
   width: calc(100% - 2rem);
   margin-right: 1rem;
-}
-
-@media (min-width: 768px) {
-  .sidebar-wrapper.closed ~ .chat-detail-container {
-    width: calc(100% - 4rem);
-  }
 }
 
