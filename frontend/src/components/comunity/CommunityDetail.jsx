@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import '../../assets/css/comunity/communityDetail.css'
 import {
   getCommunityById,
   getCommunityByPostId,
@@ -90,6 +91,7 @@ const CommunityDetail = () => {
   if (!community) {
     return <div>Cargando...</div>;
   }
+
 const getAvatarSrc = () => {
     // Find the member that matches the current user ID
     const currentMember = members.find(member => member.id === userId);

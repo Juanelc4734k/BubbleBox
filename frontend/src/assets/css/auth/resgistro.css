@@ -6,9 +6,8 @@
 }
 .registerFrom{
     width: 100%;
-    height: 135vh;
     margin-top: -1vh;
-    margin-bottom: 10vh;
+    margin-bottom: 20vh;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -17,8 +16,6 @@
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.3);
     overflow: hidden;
 }
-
-
 .registerFrom .bienvenidoRegister{
     width: 100%;
     height: 50vh;
@@ -52,10 +49,15 @@
     margin-bottom: 5%;
     background-color: rgb(255, 255, 255);
 }
+ .registerFrom .FormularioRegister form .errorMessageRegister{
+    padding: 2vh 2vh;
+    margin-bottom:2vh ;
+    margin-top: -1vh;
+}
 .registerFrom .FormularioRegister form{
     width: 83%;
-    height: 75vh;
     margin-top: -6%;
+    margin-bottom: 10vh;
     display: flex;
     padding: 4%;
     border-radius: 2vh;
@@ -67,6 +69,7 @@
     font-size: 3vh;
     text-align: center;
     margin-bottom: 3vh;
+
 }
 .registerFrom .FormularioRegister form
  .contaiName,
@@ -75,7 +78,7 @@
  .contaiPassword{
     display: flex;
     align-items: center;
-    margin-bottom: 3vh;
+    margin-bottom: 2.5vh;
     border-radius: 2vh;
     width: 100%;
     height: 7vh;
@@ -90,7 +93,7 @@
 .contaiEmail .iconEmail,
 .contaiPassword .iconPass{
     background-color: #87ded1;
-    padding: 2.2vh 2.1vh;
+    padding: 3vh 2.1vh;
     border-top-left-radius: 2vh;
     border-bottom-left-radius: 2vh;
     position: absolute;
@@ -113,18 +116,16 @@
     width: 0%;
     position: absolute;
     background-color: #87ded1;
-    margin-top: 6.3vh;
+    margin-top: 6.4vh;
     margin-left: 1vh;
     height: 12%;
     border-bottom-right-radius: 9vh;
     transition: .7s ease;
-
-
 }
 .registerFrom .FormularioRegister form  input:focus ~ .linea{
-    position: absolute;
     width: 100%;
     transition: .7s ease;
+    height: 0.7vh;
 }
 .registerFrom .FormularioRegister form .iconos-register{
     width: 100%;
@@ -147,7 +148,6 @@
 .registerFrom .FormularioRegister form button{
     border: 0.3vh solid #87ded1;
     background-color: #A7EFE4;
-    margin-top: 1.2vh;
     width: 100%;
     height: 6.5vh;
     padding: 1.5vh;
@@ -163,7 +163,7 @@
 .Link-Sesion{
     position: relative;
     width: 100%;
-    margin-top: -21vh;  
+    margin-top: -30vh;  
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -221,14 +221,17 @@
     }
     .registerFrom .FormularioRegister form{
         width: 100%;
-        height: 80vh;
         border-radius: 0;
         box-shadow: none;
         margin-top: 0;
         padding: 8vh;
     }
+    .registerFrom .FormularioRegister form h2{
+        margin-top: -3vh;
+        
+    }
     .registerFrom .FormularioRegister form .linea{
-        height: 1.5vh;
+        height: 0.8vh;
     }
 .Link-Sesion{
     width: 31.6%;
