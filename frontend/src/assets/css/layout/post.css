@@ -251,6 +251,7 @@ margin: 2vh;
 
 .posts .post  .contenido-post .principalContenImg .imgconten{
   overflow: hidden;
+}
 
 .posts .post  .contenido-post p::-webkit-scrollbar-track {
     background: #f0f0f0;
