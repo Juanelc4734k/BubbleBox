@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import RegisterForm from "../components/auth/RegisterForm";
 import { Link } from "react-router-dom";
 import '../assets/css/auth/resgistro.css';
-
 const Register = () => {
   const [message, setMessage] = useState("");
   return (

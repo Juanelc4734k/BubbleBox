@@ -6,7 +6,7 @@ import '../assets/css/pages/home.css';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
-  const parrafoComm =" Publicaciónes recientes";
+  const parrafoComm ="   Publicaciónes recientes";
 
   const [mostrarT, setMostrarT] = useState(true);
   const [noVer, setNoVer] = useState(false);

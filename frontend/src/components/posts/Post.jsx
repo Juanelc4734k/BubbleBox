@@ -43,7 +43,6 @@ const Post = ({ post }) => {
                                     alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
                                     className="avatar-usuario"
                                     width="100"
-                                    style={ {objectFit: 'contain' }} 
                                     />
                             </div>
                             <div className="info-post">
@@ -55,12 +54,16 @@ const Post = ({ post }) => {
 
                     <div className="contenido-post">
                     <p>{post.contenido}</p>
-                    <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh]  mx-3 overflow-hidden rounded-md shadow-lg">
+                    <div className="principalContenImg rounded-md ">
+                    <div className="imgconten w-[100%] sm:w-[100%] xl:w-[100%] h-[35vh] sm:max-h-[35vh] lg:max-h-[32vh] overflow-hidden rounded-md shadow-lg">
+                    
                     {post.imagen && <img 
                     src={`http://localhost:3008/uploads/${post.imagen}`} 
                     alt={post.titulo} 
                     className="w-full h-full object-cover cursor-pointer rounded-md shadow-lg" 
                     onClick={() => imgAbrir (`http://localhost:3008/uploads/${post.imagen}`)} />}
+                    
+                    </div>
                 </div>
                     </div>
 

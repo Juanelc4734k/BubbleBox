@@ -10,12 +10,12 @@
     font-size: 2.vh;
     background-color: #fff;
     transition: all 0.5s ease-in-out;
+    
 }
-
 .posts .post .autor-info{
     background-color: #b685e4bd;
     box-shadow: 0vh 0.3vh 1.1vh gray;
-    padding: 0.1vh 1.5vh;
+    padding: 1vh 1.5vh;
     text-align:left;
 }
 .posts .post .autor-info .fechacreate{
@@ -34,12 +34,21 @@
     margin-bottom: 2vh;
 }
 .posts .post .autor-info .ft-name .imguser{
-    width: 11vh;
-    height: 11vh;
+    width: 9.5vh;
+    height: 9.5vh;
     overflow: hidden;
     border: 0.6vh solid #fff;
     box-shadow: 0vh 0.1vh 1vh rgba(0, 0, 0, 0.623);
     border-radius: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.posts .post .autor-info .ft-name .imguser img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%; 
 }
 .posts .post .autor-info .ft-name .info-post p:nth-child(2){
     font-size: 2vh;
@@ -53,13 +62,30 @@
 }
 
 .posts .post  .contenido-post{
-    padding: 2vh 3vh;
+margin: 2vh;
 }
+
 .posts .post  .contenido-post p{
-    padding: 2vh 0vh 0.3vh 1.8vh;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 2vh;
+    height: 6vh;
+    margin-left: 2vh;
+}
+.posts .post .contenido-post .principalContenImg {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 2vh;
+  padding-right: 2vh;
+  padding-top: 1vh;
 
 }
-.posts .post  .contenido-post .imgconten{
+.posts .post  .contenido-post .principalContenImg .imgconten{
   overflow: hidden;
 }
 
