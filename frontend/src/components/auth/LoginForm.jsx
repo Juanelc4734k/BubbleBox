@@ -36,12 +36,30 @@ export default function LoginForm({ setIsAuthenticated }) {
             }
             
             setMessage(response.message);
-            localStorage.setItem('token', response.token);
-
             const decodedToken = JSON.parse(atob(response.token.split('.')[1]));
             
-            localStorage.setItem('userId', decodedToken.userId);
-            localStorage.setItem('userRole', decodedToken.rol);
+            // Only set localStorage items for non-admin users
+            if (decodedToken.rol !== 'administrador') {
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('userId', decodedToken.userId);
+                localStorage.setItem('userRole', decodedToken.rol);
+            }
+
+            // Muestra la alerta sin cerrar automáticamente
+            Swal.fire({
+                title: '¡Inicio de sesión exitoso!',
+                text: 'Bienvenido a BubbleBox',
+                icon: 'success',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(() => {
+                if (decodedToken.rol === 'administrador') {
+                    window.location.href = `http://localhost:9090/?token=${response.token}`;
+                } else {
+                    setIsAuthenticated(true);
+                    navigate('/home');
+                }
+            });
             //setIsAuthenticated(true);
 
             // Muestra la alerta sin cerrar automáticamente
@@ -55,8 +73,8 @@ export default function LoginForm({ setIsAuthenticated }) {
             }).then(() => {
                 // Redirección solo cuando el usuario haga clic en "Ir a la página"
                 if (decodedToken.rol === 'administrador') {
-                    setIsAuthenticated(true);
-                    navigate('/admin');
+                    // Pass token as query parameter to Laravel dashboard
+                    window.location.href = `http://localhost:8000/?token=${response.token}`;
                 } else {
                     setIsAuthenticated(true);
                     navigate('/home');
