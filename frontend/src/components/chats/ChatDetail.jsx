@@ -1,8 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
+import "../../assets/css/chats/chatsDetails.css";
+import { IoClose } from "react-icons/io5"
+import { FaRegFaceSmileWink } from "react-icons/fa6";
+const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
-const ChatDetail = ({ chatId, onMessageSent }) => {
+  const avatarDefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
+
   const [messages, setMessages] = useState([]);
+  const [friendUser, setFriendUser] = useState([]);
+  const [avatarUrl, setAvatarUrl] = useState(avatarDefault);
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -26,6 +33,11 @@ const ChatDetail = ({ chatId, onMessageSent }) => {
         const response = await fetch(`http://localhost:3001/chats/messages/${senderId}/${chatId}`);
         const data = await response.json();
         setMessages(data);
+
+        const userResponse = await fetch(`http://localhost:3000/users/usuario/${chatId}`);
+        const userData = await  userResponse.json();
+        setFriendUser(userData);
+        setAvatarUrl(userData.avatar ? `http://localhost:3009${userData.avatar}` : avatarDefault);
       } catch (err) {
         setError('Error loading messages');
         console.error('Error:', err);
@@ -151,6 +163,13 @@ const ChatDetail = ({ chatId, onMessageSent }) => {
 
   return (
     <div className="chat-detail-container">
+      <div className="chat-header">
+        <button onClick={onCloseChat} className="close-chat-button">
+            <IoClose />
+        </button>
+        <img src={avatarUrl} alt={friendUser.nombre} className="imgChatDetail"/>
+        <h2 className="textChatH">{friendUser.nombre}</h2>
+      </div>
       <div className="chat-messages">
         {messages.map((message) => (
           <div
@@ -172,6 +191,9 @@ const ChatDetail = ({ chatId, onMessageSent }) => {
 
       <form onSubmit={handleSendMessage} className="chat-input-form">
         <div className="flex space-x-2">
+          <button type="button" className="emoji-button">
+              <FaRegFaceSmileWink/>
+          </button>
           <input
             type="text"
             value={newMessage}

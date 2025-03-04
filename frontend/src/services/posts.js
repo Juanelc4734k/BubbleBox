@@ -24,11 +24,17 @@ export const createPost = async (postData) => {
     const response = await axios.post(`${API_URL}/posts/crear`, postData);
     return response.data;
 };
-
-export const updatePost = async (postId, postData) => {
-    const response = await axios.put(`${API_URL}/posts/actualizar/${postId}`, postData);
+// Add this function if it doesn't exist
+export const updatePost = async (postData) => {
+  try {
+    const response = await axios.put(`${API_URL}/posts/actualizar/${postData.id}`, postData);
     return response.data;
+  } catch (error) {
+    console.error('Error updating post:', error);
+    throw error;
+  }
 };
+
 
 export const deletePost = async (postId) => {
     const response = await axios.delete(`${API_URL}/posts/eliminar/${postId}`);

@@ -23,7 +23,7 @@
 
 .formPost {
   position: fixed;
-  top: 25rem;
+  top: 32rem;
   left: 50%;
   transform: translate(-50%, 100%);
   width: 90%;
@@ -86,7 +86,7 @@
   margin-right: 5px;
   margin-top: 4.5px;
 }
-.close-button {
+.close-buttonPos {
   background: none;
   border: none;
   color: #666;
@@ -97,7 +97,7 @@
   transition: all 0.3s ease;
 }
 
-.close-button:hover {
+.close-buttonPos:hover {
   background: rgba(151, 71, 255, 0.1);
   color: #9747ff;
   transition: all 0.3s ease;
@@ -205,6 +205,10 @@
 .submit-button:hover {
   background: #8034ff;
   transform: translateY(-2px);
+}
+.submit-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 @keyframes messageBounce {

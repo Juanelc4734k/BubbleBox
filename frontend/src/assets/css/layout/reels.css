@@ -1,3 +1,44 @@
+.reel-options {
+    position: relative;
+    margin-left: auto;
+}
+
+.options-button {
+    padding: 0.25rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+}
+
+.options-button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.options-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 0.25rem;
+    background-color: white;
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    width: 9rem;
+    padding: 0.25rem 0;
+}
+
+.options-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.options-menu button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 .reels-container {
     max-width: 400px;
     margin: 0 auto;
@@ -96,7 +137,28 @@
     justify-content: center;
     cursor: pointer;
     color: #333;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.reel-action-button.liked {
+    color: #2563eb;
+    animation: likedAnimation 0.5s ease forwards;
+}
+
+@keyframes likedAnimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.reel-action-button:hover {
+    transform: scale(1.1);
 }
 
 .reel-action-button span {
@@ -105,9 +167,7 @@
 }
 
 /* Keep existing video controls styles */
-.reel-action-button:hover {
-    transform: scale(1.1);
-}
+
 
 .video-controls {
     position: absolute;

@@ -11,3 +11,13 @@ export const getAllReels = async () => {
     throw error;
   }
 }
+
+export const deleteReel = async (IdReel) => {
+  try {
+    const response = await axios.delete(`${API_URL}/eliminarReel/${IdReel}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error delete reel', error);
+    throw error;
+  }
+}

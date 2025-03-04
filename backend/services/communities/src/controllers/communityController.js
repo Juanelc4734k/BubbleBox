@@ -40,10 +40,14 @@ const getCommunityById = async (req, res) => {
 
 const createCommunity = async (req, res) => {
     try {
-        const { nombre, descripcion, idCreador } = req.body;
+        const { nombre, descripcion, idCreador, privacidad } = req.body;
         const imagen = req.file ? req.file.filename : null;
+
+        if (privacidad && !['publica', 'privada'].includes(privacidad)) {
+            return res.status(400).json({ mensaje: 'Privacidad inválida' });
+        }
         
-        const idComunidad = await communityModel.crearComunidad(nombre, descripcion, idCreador, imagen);
+        const idComunidad = await communityModel.crearComunidad(nombre, descripcion, idCreador, imagen, privacidad || 'publica');
         res.status(201).json({ mensaje: 'Comunidad creada con éxito', id: idComunidad });
     } catch (error) {
         console.error('Error al crear la comunidad:', error);
@@ -86,6 +90,7 @@ const leaveCommunity = async (req, res) => {
 const updateCommunity = async (req, res) => {
     try {
         const { nombre, descripcion, imagen } = req.body;
+        console.log('Data:', nombre, descripcion)
         const actualizado = await communityModel.actualizarComunidad(req.params.id, nombre, descripcion, imagen);
         if (actualizado) {
             res.json({ mensaje: 'Comunidad actualizada con éxito' });
@@ -112,6 +117,24 @@ const deleteCommunity = async (req, res) => {
     }
 };
 
+const isMemberOfCommunity = async (req, res) => {
+    try {
+        const idComunidad = req.params.idComunidad;
+        const idUsuario = req.params.idUsuario;
+        
+        if (!idUsuario || !idComunidad) {
+            return res.status(400).json({ mensaje: 'Se requieren idUsuario y idComunidad' });
+        }
+
+        const esMiembro = await communityModel.isMember(idUsuario, idComunidad);
+        res.json({ esMiembro });
+    } catch (error) {
+        console.error('Error al verificar si el usuario es miembro de la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
+
 module.exports = {
     getAllCommunities,
     getCommunityMembers,
@@ -120,5 +143,6 @@ module.exports = {
     joinCommunity,
     leaveCommunity,
     updateCommunity,
-    deleteCommunity
+    deleteCommunity,
+    isMemberOfCommunity
 };

@@ -1,6 +1,4 @@
-"use client"
-
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import * as jwt_decode from "jwt-decode"
 import { CiBookmarkPlus, CiImageOn } from "react-icons/ci"
 import { IoClose } from "react-icons/io5"
@@ -18,6 +16,36 @@ const CreateStories = () => {
   const [openStories, setOpenStories] = useState(false)
   const scrollableRef = useRef(null)
   const [textModal, setTextModal] = useState(false)
+  const [isStoriesSub, setIsStoriesSub] = useState(false);
+  
+  const modalRef = useRef(null);
+
+      // Combinar ambas referencias en una sola función de ref
+      const combinedRef = useCallback((node) => {
+        if (node) {
+            modalRef.current = node;
+            scrollableRef.current = node;
+        }
+    }, []);
+
+  useEffect(() => {
+    // Detectar clics fuera del modal
+    const handleClickOutside = (event) => {
+        if (modalRef.current && !modalRef.current.contains(event.target)) {
+            setOpenStories(false);
+        }
+    };
+
+    if (openStories) {
+        document.addEventListener("mousedown", handleClickOutside);
+    } else {
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+}, [openStories]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -55,6 +83,8 @@ const CreateStories = () => {
   }
   const handleSubmitStories = async (e) => {
     e.preventDefault()
+    if(isStoriesSub)return;
+    setIsStoriesSub(true);
     setMessage("")
   
     if (!idUsuario) {
@@ -75,6 +105,10 @@ const CreateStories = () => {
         if (scrollableRef.current) {
           scrollableRef.current.scrollTop = 0
         }
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
+        setIsStoriesSub(false);
         return
       }
       
@@ -84,13 +118,18 @@ const CreateStories = () => {
       }
       setTimeout(() => {
         toggleStories()
-      }, 3000)
+      }, 2000)
     } catch (error) {
-      setMessage("Error al crear la publicación")
+      setMessage("Error al crear la historia")
       if (scrollableRef.current) {
         scrollableRef.current.scrollTop = 0
       }
+      setTimeout(() => {
+        toggleStories()
+      }, 2000)
       console.error("Error: ", error)
+    } finally {
+      setIsStoriesSub(false);
     }
 }
   const handleFileChange = (e) => {
@@ -118,77 +157,79 @@ const CreateStories = () => {
     <div className={`createStories ${openStories ? "active" : ""}`}>
       <button className="openStoriesButton" onClick={toggleStories}>
         <CiBookmarkPlus className="icono000" />
-        <span>Nueva Historia</span>
+        <span>Historia</span>
       </button>
       {openStories && (
-        <div ref={scrollableRef} className="formStories">
-          <div className="formheaderstories">
-            <h2 className="textForm">
-              <CiBookmarkPlus className="iconoHistoria" /> Crear Historia{" "}
-            </h2>
-            <button className="closeStories" onClick={toggleStories}>
-              <IoClose />
-            </button>
-          </div>
-          {message && (
-            <div className={`mensajeStories ${message.includes("Error") ? "error" : "success"}`}>{message}</div>
-          )}
-          <form onSubmit={handleSubmitStories} encType="multipart/form-data">
-            <div className="modeToggle">
-              <button
-                type="button"
-                className={`modeButton ${!textModal ? "active" : ""}`}
-                onClick={() => setTextModal(false)}
-              >
-                <CiImageOn className="iconButton" /> Archivo
-              </button>
-              <button
-                type="button"
-                className={`modeButton ${textModal ? "active" : ""}`}
-                onClick={() => setTextModal(true)}
-              >
-                <MdTextFields className="iconButton" /> Texto
+        <div className="modal-overlay">
+          <div ref={combinedRef} className="formStories">
+            <div className="formheaderstories">
+              <h2 className="textForm">
+                <CiBookmarkPlus className="iconoHistoria" /> Crear Historia{" "}
+              </h2>
+              <button className="closeStories" onClick={toggleStories}>
+                <IoClose />
               </button>
             </div>
-            {textModal ? (
-              <TextStories text={text} setText={setText} idUsuario={idUsuario} />
-            ) : (
-              <div className="formInputMedia">
-                <input
-                  type="file"
-                  id="imgStories"
-                  accept="image/*, video/*"
-                  className="mediaInput"
-                  onChange={handleFileChange}
-                />
-                {preview ? (
-                  <>
-                    {media?.type.startsWith('video/') ? (
-                      <video 
-                        className="previewImage" 
-                        src={preview} 
-                        controls
-                      />
-                    ) : (
-                      <img 
-                        className="previewImage" 
-                        src={preview || "/placeholder.svg"} 
-                        alt="Preview" 
-                      />
-                    )}
-                    <button type="button" className="remove-image-button" onClick={removeImage}>
-                      <IoClose />
-                    </button>
-                  </>
-                ) : (
-                  <CiImageOn className="multimedia" />
-                )}
-              </div>
+            {message && (
+              <div className={`mensajeStories ${message.includes("Error") ? "error" : "success"}`}>{message}</div>
             )}
-            <button type="submit" className="buttonSubmit">
-              Crear Historia
-            </button>
-          </form>
+            <form onSubmit={handleSubmitStories} encType="multipart/form-data">
+              <div className="modeToggle">
+                <button
+                  type="button"
+                  className={`modeButton ${!textModal ? "active" : ""}`}
+                  onClick={() => setTextModal(false)}
+                >
+                  <CiImageOn className="iconButton" /> Archivo
+                </button>
+                <button
+                  type="button"
+                  className={`modeButton ${textModal ? "active" : ""}`}
+                  onClick={() => setTextModal(true)}
+                >
+                  <MdTextFields className="iconButton" /> Texto
+                </button>
+              </div>
+              {textModal ? (
+                <TextStories text={text} setText={setText} idUsuario={idUsuario} />
+              ) : (
+                <div className="formInputMedia">
+                  <input
+                    type="file"
+                    id="imgStories"
+                    accept="image/*, video/*"
+                    className="mediaInput"
+                    onChange={handleFileChange}
+                  />
+                  {preview ? (
+                    <>
+                      {media?.type.startsWith('video/') ? (
+                        <video 
+                          className="previewImage" 
+                          src={preview} 
+                          controls
+                        />
+                      ) : (
+                        <img 
+                          className="previewImage" 
+                          src={preview || "/placeholder.svg"} 
+                          alt="Preview" 
+                        />
+                      )}
+                      <button type="button" className="remove-image-button" onClick={removeImage}>
+                        <IoClose />
+                      </button>
+                    </>
+                  ) : (
+                    <CiImageOn className="multimedia" />
+                  )}
+                </div>
+              )}
+              <button type="submit" className="buttonSubmit" disabled={isStoriesSub}>
+                {isStoriesSub ? "Cargando..." : "Crear Historia"}
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

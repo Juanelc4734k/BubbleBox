@@ -15,5 +15,8 @@ router.get('/perfil', authMiddleware, userController.getCurrentUserProfile);
 router.get('/perfil/:id', userController.getPublicUserProfile);
 router.put('/actualizar-foto-perfil', authMiddleware, upload.single('imagen'), userController.updateProfilePhoto);
 router.put('/cambiar-contrasena', authMiddleware, userController.changePassword);
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'healthy' });
+  });  
 
 module.exports = router;
