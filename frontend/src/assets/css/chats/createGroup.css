@@ -62,10 +62,8 @@
     border-radius: 10px;
     font-size: 0.85rem;
     white-space: nowrap;
-    top: 100%;
-    left: 50%;
+    right: 0.2rem;
     transform: translateX(-50%);
-    margin-top: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* Eliminar opacity y visibility */
 }  
