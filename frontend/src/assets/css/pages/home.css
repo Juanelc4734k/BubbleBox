@@ -28,7 +28,9 @@
     text-align: center;
     transition: opacity 1.5s ease-in-out;
     box-shadow: 0vh 0.3vh 1.5vh gray;
-
+    text-shadow: 0vh 0.3vh 0.3vh;
+    font-size: 3vh;
+    color: #2e2e2e;
 }
 .home-container .textOcul .ver {
     opacity: 1; 
