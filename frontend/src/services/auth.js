@@ -85,3 +85,16 @@ export const logoutUser = async (userId) => {
     }
 }
 
+export const updateLastSeen = async (userId, status = 'desconectado', lastSeen = new Date().toISOString()) => {
+    try {
+        const response = await axios.put(`http://localhost:3001/chats/update-last-seen/${userId}`, {
+            status,
+            lastSeen
+        });
+        console.log('Last seen updated:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating last seen:', error);
+        throw error;
+    }
+}

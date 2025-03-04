@@ -77,9 +77,28 @@ const deleteMessage = async (req, res) => {
     }
 };
 
+const updateLastSeen = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { status, lastSeen } = req.body;
+
+        const updated = await chatModel.updateLastSeen(userId, status || 'conectado', lastSeen);
+
+        if (updated) {
+            res.json({ success: true, message: 'Last seen updated successfully' });
+        } else {
+            res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error('Error updating last seen:', error);
+        res.status(500).json({ success: false, message: 'Error updating last seen' });
+    }
+}
+
 module.exports = {
     getMessages,
     createMessage,
     updateMessage,
-    deleteMessage
+    deleteMessage,
+    updateLastSeen
 };

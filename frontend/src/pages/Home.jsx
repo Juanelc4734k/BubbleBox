@@ -9,6 +9,8 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const [stories, setStories] = useState([]);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('all'); // New state for active tab
+  
   const parrafoComm = "Publicaciones recientes";
   const [mostrarT, setMostrarT] = useState(true);
   const [noVer, setNoVer] = useState(false);
@@ -67,6 +69,11 @@ const Home = () => {
     return () => clearInterval(escribir);
   }, []);
 
+  // Filter posts based on active tab
+  const filteredPosts = activeTab === 'my' 
+    ? posts.filter(post => post.id_usuario === parseInt(userId))
+    : posts;
+
   return (
     <>
       <div className="stories">
@@ -74,25 +81,54 @@ const Home = () => {
           <Storie key={story.id} story={story} />
         ))}
       </div>
-    <div className="home-container">
-      {error ? (
-        <p>{error}</p>
-      ) : (
-        <div className='divpostss'>
-          <div className="textOcul">
-            {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
-          </div>
-            <div className="postss">
-          {posts.map(post => (
-            <Post key={post.id} post={post} />
-          ))}
+
+      <div className="home-container">
+            <div className="textOcul">
+              {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
+            </div>
+        {/* Tab Navigation - Now inside home-container */}
+        <div className="tabs-container">
+          <div className="tabs">
+            <button 
+              className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+              onClick={() => setActiveTab('all')}
+            >
+              Publicaciones
+            </button>
+            <button 
+              className={`tab ${activeTab === 'my' ? 'active' : ''}`}
+              onClick={() => setActiveTab('my')}
+            >
+              Mis Publicaciones
+            </button>
           </div>
         </div>
-      )}
-    </div>
-    <div>
-    </div>
-      
+        
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <div className='divpostss'>
+            
+            <div className="postss">
+              {filteredPosts.length > 0 ? (
+                filteredPosts.map(post => (
+                  <Post 
+                    key={post.id} 
+                    post={post} 
+                    isMyPostsTab={activeTab === 'my'} 
+                  />
+                ))
+              ) : (
+                <div className="no-posts">
+                  {activeTab === 'my' 
+                    ? 'No has creado ninguna publicación todavía.' 
+                    : 'No hay publicaciones disponibles.'}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };

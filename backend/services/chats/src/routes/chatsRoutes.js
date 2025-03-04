@@ -9,6 +9,8 @@ router.post('/messages', chatController.createMessage);
 router.put('/messages/:messageId', chatController.updateMessage);
 router.delete('/messages/:messageId', chatController.deleteMessage);
 
+router.put('/update-last-seen/:userId', chatController.updateLastSeen);
+
 router.post('/groups', upload.single('imagen'), groupChatController.createGroup);
 router.post('/groups/members', groupChatController.addMember);
 router.get('/groups/user/:userId', groupChatController.getGroups);
