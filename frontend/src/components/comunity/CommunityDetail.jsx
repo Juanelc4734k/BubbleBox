@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import '../../assets/css/comunity/communityDetail.css'
 import {
   getCommunityById,
   getCommunityByPostId,
@@ -56,7 +57,7 @@ const CommunityDetail = () => {
     if (members.avatar_usuario) {
         return members.avatar_usuario.startsWith('http') 
             ? members.avatar_usuario 
-            : `http://localhost:3009${post.avatar_usuario}`;
+            : `http://localhost:3009${members.avatar_usuario}`;
     }
     return avatarPorDefecto;
 };
