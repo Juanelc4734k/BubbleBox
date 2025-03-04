@@ -393,6 +393,7 @@ const Post = ({ post, isMyPostsTab }) => {
                                     alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
                                     className="avatar-usuario"
                                     width="100"
+                                    style={ {objectFit: 'contain' }} 
                                     />
                             </div>
                             <div className="info-post">
@@ -482,8 +483,6 @@ const Post = ({ post, isMyPostsTab }) => {
                     alt={post.titulo} 
                     className="w-full h-full object-cover cursor-pointer rounded-md shadow-lg" 
                     onClick={() => imgAbrir (`http://localhost:3008/uploads/${post.imagen}`)} />}
-                    
-                    </div>
                 </div>
                     </div>
 
