@@ -5,7 +5,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Communities from './pages/Communities.jsx';
-import CommunityDetail from './components/comunity/communitydetail.jsx';
+import CommunityDetail from './components/comunity/communityDetail.jsx';
 import Sidebar from './components/layout/Sidebar';
 import Navbar from './components/layout/Navbar';
 import ProtectedRoute from './components/auth/ProtectedRoute';
