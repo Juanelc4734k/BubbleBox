@@ -1,11 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSignOutAlt } from 'react-icons/fa';
-import { logoutUser } from '../../services/auth';
+import { logoutUser, updateLastSeen } from '../../services/auth';
 
 const CerrarSesion = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
-
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
@@ -13,13 +12,32 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
       if(token){
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
         const userId = decodedToken.userId;
-
+  
+        // Update last seen via HTTP endpoint
         try {
-          await logoutUser(userId);
+            await updateLastSeen(userId, 'desconectado', new Date().toISOString());
         } catch (error) {
-          console.error('Error en logoutUser:', error);
+            console.error('Error updating last seen:', error);
         }
-
+  
+        // Also emit via socket if available
+        if (window.chatSocket && window.chatSocket.connected) {
+            console.log("Emitting offline status before logout");
+            window.chatSocket.emit('user_offline', {
+                userId: parseInt(userId),
+                lastSeen: new Date().toISOString()
+            });
+            
+            await new Promise(resolve => setTimeout(resolve, 300));
+            window.chatSocket.disconnect();
+        }
+  
+        try {
+            await logoutUser(userId);
+        } catch (error) {
+            console.error('Error en logoutUser:', error);
+        }
+  
         // Clear all localStorage items
         localStorage.clear();
         
@@ -39,7 +57,6 @@ const CerrarSesion = ({ setIsAuthenticated }) => {
       window.location.reload();
     }
   };
-
   return (
     <button onClick={handleLogout} className="logout-button">
       <FaSignOutAlt />
