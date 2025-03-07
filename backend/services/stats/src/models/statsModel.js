@@ -311,6 +311,113 @@ const getUsersFeatured = () => {
     });
 };
 
+const getReelsGrowthStats = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            WITH DailyCounts AS (
+                SELECT
+                    DATE(fecha_creacion) as date,
+                    COUNT(*) as count
+                FROM reels
+                WHERE fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+                GROUP BY DATE(fecha_creacion)
+            ),
+            DailyGrowth AS (
+                SELECT
+                    date,
+                    count,
+                    COALESCE(LAG(count) OVER (ORDER BY date), 0) as previous_day_count
+                FROM DailyCounts
+            ),
+            TodayReels AS (
+                SELECT COUNT(*) as today_count
+                FROM reels
+                WHERE DATE(fecha_creacion) = CURDATE()
+            ),
+            ReelCommenters AS (
+                SELECT COUNT(DISTINCT id_usuario) as commenters_count
+                FROM comentarios
+                WHERE tipo_contenido = 'reel'
+                AND DATE(fecha_creacion) = CURDATE()
+            ),
+            TotalReelComments AS (
+                SELECT COUNT(*) as comments_count
+                FROM comentarios
+                WHERE tipo_contenido = 'reel'
+            ),
+            FeaturedReels AS (
+                SELECT 
+                    r.id
+                FROM reels r
+                LEFT JOIN (
+                    SELECT id_contenido, COUNT(*) as comments_count
+                    FROM comentarios
+                    WHERE tipo_contenido = 'reel'
+                    GROUP BY id_contenido
+                ) c ON r.id = c.id_contenido
+                LEFT JOIN (
+                    SELECT id_contenido, COUNT(*) as reactions_count
+                    FROM reacciones
+                    WHERE tipo_contenido = 'reel'
+                    GROUP BY id_contenido
+                ) rc ON r.id = rc.id_contenido
+                WHERE COALESCE(c.comments_count, 0) >= 5 OR COALESCE(rc.reactions_count, 0) >= 10
+            )
+            SELECT
+                COALESCE(MAX(dg.date), CURDATE()) as date,
+                COALESCE(SUM(dg.count), 0) as count,
+                COALESCE(SUM(dg.previous_day_count), 0) as previous_day_count,
+                CASE
+                    WHEN COALESCE(SUM(dg.previous_day_count), 0) > 0
+                    THEN ROUND(((COALESCE(SUM(dg.count), 0) - COALESCE(SUM(dg.previous_day_count), 0)) / COALESCE(SUM(dg.previous_day_count), 0) * 100), 1)
+                    WHEN COALESCE(SUM(dg.count), 0) > 0 AND COALESCE(SUM(dg.previous_day_count), 0) = 0
+                    THEN 100
+                    ELSE 0
+                END as growth_percentage,
+                (SELECT today_count FROM TodayReels) as today_reels,
+                (SELECT commenters_count FROM ReelCommenters) as unique_commenters,
+                (SELECT comments_count FROM TotalReelComments) as total_comments,
+                (SELECT COUNT(*) FROM FeaturedReels) as featured_reels
+            FROM DailyGrowth dg`;
+
+        db.query(query, (error, results) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve(results[0] || { 
+                count: 0, 
+                growth_percentage: 0, 
+                today_reels: 0,
+                unique_commenters: 0,
+                total_comments: 0,
+                featured_reels: 0
+            });
+        });
+    });
+};
+
+const getReelsSummary = () => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT 
+                DATE_FORMAT(fecha_creacion, '%Y-%m') AS month,
+                COUNT(*) AS count,
+                COALESCE(COUNT(*) - LAG(COUNT(*)) OVER (ORDER BY DATE_FORMAT(fecha_creacion, '%Y-%m')), 0) AS growth
+            FROM reels
+            WHERE fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+            GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
+            ORDER BY month ASC`;
+
+        db.query(query, (error, results) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve(results);
+        });
+    });
+};
 
 module.exports = {
     getDailyStats,
@@ -319,5 +426,7 @@ module.exports = {
     getPostsFeatured,
     getUsersSummary,
     getGrowthStatsUsuarios,
-    getUsersFeatured
+    getUsersFeatured,
+    getReelsGrowthStats,
+    getReelsSummary
 };

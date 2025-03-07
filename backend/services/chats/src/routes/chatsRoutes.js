@@ -8,6 +8,11 @@ router.get('/messages/:userId1/:userId2', chatController.getMessages);
 router.post('/messages', chatController.createMessage);
 router.put('/messages/:messageId', chatController.updateMessage);
 router.delete('/messages/:messageId', chatController.deleteMessage);
+router.get('/unread/:userId/:friendId', chatController.getUnreadCount);
+// Add this route
+router.put('/markAsRead/:userId/:friendId', chatController.markMessagesAsRead);
+
+router.post('/audio-message', upload.single('audio'), chatController.createAudioMessage);
 
 router.put('/update-last-seen/:userId', chatController.updateLastSeen);
 

@@ -2,15 +2,15 @@ import axios from "axios";
 
 const API_URL = 'http://127.0.0.1:3000/stories';
 
-const getStoriesFriends = (id) => {
+export const getStoriesFriends = (id) => {
     return axios.get(`${API_URL}/amigos/${id}`);
 };
 
-const getStoriesByUser = (userId) => {
+export const getStoriesByUser = (userId) => {
     return axios.get(`${API_URL}/usuario/${userId}`);
 };
 
-const createStorieText = (userId, content) => {
+export const createStorieText = (userId, content) => {
     return axios.post(`${API_URL}/crear`, {
         usuario_id: userId,
         contenido: content,
@@ -22,7 +22,7 @@ const createStorieText = (userId, content) => {
     });
 };
 
-const createStorieMulti = (userId, file) => {
+export const createStorieMulti = (userId, file) => {
     const formData = new FormData();
     formData.append('usuario_id', userId);
     formData.append('tipo', file.type.startsWith('video/') ? 'video' : 'imagen');
@@ -35,19 +35,16 @@ const createStorieMulti = (userId, file) => {
     });
 };
 
-const registerVista = (storieId) => {
-    return axios.post(`${API_URL}/${storieId}/vista`);
+export const registerVista = (storieId, userId) => {
+    return axios.post(`${API_URL}/${storieId}/vista`, {
+        usuario_id: userId
+    }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
 };
 
-const getVista = (storieId) => {
+export const getVista = (storieId) => {
     return axios.get(`${API_URL}/${storieId}/vistas`);
-};
-
-export {
-    getStoriesFriends,
-    getStoriesByUser,
-    createStorieText,
-    createStorieMulti,
-    registerVista,
-    getVista
-};
+}; 

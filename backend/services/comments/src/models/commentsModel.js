@@ -14,6 +14,62 @@ const crearComentario = (idUsuario, idContenido, tipoContenido, contenido) => {
   });
 };
 
+// For post comments
+const crearRespuestaComentarioPublicacion = (idUsuario, idComentario, contenido) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      INSERT INTO respuestas_comentarios_publicaciones (id_usuario, id_comentario, contenido, fecha_creacion)
+      VALUES (?, ?, ?, NOW())
+    `;
+    db.query(query, [idUsuario, idComentario, contenido], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
+const obtenerRespuestasComentarioPublicacion = (idComentario) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT * FROM respuestas_comentarios_publicaciones
+      WHERE id_comentario = ?
+      ORDER BY fecha_creacion DESC
+    `;
+    db.query(query, [idComentario], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
+// For reel comments
+const crearRespuestaComentarioReel = (idUsuario, idComentario, contenido) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      INSERT INTO respuestas_comentarios_reels (id_usuario, id_comentario, contenido, fecha_creacion)
+      VALUES (?, ?, ?, NOW())
+    `;
+    db.query(query, [idUsuario, idComentario, contenido], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
+const obtenerRespuestasComentarioReel = (idComentario) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT * FROM respuestas_comentarios_reels
+      WHERE id_comentario = ?
+      ORDER BY fecha_creacion DESC
+    `;
+    db.query(query, [idComentario], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
 const obtenerComentarios = (idContenido, tipoContenido) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE id_contenido = ? AND tipo_contenido = ?';
@@ -49,6 +105,21 @@ const obtenerComentariosHistoria = (idHistoria) => {
   return obtenerComentarios(idHistoria, TIPO_HISTORIA);
 };
 
+const obtenerComentarioPorId = (idComentario) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM comentarios WHERE id = ?';
+    db.query(query, [idComentario], (error, results) => {
+      if (error) {
+        reject(error);
+      } else if (results.length === 0) {
+        reject(new Error('Comentario no encontrado'));
+      } else {
+        resolve(results[0]);
+      }
+    });
+  });
+};
+
 const obtenerInformacionPublicacion = (idPublicacion) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT id_usuario FROM publicaciones WHERE id = ?';
@@ -74,6 +145,11 @@ module.exports = {
   TIPO_PUBLICACION,
   TIPO_REEL,
   TIPO_HISTORIA,
-  obtenerInformacionPublicacion
+  obtenerInformacionPublicacion,
+  crearRespuestaComentarioPublicacion,
+  obtenerRespuestasComentarioPublicacion,
+  crearRespuestaComentarioReel,
+  obtenerRespuestasComentarioReel,
+  obtenerComentarioPorId
 };
 

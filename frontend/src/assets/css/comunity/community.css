@@ -152,6 +152,17 @@
     position: relative;
 }
   
+.creator-badge {
+  background-color: #8a2be2;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+
 .community-options .options-button {
     background: none;
     border: none;

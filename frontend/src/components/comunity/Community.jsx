@@ -85,6 +85,21 @@ const Community = () => {
         e.preventDefault();
         e.stopPropagation();
 
+        // Find the community
+        const community = communities.find(c => c.id === communityId);
+        
+        // Prevent creator from leaving their own community
+        if (community && community.id_creador === userId && membershipStatus[communityId]) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No puedes dejar tu propia comunidad',
+                text: 'Como creador, no puedes abandonar esta comunidad.',
+                timer: 3000,
+                showConfirmButton: false,
+            });
+            return;
+        }
+
         try {
             if (membershipStatus[communityId]) {
                 await leaveCommunity(communityId, userId);
@@ -366,7 +381,6 @@ const Community = () => {
                                         </p>
                                     </div>
                                 </div>
-                                
                                 {/* Options menu for my created communities */}
                                 {isMyCreatedCommunity && activeTab === 'my' ? (
                                     <div className="community-options relative ml-auto">
@@ -397,12 +411,19 @@ const Community = () => {
                                         )}
                                     </div>
                                 ) : (
-                                    <button 
-                                    type="button"
-                                    onClick={(e) => handleMembership(e, community.id)}
-                                    className={membershipStatus[community.id] ? 'leave-btn' : 'join-btn'}>
-                                       {membershipStatus[community.id] ? 'Dejar' : 'Unirse'}
-                                    </button>
+                                    <>
+                                    {!isMyCreatedCommunity && (
+                                        <button 
+                                        type="button"
+                                        onClick={(e) => handleMembership(e, community.id)}
+                                        className={membershipStatus[community.id] ? 'leave-btn' : 'join-btn'}>
+                                           {membershipStatus[community.id] ? 'Dejar' : 'Unirse'}
+                                        </button>
+                                    )}
+                                    {isMyCreatedCommunity && (
+                                        <span className="creator-badge">Creador</span>
+                                    )}
+                                    </>
                                 )}
                             </div>
 

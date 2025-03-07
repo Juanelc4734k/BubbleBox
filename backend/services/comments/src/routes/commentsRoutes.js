@@ -14,5 +14,12 @@ router.get('/reels/:idReel/comentarios', commentsController.obtenerComentariosRe
 router.post('/historias/:idHistoria/comentarios', commentsController.crearComentarioHistoria);
 router.get('/historias/:idHistoria/comentarios', commentsController.obtenerComentariosHistoria);
 
+// Rutas para respuestas a comentarios de publicaciones
+router.post('/publicaciones/comentarios/:idComentario/respuestas', commentsController.crearRespuestaComentarioPublicacion);
+router.get('/publicaciones/comentarios/:idComentario/respuestas', commentsController.obtenerRespuestasComentarioPublicacion);
+
+// Rutas para respuestas a comentarios de reels
+router.post('/reels/comentarios/:idComentario/respuestas', commentsController.crearRespuestaComentarioReel);
+router.get('/reels/comentarios/:idComentario/respuestas', commentsController.obtenerRespuestasComentarioReel);
 
 module.exports = router;

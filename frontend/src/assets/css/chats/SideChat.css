@@ -1,6 +1,26 @@
 html, body {
     overflow-x: hidden; /* Evita el scroll horizontal */
   }
+
+  @keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.sidebar-wrapper-Page.animate-entry {
+    animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+/* Make sure the animation only applies when the sidebar is open */
+.sidebar-wrapper-Page.closed.animate-entry {
+    animation: none;
+}
   
   .sidebar-wrapper-Page {
     position: fixed;

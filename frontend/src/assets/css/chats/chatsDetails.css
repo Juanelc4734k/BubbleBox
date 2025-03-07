@@ -62,8 +62,403 @@
 .last-seen, .offline-status {
   color: #9E9E9E;
   font-style: italic;
+}/* Add these styles to your existing CSS file */
+.audio-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  background-color: transparent;
+}
+.recording-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f0f2f5;
+  border-radius: 20px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.recording-pulse {
+  width: 12px;
+  height: 12px;
+  background-color: #f00;
+  border-radius: 50%;
+  position: relative;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+}
+
+.recording-time {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.stop-recording-button {
+  font-size: 20px;
+  color: #f00;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.stop-recording-button:hover {
+  transform: scale(1.1);
+}
+
+.recording-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-recording-button, 
+.send-recording-button {
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.cancel-recording-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.send-recording-button {
+  background-color: #831bb0;
+  color: white;
+}
+
+.cancel-recording-button:hover {
+  background-color: #d0d0d0;
+}
+
+.send-recording-button:hover {
+  background-color: #0e7a6d;
+}
+
+/* Audio preview styles */
+.audio-preview {
+  margin-top: 10px;
+  background-color: #f0f2f5;
+  border-radius: 20px;
+  padding: 12px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.audio-preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.preview-play-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #9a21bb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.preview-play-button:hover {
+  background-color: #8f19a4;
+  transform: scale(1.05);
+}
+
+.audio-preview-waveform {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 40px;
+}
+
+.audio-preview-waveform .waveform-bar {
+  width: 3px;
+  background-color: #95199c;
+  border-radius: 3px;
+  animation: none;
+}
+
+.audio-duration {
+  font-size: 14px;
+  color: #555;
+  min-width: 40px;
+  text-align: right;
+}
+
+.audio-preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.discard-audio-button,
+.send-audio-button {
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.discard-audio-button {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.send-audio-button {
+  background-color: #69128c;
+  color: white;
+}
+
+.discard-audio-button:hover {
+  background-color: #d0d0d0;
+}
+
+.send-audio-button:hover {
+  background-color: #6f1aa8;
+}
+
+/* Audio message styles in chat */
+.audio-message {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+}
+
+.audio-control-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #83169e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.audio-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 30px;
+}
+
+.audio-waveform .waveform-bar {
+  width: 2px;
+  height: 15px;
+  background-color: #8e1db0;
+  border-radius: 2px;
+}
+
+.audio-waveform.playing .waveform-bar {
+  animation: sound 1.2s infinite ease-in-out;
+}
+
+.audio-waveform .waveform-bar:nth-child(1) { animation-delay: 0.0s; }
+.audio-waveform .waveform-bar:nth-child(2) { animation-delay: 0.2s; }
+.audio-waveform .waveform-bar:nth-child(3) { animation-delay: 0.4s; }
+.audio-waveform .waveform-bar:nth-child(4) { animation-delay: 0.6s; }
+.audio-waveform .waveform-bar:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes sound {
+  0% { height: 5px; }
+  50% { height: 20px; }
+  100% { height: 5px; }
+}
+/* Add these styles to your existing CSS file */
+.audio-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  background-color: transparent;
+}
+.recording-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f8f8f8;
+  padding: 12px 20px;
+  border-radius: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recording-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.recording-indicator::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-color: #ff4444;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.stop-recording-button {
+  color: #ff4444;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.stop-recording-button:hover {
+  transform: scale(1.1);
+}
+
+.recording-time {
+  font-size: 16px;
+  color: #666;
+  min-width: 50px;
+}
+
+.recording-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancel-recording-button,
+.send-recording-button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.cancel-recording-button {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.send-recording-button {
+  background-color: #8a56e2;
+  color: white;
+}
+
+.cancel-recording-button:hover,
+.send-recording-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.audio-preview {
+  margin-top: 12px;
+  background-color: #f8f8f8;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.audio-preview-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.audio-preview-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.preview-play-button {
+  font-size: 24px;
+  color: #8a56e2;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.preview-play-button:hover {
+  transform: scale(1.1);
+}
+
+.discard-audio-button,
+.send-audio-button {
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.discard-audio-button {
+  background-color: #f0f0f0;
+  color: #666;
+}
+
+.send-audio-button {
+  background-color: #8a56e2;
+  color: white;
+}
+
+.discard-audio-button:hover,
+.send-audio-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
 /* Añade esto a tu archivo CSS */
 .emoji-picker-container {
   position: absolute;
@@ -122,7 +517,6 @@
   color: #9747ff;
   transform: scale(1.2);
 }
-
 .imgChatDetail {
   width: 3rem;
   height: 3rem;
@@ -130,13 +524,10 @@
   object-fit: cover;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
-
 .textChatH {
   color: #535353;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
-
-/* Ajustes para el contenedor de mensajes */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -149,26 +540,21 @@
   scrollbar-color: #dcadf8 #f1f1f1;
   width: 100%;
 }
-
 .chat-messages::-webkit-scrollbar {
   width: 8px;
   border-radius: 10px;
 }
-
 .chat-messages::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 10px;
 }
-
 .chat-messages::-webkit-scrollbar-thumb {
   background: #dcadf8;
   border-radius: 10px;
 }
-
 .chat-messages::-webkit-scrollbar-thumb:hover {
   background: #c68df3;
 }
-
 /* Contenedor del mensaje */
 .message-wrapper {
   display: flex;
@@ -177,33 +563,27 @@
   width: 100%;
   padding: 0 0.5rem;
 }
-
 /* Mensaje enviado */
 .message-wrapper.sent {
   margin-left: auto; /* Empuja el mensaje a la derecha */
   flex-direction: row-reverse;
 }
-
 /* Mensaje recibido */
 .message-wrapper.received {
   margin-right: auto; /* Empuja el mensaje a la izquierda */
 }
-
 /* Contenedor del contenido del mensaje */
 .message-content-wrapper {
   max-width: 60%;
   display: flex;
   flex-direction: column;
 }
-
 .sent .message-content-wrapper {
   align-items: flex-end;
 }
-
 .received .message-content-wrapper {
   align-items: flex-start;
 }
-
 /* Avatar */
 .message-avatar {
   width: 2rem;
@@ -214,40 +594,41 @@
   object-fit: cover;
   flex-shrink: 0;
 }
-
-/* Burbuja del mensaje */
+.message-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.sent-container {
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.received-container {
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
 .message-bubble {
-  padding: 0.75rem 1rem;
-  border-radius: 1rem;
-  font-size: 0.9rem;
-  line-height: 1.4;
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 18px;
   word-wrap: break-word;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  width: fit-content;
-  max-width: 100%;
 }
-
-/* Estilos específicos para mensajes enviados */
-.sent .message-bubble {
-  background-color: #dcadf8;
-  border-bottom-right-radius: 0;
-  margin-left: auto; /* Alinea la burbuja a la derecha */
+.sent {
+  background-color: #b685e4;
+  color: white;
+  border-top-right-radius: 4px;
 }
-
-/* Estilos específicos para mensajes recibidos */
-.received .message-bubble {
-  background-color: #dbdada;
-  border-bottom-left-radius: 0;
-  margin-right: auto; /* Alinea la burbuja a la izquierda */
+.received {
+  background-color: #f1f1f1;
+  color: #333;
+  border-top-left-radius: 4px;
 }
-
 /* Texto del mensaje */
 .message-text {
   color: #333;
   white-space: pre-wrap;
   word-break: break-word;
 }
-
 /* Estado del mensaje */
 .message-status {
   font-size: 0.75rem;
@@ -256,16 +637,13 @@
   margin-top: 0.25rem;
   text-align: right; /* Alinea el estado a la derecha para mensajes enviados */
 }
-
 .received .message-status {
   text-align: left; /* Alinea el estado a la izquierda para mensajes recibidos */
 }
-
 .chat-input-form {
   padding: 1rem;
   border-top: 1px solid #cfcfcf;
 }
-
 .emoji-button {
   border: none;
   background: #eeeded;
@@ -277,13 +655,11 @@
   transition: all 0.3s ease;
   padding: 0.2rem 0.5rem;
 }
-
 .emoji-button:hover {
   background: rgba(151, 71, 255, 0.1);
   color: #9747ff;
   transform: scale(1.1);
 }
-
 .chat-input {
   flex: 1;
   padding: 0.5rem 1rem;
@@ -294,14 +670,12 @@
   color: #9b9a9b;
   transition: all 0.3s ease;
 }
-
 .chat-input:focus {
   outline: none;
   border-color: #ac86df;
   background: white;
   box-shadow: 0 0 0 3px rgba(151, 71, 255, 0.1);
 }
-
 .send-button {
   padding: 0.5rem 1rem;
   background-color: #b56af1;
@@ -314,95 +688,76 @@
   transition: background-color 0.3s ease;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
-
 .send-button:hover {
   background-color: #9747ff;
 }
-
 /* Pantallas pequeñas (hasta 640px) */
 @media (max-width: 640px) {
   .message-content-wrapper {
     max-width: 75%;
   }
-
   .message-avatar {
     width: 1.75rem;
     height: 1.75rem;
   }
-
   .chat-detail-container {
     width: 100%;
     margin: 0;
   }
 }
-
 /* Tablet styles (768px y superiores) */
 @media (min-width: 768px) {
   .chat-detail-container {
     width: calc(100% - 30px);
     margin: 0 1.5rem;
   }
-
   .message-content-wrapper {
     max-width: 70%;
   }
-
   .message-bubble {
     font-size: 1rem;
   }
-
   .chat-input,
   .send-button {
     font-size: 1rem;
   }
-
   /* Ajuste cuando el sidebar está cerrado */
   .sidebar-wrapper.closed ~ .chat-detail-container {
     width: calc(100% - 4rem);
   }
 }
-
 /* Desktop styles (1024px y superiores) */
 @media (min-width: 1024px) {
   .chat-detail-container {
     width: calc(100% - 350px);
     margin: 0 3.5rem;
   }
-
   .chat-header {
     padding: 1.5rem;
   }
-
   .chat-messages {
     padding: 1.5rem;
   }
-
   .message-content-wrapper {
     max-width: 50%;
   }
-
   .chat-input-form {
     padding: 1.5rem;
   }
-
   .chat-input {
     padding: 0.75rem 1.25rem;
   }
-
   .send-button {
     padding: 0.75rem 1.25rem;
   }
-
   .close-chat-button,
   .emoji-button {
     font-size: 1.4rem;
   }
-
   .emoji-button {
     padding: 0.3rem 0.8rem;
   }
 }
-
 /* Large Desktop styles (1440px y superiores) */
 @media (min-width: 1440px) {
   .chat-detail-container {
@@ -410,7 +765,6 @@
     margin: 0 3rem;
   }
 }
-
 /* Ajuste general cuando el sidebar está cerrado */
 .sidebar-wrapper.closed ~ .chat-detail-container {
   width: calc(100% - 2rem);
