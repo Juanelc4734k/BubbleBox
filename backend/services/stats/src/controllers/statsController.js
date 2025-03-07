@@ -84,6 +84,30 @@ const getUsersFeatured = async (req, res) => {
     }
 };
 
+const getReelsStats = async (req, res) => {
+    try {
+        const stats = await statsModel.getReelsGrowthStats();
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener las estadísticas de reels',
+            error: error.message
+        });
+    }
+};
+
+const getReelsSummary = async (req, res) => {
+    try {
+        const summary = await statsModel.getReelsSummary();
+        res.json(summary);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener el resumen de reels',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getCountPostsToday,
@@ -91,5 +115,7 @@ module.exports = {
     getPostsFeatured,
     getUsersSummary,
     getUsersSummaryGrowth,
-    getUsersFeatured
+    getUsersFeatured,
+    getReelsStats,
+    getReelsSummary
 };

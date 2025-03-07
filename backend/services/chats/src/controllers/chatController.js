@@ -48,6 +48,66 @@ const createMessage = async (req, res) => {
     }
 };
 
+const createAudioMessage = async (req, res) => {
+    try {
+        const { senderId, receiverId, temp_id, duration } = req.body;
+        
+        if (!req.file) {
+            return res.status(400).json({ error: 'No audio file provided' });
+        }
+        
+        // Get the file path
+        const audioPath = `/uploads/audios/${req.file.filename}`;
+        console.log('Audio file saved at:', audioPath);
+
+        const existingMessage = await chatModel.getAudioMessageByPath(audioPath);
+
+        if(existingMessage) {
+            console.log('Audio message already exists, returning existing record');
+            return res.status(200).json({
+                messageId: existingMessage.id,
+                filePath: existingMessage.audio_path,
+                temp_id
+            });
+        }
+
+        const messageData = {
+            sender_id: senderId,
+            receiver_id: receiverId,
+            audio_path: audioPath,
+            duration: duration || '0:00'
+        };
+
+        const savedMessage = await chatModel.saveAudioMessage(messageData);
+        
+        // Emit socket event for real-time updates
+        const io = req.app.get('io');
+        if (io) {
+            io.emit('send_audio_message', {
+                senderId,
+                receiverId,
+                audioPath,
+                duration: duration || '0:00',
+                temp_id,
+                id: savedMessage.id
+            });
+            console.log('Socket event emitted for audio message');
+        } else {
+            console.warn('Socket.io instance not available');
+        }
+        
+        // Return success response
+        res.status(200).json({ 
+            success: true, 
+            audioPath,
+            message: 'Audio message received and processing'
+        });
+    } catch (error) {
+        console.error('Error in createAudioMessage:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 const updateMessage = async (req, res) => {
     try {
         const { messageId } = req.params;
@@ -95,10 +155,35 @@ const updateLastSeen = async (req, res) => {
     }
 }
 
+const getUnreadCount = async (req, res) => {
+    try {
+      const { userId, friendId } = req.params;
+      const count = await chatModel.getUnreadCount(userId, friendId);
+      res.json({ count });
+    } catch (error) {
+      console.error('Error getting unread count:', error);
+      res.status(500).json({ message: 'Error getting unread count', error: error.message });
+    }
+  };
+
+  const markMessagesAsRead = async (req, res) => {
+    try {
+      const { userId, friendId } = req.params;
+      await chatModel.markMessagesAsRead(userId, friendId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error marking messages as read:', error);
+      res.status(500).json({ message: 'Error marking messages as read', error: error.message });
+    }
+  };
+
 module.exports = {
     getMessages,
     createMessage,
     updateMessage,
     deleteMessage,
-    updateLastSeen
+    updateLastSeen,
+    createAudioMessage,
+    getUnreadCount,
+    markMessagesAsRead
 };

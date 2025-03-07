@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { getReactionsPosts, createReactionPost, deleteReaction } from '../../services/reactions';
 import { getUserProfile } from '../../services/users';
 import { deletePost, updatePost } from '../../services/posts';
@@ -12,7 +12,8 @@ import { IoClose } from 'react-icons/io5';
 import Swal from 'sweetalert2'
 import '../../assets/css/app/sweetCustom.css'
 
-const Post = ({ post, isMyPostsTab }) => {
+const Post = forwardRef((props, ref) => {
+    const { post, isMyPostsTab, openCommentsSidebar } = props;
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
    
     const [imgaiAmplia, setImgAmplia] = useState(null);
@@ -35,6 +36,8 @@ const Post = ({ post, isMyPostsTab }) => {
     const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
     const editModalRef = useRef(null);
 
+
+
     const getAvatarSrc = () => {
         if (post.avatar_usuario) {
             // Check if the avatar URL is already complete or needs the base URL
@@ -43,6 +46,12 @@ const Post = ({ post, isMyPostsTab }) => {
                 : `http://localhost:3009${post.avatar_usuario}`;
         }
         return avatarPorDefecto;
+    };
+
+    const handleCommentClick = () => {
+        if (openCommentsSidebar) {
+            openCommentsSidebar(post.id, 'post');
+        }
     };
     
     const checkIfEditable = () => {
@@ -374,6 +383,48 @@ const Post = ({ post, isMyPostsTab }) => {
         }
     };
 
+    const handleShare = async () => {
+        const shareUrl = `http://localhost:5173/posts/obtener/${post.id}`; // Adjust the URL according to your routing
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: post.titulo,
+                    text: post.contenido,
+                    url: shareUrl,
+                });
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    handleCopyLink();
+                }
+            }
+        } else {
+            handleCopyLink();
+        }
+    };
+
+    const handleCopyLink = () => {
+        const shareUrl = `http://localhost:5173/posts/obtener/${post.id}`; // Adjust the URL according to your routing
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            Swal.fire({
+                title: '¡Enlace copiado!',
+                text: 'El enlace ha sido copiado al portapapeles',
+                icon: 'success',
+                confirmButtonColor: '#b685e4',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        }).catch(() => {
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo copiar el enlace',
+                icon: 'error',
+                confirmButtonColor: '#b685e4'
+            });
+        });
+    };
+
     useEffect(() => {
         console.log('Modal state:', showEditModal);
     }, [showEditModal]);
@@ -381,7 +432,7 @@ const Post = ({ post, isMyPostsTab }) => {
     
     return (
         <>
-            <div className="posts">
+            <div className="posts" ref={ref}>
                 <div className='post'>
 
                     <div className="autor-info">
@@ -539,13 +590,13 @@ const Post = ({ post, isMyPostsTab }) => {
                                     </span>
                                 )}
                             </div>
-                            <div className="comentarios flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors">
+                            <div className="comentarios flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={handleCommentClick}>
                                 <MdOutlineInsertComment className="text-xl"/>
                                 <span className="text-sm font-medium">0</span>
                             </div>
                         </div>
                         <div className="grup2">
-                            <div className="reenviar cursor-pointer hover:text-blue-500 transition-colors">
+                            <div className="reenviar cursor-pointer hover:text-blue-500 transition-colors" onClick={handleShare} title='Compartit publicacion'>
                                 <IoArrowRedoOutline className="text-xl"/>
                             </div>
                         </div>
@@ -636,6 +687,9 @@ const Post = ({ post, isMyPostsTab }) => {
         
     );
     
-};
+});
+
+// Add display name to satisfy ESLint
+Post.displayName = 'Post';
 
 export default Post;

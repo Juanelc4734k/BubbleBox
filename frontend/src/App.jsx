@@ -18,6 +18,7 @@ import RecoverPass from './pages/RecoverPass';
 import RecoverPassPage from './pages/ResetPass';
 import ProtectedRouteCommunity from './components/auth/ProtectedRouteCommunity.jsx';
 import SidebarChat from './components/chats/SidebarChat.jsx';
+import SidebarComments from './components/comments/SidebarComments.jsx';
 
 import { logoutUser } from './services/auth.js';
 
@@ -29,6 +30,45 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCreateGroupOpen, setIsCreateGroupOpen] = useState(false); // Estado para el modal
 
+
+  const [showCommentsSidebar, setShowCommentsSidebar] = useState(false);
+  const [commentsContentId, setCommentsContentId] = useState(null);
+  const [commentsContentType, setCommentsContentType] = useState(null);
+
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    
+    // También podemos detectar cambios de ruta por clicks
+    const originalPushState = history.pushState;
+    history.pushState = function() {
+      originalPushState.apply(this, arguments);
+      handleRouteChange();
+    };
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      history.pushState = originalPushState;
+    };
+  }, []);
+  
+  const openCommentsSidebar = (contentId, contentType) => {
+    setCommentsContentId(contentId);
+    setCommentsContentType(contentType);
+    setShowCommentsSidebar(true);
+  };
+
+  // Function to close comments sidebar
+  const closeCommentsSidebar = () => {
+    setShowCommentsSidebar(false);
+    setCommentsContentId(null);
+    setCommentsContentType(null);
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -84,16 +124,25 @@ export default function App() {
                     <Navbar toggleSidebar={toggleSidebar} isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} />
                     <Sidebar isExpanded={isSidebarExpanded} setIsAuthenticated={setIsAuthenticated} />
                     {/* Renderizar SidebarChat en todas las rutas excepto en /chats */}
-                    {window.location.pathname !== '/chats' && <SidebarChat />}
+                    {currentPath !== '/chats' && !showCommentsSidebar && <SidebarChat />}
+                    {/* Render SidebarComments when activated */}
+                    {showCommentsSidebar && (
+                      <SidebarComments 
+                        contentId={commentsContentId} 
+                        contentType={commentsContentType} 
+                        onClose={closeCommentsSidebar}
+                      />
+                    )}
                   </>
                 )}
               <div className="layout">
                 <main className="main-content">
                   <Routes>
                     <Route path='/' element={<ProtectedRoute><Login /></ProtectedRoute>} />
-                    <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                    <Route path='/home' element={<ProtectedRoute><Home openCommentsSidebar={openCommentsSidebar} /></ProtectedRoute>} />
+                    <Route path="/posts/obtener/:id" element={<ProtectedRoute><Home /></ProtectedRoute>} />
                     <Route path='/comunidades' element={<ProtectedRoute><Communities /></ProtectedRoute>} />
-                    <Route path='/comunidad/:id' element={<ProtectedRoute><ProtectedRouteCommunity><CommunityDetail /></ProtectedRouteCommunity></ProtectedRoute>} />
+                    <Route path='/comunidad/:id' element={<ProtectedRoute><ProtectedRouteCommunity><CommunityDetail openCommentsSidebar={openCommentsSidebar} /></ProtectedRouteCommunity></ProtectedRoute>} />
                     <Route path='/friends' element={<ProtectedRoute><Friends /></ProtectedRoute>} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login setIsAuthenticated={setIsAuthenticated} />} />
@@ -101,7 +150,7 @@ export default function App() {
                     <Route path='/recuperar-contrasena' element={<RecoverPassPage />} />
                     <Route path='/users' element={<ProtectedRoute><Users /></ProtectedRoute>} />
                     <Route path='/chats' element={<ProtectedRoute><Chats isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen} /></ProtectedRoute>} />
-                    <Route path='/reels' element={<ProtectedRoute><Reels /></ProtectedRoute>} />
+                    <Route path='/reels' element={<ProtectedRoute><Reels openCommentsSidebar={openCommentsSidebar} /></ProtectedRoute>} />
                     <Route path='/perfil' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                     <Route path='/perfil/:userId' element={<ProtectedRoute><Profiles /></ProtectedRoute>} />
                   </Routes>

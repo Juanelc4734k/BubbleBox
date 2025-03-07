@@ -1,9 +1,10 @@
+
 .stories {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 5vh;
-    justify-content: center;
+    justify-content: start;
     position: relative;
     top: 15vh;
     left: 4.5vh;
@@ -72,6 +73,25 @@
     padding: 2vh;
     transition: all 0.5s ease-in-out;
 
+}
+
+@keyframes highlightPost {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(182, 133, 228, 0);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(182, 133, 228, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(182, 133, 228, 0);
+  }
+}
+
+.highlight-post {
+  animation: highlightPost 2s ease-in-out;
 }
 /* Tab styles */
 /* Updated Tab styles for floating rounded buttons */
@@ -142,7 +162,7 @@
     }
     .home-container{
         margin-top: 22vh;
-        width: 75%;
-
+        width: 70%;
+        margin-left: 5vh;
     }
 }

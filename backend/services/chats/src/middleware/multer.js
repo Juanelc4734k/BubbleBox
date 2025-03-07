@@ -1,36 +1,31 @@
 const multer = require('multer');
 const path = require('path');
 
-// Almacenar directamente en la carpeta 'uploads'
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const folderPath = path.join(__dirname, '../../uploads'); // Sin subcarpetas
+        // Determinar la carpeta de destino según el tipo de archivo
+        let folderPath;
+        if (file.mimetype.startsWith('audio/')) {
+            folderPath = path.join(__dirname, '../../uploads/audios');
+        } else if (file.mimetype.startsWith('video/')) {
+            folderPath = path.join(__dirname, '../../uploads/videos');
+        } else if (file.mimetype.startsWith('image/')) {
+            folderPath = path.join(__dirname, '../../uploads/images');
+        } else {
+            folderPath = path.join(__dirname, '../../uploads');
+        }
+        
         const fs = require('fs');
         if (!fs.existsSync(folderPath)) {
             fs.mkdirSync(folderPath, { recursive: true });
         }
-        cb(null, folderPath); // Guardar en la carpeta 'uploads'
+        cb(null, folderPath);
     },
     filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname); // Nombre único con el original
+        cb(null, `${Date.now()}-${file.originalname}`);
     }
 });
 
-// Filtro para aceptar solo imágenes
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-        cb(null, true); // Acepta el archivo
-    } else {
-        cb(new Error('Solo se permiten archivos de imagen'), false); // Rechaza el archivo
-    }
-};
-
-// Configuración de multer
-const upload = multer({ 
-    storage: storage,
-    fileFilter: fileFilter,
-    limits: { fileSize: 5 * 1024 * 1024 } // Tamaño máximo de archivo: 5MB
-});
+const upload = multer({ storage: storage });
 
 module.exports = upload;

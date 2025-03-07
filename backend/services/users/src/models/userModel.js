@@ -16,7 +16,6 @@ const getUserById = (id) => {
           console.error('Error en la consulta SQL:', error);
           reject(error);
         } else {
-          console.log('Resultado de la consulta:', results); // Log para depuración
           resolve(results[0]);
         }
       });

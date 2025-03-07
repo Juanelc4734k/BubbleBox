@@ -26,7 +26,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'reels') ? 'active' : ''; ?>" href="users.php">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'reels') ? 'active' : ''; ?>" href="reels.php">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-button-play text-dark text-sm opacity-10"></i>
                         </div>

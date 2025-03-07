@@ -11,6 +11,28 @@ const saveMessage = (senderId, receiverId, message) => {
     });
 };
 
+const saveAudioMessage = (messageData) => {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO messages (sender_id, receiver_id, audio_path, duration) VALUES (?, ?, ?, ?)';
+        db.query(query, [
+            messageData.sender_id,
+            messageData.receiver_id,
+            messageData.audio_path,
+            messageData.duration
+        ], (error, result) => {
+            if (error) reject(error);
+            else resolve({ 
+                id: result.insertId, 
+                senderId: messageData.sender_id, 
+                receiverId: messageData.receiver_id, 
+                audioPath: messageData.audio_path,
+                duration: messageData.duration,
+                createdAt: new Date() 
+            });
+        });
+    });
+};
+
 const saveMessageWithNotification = async (senderId, receiverId, message) => {
     try {
         // Save the message first
@@ -130,6 +152,40 @@ const getLastSeen = (userId) => {
     });
 };
 
+const getUnreadCount = (userId, friendId) => {
+    return new Promise((resolve, reject) => {
+      const query = 'SELECT COUNT(*) as count FROM messages WHERE sender_id = ? AND receiver_id = ? AND read_status = 0';
+      db.query(query, [friendId, userId], (error, results) => {
+        if (error) reject(error);
+        else resolve(results[0].count);
+      });
+    });
+  };
+
+  const markMessagesAsRead = (userId, friendId) => {
+    return new Promise((resolve, reject) => {
+      const query = 'UPDATE messages SET read_status = 1 WHERE sender_id = ? AND receiver_id = ? AND read_status = 0';
+      db.query(query, [friendId, userId], (error, result) => {
+        if (error) reject(error);
+        else resolve(result.affectedRows);
+      });
+    });
+  };
+
+const getAudioMessageByPath = async (audioPath) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM messages WHERE audio_path = ? LIMIT 1';
+        db.query(query, [audioPath], (error, results) => {
+            if (error) {
+                console.error('Error checking for existing audio message:', error);
+                reject(error);
+            } else {
+                resolve(results.length > 0 ? results[0] : null);
+            }
+        });
+    });
+};
+
 module.exports = {
     saveMessage,
     saveMessageWithNotification,
@@ -137,5 +193,9 @@ module.exports = {
     updateMessage,
     deleteMessage,
     updateLastSeen,
-    getLastSeen
+    getLastSeen,
+    saveAudioMessage,
+    getUnreadCount,
+    markMessagesAsRead,
+    getAudioMessageByPath
 };

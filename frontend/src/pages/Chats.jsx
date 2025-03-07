@@ -45,8 +45,7 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
             return () => clearTimeout(timer); // Limpia el temporizador si el usuario cambia de chat antes de que termine el tiempo
         }
     }, [selectedFriend]);
-    
-    useEffect(() => {
+    // Move loadFriends outside of useEffect so it can be passed as a prop
         const loadFriends = async () => {
             try {
                 setIsLoading(true);
@@ -90,26 +89,26 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                 setIsLoading(false);
             }
         };
-        loadFriends();
-    }, [userId]);
-
-    return (
-        <div className='conSide'>   
-            <div className='dideChat'>
-                {selectedFriend ? (
-                    <ChatDetail 
-                        chatId={selectedFriend} 
-                        onMessageSent={() => {
-                            loadFriends();
-                        }}
-                        onCloseChat={handleCloseChat}
-                    />
-                ) : (
-                    <div className="selectChat">
-                        Selecciona un chat para comenzar
-                    </div>
-                )}
-            </div>
+    
+        useEffect(() => {
+            loadFriends();
+        }, [userId]);
+    
+        return (
+            <div className='conSide'>   
+                <div className='dideChat'>
+                    {selectedFriend ? (
+                        <ChatDetail 
+                            chatId={selectedFriend} 
+                            onMessageSent={loadFriends} // Pass the function directly
+                            onCloseChat={handleCloseChat}
+                        />
+                    ) : (
+                        <div className="selectChat">
+                            Selecciona un chat para comenzar
+                        </div>
+                    )}
+                </div>
             <div className={`sidebar-wrapper ${isSidebarVisibleChat || window.innerWidth >= 1024 ? "open" : "closed"}`}>
                 <button className="buttonOpenS" onClick={() => setIsSidebarVisibleChat(!isSidebarVisibleChat)}>
                 {isSidebarVisibleChat ? <IoIosArrowForward /> : <IoIosArrowBack />}

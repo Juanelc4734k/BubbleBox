@@ -9,6 +9,7 @@ const SidebarChat = ({onSelectChat}) => {
     const [isLoadingSidebar, setIsLoadingSidebar] = useState(true);
     const [errorSidebar, setErrorSidebar] = useState(null);
     const [isSidebarVisibleChatPage, setIsSidebarVisibleChatPage] = useState(false);
+    const [animateEntry, setAnimateEntry] = useState(false);    
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
@@ -20,8 +21,17 @@ const SidebarChat = ({onSelectChat}) => {
         // Ejecutar la función al cargar y cuando se cambie el tamaño de la pantalla
         handleResize();
         window.addEventListener('resize', handleResize);
+
+        const handleCommentsSidebarClosed = () => {
+            setAnimateEntry(true);
+            setTimeout(() => setAnimateEntry(false), 1000); // Reset after animation completes
+        };
+
+        document.addEventListener('commentsSidebarClosed', handleCommentsSidebarClosed);
+
         return () => {
             window.removeEventListener('resize', handleResize);
+            document.removeEventListener('commentsSidebarClosed', handleCommentsSidebarClosed);
         };
     }, []);
 
@@ -62,7 +72,7 @@ const SidebarChat = ({onSelectChat}) => {
         loadFriends();
     }, [userId]);
     return (
-        <div className={`sidebar-wrapper-Page ${isSidebarVisibleChatPage || window.innerWidth >= 1024 ? "open" : "closed"}`}>
+        <div className={`sidebar-wrapper-Page ${isSidebarVisibleChatPage || window.innerWidth >= 1024 ? "open" : "closed"} ${animateEntry ? "animate-entry" : ""}`}>
             <button className="buttonOpenSidebarp" onClick={() => setIsSidebarVisibleChatPage(!isSidebarVisibleChatPage)}>
                 {isSidebarVisibleChatPage ? <IoIosArrowForward /> : <IoIosArrowBack />}
             </button>

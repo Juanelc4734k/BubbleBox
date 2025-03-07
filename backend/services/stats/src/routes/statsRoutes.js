@@ -9,5 +9,7 @@ router.get('/comentarios/total', statsControllers.getTotalComents);
 router.get('/users/summary', statsControllers.getUsersSummary);
 router.get('/users/stats', statsControllers.getUsersSummaryGrowth);
 router.get('/users/featured', statsControllers.getUsersFeatured);
+router.get('/reels/stats', statsControllers.getReelsStats);
+router.get('/reels/summary', statsControllers.getReelsSummary);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const chatModel = require('./src/models/chatsModel'); // Move require to top lev
 const groupChatModel = require('./src/models/groupChatModel');
 const http = require('http');
 const socketIO = require('socket.io');
+const axios = require('axios');
 
 const onlineUsers = new Map();
 const typingUsers = new Map();
@@ -16,11 +17,13 @@ const typingUsers = new Map();
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
+app.set('io', io);
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -40,7 +43,7 @@ io.on('connection', (socket) => {
         console.log(`User ${senderId} joined room ${roomId}`);
     });
 
-    socket.on('send_private_message', async ({ senderId, receiverId, message, temp_id }) => {
+    socket.on('send_private_message', async ({ senderId, receiverId, message, temp_id, senderAvatar }) => {
         try {
             const areFriends = await friendshipModel.checkFriendship(senderId, receiverId);
             if (areFriends) {
@@ -54,7 +57,8 @@ io.on('connection', (socket) => {
                     receiverId,
                     message,
                     created_at: savedMessage.createdAt,
-                    temp_id
+                    temp_id,
+                    senderAvatar
                 });
 
                 // Send confirmation back to sender
@@ -68,6 +72,101 @@ io.on('connection', (socket) => {
         } catch (error) {
             console.error('Error al enviar mensaje:', error);
             socket.emit('error', 'Error al enviar el mensaje');
+        }
+    });
+
+    socket.on('mark_messages_read', async ({ userId, friendId }) => {
+        try {
+            // Mark messages as read in the database
+            await chatModel.markMessagesAsRead(userId, friendId);
+            
+            // Create room ID for the chat
+            const roomId = [userId, friendId].sort().join('-');
+            
+            // Broadcast to the room that messages have been read
+            io.in(roomId).emit('messages_read', {
+                userId: parseInt(userId),
+                chatId: parseInt(friendId)
+            });
+            
+            console.log(`User ${userId} marked messages from ${friendId} as read`);
+        } catch (error) {
+            console.error('Error marking messages as read:', error);
+            socket.emit('error', 'Error marking messages as read');
+        }
+    });
+
+    socket.on('send_audio_message', async (data) => {
+        try {
+            // Check if users are friends
+            const areFriends = await friendshipModel.checkFriendship(data.senderId, data.receiverId);
+            if (!areFriends) {
+                socket.emit('error', 'No puedes enviar mensajes a usuarios que no son tus amigos');
+                return;
+            }
+            
+            // Create room ID for the chat
+            const roomId = [data.senderId, data.receiverId].sort().join('-');
+            
+            const existingMessage = await chatModel.getAudioMessageByPath(data.audioPath);
+
+            let savedAudio;
+            if(existingMessage) {
+                console.log('Audio message already exists, using existing record:', existingMessage);
+                savedAudio = existingMessage;
+            } else {
+                const messageData = {
+                    sender_id: data.senderId,
+                    receiver_id: data.receiverId,
+                    audio_path: data.audioPath,
+                    duration: data.duration || '0:00'
+                };
+
+                // Save audio message to database
+                savedAudio = await chatModel.saveAudioMessage(messageData);
+                console.log('Audio message saved to database:', savedAudio);
+            }
+
+            // Log the data received for debugging
+            console.log('Audio message data received:', data);
+
+            // Broadcast to all clients in the room, including sender
+            io.in(roomId).emit('receive_audio_message', {
+                id: savedAudio.id,
+                senderId: data.senderId,
+                receiverId: data.receiverId,
+                audioPath: data.audioPath,
+                duration: data.duration || '0:00',
+                created_at: savedAudio.createdAt,
+                temp_id: data.temp_id,
+                senderAvatar: data.senderAvatar
+            });
+
+            // Send confirmation back to sender
+            socket.emit('audio_message_sent_confirmation', {
+                temp_id: data.temp_id,
+                id: savedAudio.id,
+                audioPath: data.audioPath,
+                duration: data.duration || '0:00'
+            });
+            
+            // Send notification
+            try {
+                let nombreRemitente = 'Usuario';
+                const respuestaUsuario = await axios.get(`http://localhost:3000/users/usuario/${data.senderId}`);
+                nombreRemitente = respuestaUsuario.data.nombre;
+                
+                await axios.post(`http://localhost:3000/notifications/send`, {
+                    usuario_id: data.receiverId,
+                    tipo: 'message',
+                    contenido: `Tu amigo ${nombreRemitente} te ha enviado un mensaje de audio`
+                });
+            } catch (notifError) {
+                console.error('Error al enviar la notificación:', notifError.message);
+            }
+        } catch (error) {
+            console.error('Error saving audio message:', error);
+            socket.emit('error', 'Error al enviar el mensaje de audio');
         }
     });
 
