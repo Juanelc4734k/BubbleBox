@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaArrowLeft, FaBell, FaUser, FaBars, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { CiBookmarkPlus } from "react-icons/ci";
@@ -39,6 +39,7 @@ const Navbar = ({ toggleSidebar, isCreateGroupOpen, setIsCreateGroupOpen }) => {
 
     fetchUserProfile()
   }, [])
+  
 
   const handleGoBack = () => {
     if (location.pathname.startsWith("/admin") && location.pathname !== "/admin") {

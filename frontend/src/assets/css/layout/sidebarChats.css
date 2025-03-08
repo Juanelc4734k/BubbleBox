@@ -8,7 +8,7 @@ html, body {
   display: flex;
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 7rem);
+  min-height: calc(100vh - 10rem);
   overflow: hidden;
   align-items: center;  
 }
@@ -16,9 +16,8 @@ html, body {
 .dideChat {
   flex: 1;
   position: relative;
-  height: calc(100vh - 7rem);
+  height: calc(100vh - 10rem);
   padding: 1rem;
-  padding-top: 4rem;
 }
 
 .selectChat {
@@ -34,7 +33,7 @@ html, body {
 
 .sidebar-wrapper {
   position: fixed;
-  top: 8rem;
+  top: 8.5rem;
   right: 0.5rem;
   width: 18rem;
   height: calc(100vh - 9rem);
@@ -135,15 +134,17 @@ html, body {
 
 /* Tablet styles */
 @media (min-width: 768px) {
+  .conSide{
+    min-height: calc(100vh - 13rem);
+  }
   .dideChat {
     width: 100%;
-    height: calc(100vh - 10rem);
-    padding-top: 5rem;
-    margin-top: 3.5rem;
+    height: calc(100vh - 12rem);
+    padding: 0;
   }
   .sidebar-wrapper {
-    top: 11rem;
-    height: calc(100vh - 12rem);
+    top: 10.5rem;
+    height: calc(100vh - 11rem);
   }
   .chatssDetail{
     max-height: calc(100vh - 12rem); /* Ajusta según el diseño */
@@ -158,13 +159,15 @@ html, body {
 @media (min-width: 1024px) {
   .conSide{
     align-items: normal;
+    width: calc(100% - 17.5rem);
+    height: calc(100vh - 15rem);
   }
   .dideChat {
-    height: calc(100vh - 11rem);
+    width: 100%;
+    height: calc(100vh - 14rem);
   }
   .selectChat {
-    width: calc(100% - 18rem);
-    margin: 0 0.5rem;
+    width: 100%;
   }
   .sidebar-wrapper {
     top: 13.2rem;
@@ -183,14 +186,21 @@ html, body {
 @media (min-width: 1440px) {
   .conSide {
     align-items: normal;
+    width: calc(100% - 23rem);
+    height: calc(100vh - 19rem);
+  }
+  .dideChat{
+    height: calc(100vh - 19rem);
   }
   .selectChat {
-    width: calc(100% - 24rem);
-    margin: 0 2rem;
+    width: 100%;
+    margin: 0;
   }
   .sidebar-wrapper {
+    top: 16rem;
     width: 22rem;
     right: 1rem;
+    height: calc(100vh - 17rem);
   }
 
   /* Cuando el sidebar está cerrado */

@@ -1,29 +1,153 @@
+/* Base styles - Mobile first */
 .app {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+.layout {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  height: calc(100vh - 70px); /* Resta la altura del navbar */
+}
+
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  transition: margin-left 0.3s ease, width 0.3s ease;
+  padding: 1rem;
+  padding-top: 9rem;
+}
+
+/* Sidebar states */
+.sidebar-visible .main-content {
+  margin-left: 70px; /* Ancho del sidebar colapsado */
+  width: calc(100% - 50px);
+}
+
+.sidebar-hidden .main-content {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* Auth pages background */
+.auths {
+  background-image: url(../../images/img/fondo1.jpeg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Sidebar positioning */
+.sidebar {
+  position: fixed;
+  top: 8.5rem; /* Altura del navbar */
+  left: 0.5rem;
+  height: calc(100vh - 9rem);
+  width: 4rem; /* Ancho reducido */
+  z-index: 1000;
+  transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* Navbar positioning */
+.navbar {
+  position: fixed;
+  left: 0.5rem;
+  top: 0.5rem;
+  height: 7rem; /* Altura aumentada */
+  z-index: 1250;
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+  .app {
+    padding-top: 80px; /* Altura del navbar en tablet */
   }
-  
+
   .layout {
-    display: flex;
-    flex-grow: 1;
+    height: calc(100vh - 80px);
   }
-  
+
+  .sidebar {
+    top: 10.5rem;
+    height: calc(100vh - 11rem);
+  }
+
+  .navbar {
+    height: 9.4rem;
+  }
+
+  .sidebar-visible .main-content {
+    margin-left: 75px;
+    width: calc(100% - 60px);
+  }
+
   .main-content {
-    flex-grow: 1;
-    margin-left: 60px;
-    padding-top: 60px;
-    padding: 80px 20px 20px;
-    overflow-y: auto;
+    padding-top: 6rem;
   }
-  
-  .app:not(:has(.sidebar)) .main-content {
-    margin-left: 0;
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .layout {
+    height: calc(100vh - 90px);
   }
-  
-  .app:not(:has(.navbar)) .main-content {
-    padding-top: 20px;
+
+  .sidebar {
+    top: 12rem;
+    width: 4.5rem;
+    height: calc(100vh - 13rem);
   }
-  .auths{
-    background-image: url(../../images/img/fondo1.jpeg);
+
+  .sidebar.collapsed {
+    width: 60px;
   }
+
+  .navbar {
+    height: 10.5rem;
+  }
+
+  .sidebar-visible .main-content {
+    width: calc(100% - 500px);
+  }
+
+  .main-content {
+    padding: 2rem;
+    padding-top: 8rem;
+  }
+
+  /* Cuando ambos sidebars están visibles */
+  .sidebar-visible .sidebar-chat.visible ~ .main-content,
+  .sidebar-visible .sidebar-comments.visible ~ .main-content {
+    width: calc(100% - 200px - 380px);
+  }
+
+  /* Cuando solo el sidebar de chat o comentarios está visible */
+  .sidebar-hidden .sidebar-chat.visible ~ .main-content,
+  .sidebar-hidden .sidebar-comments.visible ~ .main-content {
+    width: calc(100% - 380px);
+  }
+}
+
+/* Large desktop styles */
+@media (min-width: 1440px) {
+  .sidebar {
+    top: 16rem;
+    width: 5.5rem;
+    height: calc(100vh - 17rem);
+  }
+  .navbar{
+    height: 14rem;
+  }
+  .main-content{
+    padding-top: 12rem;
+  }
+
+  .sidebar-visible .main-content {
+    margin-left: 90px;
+  }
+
+}
+
