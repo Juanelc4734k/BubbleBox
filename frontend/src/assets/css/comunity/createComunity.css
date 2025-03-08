@@ -36,7 +36,7 @@
   }
   .formComunity {
     position: fixed;
-    top: 32rem;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
     width: 90%;
@@ -255,11 +255,11 @@
     z-index: 1250;
 }
   
-  @media (max-width: 768px) {
+  @media (min-width: 768px) {
     .formComunity {
       width: 95%;
       padding: 1rem;
-      margin-top: -10rem;
+      top: 50%;
     }
   .form-header h2 {
       font-size: 1.25rem;
