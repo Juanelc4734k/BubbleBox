@@ -1,7 +1,7 @@
 /* Base styles - Mobile first */
 .sidebar-comments-wrapper {
     position: fixed;
-    top: 8rem;
+    top: 8.5rem;
     right: 0.5rem;
     width: 18rem;
     height: calc(100vh - 9rem);
@@ -335,16 +335,16 @@
   /* Tablet styles */
   @media (min-width: 768px) {
     .sidebar-comments-wrapper {
-      top: 11rem;
-      height: calc(100vh - 12rem);
+      top: 9.5rem;
+      height: calc(100vh - 10rem);
     }
   }
   
   /* Desktop styles */
   @media (min-width: 1024px) {
     .sidebar-comments-wrapper {
-      top: 13.2rem;
-      height: calc(100vh - 14.5rem);
+      top: 12rem;
+      height: calc(100vh - 13rem);
       width: 18rem;
     }
   }
@@ -352,6 +352,8 @@
   /* Large Desktop styles */
   @media (min-width: 1440px) {
     .sidebar-comments-wrapper {
+      top: 16rem;
+      height: calc(100vh - 17rem);
       width: 22rem;
       right: 1rem;
     }
