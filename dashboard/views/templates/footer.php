@@ -92,7 +92,7 @@
                         labels: labels,
                         datasets: [{
                             label: "Usuarios",
-                            tension: 0.5,
+                            tension: 0.4,
                             borderWidth: 0,
                             pointRadius: 0,
                             borderColor: "#5e72e4",
@@ -203,7 +203,7 @@
                         labels: labels,
                         datasets: [{
                             label: "Reels",
-                            tension: 0.5,
+                            tension: 0.4,
                             borderWidth: 0,
                             pointRadius: 0,
                             borderColor: "#5e72e4",

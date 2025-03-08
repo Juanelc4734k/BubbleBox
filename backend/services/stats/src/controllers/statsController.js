@@ -72,6 +72,43 @@ const getUsersSummaryGrowth = async (req, res) => {
     }
 };
 
+const getGrowthStatsComments = async (req, res) => {
+    try {
+        const stats = await statsModel.getGrowthStatsComentarios();
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener las estadísticas de crecimiento',
+            error: error.message
+        });
+    }
+};
+
+const getCountCommentsByType = async (req, res) => {
+    try {
+        const type = req.params.type;
+        const count = await statsModel.getCountCommentsByType(type);
+        res.json({ count });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener el conteo de comentarios por tipo',
+            error: error.message
+        });
+    }
+};
+
+const getCommentsMonthly = async (req, res) => {
+    try {
+        const comments = await statsModel.getCommentsMonthly();
+        res.json(comments);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener los comentarios mensuales',
+            error: error.message
+        });
+    }
+};
+
 const getUsersFeatured = async (req, res) => {
     try {
         const featuredUsers = await statsModel.getUsersFeatured();
@@ -108,6 +145,54 @@ const getReelsSummary = async (req, res) => {
     }
 };
 
+const getGrowthStatsPublicaciones = async (req, res) => {
+    try {
+        const stats = await statsModel.getGrowthStatsPublicaciones();
+        res.json(stats);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener las estadísticas de crecimiento',
+            error: error.message
+        });
+    }
+};
+
+const getPostsMontly = async (req, res) => {
+    try {
+        const posts = await statsModel.getPostsMontly();
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener los posts mensuales',
+            error: error.message
+        });
+    }
+};
+
+const getPostCount = async (req, res) => {
+    try {
+        const count = await statsModel.getPostCount();
+        res.json({ count });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener el conteo de publicaciones',
+            error: error.message
+        });
+    }
+};
+
+const getCommunitiesSummary = async (req, res) => {
+    try {
+        const summary = await statsModel.getCommunitiesSummary();
+        res.json(summary);
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener el resumen de comunidades',
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getDashboardStats,
     getCountPostsToday,
@@ -117,5 +202,12 @@ module.exports = {
     getUsersSummaryGrowth,
     getUsersFeatured,
     getReelsStats,
-    getReelsSummary
+    getReelsSummary,
+    getGrowthStatsComments,
+    getGrowthStatsPublicaciones,
+    getCountCommentsByType,
+    getCommentsMonthly,
+    getPostsMontly,
+    getPostCount,
+    getCommunitiesSummary
 };

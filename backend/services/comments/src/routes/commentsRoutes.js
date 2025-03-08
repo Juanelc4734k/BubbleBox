@@ -22,4 +22,12 @@ router.get('/publicaciones/comentarios/:idComentario/respuestas', commentsContro
 router.post('/reels/comentarios/:idComentario/respuestas', commentsController.crearRespuestaComentarioReel);
 router.get('/reels/comentarios/:idComentario/respuestas', commentsController.obtenerRespuestasComentarioReel);
 
+router.get('/comentarios/:idUsuario', commentsController.obtenerComentarioPorUserId);
+
+router.get('/posts', commentsController.getComentariosPorPosts);
+router.get('/reels', commentsController.getComentariosPorReels);
+
+router.get('/buscar', commentsController.searchComments);
+router.delete('/eliminar/:id', commentsController.deleteComment);
+
 module.exports = router;

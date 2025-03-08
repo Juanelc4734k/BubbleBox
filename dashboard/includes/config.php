@@ -10,9 +10,14 @@ define('API_BASE_URL', 'http://localhost:3000');
 define('AUTH_API', API_BASE_URL . '/auth');
 define('USERS_API', API_BASE_URL . '/users');
 define('POSTS_API', API_BASE_URL. '/posts');
+define('REACCIONES_API', API_BASE_URL. '/reactions');
 define('COMMENTS_API', API_BASE_URL. '/comments');
+define('NOTIFICATIONS_API', API_BASE_URL. '/notifications');
 define('REELS_API', API_BASE_URL. '/reels');
 define('STATS_API', API_BASE_URL. '/stats');
+define('BACKUPS_API', API_BASE_URL. '/backups');
+define('REPORTS_API', API_BASE_URL. '/reports');
+define('COMMUNITIES_API', API_BASE_URL. '/communities');
 
 // Application settings
 define('SITE_NAME', 'BubbleBox Dashboard');

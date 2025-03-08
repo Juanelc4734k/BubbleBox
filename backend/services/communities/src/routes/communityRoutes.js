@@ -13,4 +13,8 @@ router.put('/actualizar/:id', communityController.updateCommunity);
 router.delete('/eliminar/:id', communityController.deleteCommunity);
 router.get('/esMiembro/:idComunidad/:idUsuario', communityController.isMemberOfCommunity)
 
+router.get('/buscar', communityController.searchCommunities);
+router.put('/suspender/:id', communityController.suspendCommunity);
+router.put('/activar/:id', communityController.activateCommunity);
+
 module.exports = router;

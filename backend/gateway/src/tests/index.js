@@ -19,7 +19,9 @@ const servicios = {
   auth: 'http://localhost:3010',
   comments: 'http://localhost:3011',
   reactions: 'http://localhost:3012',
-  stats: 'http://localhost:3013'
+  stats: 'http://localhost:3013',
+  backups: 'http://localhost:3014',
+  reports: 'http://localhost:3015'
 };
 
 app.use((req, res) => {

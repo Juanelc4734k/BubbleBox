@@ -135,6 +135,66 @@ const obtenerInformacionPublicacion = (idPublicacion) => {
   });
 };
 
+const obtenerComentariosPorUsuario = (idUsuario) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM comentarios WHERE id_usuario =?';
+    db.query(query, [idUsuario], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
+const getCommentsByPosts = async (req, res) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM comentarios WHERE tipo_contenido = "publicacion"';
+    db.query(query, (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  })
+};
+
+const getCommentsByReels = async (req, res) => {
+  return new Promise((resolve, reject) => {
+    const query = 'SELECT * FROM comentarios WHERE tipo_contenido = "reel"';
+    db.query(query, (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  })
+};
+
+const searchComments = (query) => {
+  return new Promise((resolve, reject) => {
+      const searchId = parseInt(query);
+      
+      const searchQuery = `
+          SELECT c.*, u.nombre AS username 
+          FROM comentarios c
+          LEFT JOIN usuarios u ON c.id_usuario = u.id
+          WHERE c.id = ? OR c.contenido LIKE ?
+          ORDER BY c.fecha_creacion DESC
+      `;
+      
+      db.query(searchQuery, [searchId, `%${query}%`], (err, results) => {
+          if (err) return reject(err);
+          resolve(results);
+      });
+  });
+};
+
+const deleteComment = (commentId) => {
+  return new Promise((resolve, reject) => {
+      const deleteQuery = 'DELETE FROM comentarios WHERE id =?';
+
+      db.query(deleteQuery, [commentId], (err, result) => {
+          if (err) return reject(err);
+          resolve(result);
+      });
+  });
+};
+
 module.exports = {
   crearComentarioPublicacion,
   obtenerComentariosPublicacion,
@@ -150,6 +210,11 @@ module.exports = {
   obtenerRespuestasComentarioPublicacion,
   crearRespuestaComentarioReel,
   obtenerRespuestasComentarioReel,
-  obtenerComentarioPorId
+  obtenerComentarioPorId,
+  obtenerComentariosPorUsuario,
+  getCommentsByPosts,
+  getCommentsByReels,
+  searchComments,
+  deleteComment
 };
 

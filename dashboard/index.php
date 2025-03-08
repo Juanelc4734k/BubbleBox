@@ -44,13 +44,14 @@ if ($stats === null) {
 
 // Update the featured posts section
 $postsFeaturedResponse = callAPI('GET', STATS_API. '/posts/featured', null);
-$featuredPostsCount = isset($postsFeaturedResponse['featured_count']) ? $postsFeaturedResponse['featured_count'] : 0;
+$featuredPostsCount = isset($postsFeaturedResponse['count']) ? $postsFeaturedResponse['count'] : 0;
 
 $postResponse = callAPI('GET', STATS_API . '/posts/today', null);
 $postCountToday = isset($postResponse['count']) ? $postResponse['count'] : 0;
 
 $totalCommentsResponse = callAPI('GET', STATS_API. '/comentarios/total', null);
-$totalComments = isset($totalCommentsResponse['total'])? $totalCommentsResponse['total'] : 0;
+$totalComments = isset($totalCommentsResponse['total']) ? $totalCommentsResponse['total'] : 
+                (isset($totalCommentsResponse['count']) ? $totalCommentsResponse['count'] : 0);
 
 $userSummary = callAPI('GET', STATS_API . '/users/summary', null);
 $latestMonth = !empty($userSummary) ? end($userSummary) : null;
@@ -100,9 +101,15 @@ include 'views/templates/sidebar.php';
                                         ?>
                                     </h5>
                                     <p class="mb-0">
-                                    <span class="<?php echo $userGrowth >= 0 ? 'text-success' : 'text-danger'; ?> text-sm font-weight-bolder">
-                                        <?php echo $userGrowth >= 0 ? '+' : ''; echo number_format($userGrowth, 1); ?>%
-                                    </span>
+                                    <?php if ($userGrowth !== 0): ?>
+                                        <span class="<?php echo $userGrowth >= 0 ? 'text-success' : 'text-danger'; ?> text-sm font-weight-bolder">
+                                            <?php echo $userGrowth >= 0 ? '+' : ''; echo number_format($userGrowth, 1); ?>%
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="text-secondary text-sm font-weight-bolder">
+                                            Sin cambios
+                                        </span>
+                                    <?php endif; ?>
                                         desde ayer
                                     </p>
                                 </div>

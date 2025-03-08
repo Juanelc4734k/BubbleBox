@@ -39,6 +39,16 @@ const createUser = (userData) => {
     });
   };
 
+  const suspendUser = (id, estado) => {
+    return new Promise((resolve, reject) => {
+      db.query('UPDATE usuarios SET estado = ? WHERE id = ?', [estado, id], (error, result) => {
+        if (error) reject(error);
+        resolve(result.affectedRows > 0);
+      });
+    });
+  };
+
+
   const updateUser = (id, userData) => {
     return new Promise((resolve, reject) => {
       console.log('Actualizando usuario:', id, 'con datos:', userData);
@@ -88,10 +98,15 @@ const deleteUser = (id) => {
 
 const searchUsers = (query) => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at FROM usuarios WHERE nombre LIKE ? OR username LIKE ? OR email LIKE ?', 
-      [`%${query}%`, `%${query}%`, `%${query}%`], 
+    // Add parameter for email search that was missing in the array
+    db.query(
+      'SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at FROM usuarios WHERE id LIKE ? OR nombre LIKE ? OR username LIKE ? OR email LIKE ?', 
+      [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
       (error, results) => {
-        if (error) reject(error);
+        if (error) {
+          console.error('Error searching users:', error);
+          reject(error);
+        }
         resolve(results);
       }
     );
@@ -124,5 +139,6 @@ module.exports = {
   deleteUser,
   searchUsers,
   updateAvatar,
-  changePassword
+  changePassword,
+  suspendUser
 };

@@ -34,7 +34,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'publicaciones') ? 'active' : ''; ?>" href="users.php">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'publicaciones') ? 'active' : ''; ?>" href="publicaciones.php">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-books text-dark text-sm opacity-10"></i>
                         </div>
@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'comentarios') ? 'active' : ''; ?>" href="users.php">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'comentarios') ? 'active' : ''; ?>" href="comentarios.php">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-chat-round text-dark text-sm opacity-10"></i>
                         </div>
@@ -50,11 +50,27 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'recuperacion') ? 'active' : ''; ?>" href="users.php">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'comunidades') ? 'active' : ''; ?>" href="comunidades.php">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-world text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Comunidades</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'recuperacion') ? 'active' : ''; ?>" href="recover.php">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-key-25 text-dark text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Recuperacion</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (isset($currentPage) && $currentPage == 'reportes') ? 'active' : ''; ?>" href="reportes.php">
+                        <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-chart-bar-32 text-dark text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Reportes</span>
                     </a>
                 </li>
             </ul>

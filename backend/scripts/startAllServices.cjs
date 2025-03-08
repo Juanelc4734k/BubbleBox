@@ -25,7 +25,9 @@ const servicios = [
     { nombre: 'auth', ruta: '../services/auth/index.js', puerto: 3010 },
     { nombre: 'comments', ruta: '../services/comments/index.js', puerto: 3011 },
     { nombre: 'reactions', ruta: '../services/reactions/index.js', puerto: 3012 },
-    { nombre:'stats', ruta: '../services/stats/index.js', puerto: 3013 },
+    { nombre: 'stats', ruta: '../services/stats/index.js', puerto: 3013 },
+    { nombre: 'backups', ruta: '../services/backups/index.js', puerto: 3014 },
+    { nombre: 'reports', ruta: '../services/reportes/index.js', puerto: 3015 }
 ];
 
 const tiempoInicio = Date.now();

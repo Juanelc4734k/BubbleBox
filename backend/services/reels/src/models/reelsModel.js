@@ -86,13 +86,32 @@ const eliminar = (id) => {
   });
 };
 
+const searchReels = (query) => {
+  return new Promise((resolve, reject) => {
+    const searchId = parseInt(query);
+    const searchQuery = `
+      SELECT r.*, u.nombre AS username, u.avatar 
+      FROM reels r
+      LEFT JOIN usuarios u ON r.usuario_id = u.id
+      WHERE r.id = ?
+      ORDER BY r.fecha_creacion DESC
+    `;
+    
+    db.query(searchQuery, [searchId], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
 module.exports = {
   crear,
   obtenerTodos,
   obtenerPorId,
   obtenerPorUsuario,
   actualizar,
-  eliminar
+  eliminar,
+  searchReels
 };
 
 
