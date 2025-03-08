@@ -8,8 +8,8 @@
 
 /* Base styles (mobile first) */
 .container-usuarios {
-  width: calc(100% - 4rem);
-  margin: 3.3rem 0.5rem 0;
+  width: calc(100% - 1.5rem);
+  margin: 0 0 0;
   padding: 0.7rem;
   display: flex;
   flex-direction: column;
@@ -125,7 +125,7 @@
   }
 
   .user-avatar {
-    width: 60px;
+    width: 85px;
     height: 60px;
   }
 
@@ -159,7 +159,6 @@
 @media (min-width: 992px) {
   .container-usuarios {
     max-width: 960px;
-    margin: 3.3rem auto 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
@@ -182,7 +181,6 @@
     margin-top: 0.2rem;
   }
 
-
   .user-name {
     justify-content: center;
   }
@@ -193,11 +191,10 @@
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .container-usuarios {
-    margin: 8rem 0.5rem;
     grid-template-columns: repeat(2, 1fr);
-    width: calc(100% - 5rem);
+    width: calc(100% - 18rem);
   }
   .request-button {
     width: 80%;
@@ -205,9 +202,18 @@
 }
 
 /* XXL devices (larger desktops, 1400px and up) */
-@media (min-width: 1400px) {
+@media (min-width: 1440px) {
   .container-usuarios {
-    max-width: 1320px;
+    width: calc(100% - 22rem); /* Ancho total menos 22rem para el sidebar */
+    max-width: calc(100% - 2rem); /* Máximo ancho considerando margen derecho */
     grid-template-columns: repeat(4, 1fr);
+    padding: 2rem;
+  }
+
+  /* Ajuste para cuando el sidebar está colapsado */
+  .sidebar-hidden .container-usuarios {
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+    max-width: calc(100% - 2rem);
   }
 }

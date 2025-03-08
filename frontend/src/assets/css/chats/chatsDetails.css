@@ -709,7 +709,7 @@
 @media (min-width: 768px) {
   .chat-detail-container {
     width: calc(100% - 30px);
-    margin: 0 1.5rem;
+    margin: 0;
   }
   .message-content-wrapper {
     max-width: 70%;
@@ -729,8 +729,9 @@
 /* Desktop styles (1024px y superiores) */
 @media (min-width: 1024px) {
   .chat-detail-container {
-    width: calc(100% - 350px);
-    margin: 0 3.5rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
   }
   .chat-header {
     padding: 1.5rem;
@@ -761,8 +762,8 @@
 /* Large Desktop styles (1440px y superiores) */
 @media (min-width: 1440px) {
   .chat-detail-container {
-    width: calc(100% - 400px);
-    margin: 0 3rem;
+    width: 100%;
+    margin:0;
   }
 }
 /* Ajuste general cuando el sidebar está cerrado */

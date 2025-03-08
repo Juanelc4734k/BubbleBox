@@ -1,19 +1,14 @@
-.sidebar {
+/* .sidebar {
     position: fixed;
-    top: 20vh;
     left: 1.3vh;
     width: 9vh;
-    height: 88vh;
-    padding-top: 60px; /* Espacio para el navbar */
-    z-index: 1000;
-  }
-  .sidebar.expanded{
-    opacity: 1;
-    transition: opacity 0.3s ease;
-  }
+    height: calc(100vh - 9rem);
+
+    transition: transform 0.3s ease;
+  } */
   .sidebar.collapsed{
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transform: translateX(-100%);
+    left: -0.5rem;
   }
 
   /* Estilos específicos para el sidebar de usuario */
@@ -29,7 +24,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-top: -10vh;
   }
   
   .menu-item {
@@ -134,10 +128,8 @@
   }
   @media (min-width: 768px) {
     .sidebar{
-      top: 28vh;
       left: 1vh;
       width: 8vh;
-      height: 79vh;
     }
     .menu{
       gap: 0.5rem;
@@ -156,12 +148,6 @@
   }
 
   @media (min-width: 1024px) {
-    .sidebar{
-      top: 32vh;
-      width: 9vh;
-      height: 76vh;
-      left: 2.3vh;
-    }
     .menu{
       gap: 0;
     }
@@ -181,8 +167,11 @@
 
   /* Large desktop styles */
   @media (min-width: 1440px) {
-    .sidebar {
-      top: 28vh;
-      height: 80vh;
+    .menu{
+      gap: 1rem;
+    }
+    .menu-link{
+      width: 45px;
+      height: 45px;
     }
   }

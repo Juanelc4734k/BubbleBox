@@ -132,8 +132,8 @@
 /* Media query para tablets y desktop */
 @media (min-width: 768px) {
     .dropdown-toggle {
-        width: 2.8rem;
-        height: 2.8rem;
+        width: 2rem;
+        height: 2rem;
     }
 
     .dropdown-item {
