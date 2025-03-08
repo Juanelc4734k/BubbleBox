@@ -277,37 +277,51 @@ include 'views/templates/sidebar.php';
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Usuario</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Título</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Fecha</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tipo</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Interacciones</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acción</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php
-                  // Get recent posts
-                  $recentPosts = callAPI('GET', POSTS_API . '/obtener-todos', null);
+                <?php
+                  // Get all reels
+                  $reels = callAPI('GET', REELS_API . '/todosReels', null);
                   
-                  // Sort posts by date (newest first)
-                  if ($recentPosts && is_array($recentPosts)) {
-                      usort($recentPosts, function($a, $b) {
-                          return strtotime($b['fecha_creacion']) - strtotime($a['fecha_creacion']);
+                  // Sort reels by interactions (likes + comments)
+                  if ($reels && is_array($reels)) {
+                      // Add total interactions count
+                      foreach ($reels as &$reel) {
+                          // Get likes and comments for this specific reel
+                          $reelsLikes = callAPI('GET', REACCIONES_API. '/reacciones-reel/'. $reel['id'], null);
+                          $reelsComments = callAPI('GET', COMMENTS_API. '/reels/'. $reel['id']. '/comentarios', null);
+                          
+                          $likesCount = is_array($reelsLikes) ? count($reelsLikes) : 0;
+                          $commentsCount = is_array($reelsComments) ? count($reelsComments) : 0;
+                          $reel['total_interactions'] = $likesCount + $commentsCount;
+                          $reel['likes_count'] = $likesCount;
+                          $reel['comments_count'] = $commentsCount;
+                      }
+                      
+                      // Sort by total interactions (highest first)
+                      usort($reels, function($a, $b) {
+                          return $b['total_interactions'] - $a['total_interactions'];
                       });
                       
-                      // Display only the 5 most recent posts
-                      $recentPosts = array_slice($recentPosts, 0, 5);
+                      // Display only the 5 most interactive reels
+                      $featuredReels = array_slice($reels, 0, 5);
                       
-                      foreach ($recentPosts as $post) {
+                      foreach ($featuredReels as $reel) {
                           // Format date
-                          $date = new DateTime($post['fecha_creacion']);
+                          $date = new DateTime($reel['fecha_creacion']);
                           $formattedDate = $date->format('d M Y');
                           
-                          // Get user avatar
-                          $avatarUrl = $post['avatar_usuario'] 
-                              ? 'http://localhost:3009' . $post['avatar_usuario'] 
+                          // Get user avatar - fixed the syntax error here
+                          $avatarUrl = isset($reel['avatar']) && $reel['avatar'] 
+                              ? 'http://localhost:3009' . $reel['avatar'] 
                               : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
                           
-                          // Get post type
-                          $postType = $post['es_comunidad'] ? 'Comunidad' : 'Personal';
-                          $postTypeClass = $post['es_comunidad'] ? 'bg-gradient-primary' : 'bg-gradient-success';
+                          // Use the stored interaction counts
+                          $likesCount = $reel['likes_count'];
+                          $commentsCount = $reel['comments_count'];
                   ?>
                   <tr>
                     <td class="w-30">
@@ -317,14 +331,14 @@ include 'views/templates/sidebar.php';
                         </div>
                         <div class="ms-2">
                           <p class="text-xs font-weight-bold mb-0">Usuario:</p>
-                          <h6 class="text-sm mb-0"><?php echo $post['nombre_usuario'] ?? 'Usuario Desconocido'; ?></h6>
+                          <h6 class="text-sm mb-0"><?php echo $reel['username'] ?? $reel['username'] ?? 'Usuario Desconocido'; ?></h6>
                         </div>
                       </div>
                     </td>
                     <td>
                       <div class="text-start">
-                        <p class="text-xs font-weight-bold mb-0">Título:</p>
-                        <h6 class="text-sm mb-0"><?php echo htmlspecialchars($post['titulo']); ?></h6>
+                        <p class="text-xs font-weight-bold mb-0">Descripcion:</p>
+                        <h6 class="text-sm mb-0"><?php echo htmlspecialchars($reel['descripcion'] ?? 'Sin título'); ?></h6>
                       </div>
                     </td>
                     <td>
@@ -335,35 +349,40 @@ include 'views/templates/sidebar.php';
                     </td>
                     <td class="align-middle text-sm">
                       <div class="col text-center">
-                        <span class="badge badge-sm <?php echo $postTypeClass; ?>"><?php echo $postType; ?></span>
+                        <span class="badge badge-sm bg-gradient-info">
+                          <i class="fas fa-heart me-1"></i><?php echo $likesCount; ?>
+                        </span>
+                        <span class="badge badge-sm bg-gradient-primary">
+                          <i class="fas fa-comment me-1"></i><?php echo $commentsCount; ?>
+                        </span>
                       </div>
                     </td>
                     <td class="align-middle text-sm">
                       <div class="col text-center">
-                        <?php if ($post['imagen']): ?>
-                            <button type="button" class="btn btn-sm btn-info rounded-pill px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#imageModal<?php echo $post['id']; ?>" title="Ver publicación">
-                                <i class="fas fa-eye me-1"></i>
+                        <?php if (isset($reel['archivo_video'])): ?>
+                            <button type="button" class="btn btn-sm btn-info rounded-pill px-3 py-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#reelModal<?php echo $reel['id']; ?>" title="Ver reel">
+                                <i class="fas fa-play me-1"></i>
                                 <span class="text-xs">Ver</span>
                             </button>
-                          <!-- Modal for this post -->
-                          <div class="modal fade" id="imageModal<?php echo $post['id']; ?>" tabindex="-1" aria-labelledby="imageModalLabel<?php echo $post['id']; ?>" aria-hidden="true">
+                          <!-- Modal for this reel -->
+                          <div class="modal fade" id="reelModal<?php echo $reel['id']; ?>" tabindex="-1" aria-labelledby="reelModalLabel<?php echo $reel['id']; ?>" aria-hidden="true">
                             <div class="modal-dialog modal-md">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="imageModalLabel<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['titulo']); ?></h5>
+                                  <h5 class="modal-title" id="reelModalLabel<?php echo $reel['id']; ?>"><?php echo htmlspecialchars($reel['descripcion'] ?? 'Reel'); ?></h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                  <img src="http://localhost:3008/uploads/<?php echo $post['imagen']; ?>" class="img-fluid" alt="Post Image" style="max-height: 300px; object-fit: contain;">
-                                  <div class="mt-3 text-start" style="max-height: 150px; overflow-y: auto; word-wrap: break-word;">
-                                    <p><?php echo htmlspecialchars($post['contenido']); ?></p>
-                                  </div>
+                                  <video controls class="img-fluid" style="max-height: 500px;">
+                                    <source src="<?php echo 'http://localhost:3002/uploads/'. $reel['archivo_video']; ?>" type="video/mp4">
+                                    Tu navegador no soporta videos HTML5.
+                                  </video>
                                 </div>
                               </div>
                             </div>
                           </div>
                         <?php else: ?>
-                          <span class="badge badge-sm bg-gradient-secondary">Sin imagen</span>
+                          <span class="badge badge-sm bg-gradient-secondary">Sin video</span>
                         <?php endif; ?>
                       </div>
                     </td>
@@ -373,8 +392,8 @@ include 'views/templates/sidebar.php';
                   } else {
                   ?>
                   <tr>
-                    <td colspan="4" class="text-center py-4">
-                      <p class="text-sm mb-0">No hay publicaciones recientes disponibles</p>
+                    <td colspan="5" class="text-center py-4">
+                      <p class="text-sm mb-0">No hay reels disponibles</p>
                     </td>
                   </tr>
                   <?php

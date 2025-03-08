@@ -9,7 +9,7 @@ router.get('/usuarios', userController.getAllUsers);
 router.get('/usuario/:id', userController.getUserById);
 router.post('/crear-usuario', userController.createUser);
 router.put('/actualizar-usuario/:id', userController.updateUser);
-router.delete('/eliminar-usuario/:id', checkRol(['administrador']), userController.deleteUser);
+router.delete('/eliminar-usuario/:id', userController.deleteUser);
 router.get('/buscar-usuarios/:query', userController.searchUsers);
 router.get('/perfil', authMiddleware, userController.getCurrentUserProfile);
 router.get('/perfil/:id', userController.getPublicUserProfile);
@@ -18,5 +18,7 @@ router.put('/cambiar-contrasena', authMiddleware, userController.changePassword)
 router.get('/health', (req, res) => {
     res.status(200).json({ status: 'healthy' });
   });  
+
+router.put('/suspender-usuario/:id', userController.suspendUser);
 
 module.exports = router;

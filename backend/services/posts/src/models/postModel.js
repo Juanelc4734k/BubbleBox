@@ -38,6 +38,24 @@ const obtenerTodasLasPublicaciones = () => {
     });
 };
 
+const obtenerPublicacionesDeUsuario = (id) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT p.*, u.nombre AS nombre_usuario, u.avatar AS avatar_usuario
+            FROM publicaciones p
+            LEFT JOIN usuarios u ON p.id_usuario = u.id
+            WHERE p.id_usuario =?;
+        `;
+        db.query(query, [id], (err, results) => {
+            if (err) {
+                console.error('Error al obtener publicaciones de usuario:', err);
+                return reject(err);
+            }
+            resolve(results);
+        });
+    });
+};
+
 const obtenerPublicacionesDeUsuarios = () => {
     return new Promise((resolve, reject) => {
         const query = `
@@ -153,6 +171,25 @@ const eliminarPublicacion = (id) => {
     });
 };
 
+const searchPosts = (query) => {
+    return new Promise((resolve, reject) => {
+        const searchId = parseInt(query);
+        
+        const searchQuery = `
+            SELECT p.*, u.nombre AS username 
+            FROM publicaciones p
+            LEFT JOIN usuarios u ON p.id_usuario = u.id
+            WHERE p.id = ? OR p.titulo LIKE ?
+            ORDER BY p.fecha_creacion DESC
+        `;
+        
+        db.query(searchQuery, [searchId, `%${query}%`], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
 module.exports = {
     crearPublicacion,
     obtenerTodasLasPublicaciones,
@@ -160,7 +197,9 @@ module.exports = {
     actualizarPublicacion,
     eliminarPublicacion,
     obtenerPublicacionesDeUsuarios,
+    obtenerPublicacionesDeUsuario,
     obtenerPublicacionesDeComunidades,
     obtenerPublicacionesDeComunidad,
-    crearPublicacionComunidad
+    crearPublicacionComunidad,
+    searchPosts
 };

@@ -134,6 +134,51 @@ const isMemberOfCommunity = async (req, res) => {
     }
 };
 
+const searchCommunities = async (req, res) => {
+    try {
+        const query = req.params.query || req.query.query;
+        if (!query) {
+            return res.status(400).json({ mensaje: 'Se requiere un término de búsqueda' });
+        }
+        const posts = await communityModel.searchCommunities(query);
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al buscar publicaciones', error: error.message });
+    }
+};
+
+const suspendCommunity = async (req, res) => {
+    try {
+        const idComunidad = req.params.id;
+        const { estado, motivo, duracion } = req.body;
+        const suspendido = await communityModel.suspendCommunity(idComunidad, estado, motivo, duracion);
+        if (suspendido) {
+            res.json({ mensaje: 'Comunidad suspendida con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Comunidad no encontrada' });
+        }
+    } catch (error) {
+        console.error('Error al suspender la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
+const activateCommunity = async (req, res) => {
+    try {
+        const idComunidad = req.params.id;
+        const { estado } = req.body;
+        const activado = await communityModel.activateCommunity(idComunidad, estado);
+        if (activado) {
+            res.json({ mensaje: 'Comunidad activada con éxito' });
+        } else {
+            res.status(404).json({ mensaje: 'Comunidad no encontrada' });
+        }
+    } catch (error) {
+        console.error('Error al activar la comunidad:', error);
+        res.status(500).json({ mensaje: 'Error interno del servidor' });
+    }
+};
+
 
 module.exports = {
     getAllCommunities,
@@ -144,5 +189,8 @@ module.exports = {
     leaveCommunity,
     updateCommunity,
     deleteCommunity,
-    isMemberOfCommunity
+    isMemberOfCommunity,
+    searchCommunities,
+    suspendCommunity,
+    activateCommunity,
 };

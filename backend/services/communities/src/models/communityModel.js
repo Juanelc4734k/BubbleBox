@@ -50,7 +50,7 @@ const obtenerTodasLasComunidades = () => {
 const obtenerMiembrosDeComunidad = (idComunidad) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT u.*
+            SELECT u.*, uc.fecha_union
             FROM usuarios u
             INNER JOIN usuarios_comunidades uc ON u.id = uc.id_usuario
             WHERE uc.id_comunidad = ?;
@@ -109,6 +109,51 @@ const isMember = (userId, communityId) => {
     });
 };
 
+const searchCommunities = (query) => {
+    return new Promise((resolve, reject) => {
+        const searchId = parseInt(query);
+        
+        const searchQuery = `
+            SELECT c.*, u.nombre AS username 
+            FROM comunidades c
+            LEFT JOIN usuarios u ON c.id_creador = u.id
+            WHERE c.id = ? OR c.nombre LIKE ?
+            ORDER BY c.fecha_creacion DESC
+        `;
+        
+        db.query(searchQuery, [searchId, `%${query}%`], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
+const suspendCommunity = (communityId, estado, motivo, duracion) => {
+    return new Promise((resolve, reject) => {
+        // Calculate suspension end date based on duration in days
+        const suspensionEndDate = new Date();
+        suspensionEndDate.setDate(suspensionEndDate.getDate() + duracion);
+        
+        // Update community with suspension details
+        const query = 'UPDATE comunidades SET tipo_privacidad = ?, fecha_fin_suspension = ?, motivo = ?, duracion = ? WHERE id = ?';
+        db.query(query, [estado, suspensionEndDate, motivo, duracion, communityId], (err, result) => {
+            if (err) return reject(err);
+            resolve(result.affectedRows > 0);
+        });
+    });
+};
+
+const activateCommunity = (communityId, estado) => {
+    return new Promise((resolve, reject) => {
+        // Update community with suspension details
+        const query = 'UPDATE comunidades SET tipo_privacidad =?, fecha_fin_suspension =?, motivo =?, duracion =? WHERE id =?';
+        db.query(query, [estado, null, null, null, communityId], (err, result) => {
+            if (err) return reject(err);
+            resolve(result.affectedRows > 0);
+        });
+    });
+};
+
 module.exports = {
     crearComunidad,
     obtenerTodasLasComunidades,
@@ -118,5 +163,8 @@ module.exports = {
     obtenerComunidadPorId,
     actualizarComunidad,
     eliminarComunidad,
-    isMember
+    isMember,
+    searchCommunities,
+    suspendCommunity,
+    activateCommunity
 };

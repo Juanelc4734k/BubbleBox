@@ -195,6 +195,57 @@ const obtenerRespuestasComentarioReel = async (req, res) => {
   }
 };
 
+const obtenerComentarioPorUserId = async (req, res) => {
+  try {
+    const { idUsuario } = req.params;
+    const comentario = await commentsModel.obtenerComentariosPorUsuario(idUsuario);
+    res.status(200).json(comentario);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el comentario' });
+  }
+};
+
+const getComentariosPorPosts = async (req, res) => {
+  try {
+    const comentarios = await commentsModel.getCommentsByPosts();
+    res.status(200).json(comentarios);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los comentarios' });
+  }
+};
+
+const getComentariosPorReels = async (req, res) => {
+  try {
+    const comentarios = await commentsModel.getCommentsByReels();
+    res.status(200).json(comentarios);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los comentarios' });
+  }
+};
+
+const searchComments = async (req, res) => {
+  try {
+      const query = req.params.query || req.query.query;
+      if (!query) {
+          return res.status(400).json({ mensaje: 'Se requiere un término de búsqueda' });
+      }
+      const posts = await commentsModel.searchComments(query);
+      res.json(posts);
+  } catch (error) {
+      res.status(500).json({ mensaje: 'Error al buscar publicaciones', error: error.message });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  try {
+      const commentId = req.params.id;
+      await commentsModel.deleteComment(commentId);
+      res.json({ mensaje: 'Comentario eliminado correctamente' });
+  } catch (error) {
+      res.status(500).json({ mensaje: 'Error al eliminar el comentario', error: error.message });
+  }
+};
+
 module.exports = {
   crearComentarioPublicacion,
   obtenerComentariosPublicacion,
@@ -205,5 +256,10 @@ module.exports = {
   crearRespuestaComentarioPublicacion,
   obtenerRespuestasComentarioPublicacion,
   crearRespuestaComentarioReel,
-  obtenerRespuestasComentarioReel
+  obtenerRespuestasComentarioReel,
+  obtenerComentarioPorUserId,
+  getComentariosPorPosts,
+  getComentariosPorReels,
+  searchComments,
+  deleteComment
 };

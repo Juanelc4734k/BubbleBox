@@ -127,11 +127,25 @@ const eliminarReel = async (req, res) => {
   }
 };
 
+const searchReels = async (req, res) => {
+  try {
+      const query = req.query.query;
+      if (!query) {
+          return res.status(400).json({ mensaje: 'Se requiere un término de búsqueda' });
+      }
+      const reels = await reelsModel.searchReels(query);
+      res.status(200).json(reels);
+  } catch (error) {
+      res.status(500).json({ mensaje: 'Error al buscar reels', error: error.message });
+  }
+};
+
 module.exports = {
   crearReel,
   obtenerTodosLosReels,
   obtenerReelPorId,
   obtenerReelsPorUsuario,
   actualizarReel,
-  eliminarReel
+  eliminarReel,
+  searchReels
 };

@@ -23,6 +23,16 @@ const getUserPosts = async (req, res) => {
     }
 };
 
+const getUserPostsById = async (req, res) => {
+    try {
+        const posts = await postModel.obtenerPublicacionesDeUsuario(req.params.id);
+        res.json(posts);
+    } catch (error) {
+        console.error('Error al obtener las publicaciones de usuarios:', error);
+        res.status(500).json({ mensaje: 'Error al obtener las publicaciones de usuarios', error: error.message });
+    }
+};
+
 const getCommunityPosts = async (req, res) => {
     try {
         const posts = await postModel.obtenerPublicacionesDeComunidades();
@@ -146,6 +156,19 @@ const deletePost = async (req, res) => {
     }
 };
 
+const searchPosts = async (req, res) => {
+    try {
+        const query = req.params.query || req.query.query;
+        if (!query) {
+            return res.status(400).json({ mensaje: 'Se requiere un término de búsqueda' });
+        }
+        const posts = await postModel.searchPosts(query);
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al buscar publicaciones', error: error.message });
+    }
+};
+
 module.exports = {
     getAllPosts,
     getPostById,
@@ -154,6 +177,8 @@ module.exports = {
     updatePost,
     deletePost,
     getUserPosts,
+    getUserPostsById,
     getCommunityPosts,
-    getCommunityPostsById
+    getCommunityPostsById,
+    searchPosts
 };

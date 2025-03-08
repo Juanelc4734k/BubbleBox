@@ -27,6 +27,25 @@ const getUserById = async (req, res) => {
   }
 };
 
+const suspendUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const estado = req.body.estado;
+    // Validate that we have an ID and a valid state
+    if (!userId || (estado !== 'conectado' && estado !== 'suspendido')) {
+      return res.status(400).json({ mensaje: 'ID de usuario y estado válidos requeridos' });
+    }
+    const actualizado = await userModel.suspendUser(userId, estado);
+    if (actualizado) {
+      res.json({ mensaje: 'Estado del usuario actualizado' });
+    } else {
+      res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al suspender usuario', error: error.message });
+  }
+};
+
 const createUser = async (req, res) => {
   try {
     const { nombre, username, email, contraseña, avatar, estado } = req.body;
@@ -263,5 +282,6 @@ module.exports = {
   updateProfilePhoto,
   changePassword,
   getCurrentUserProfile,
-  getPublicUserProfile
+  getPublicUserProfile,
+  suspendUser
 };

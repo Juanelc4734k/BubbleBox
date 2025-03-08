@@ -10,5 +10,6 @@ router.get('/reel/:id', reelsController.obtenerReelPorId);
 router.get('/reelsUsuario/:usuario_id', reelsController.obtenerReelsPorUsuario);
 router.delete('/eliminarReel/:id', reelsController.eliminarReel);
 
+router.get('/buscar', reelsController.searchReels);
 
 module.exports = router;
