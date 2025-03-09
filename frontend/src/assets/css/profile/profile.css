@@ -1,0 +1,123 @@
+.profile{
+    height: calc(100vh - 15rem);
+}
+.imgProfile{
+    width: 8rem;
+    height: 8rem;
+}
+.butonprofil{
+    padding-top: 1rem;
+}
+@media (min-width: 768px){
+    .profile{
+        height: calc(100vh - 12rem);
+    }
+    .profileContent{
+        height: 100%;
+    }
+    .dentroProfileConent{
+        height: 100%;
+    }
+    .rightprofile{
+        height: 100%;
+        padding-top: 2rem;
+        margin-top: 3rem;
+    }
+    .relative{
+        margin-top: 6rem;
+    }
+    .textRight{
+        margin-bottom: 1.3rem;
+    }
+    .sobreMi{
+        margin-bottom: 1.5rem;
+    }
+    .informacionGeneral{
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}
+@media (min-width: 1024px){
+   .profile{
+        width: calc(100% - 285px) ;
+        max-height: calc(100vh - 14rem);
+    }
+   .profileContent{
+        height: 100%;
+    }
+   .dentroProfileConent{
+        height: 100%;
+    }
+   .rightprofile{
+        height: 100%;
+        padding-top: 2rem;
+        margin-top: 1.5rem;
+    }
+    .imgProfile{
+        width: 8rem;
+        height: 8rem;
+    }
+    .textRight{
+        margin-bottom: 1.5rem;
+    }
+    .sobreMi{
+        margin-bottom: 1.5rem;
+    }
+    .informacionGeneral{
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .butonprofil{
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+    }
+}
+@media (min-width: 1440px) {
+    .profile {
+        width: calc(100% - 350px);
+        height: calc(100vh - 18rem); /* Cambié max-height por height */
+    }
+    .profileContent {
+        flex-grow: 1; /* Que ocupe todo el espacio disponible */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    
+    .dentroProfileConent {
+        display: flex;
+        flex-grow: 1; /* Que crezca para ocupar el espacio */
+        height: 100%;
+    }
+    .relative{
+        margin-top: 10rem;
+    }
+    .imgProfile{
+        width: 15rem;
+        height: 15rem;
+    }
+    
+    .rightprofile {
+        flex-grow: 1;
+        height: 100%;
+        padding-top: 2rem;
+        margin-top: 8rem;
+    }
+    .textRight{
+        margin-bottom: 3rem;
+    }
+    .sobreMi{
+        margin-bottom: 3rem;
+    }
+    .textSobe{
+        font-size: 1.5rem;
+    }
+    .informacionGeneral{
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+    }
+    .butonprofil{
+        margin-top: 2rem;
+        padding-top: 0.5rem;
+    }
+}
