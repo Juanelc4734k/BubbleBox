@@ -38,6 +38,11 @@ export default function LoginForm({ setIsAuthenticated }) {
             setMessage(response.message);
             const decodedToken = JSON.parse(atob(response.token.split('.')[1]));
             
+            if (decodedToken.estado === 'suspendido') {
+                setError('Tu cuenta ha sido suspendida. Por favor, contacta con el administrador.');
+                return;
+            }
+            
             // Only set localStorage items for non-admin users
             if (decodedToken.rol !== 'administrador') {
                 localStorage.setItem('token', response.token);

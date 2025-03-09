@@ -1,12 +1,18 @@
+//importacion de librerias
 const express = require('express');
 const cors = require('cors');
 const httpProxy = require('http-proxy');
 
+// Crear una instancia de Express
 const app = express();
 
+// Configurar CORS
 app.use(cors());
+
+// Crear un proxy
 const proxy = httpProxy.createProxyServer();
 
+// Configurar los servicios disponibles
 const servicios = {
   chats: 'http://localhost:3001',
   reels: 'http://localhost:3002',
@@ -24,6 +30,7 @@ const servicios = {
   reports: 'http://localhost:3015'
 };
 
+// Middleware para manejar el enrutamiento de solicitudes a microservicios
 app.use((req, res) => {
   const servicio = req.url.split('/')[1];
   if (servicios[servicio]) {
@@ -38,13 +45,16 @@ app.use((req, res) => {
   }
 });
 
+// Middleware para manejar errores del proxy
 proxy.on('error', (err, req, res) => {
   console.error('Error de proxy:', err);
   res.status(500).send('Error interno del servidor');
 });
 
+// Definer el puerto en el que se ejecutará el API Gateway
 const PUERTO = process.env.PUERTO || 3000;
 
+// Iniciar el servidor
 app.listen(PUERTO, () => {
   console.log(`API Gateway escuchando en el puerto ${PUERTO}`);
   console.log('Servicios disponibles:', Object.keys(servicios).join(', '));

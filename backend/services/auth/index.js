@@ -1,12 +1,14 @@
+// Importar las dependencias necesarias
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
 const db = require('./src/config/db');
 const authRoutes = require('./src/routes/authRoutes');
 
+// Crear una instancia de Express
 const app = express();
 
-//middlewares
+// Configurar CORS
 const corsOptions = {
     origin: ['http://localhost:5173', 'http://localhost:3000'],
     methods: 'GET, POST, PUT',
