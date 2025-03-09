@@ -125,7 +125,7 @@ const loginUser = async (req, res) => {
     await authModel.updateUserStatus(user.id, 'conectado');
     
     console.log('Generando token JWT');
-    const token = jwt.sign({ userId: user.id, rol: user.rol }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user.id, rol: user.rol, estado: user.estado }, process.env.JWT_SECRET, { expiresIn: '1h' });
     console.log('Token generado');
 
     console.log('Enviando respuesta');
