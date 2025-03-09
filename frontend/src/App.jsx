@@ -149,20 +149,13 @@ export default function App() {
   }
 
   // Determinar clases para el contenedor principal
-  // Modificar la función getAppClasses
   const getAppClasses = () => {
     let classes = "app"
-  
+
     if (isAuthenticated) {
       classes += isSidebarExpanded ? " sidebar-visible" : " sidebar-hidden"
     }
-  
-    // Agregar clase para rutas de autenticación
-    if (currentPath === "/login" || currentPath === "/register" || 
-        currentPath === "/recover-password" || currentPath === "/recuperar-contrasena") {
-      classes += " auth-route"
-    }
-  
+
     return classes
   }
 

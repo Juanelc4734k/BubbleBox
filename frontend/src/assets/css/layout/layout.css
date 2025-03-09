@@ -6,11 +6,6 @@
   position: relative;
 }
 
-/* Eliminar padding-top para rutas de autenticación */
-.auth-route {
-  padding-top: 0 !important;
-}
-
 .layout {
   display: flex;
   flex-grow: 1;
@@ -24,11 +19,6 @@
   transition: margin-left 0.3s ease, width 0.3s ease;
   padding: 1rem;
   padding-top: 9rem;
-}
-
-/* Eliminar padding-top para rutas de autenticación */
-.auth-route .main-content {
-  padding-top: 1rem;
 }
 
 /* Sidebar states */
@@ -144,15 +134,15 @@
 /* Large desktop styles */
 @media (min-width: 1440px) {
   .sidebar {
-    top: 14.5rem;
+    top: 16rem;
     width: 5.5rem;
-    height: calc(100vh - 15.5rem);
+    height: calc(100vh - 17rem);
   }
   .navbar{
-    height: 12.5rem;
+    height: 14rem;
   }
   .main-content{
-    padding-top: 11rem;
+    padding-top: 12rem;
   }
 
   .sidebar-visible .main-content {

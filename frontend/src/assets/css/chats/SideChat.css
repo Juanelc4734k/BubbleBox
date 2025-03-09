@@ -155,9 +155,9 @@ html, body {
   
   @media (min-width: 1440px) {
     .sidebar-wrapper-Page {
-      top: 14.5rem;
-      height: calc(100vh - 15.5rem);
-      width: 21rem;
+      top: 16rem;
+      height: calc(100vh - 17rem);
+      width: 22rem;
       right: 1rem;
     }
     .hederChatPage{
