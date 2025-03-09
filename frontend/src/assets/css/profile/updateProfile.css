@@ -51,7 +51,7 @@
   margin: 0;
 }
 
-.close-buttonPerfil{
+.close-button {
   background: none;
   border: none;
   color: #666;
@@ -65,7 +65,7 @@
   justify-content: center;
 }
 
-.close-buttonPerfil:hover {
+.close-button:hover {
   background: rgba(139, 92, 246, 0.1);
   color:  #bda7f1;
 }
@@ -90,18 +90,16 @@
   color: #e53e3e;
 }
 
-.imgProfileAp {
+.imgProfile {
   display: flex;
   justify-content: center;
   margin-bottom: 1.2rem;
-  width: 100%;
 }
 
 .avatar-container {
   position: relative;
   width: 150px;
   height: 150px;
-  border-radius: 50%;
 }
 
 .avatar {
@@ -109,9 +107,8 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #bda7f1;
+  border: 3px solid  #bda7f1;
   background-color: #f3f4f6;
-  display: block; /* Elimina espacio extra debajo de la imagen */
 }
 
 .change-avatar {
@@ -195,7 +192,7 @@
 }
 
 /* Media queries */
-@media (min-width: 768px) {
+@media (max-width: 640px) {
   .fromUpdate {
     width: 95%;
     padding: 1.5rem;
@@ -217,22 +214,18 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 641px) and (max-width: 1024px) {
   .fromUpdate {
     width: 90%;
     padding: 2rem;
   }
-  .buttin{
-    padding: 0.2rem 1rem;
-    margin-top: 0;
-    padding-top: 0;
-  }
 }
 
-@media (min-width: 1440px) {
-  .buttin{
-    margin-top: 2rem;
+@media (min-width: 1025px) {
+  .fromUpdate {
+    width: 33rem !important;
+    padding: 1.5rem;
+    left: 50%;
   }
-
 }
 

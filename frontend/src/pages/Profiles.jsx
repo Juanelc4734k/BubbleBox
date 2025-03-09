@@ -45,6 +45,7 @@ function Profiles() {
 
     return (
         <div>
+            <h2>Perfil</h2>
             {profile ? (
                 <Profile profile={profile} isOwnProfile={isOwnProfile} />
             ) : (
