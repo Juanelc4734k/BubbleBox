@@ -322,8 +322,8 @@
   }
   
   .navbar-img img {
-  width: 6rem;
-  height: 6rem;
+  width: 5rem;
+  height: 5rem;
   }
   
   .navbar-description {
@@ -332,18 +332,18 @@
   }
   
   .navbar-description h3 {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   line-height: 1;
   }
   
   .navbar-expanded-content {
   margin-left: 26rem;
-  margin-top: -5.2rem;
+  margin-top: -6rem;
   padding: 1rem;
   }
   
   .navbar-description-p > p {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   padding: 0.5rem 1rem;
   }
   
