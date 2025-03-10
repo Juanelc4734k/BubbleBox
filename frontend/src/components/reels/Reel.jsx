@@ -8,7 +8,7 @@ import { FiMoreVertical, FiTrash2 } from 'react-icons/fi';
 import '../../assets/css/layout/reels.css';
 import Swal from 'sweetalert2';
 
-const Reel = ({ reel, isMyReelsTab }) => {
+const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [isHorizontal, setIsHorizontal] = useState(false);
@@ -179,6 +179,13 @@ const Reel = ({ reel, isMyReelsTab }) => {
         };
     }, [showOptionsMenu]);
 
+    // Add handler for comment button click
+    const handleCommentClick = () => {
+        if (openCommentsSidebar) {
+            openCommentsSidebar(reel.id, 'reel');
+        }
+    };
+
     return (
         <div className="reel">
             <div className="reel-header">
@@ -246,7 +253,7 @@ const Reel = ({ reel, isMyReelsTab }) => {
                             size={24} 
                             className={isLiked ? 'text-blue-500' : ''}/>
                     </button>
-                    <button className="reel-action-button">
+                    <button className="reel-action-button" onClick={handleCommentClick}>
                         <MdOutlineInsertComment size={24} />
                     </button>
                     <button className="reel-action-button">

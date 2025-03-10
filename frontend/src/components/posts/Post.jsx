@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { getReactionsPosts, createReactionPost, deleteReaction } from '../../services/reactions';
 import { getUserProfile } from '../../services/users';
 import { deletePost, updatePost } from '../../services/posts';
+import { getCommentsByPost } from '../../services/comments';
 import '../../assets/css/layout/post.css';
 import { BsHandThumbsUp } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
@@ -27,6 +28,7 @@ const Post = forwardRef((props, ref) => {
     const [showOptionsMenu, setShowOptionsMenu] = useState(false);
     const userId = localStorage.getItem('userId');
     const isMyPost = parseInt(post.id_usuario) === parseInt(userId);
+    const [commentCount, setCommentCount] = useState(0);
 
     const [isEditable, setIsEditable] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -70,6 +72,21 @@ const Post = forwardRef((props, ref) => {
             setIsEditable(checkIfEditable());
         }
     }, [post]);
+
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                if (post.id) {
+                    const comments = await getCommentsByPost(post.id);
+                    setCommentCount(comments.length);
+                }
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+
+        fetchComments();
+    }, [post.id]);
 
     //Lista de reacciones
     const reactionTypes = [
@@ -592,7 +609,7 @@ const Post = forwardRef((props, ref) => {
                             </div>
                             <div className="comentarios flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={handleCommentClick}>
                                 <MdOutlineInsertComment className="text-xl"/>
-                                <span className="text-sm font-medium">0</span>
+                                <span className="text-sm font-medium">{commentCount}</span>
                             </div>
                         </div>
                         <div className="grup2">
