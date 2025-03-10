@@ -156,6 +156,12 @@ export default function App() {
       classes += isSidebarExpanded ? " sidebar-visible" : " sidebar-hidden"
     }
 
+    // Agregar clase para rutas de autenticación
+    if (currentPath === "/login" || currentPath === "/register" || 
+      currentPath === "/recover-password" || currentPath === "/recuperar-contrasena") {
+      classes += " auth-route"
+    }
+
     return classes
   }
 
