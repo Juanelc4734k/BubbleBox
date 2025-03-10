@@ -4,7 +4,7 @@ import { getAllReels } from '../services/reels'
 import Reel from '../components/reels/Reel'
 import '../assets/css/layout/reels.css'
 
-const Reels = () => {
+const Reels = ({ openCommentsSidebar }) => {
   const [reels, setReels] = useState([])
   const [error, setError] = useState(null)
   const parrafoComm = "Reels recientes"
@@ -92,7 +92,12 @@ const Reels = () => {
           <div className="reels-container">
             {filteredReels.length > 0 ? (
               filteredReels.map(reel => (
-                <Reel key={reel.id} reel={reel} isMyReelsTab={activeTab === 'my'} />
+                <Reel 
+                  key={reel.id} 
+                  reel={reel} 
+                  isMyReelsTab={activeTab === 'my'} 
+                  openCommentsSidebar={openCommentsSidebar} 
+                />
               ))
             ) : (
               <div className="no-reels">
