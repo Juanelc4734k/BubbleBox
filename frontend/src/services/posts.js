@@ -20,6 +20,11 @@ export const getAllPosts = async () => {
     }
 };
 
+export const getPostByUserId = async (id_usuario) => {
+    const response = await axios.get(`${API_URL}/posts/obtener-por-usuario/${id_usuario}`);
+    return response.data;
+};
+
 export const createPost = async (postData) => {
     const response = await axios.post(`${API_URL}/posts/crear`, postData);
     return response.data;
