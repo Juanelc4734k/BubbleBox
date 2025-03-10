@@ -231,26 +231,73 @@ const obtenerSugerenciasAmigos = (idUsuario, limite = 20) => {
       WHERE 
         v.id != ?
         AND v.id NOT IN (
-          SELECT IF(id_usuario1 = ?, id_usuario2, id_usuario1)
+          SELECT IF(id_usuario1 = ?, id_usuario2, id_usuario1) AS id_otro_usuario
           FROM amistades
-          WHERE (id_usuario1 = ? OR id_usuario2 = ?) AND estado IN ('aceptada', 'pendiente', 'bloqueado')
+          WHERE (id_usuario1 = ? OR id_usuario2 = ?) 
+          AND estado IN ('aceptada', 'pendiente', 'bloqueado')
         )
         AND (v.es_amigo_de_amigo = 1 OR v.amigos_en_comun > 0)
-      ORDER BY v.amigos_en_comun DESC, v.es_amigo_de_amigo DESC
+      ORDER BY 
+        v.amigos_en_comun DESC, 
+        v.es_amigo_de_amigo DESC,
+        v.nombre ASC
       LIMIT ?
     `;
+    
     db.query(query, [idUsuario, idUsuario, idUsuario, idUsuario, limite], (error, results) => {
-      if (error) reject(error);
-      else {
-        results = results.map(result => ({
+      if (error) {
+        console.error('Error al obtener sugerencias de amigos:', error);
+        reject(error);
+      } else {
+        // Transformar los nombres de amigos en común de string a array
+        const sugerencias = results.map(result => ({
           ...result,
           nombres_amigos_en_comun: result.nombres_amigos_en_comun ? result.nombres_amigos_en_comun.split(',') : []
         }));
+        resolve(sugerencias);
+      }
+    });
+  });
+};
+
+const obtenerAmigosEnComun = (idUsuario1, idUsuario2) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT u.id AS amigo_comun, u.nombre, u.avatar
+      FROM usuarios u
+      WHERE u.id IN (
+        -- Amigos del usuario 1
+        SELECT IF(a1.id_usuario1 = ?, a1.id_usuario2, a1.id_usuario1) AS id_amigo
+        FROM amistades a1
+        WHERE (a1.id_usuario1 = ? OR a1.id_usuario2 = ?)
+        AND a1.estado = 'aceptada'
+      )
+      AND u.id IN (
+        -- Amigos del usuario 2
+        SELECT IF(a2.id_usuario1 = ?, a2.id_usuario2, a2.id_usuario1) AS id_amigo
+        FROM amistades a2
+        WHERE (a2.id_usuario1 = ? OR a2.id_usuario2 = ?)
+        AND a2.estado = 'aceptada'
+      )
+      AND u.id NOT IN (?, ?) -- Excluir a los dos usuarios principales
+      ORDER BY u.nombre ASC;
+    `;
+
+    db.query(query, [
+      idUsuario1, idUsuario1, idUsuario1,
+      idUsuario2, idUsuario2, idUsuario2,
+      idUsuario1, idUsuario2
+    ], (error, results) => {
+      if (error) {
+        console.error('Error al obtener amigos en común:', error);
+        reject(error);
+      } else {
         resolve(results);
       }
     });
   });
 };
+
 
 module.exports = {
   crearSolicitudAmistad,
@@ -265,7 +312,8 @@ module.exports = {
   bloquearUsuario,
   desbloquearUsuario,
   verificarBloqueo,
-  obtenerSugerenciasAmigos
+  obtenerSugerenciasAmigos,
+  obtenerAmigosEnComun
 };
 
 

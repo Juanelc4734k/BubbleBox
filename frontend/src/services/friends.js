@@ -76,6 +76,29 @@ export const rejectFriendRequest = async (friendshipId) => {
     }
 };
 
+// The removeFriend function is already correct in your file, but let's make sure it's being used properly
+export const removeFriend = async (friendshipId) => {
+    try {
+        const token = localStorage.getItem('token');
+        if (!friendshipId) {
+            throw new Error('FriendshipId is required');
+        }
+
+        const response = await axios.delete(`${API_URL}/friendships/eliminar/${friendshipId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        if (!response.data || response.data.affectedRows === 0) {
+            throw new Error('Failed to remove friend');
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error('Error removing friend:', error);
+        throw error;
+    }
+};
+
 export const getRequestEarring = async (userId) => {
     try {
         const token = localStorage.getItem('token');
@@ -85,6 +108,19 @@ export const getRequestEarring = async (userId) => {
         return response.data;
     } catch (error) {
         console.error('Error al obtener solicitudes de amistad pendientes:', error);
+        throw error;
+    }
+};
+
+export const getFriendsInComun = async (userId, usuario_id) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/friendships/amigos-comunes/${userId}/${usuario_id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error getting common friends:', error);
         throw error;
     }
 };
