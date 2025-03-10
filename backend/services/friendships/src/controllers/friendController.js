@@ -296,6 +296,21 @@ const obtenerSugerenciasAmigos = async (req, res) => {
   }
 };
 
+const obtenerAmigosEnComun = async (req, res) => {
+  try {
+    const { idUsuario1, idUsuario2 } = req.params;
+    if (!idUsuario1 ||!idUsuario2) {
+      return res.status(400).json({ mensaje: 'Se requieren idUsuario1 e idUsuario2' });
+    }
+
+    const amigosEnComun = await friendModel.obtenerAmigosEnComun(idUsuario1, idUsuario2);
+    res.status(200).json(amigosEnComun);
+  } catch (error) {
+    console.error('Error en obtenerAmigosEnComun:', error);
+    res.status(500).json({ mensaje: 'Error interno al obtener amigos en común', error: error.message });
+  }
+};
+
 module.exports = {
   crearSolicitudAmistad,
   aceptarSolicitudAmistad,
@@ -306,5 +321,6 @@ module.exports = {
   bloquearUsuario,
   desbloquearUsuario,
   verificarBloqueo,
-  obtenerSugerenciasAmigos
+  obtenerSugerenciasAmigos,
+  obtenerAmigosEnComun
 };

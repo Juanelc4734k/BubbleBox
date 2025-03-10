@@ -23,7 +23,7 @@
   background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   border-radius: 8px;
-  padding: 0.7rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +31,79 @@
   transition: all 0.3s ease;
   border: 1px solid var(--gray-200);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+
+.common-friends {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2b1b3a;
+  min-height: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.no-common-friends {
+  color: #8a8a8a;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.common-friends-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 6px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.common-friends-container:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.common-friends-avatars {
+  display: flex;
+}
+
+.common-friend-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.common-friends-avatars img:not(:first-child) {
+  margin-left: -10px;
+}
+
+.common-friend-avatar:hover {
+  transform: scale(1.15);
+  z-index: 2;
+}
+
+.more-friends {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  color: #555;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: -10px;
 }
 
 .user-card:hover {
@@ -72,6 +145,9 @@
 .user-info {
   width: 80%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 3rem; /* Ensure consistent height */
 }
 
 .user-name {
@@ -206,7 +282,7 @@
   .container-usuarios {
     width: calc(100% - 22rem); /* Ancho total menos 22rem para el sidebar */
     max-width: calc(100% - 2rem); /* Máximo ancho considerando margen derecho */
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     padding: 2rem;
   }
 

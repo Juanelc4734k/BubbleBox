@@ -96,7 +96,6 @@ const UpdateProfile = () => {
         }
       } catch (error) {
         console.error("Error al actualizar la foto de perfil:", error);
-        setMessage("Error al actualizar la foto de perfil");
         // Keep the preview on error so user can see what they selected
         setPreviewImage(previewUrl);
       }
@@ -149,7 +148,7 @@ const UpdateProfile = () => {
   };
   return (
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
-      <button className="w-full md:w-auto px-5 lg:px-7 lg:py-2  py-1 bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium" onClick={toggleModal}>
+      <button className="w-full md:w-auto px-5 py-1 bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
         <TbUserEdit className="icon" />
         Actualizar
       </button>
@@ -158,16 +157,19 @@ const UpdateProfile = () => {
       <div className="fromUpdate">
         <div className="form-header">
           <h2>Actualiza Tu perfil</h2>
-          <button className="close-button" onClick={toggleModal}>
+          <button className="close-buttonPerfil" onClick={toggleModal}>
             <IoClose />
           </button>
         </div>
         {message && <p className={`message ${message.includes("éxito") ? "success" : "error"}`}>{message}</p>}
         <form onSubmit={handleSubmit}>
-          <div className="imgProfile">
+          <div className="imgProfileAp">
             <div className="avatar-container">
               <img 
-                src={previewImage || (profile.avatar ? `http://localhost:3009${profile.avatar}` : "/placeholder.svg")} 
+                src={previewImage || (profile.avatar ? 
+                  // Si el avatar ya incluye la URL completa, úsala directamente
+                  profile.avatar.startsWith('http') ? profile.avatar : `http://localhost:3009${profile.avatar}` 
+                  : "/placeholder.svg")} 
                 alt="Profile" 
                 className="avatar"
                 onError={(e) => { e.target.src = "/placeholder.svg"; }}

@@ -3,6 +3,7 @@ import { BsFillBalloonHeartFill, BsEnvelope, BsGeoAlt } from "react-icons/bs";
 import { CiUser } from "react-icons/ci";
 import { TbUserEdit } from "react-icons/tb";
 import UpdateProfile from "./UpdateProfile";
+import '../../assets/css/profile/profile.css';
 
 function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
   const avatarPorDefecto =
@@ -18,16 +19,16 @@ function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
   console.log(profile);
 
   return (
-    <div className="min-h-screen pt-10  lg:pt-32 lg:-ml-72 px-4 bg-gradient-to-b profile">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="flex flex-col md:flex-row">
+    <div className="bg-gradient-to-b profile">
+      <div className="mx-auto bg-white rounded-2xl shadow-xl overflow-hidden profileContent">
+        <div className="flex flex-col md:flex-row dentroProfileConent">
           {/* Left side - Avatar and Username */}
-          <div className="md:w-1/3 bg-[#bda7f1] p-5 lg:pt-24 flex flex-col items-center">
-            <div className="relative">
+          <div className="md:w-1/3 bg-[#bda7f1] p-5 lg:pt-18 flex flex-col items-center">
+            <div className="relativeImg">
               <img
                 src={getAvatarSrc()}
                 alt={profile.nombre}
-                className="w-20 h-20 lg:w-40 lg:h-40 rounded-full object-cover border-4 border-white shadow-lg"
+                className="rounded-full object-cover border-4 border-white shadow-lg imgProfile"
               />
             </div>
             <h2 className="mt-3 text-xl font-semibold text-white">
@@ -36,8 +37,8 @@ function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
           </div>
 
           {/* Right side - Profile Information */}
-          <div className="md:w-2/3 p-6 lg:p-9">
-            <div className="flex items-center gap-3 mb-5">
+          <div className="md:w-2/3 p-6 rightprofile">
+            <div className="flex items-center gap-5 textRight">
               <CiUser className="text-purple-500" size={24} />
               <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
                 {profile.nombre}
@@ -45,8 +46,8 @@ function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
             </div>
 
             {/* About Me Section */}
-            <div className="mb-5">
-              <h3 className="text-lg lg:text-xl font-semibold text-gray-800 mb-1">
+            <div className="sobreMi">
+              <h3 className="font-semibold text-gray-800 mb-1 textSobe">
                 Sobre mi
               </h3>
               <p className="text-gray-600 text-sm lg:text-lg ">
@@ -55,7 +56,7 @@ function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
             </div>
 
             {/* General Information */}
-            <div>
+            <div className="informacionGeneral">
               <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
                 Información General
               </h4>
@@ -72,7 +73,7 @@ function Profile({ profile, isOwnProfile }) {  // Add isOwnProfile prop
             </div>
 
             {/* Update Profile Section */}
-            <div className="mt-3 pt-6 border-t border-gray-200">
+            <div className="border-t border-gray-200 butonprofil">
               {isOwnProfile && <UpdateProfile />} {/* Only show if it's the user's own profile */}
             </div>
           </div>
