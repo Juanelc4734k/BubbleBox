@@ -9,7 +9,7 @@
 /* Add specific styling for auth pages */
 .app:not(.sidebar-visible):not(.sidebar-hidden) {
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .auth-route {
@@ -98,6 +98,10 @@
     padding-top: 80px; /* Altura del navbar en tablet */
   }
 
+  .auth-route {
+    padding-top: 80px !important;
+  }
+
   .layout {
     height: calc(100vh - 80px);
   }
@@ -181,5 +185,9 @@
     margin-left: 90px;
   }
 
+  .app:not(.sidebar-visible):not(.sidebar-hidden) {
+    height: 100vh;
+    overflow: hidden;
+  }
 }
 
