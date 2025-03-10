@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ChatPreview from './ChatPreview';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { getFriends } from '../../services/friends';
+import { FaSearch } from 'react-icons/fa'; // Import search icon
 import "../../assets/css/chats/SideChat.css";
 
 const SidebarChat = ({onSelectChat}) => {
@@ -10,6 +11,7 @@ const SidebarChat = ({onSelectChat}) => {
     const [errorSidebar, setErrorSidebar] = useState(null);
     const [isSidebarVisibleChatPage, setIsSidebarVisibleChatPage] = useState(false);
     const [animateEntry, setAnimateEntry] = useState(false);    
+    const [searchTerm, setSearchTerm] = useState(''); // Add search state
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
@@ -71,6 +73,43 @@ const SidebarChat = ({onSelectChat}) => {
         };
         loadFriends();
     }, [userId]);
+
+    // Filter friends based on search term
+    // Add this useEffect to log the actual structure of a friend object
+    useEffect(() => {
+      if (friendsSidebar.length > 0) {
+        console.log("Friend object structure:", friendsSidebar[0]);
+      }
+    }, [friendsSidebar]);
+    
+    // Then update the filtering logic
+    const filteredFriends = friendsSidebar.filter(friend => {
+      if (!friend) return false;
+      
+      // Log each friend when searching to debug
+      if (searchTerm) {
+        console.log("Checking friend:", friend);
+      }
+
+      // Get the correct name based on userId
+      const friendName = friend.id_usuario1 === parseInt(userId) 
+        ? friend.nombre_usuario2 
+        : friend.nombre_usuario1;
+      
+      // Create searchable text from friend name and last message
+      const searchableText = friendName.toLowerCase();
+      const lastMsg = friend.lastMessage || '';
+      const fullSearchText = searchableText + ' ' + lastMsg.toLowerCase();
+      
+      // Check if search term is in the combined text
+      return fullSearchText.includes(searchTerm.toLowerCase());
+    });
+
+    // Debug - log the filtered results
+    useEffect(() => {
+        console.log("Search term:", searchTerm);
+        console.log("Filtered friends:", filteredFriends);
+    }, [searchTerm, filteredFriends]);
     return (
         <div className={`sidebar-wrapper-Page ${isSidebarVisibleChatPage || window.innerWidth >= 1024 ? "open" : "closed"} ${animateEntry ? "animate-entry" : ""}`}>
             <button className="buttonOpenSidebarp" onClick={() => setIsSidebarVisibleChatPage(!isSidebarVisibleChatPage)}>
@@ -92,17 +131,38 @@ const SidebarChat = ({onSelectChat}) => {
                             <div className="hederChatPage">
                                 <h2 className="textChatPage">Tus Chats</h2>  
                             </div>
-                            <div className="chat-list-Page">
-                                {friendsSidebar.map((friend) => (
-                                    <ChatPreview
-                                        key={friend.id_usuario1 + "-" + friend.id_usuario2}
-                                        friend={friend}
-                                        onSelect={() => {
-                                            const friendId = friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1;
-                                            onSelectChat(friendId);
-                                        }}
+                            
+                            {/* Search input */}
+                            <div className="search-container">
+                                <div className="search-input-wrapper">
+                                    <FaSearch className="search-icon" />
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar chat..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="search-input"
                                     />
-                                ))}
+                                </div>
+                            </div>
+                            
+                            <div className="chat-list-Page">
+                                {filteredFriends.length > 0 ? (
+                                    filteredFriends.map((friend) => (
+                                        <ChatPreview
+                                            key={friend.id_usuario1 + "-" + friend.id_usuario2}
+                                            friend={friend}
+                                            onSelect={() => {
+                                                const friendId = friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1;
+                                                onSelectChat(friendId);
+                                            }}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="p-4 text-center text-gray-600">
+                                        <p>No se encontraron chats</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}
