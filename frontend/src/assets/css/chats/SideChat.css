@@ -36,6 +36,41 @@ html, body {
     flex-direction: column;
     z-index: 1200;
   }
+
+  .search-container {
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #dacee2;
+    border-radius: 10px;
+    padding: 15px 20px;
+    transition: all 0.3s ease;
+}
+
+.search-icon {
+  color: #8a8d91;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+    box-shadow: none;
+}
+
+.search-input::placeholder {
+    color: #8a8d91;
+}
   
   .sidebar-wrapper-Page.closed {
     transform: translateX(100%);

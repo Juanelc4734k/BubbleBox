@@ -6,7 +6,7 @@ import '../assets/css/layout/sidebarChats.css'
 import { CgChevronLeftO, CgChevronRightO  } from "react-icons/cg";
 import { IoIosArrowBack, IoIosArrowForward  } from "react-icons/io";
 import CreateGroup from '../components/chats/CreateGroup';
-
+import { FaSearch } from 'react-icons/fa';
 
 const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
     const [friends, setFriends] = useState([]);
@@ -14,6 +14,7 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSidebarVisibleChat, setIsSidebarVisibleChat] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
     const userId = localStorage.getItem('userId');
 
     const handleCloseChat = () => {
@@ -93,6 +94,22 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
         useEffect(() => {
             loadFriends();
         }, [userId]);
+
+        const filteredFriends = friends.filter(friend => {
+            if (!friend) return false;
+            
+            // Get the correct name based on userId
+            const friendName = friend.id_usuario1 === parseInt(userId) 
+                ? friend.nombre_usuario2 
+                : friend.nombre_usuario1;
+            
+            // Create searchable text from friend name and last message
+            const searchableText = friendName.toLowerCase();
+            const lastMsg = friend.lastMessage || '';
+            const fullSearchText = searchableText + ' ' + lastMsg.toLowerCase();
+            
+            return fullSearchText.includes(searchTerm.toLowerCase());
+        });
     
         return (
             <div className='conSide'>   
@@ -132,23 +149,41 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                                     <CreateGroup isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen}/>
                                 )} 
                             </div>
+                                <div className="search-container">
+                                    <div className="search-input-wrapper">
+                                        <FaSearch className="search-icon" />
+                                        <input
+                                            type="text"
+                                            placeholder="Buscar chat..."
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                            className="search-input"
+                                        />
+                                    </div>
+                                </div>
                             <div className="chat-list">
-                                {friends.map((friend) => (
-                                <ChatPreview
-                                    key={friend.id_usuario1 + "-" + friend.id_usuario2}
-                                    friend={friend}
-                                    onSelect={() => {
-                                    const currentUserId = localStorage.getItem("userId")
-                                    const friendId =
-                                        friend.id_usuario1 === Number.parseInt(currentUserId) ? friend.id_usuario2 : friend.id_usuario1
-                                    setSelectedFriend(friendId)
-                                    }}
-                                    isSelected={
-                                    selectedFriend ===
-                                    (friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1)
-                                    }
-                                />
-                                ))}
+                                    {filteredFriends.length > 0 ? (
+                                        filteredFriends.map((friend) => (
+                                            <ChatPreview
+                                                key={friend.id_usuario1 + "-" + friend.id_usuario2}
+                                                friend={friend}
+                                                onSelect={() => {
+                                                    const currentUserId = localStorage.getItem("userId")
+                                                    const friendId =
+                                                        friend.id_usuario1 === Number.parseInt(currentUserId) ? friend.id_usuario2 : friend.id_usuario1
+                                                    setSelectedFriend(friendId)
+                                                }}
+                                                isSelected={
+                                                    selectedFriend ===
+                                                    (friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1)
+                                                }
+                                            />
+                                        ))
+                                    ) : (
+                                        <div className="p-4 text-center text-gray-600">
+                                            <p>No se encontraron chats</p>
+                                        </div>
+                                    )}
                             </div>
                             
                         </div>
