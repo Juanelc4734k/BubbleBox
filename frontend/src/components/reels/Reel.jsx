@@ -16,6 +16,7 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const [reactions, setReactions] = useState([]);
     const videoRef = useRef(null);
     const [showOptionsMenu, setShowOptionsMenu] = useState(false);
+    const [showShareMenu, setShowShareMenu] = useState(false);
     const userId = localStorage.getItem('userId');
     const isMyReel = reel.usuario_id === parseInt(userId);
 
@@ -186,6 +187,87 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
         }
     };
 
+    // Add share functionality
+    const handleShare = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setShowShareMenu(!showShareMenu);
+    };
+
+    const shareUrl = `http://localhost:5173/reels/${reel.id}`;
+    
+    const handleNativeShare = async () => {
+        try {
+            if (navigator.share) {
+                await navigator.share({
+                    title: 'Reel de BubbleBox',
+                    text: reel.descripcion || 'Mira este reel en BubbleBox',
+                    url: shareUrl,
+                });
+                setShowShareMenu(false);
+            } else {
+                handleCopyLink();
+            }
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                console.error('Error sharing:', error);
+            }
+        }
+    };
+
+    const handleCopyLink = () => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            Swal.fire({
+                title: '¡Enlace copiado!',
+                text: 'El enlace ha sido copiado al portapapeles',
+                icon: 'success',
+                confirmButtonColor: '#b685e4',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            setShowShareMenu(false);
+        }).catch(() => {
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo copiar el enlace',
+                icon: 'error',
+                confirmButtonColor: '#b685e4'
+            });
+        });
+    };
+
+    const shareToFacebook = () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    const shareToTwitter = () => {
+        const text = reel.descripcion || 'Mira este reel en BubbleBox';
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    const shareToWhatsApp = () => {
+        const text = `${reel.descripcion || 'Mira este reel en BubbleBox'}: ${shareUrl}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    // Close share menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = () => {
+            if (showShareMenu) {
+                setShowShareMenu(false);
+            }
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showShareMenu]);
+
     return (
         <div className="reel">
             <div className="reel-header">
@@ -256,8 +338,43 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                     <button className="reel-action-button" onClick={handleCommentClick}>
                         <MdOutlineInsertComment size={24} />
                     </button>
-                    <button className="reel-action-button">
+                    <button className="reel-action-button relative" onClick={handleShare}>
                         <IoArrowRedoOutline size={24} />
+                        
+                        {showShareMenu && (
+                            <div className="share-menu absolute right-0 bottom-10 bg-white rounded-md shadow-lg z-10 w-48 py-1">
+                                <button 
+                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+                                    onClick={handleNativeShare}
+                                >
+                                    <span>Compartir</span>
+                                </button>
+                                <button 
+                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+                                    onClick={handleCopyLink}
+                                >
+                                    <span>Copiar enlace</span>
+                                </button>
+                                <button 
+                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-blue-600"
+                                    onClick={shareToFacebook}
+                                >
+                                    <span>Facebook</span>
+                                </button>
+                                <button 
+                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-blue-400"
+                                    onClick={shareToTwitter}
+                                >
+                                    <span>Twitter</span>
+                                </button>
+                                <button 
+                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-green-500"
+                                    onClick={shareToWhatsApp}
+                                >
+                                    <span>WhatsApp</span>
+                                </button>
+                            </div>
+                        )}
                     </button>
                 </div>
             </div>

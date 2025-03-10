@@ -29,6 +29,7 @@ const Post = forwardRef((props, ref) => {
     const userId = localStorage.getItem('userId');
     const isMyPost = parseInt(post.id_usuario) === parseInt(userId);
     const [commentCount, setCommentCount] = useState(0);
+    const [showShareMenu, setShowShareMenu] = useState(false);
 
     const [isEditable, setIsEditable] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -400,28 +401,34 @@ const Post = forwardRef((props, ref) => {
         }
     };
 
-    const handleShare = async () => {
-        const shareUrl = `http://localhost:5173/posts/obtener/${post.id}`; // Adjust the URL according to your routing
+    const handleShare = (e) => {
+        e.stopPropagation();
+        setShowShareMenu(!showShareMenu);
+    };
 
-        if (navigator.share) {
-            try {
+    // Build share URL with post details for better sharing context
+    const shareUrl = `http://localhost:5173/posts/obtener/${post.id}?title=${encodeURIComponent(post.titulo || '')}&author=${encodeURIComponent(post.nombre_usuario || '')}&type=bubblebox_post`;
+
+    const handleNativeShare = async () => {
+        try {
+            if (navigator.share) {
                 await navigator.share({
-                    title: post.titulo,
-                    text: post.contenido,
+                    title: post.titulo || 'Publicación de BubbleBox',
+                    text: post.contenido || 'Mira esta publicación en BubbleBox',
                     url: shareUrl,
                 });
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    handleCopyLink();
-                }
+                setShowShareMenu(false);
+            } else {
+                handleCopyLink();
             }
-        } else {
-            handleCopyLink();
+        } catch (error) {
+            if (error.name !== 'AbortError') {
+                console.error('Error sharing:', error);
+            }
         }
     };
 
     const handleCopyLink = () => {
-        const shareUrl = `http://localhost:5173/posts/obtener/${post.id}`; // Adjust the URL according to your routing
         navigator.clipboard.writeText(shareUrl).then(() => {
             Swal.fire({
                 title: '¡Enlace copiado!',
@@ -432,6 +439,7 @@ const Post = forwardRef((props, ref) => {
                 timerProgressBar: true,
                 showConfirmButton: false
             });
+            setShowShareMenu(false);
         }).catch(() => {
             Swal.fire({
                 title: 'Error',
@@ -441,6 +449,36 @@ const Post = forwardRef((props, ref) => {
             });
         });
     };
+
+    const shareToFacebook = () => {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    const shareToTwitter = () => {
+        const text = post.titulo || 'Mira esta publicación en BubbleBox';
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    const shareToWhatsApp = () => {
+        const text = `${post.titulo || 'Mira esta publicación en BubbleBox'}: ${shareUrl}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        setShowShareMenu(false);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = () => {
+            if (showShareMenu) {
+                setShowShareMenu(false);
+            }
+        };
+        
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [showShareMenu]);
 
     useEffect(() => {
         console.log('Modal state:', showEditModal);
@@ -613,8 +651,43 @@ const Post = forwardRef((props, ref) => {
                             </div>
                         </div>
                         <div className="grup2">
-                            <div className="reenviar cursor-pointer hover:text-blue-500 transition-colors" onClick={handleShare} title='Compartit publicacion'>
+                            <div className="reenviar relative cursor-pointer hover:text-blue-500 transition-colors" onClick={handleShare} title='Compartir publicación'>
                                 <IoArrowRedoOutline className="text-xl"/>
+                                
+                                {showShareMenu && (
+                                    <div className="share-menu absolute right-0 bottom-10 bg-white rounded-md shadow-lg z-10 w-40 py-1">
+                                        <button 
+                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100"
+                                            onClick={handleNativeShare}
+                                        >
+                                            Compartir
+                                        </button>
+                                        <button 
+                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100"
+                                            onClick={handleCopyLink}
+                                        >
+                                            Copiar enlace
+                                        </button>
+                                        <button 
+                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-blue-600"
+                                            onClick={shareToFacebook}
+                                        >
+                                            Facebook
+                                        </button>
+                                        <button 
+                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-blue-400"
+                                            onClick={shareToTwitter}
+                                        >
+                                            Twitter
+                                        </button>
+                                        <button 
+                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-green-500"
+                                            onClick={shareToWhatsApp}
+                                        >
+                                            WhatsApp
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
