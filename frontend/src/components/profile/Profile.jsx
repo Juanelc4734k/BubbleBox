@@ -7,6 +7,7 @@ import ModalReport from "../reports/modalReport";
 import UpdateProfile from "./UpdateProfile";
 import { getPostByUserId } from "../../services/posts";
 import '../../assets/css/profile/profile.css';
+import { CiGrid41 } from "react-icons/ci";
 
 function Profile({ profile, isOwnProfile }) {
   const [userPosts, setUserPosts] = useState([]);
@@ -62,9 +63,9 @@ function Profile({ profile, isOwnProfile }) {
     <>
       <div className="bg-gradient-to-b profile">
         <div className="mx-auto bg-white rounded-2xl shadow-xl overflow-hidden profileContent">
-          <div className="flex flex-col md:flex-row dentroProfileConent">
+          <div className="flex flex-col md:flex-row contenedordelprofile">
             {/* Left side - Avatar and Username */}
-            <div className="md:w-1/3 bg-[#bda7f1] p-5 lg:pt-18 flex flex-col items-center">
+            <div className="md:w-1/3 bg-[#bda7f1] p-5 contenedorPro">
               <div className="relativeImg">
                 <img
                   src={getAvatarSrc()}
@@ -76,29 +77,26 @@ function Profile({ profile, isOwnProfile }) {
                 {profile.username}
               </h2>
             </div>
-
             {/* Right side - Profile Information */}
-            <div className="md:w-2/3 p-6 rightprofile">
+            <div className="md:w-2/3 rightprofile">
               <div className="flex items-center gap-5 textRight">
                 <CiUser className="text-purple-500" size={24} />
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
+                <h1 className="font-bold text-gray-800 textNameP">
                   {profile.nombre}
                 </h1>
               </div>
-
               {/* About Me Section */}
               <div className="sobreMi">
                 <h3 className="font-semibold text-gray-800 mb-1 textSobe">
                   Sobre mi
                 </h3>
-                <p className="text-gray-600 text-sm lg:text-lg ">
+                <p className="text-gray-600 textDescription">
                   {profile.descripcion_usuario || defaultDescription}
                 </p>
               </div>
-
               {/* General Information */}
               <div className="informacionGeneral">
-                <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
+                <h4 className="font-semibold text-gray-800 mb-2 textInfo">
                   Información General
                 </h4>
                 <div className="space-y-4">
@@ -112,8 +110,8 @@ function Profile({ profile, isOwnProfile }) {
                   </div>
                 </div>
                 {profile.intereses && profile.intereses.length > 0 && (
-                  <div className="mt-4">
-                    <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
+                  <div className="ineterses">
+                    <h4 className="font-semibold text-gray-800 textInteres">
                       Intereses
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -129,7 +127,6 @@ function Profile({ profile, isOwnProfile }) {
                   </div>
                 )}
               </div>
-
               {/* Update Profile Section */}
               <div className="border-t border-gray-200 butonprofil">
                 {isOwnProfile ? (
@@ -153,28 +150,28 @@ function Profile({ profile, isOwnProfile }) {
       {!isOwnProfile && (
         <div className="posts-container">
           <div className="posts-section">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Publicaciones</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4"> <CiGrid41/> Publicaciones Recientes</h3>
             {loading ? (
               <p className="text-center text-gray-500">Cargando publicaciones...</p>
             ) : userPosts.length > 0 ? (
-              <div className="grid gap-4">
+              <div className="publiAmigo">
                 {userPosts.map((post) => (
-                  <div key={post.id} className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <p className="text-sm text-gray-500 mb-1">{new Date(post.fecha_creacion).toLocaleDateString()}</p>
-                    <h4 className="font-medium text-gray-800">{post.titulo}</h4>
-                    <p className="text-gray-600 mt-2">{post.contenido}</p>
+                  <div key={post.id} className="p-4 rounded-lg shadow-sm publiAmigoDivi">
+                    <p className="textPublifecha">{new Date(post.fecha_creacion).toLocaleDateString()}</p>
+                    <h4 className="textTituloProfile">{post.titulo}</h4>
+                    <p className="textContenidoPerfil">{post.contenido}</p>
                     {post.imagen && (
                       <img 
                         src={`http://localhost:3008/uploads/${post.imagen}`} 
                         alt="Post" 
-                        className="mt-3 rounded-md max-h-48 w-auto"
+                        className="imgOubliProfile"
                       />
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-center text-gray-500">Este usuario aún no tiene publicaciones.</p>
+              <p className="noPubliPerfil">Este usuario aún no tiene publicaciones.</p>
             )}
           </div>
         </div>
