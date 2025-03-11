@@ -21,7 +21,6 @@ html, body {
 .sidebar-wrapper-Page.closed.animate-entry {
     animation: none;
 }
-  
   .sidebar-wrapper-Page {
     position: fixed;
     right: 0.5rem;
@@ -102,6 +101,14 @@ html, body {
     height: 2rem;
     left: -1.8rem;
   }
+  .divTextChat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 10rem);
+    border-radius: 1rem;
+  }
   
   .hederChatPage {
     position: sticky;
@@ -169,6 +176,9 @@ html, body {
       top: 10.5rem;
       height: calc(100vh - 11rem);
     }
+    .divTextChat{
+      height: calc(100vh - 11rem);
+    }
     .chatssDetailPage {
       max-height: calc(100vh - 12rem);
     }
@@ -180,6 +190,9 @@ html, body {
       height: calc(100vh - 13rem);
       width: 18rem;
     }
+    .divTextChat{
+      height: calc(100vh - 13rem);
+    }
     .chatssDetailPage {
       max-height: calc(100vh - 14.5rem);
     }
@@ -190,10 +203,13 @@ html, body {
   
   @media (min-width: 1440px) {
     .sidebar-wrapper-Page {
-      top: 16rem;
-      height: calc(100vh - 17rem);
+      top: 14.5rem;
+      height: calc(100vh - 15.5rem);
       width: 22rem;
       right: 1rem;
+    }
+    .divTextChat{
+      height: calc(100vh - 17rem);
     }
     .hederChatPage{
       padding: 2rem;
