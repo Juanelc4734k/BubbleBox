@@ -1,5 +1,5 @@
 .profile{
-    min-height: calc(100vh - 18rem);
+    height: calc(100vh - 10rem);
     overflow-y: auto;
 }
 
@@ -45,18 +45,18 @@
 @media (min-width: 768px){
     .profile{
         height: auto;
-        min-height: calc(100vh - 12rem);
+        height: calc(100vh - 12.5rem);
         overflow-y: auto;
     }
     .profileContent{
-        height: auto;
+        height: 100%;
         max-height: 100%;
     }
     .dentroProfileConent{
-        height: auto;
+        height: 100%;
     }
     .rightprofile{
-        height: auto;
+        height: 100%;
         padding-top: 2rem;
         margin-top: 3rem;
     }
@@ -84,18 +84,17 @@
 @media (min-width: 1024px){
    .profile{
         width: calc(100% - 285px);
-        height: auto;
-        min-height: calc(100vh - 14rem);
+        height: calc(100vh - 14rem);
         overflow-y: auto;
     }
    .profileContent{
-        height: auto;
+        height: 100%;
     }
    .dentroProfileConent{
-        height: auto;
+        height: 100%;
     }
    .rightprofile{
-        height: auto;
+        height: 100%;
         padding-top: 2rem;
         margin-top: 1.5rem;
     }
@@ -110,15 +109,14 @@
 @media (min-width: 1440px) {
     .profile {
         width: calc(100% - 350px);
-        height: auto;
-        min-height: calc(100vh - 24rem);
+        height: calc(100vh - 18rem);
         overflow-y: auto;
     }
     .profileContent {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        height: auto;
+        height: 100%;
     }
     .dentroProfileConent {
         display: flex;

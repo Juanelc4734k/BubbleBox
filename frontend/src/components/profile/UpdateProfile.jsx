@@ -165,15 +165,14 @@ const UpdateProfile = () => {
         <form onSubmit={handleSubmit}>
           <div className="imgProfileAp">
             <div className="avatar-container">
-              <img 
-                src={previewImage || (profile.avatar ? 
-                  // Si el avatar ya incluye la URL completa, úsala directamente
-                  profile.avatar.startsWith('http') ? profile.avatar : `http://localhost:3009${profile.avatar}` 
-                  : "/placeholder.svg")} 
-                alt="Profile" 
-                className="avatar"
-                onError={(e) => { e.target.src = "/placeholder.svg"; }}
-              />
+            <img 
+              src={previewImage || (profile.avatar && profile.avatar.trim() !== "" ? 
+                (profile.avatar.startsWith('http') ? profile.avatar : `http://localhost:3009${profile.avatar}`)
+                : "/placeholder.svg")} 
+              alt="Profile" 
+              className="avatar"
+              onError={(e) => { e.target.src = "/placeholder.svg"; }}
+            />
               <button type="button" className="change-avatar" onClick={() => fileInputRef.current.click()}>
                 <FaCamera />
               </button>
