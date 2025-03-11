@@ -13,6 +13,7 @@
     flex-direction: column;
     z-index: 1200;
   }
+  
   .sidebar-comments-wrapper.closed {
     transform: translateX(100%);
     margin-right: -0.5rem;

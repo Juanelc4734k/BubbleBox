@@ -8,10 +8,11 @@ import { BsHandThumbsUp } from "react-icons/bs";
 import { MdOutlineInsertComment } from "react-icons/md";
 import { IoArrowRedoOutline } from "react-icons/io5";
 import { TiDeleteOutline } from "react-icons/ti";
-import { FiMoreVertical, FiEdit, FiTrash2 } from "react-icons/fi";
+import { FiMoreVertical, FiEdit, FiTrash2, FiFlag } from "react-icons/fi";
 import { IoClose } from 'react-icons/io5';
 import Swal from 'sweetalert2'
 import '../../assets/css/app/sweetCustom.css'
+import ModalReport from '../reports/modalReport';
 
 const Post = forwardRef((props, ref) => {
     const { post, isMyPostsTab, openCommentsSidebar } = props;
@@ -30,6 +31,7 @@ const Post = forwardRef((props, ref) => {
     const isMyPost = parseInt(post.id_usuario) === parseInt(userId);
     const [commentCount, setCommentCount] = useState(0);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [showReportModal, setShowReportModal] = useState(false);
 
     const [isEditable, setIsEditable] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -507,54 +509,69 @@ const Post = forwardRef((props, ref) => {
                                 <p className='post-title'>{post.titulo}</p>
                             </div>
                             
-                            {/* Post options menu - only show for my posts in my posts tab */}
-                            {isMyPost && isMyPostsTab && (
-                                <div className="post-options relative ml-auto">
-                                    <button 
-                                        className="options-button p-1 rounded-full hover:bg-gray-100"
-                                        onClick={toggleOptionsMenu}
-                                    >
-                                        <FiMoreVertical className="text-xl text-gray-600" />
-                                    </button>
-                                    
-                                    {showOptionsMenu && (
-                                        <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
-                                            {isEditable ? (
+                            {/* Post options menu */}
+                            <div className="post-options relative ml-auto">
+                                <button 
+                                    className="options-button p-1 rounded-full hover:bg-gray-100"
+                                    onClick={toggleOptionsMenu}
+                                >
+                                    <FiMoreVertical className="text-xl text-gray-600" />
+                                </button>
+                                
+                                {showOptionsMenu && (
+                                    <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                        {isMyPost && isMyPostsTab ? (
+                                            <>
+                                                {isEditable ? (
+                                                    <button 
+                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+                                                        onClick={handleEditPost}
+                                                    >
+                                                        <FiEdit className="text-blue-500" />
+                                                        <span>Editar</span>
+                                                    </button>
+                                                ) : (
+                                                    <button 
+                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-gray-400 cursor-not-allowed"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            Swal.fire({
+                                                                title: 'No se puede editar',
+                                                                text: 'Las publicaciones solo pueden editarse dentro de las primeras 24 horas',
+                                                                icon: 'info',
+                                                                confirmButtonColor: '#b685e4'
+                                                            });
+                                                        }}
+                                                    >
+                                                        <FiEdit className="text-gray-400" />
+                                                        <span>Editar (expirado)</span>
+                                                    </button>
+                                                )}
                                                 <button 
-                                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
-                                                    onClick={handleEditPost}
+                                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                    onClick={handleDeletePost}
                                                 >
-                                                    <FiEdit className="text-blue-500" />
-                                                    <span>Editar</span>
+                                                    <FiTrash2 />
+                                                    <span>Eliminar</span>
                                                 </button>
-                                            ) : (
-                                                <button 
-                                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-gray-400 cursor-not-allowed"
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        Swal.fire({
-                                                            title: 'No se puede editar',
-                                                            text: 'Las publicaciones solo pueden editarse dentro de las primeras 24 horas',
-                                                            icon: 'info',
-                                                            confirmButtonColor: '#b685e4'
-                                                        });
-                                                    }}
-                                                >
-                                                    <FiEdit className="text-gray-400" />
-                                                    <span>Editar (expirado)</span>
-                                                </button>
-                                            )}
+                                            </>
+                                        ) : (
                                             <button 
                                                 className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
-                                                onClick={handleDeletePost}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setShowReportModal(true);
+                                                    setShowOptionsMenu(false);
+                                                }}
                                             >
-                                                <FiTrash2 />
-                                                <span>Eliminar</span>
+                                                <FiFlag />
+                                                <span>Reportar</span>
                                             </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                        </div>
                     </div>
 
@@ -773,6 +790,13 @@ const Post = forwardRef((props, ref) => {
                     </div>
                 </div>
             )}
+            <ModalReport
+                isOpen={showReportModal}
+                onClose={() => setShowReportModal(false)}
+                contentId={post.id}
+                contentType="publicacion"
+                reportedUserId={post.id_usuario}
+            />
         </>
         
     );

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { createReactionReel, getReactionsReels, deleteReaction } from '../../services/reactions';
 import { deleteReel } from '../../services/reels';
+import ModalReport from '../reports/modalReport';
 import { BsHandThumbsUp, BsPlayFill, BsPauseFill } from 'react-icons/bs';
 import { MdOutlineInsertComment } from 'react-icons/md';
 import { IoArrowRedoOutline } from 'react-icons/io5';
@@ -17,6 +18,7 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const videoRef = useRef(null);
     const [showOptionsMenu, setShowOptionsMenu] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [showReportModal, setShowReportModal] = useState(false);
     const userId = localStorage.getItem('userId');
     const isMyReel = reel.usuario_id === parseInt(userId);
 
@@ -289,13 +291,23 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                                 
                                 {showOptionsMenu && (
                                     <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
-                                        <button 
-                                            className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
-                                            onClick={handleDeleteReel}
-                                        >
-                                            <FiTrash2 />
-                                            <span>Eliminar</span>
-                                        </button>
+                                        {isMyReel ? (
+                                            <button 
+                                                className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                onClick={handleDeleteReel}
+                                            >
+                                                <FiTrash2 />
+                                                <span>Eliminar</span>
+                                            </button>
+                                        ) : (
+                                            <button 
+                                                className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                onClick={() => setShowReportModal(true)}
+                                            >
+                                                <FiFlag />
+                                                <span>Reportar</span>
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </div>
@@ -380,6 +392,15 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
             </div>
             
             <p className="reel-description">{reel.descripcion}</p>
+
+            {/* Report Modal */}
+            <ModalReport
+                isOpen={showReportModal}
+                onClose={() => setShowReportModal(false)}
+                contentId={reel.id}
+                contentType="reel"
+                reportedUserId={reel.usuario_id}
+            />
         </div>
     );
 };

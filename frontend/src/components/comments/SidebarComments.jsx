@@ -12,7 +12,9 @@ import {
 } from '../../services/comments';
 import { getUserProfile } from '../../services/users';
 import { FaReply } from 'react-icons/fa';
+import { FiFlag } from 'react-icons/fi';
 import "../../assets/css/comments/SideComments.css";
+import ModalReport from '../reports/modalReport';
 
 const SidebarComments = ({ contentId, contentType, onClose }) => {
     const [comments, setComments] = useState([]);
@@ -25,6 +27,8 @@ const SidebarComments = ({ contentId, contentType, onClose }) => {
     const [replyingTo, setReplyingTo] = useState(null);
     const [replyContent, setReplyContent] = useState('');
     const [expandedComments, setExpandedComments] = useState([]);
+    const [showReportModal, setShowReportModal] = useState(false);
+    const [selectedComment, setSelectedComment] = useState(null);
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -464,6 +468,29 @@ const SidebarComments = ({ contentId, contentType, onClose }) => {
                                                     >
                                                         <FaReply /> Responder
                                                     </button>
+                                                    <button 
+                                                        className="report-button "
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            setSelectedComment(comment);
+                                                            setShowReportModal(true);
+                                                        }}
+                                                    >
+                                                        <FiFlag /> Reportar
+                                                    </button>
+                                                    {showReportModal && selectedComment && (
+                                                        <ModalReport
+                                                            isOpen={showReportModal}
+                                                            onClose={() => {
+                                                                setShowReportModal(false);
+                                                                setSelectedComment(null);
+                                                            }}
+                                                            contentId={selectedComment.id}
+                                                            contentType="comentario"
+                                                            reportedUserId={selectedComment.id_usuario}
+                                                        />
+                                                    )}
                                                     {comment.replies && comment.replies.length > 0 && (
                                                         <button 
                                                             className="view-replies-button"
@@ -481,6 +508,7 @@ const SidebarComments = ({ contentId, contentType, onClose }) => {
                                                         >
                                                             Cargar respuestas
                                                         </button>
+                                                        
                                                     )}
                                                 </div>
                                                 
