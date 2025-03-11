@@ -175,7 +175,7 @@ const UpdateProfile = () => {
   };
   return (
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
-      <button className="w-full md:w-auto px-5 py-1 bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
+      <button className="w-full md:w-auto bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
         <TbUserEdit className="icon" />
         Actualizar
       </button>
