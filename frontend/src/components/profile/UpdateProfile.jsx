@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { getProfiles, updateProfile } from "../../services/users"
+import { availableInterests } from "../../data/interests"
 import "../../assets/css/profile/updateProfile.css"
 import { TbUserEdit } from "react-icons/tb"
 import { IoClose } from "react-icons/io5"
@@ -9,6 +10,8 @@ import axios from 'axios'
 const UpdateProfile = () => {
   // Add new state for preview
   const [previewImage, setPreviewImage] = useState(null);
+  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [showInterestsModal, setShowInterestsModal] = useState(false);
   
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState({
@@ -21,6 +24,12 @@ const UpdateProfile = () => {
   })
   const [message, setMessage] = useState("")
   const fileInputRef = useRef(null)
+
+  useEffect(() => {
+    if (profile.intereses) {
+      setSelectedInterests(profile.intereses);
+    }
+  }, [profile.intereses]);
   
   useEffect(() => {
     const fetchProfile = async () => {
@@ -45,8 +54,25 @@ const UpdateProfile = () => {
       document.body.style.overflow = "hidden"
     } else {
       document.body.style.overflow = "unset"
+      // Reset interests to profile's current interests when closing
+      if (profile.intereses) {
+        setSelectedInterests(profile.intereses);
+      }
     }
   }
+
+  const handleInterestToggle = (interest) => {
+    setSelectedInterests(prev => {
+      if (prev.includes(interest)) {
+        return prev.filter(i => i !== interest);
+      }
+      if (prev.length >= 5) {
+        setMessage("Máximo 5 intereses permitidos");
+        return prev;
+      }
+      return [...prev, interest];
+    });
+  };
   
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -115,7 +141,8 @@ const UpdateProfile = () => {
         username: profile.username,
         email: profile.email,
         descripcion_usuario: profile.descripcion_usuario,
-        estado: profile.estado
+        estado: profile.estado,
+        intereses: selectedInterests,
       };
 
       console.log('Datos a actualizar:', updateData); // Debug log
@@ -211,6 +238,50 @@ const UpdateProfile = () => {
               maxLength={153}
             />
           </div>
+          <div className="form-group">
+            <button 
+              type="button" 
+              className="interests-button"
+              onClick={() => setShowInterestsModal(true)}
+            >
+              Seleccionar intereses ({selectedInterests.length}/5)
+            </button>
+          </div>
+          {/* Interests Modal */}
+          {showInterestsModal && (
+            <div className="interests-modal">
+              <div className="interests-modal-content">
+                <h3>Selecciona tus intereses (máximo 5)</h3>
+                <div className="interests-grid">
+                  {availableInterests.map((interest) => (
+                    <button
+                      key={interest}
+                      type="button"
+                      className={`interest-tag ${selectedInterests.includes(interest) ? 'selected' : ''}`}
+                      onClick={() => handleInterestToggle(interest)}
+                      disabled={selectedInterests.length >= 5 && !selectedInterests.includes(interest)}
+                    >
+                      {interest}
+                    </button>
+                  ))}
+                </div>
+                <button 
+                  type="button" 
+                  className="close-interests"
+                  onClick={() => {
+                    setShowInterestsModal(false);
+                    // Update profile with selected interests
+                    setProfile(prev => ({
+                      ...prev,
+                      intereses: selectedInterests
+                    }));
+                  }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          )}
           <button type="submit" className="submit-button">
             Guardar Cambios
           </button>

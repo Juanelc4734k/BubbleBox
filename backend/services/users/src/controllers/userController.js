@@ -74,30 +74,43 @@ const updateUser = async (req, res) => {
   try {
     console.log('Datos recibidos:', req.params.id, req.body);
     
-    // Validate that we have an ID and data
     if (!req.params.id) {
       return res.status(400).json({ mensaje: 'ID de usuario requerido' });
     }
 
-    // Explicitly extract the fields we want to update
+    // Get current user data
+    const currentUser = await userModel.getUserById(req.params.id);
+    if (!currentUser) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    // Maintain existing values if not provided in request
     const updateData = {
-      nombre: req.body.nombre,
-      username: req.body.username,
-      email: req.body.email,
-      descripcion_usuario: req.body.descripcion_usuario,
-      estado: req.body.estado
+      nombre: req.body.nombre !== undefined ? req.body.nombre : currentUser.nombre,
+      username: req.body.username !== undefined ? req.body.username : currentUser.username,
+      email: req.body.email !== undefined ? req.body.email : currentUser.email,
+      descripcion_usuario: req.body.descripcion_usuario !== undefined ? req.body.descripcion_usuario : currentUser.descripcion_usuario,
+      estado: req.body.estado !== undefined ? req.body.estado : currentUser.estado
     };
+
+    if(req.body.intereses && Array.isArray(req.body.intereses)) {
+      const intereses = req.body.intereses;
+      await userModel.addUserInterests(req.params.id, intereses);
+    }
 
     console.log('Datos a actualizar:', updateData);
 
     const actualizado = await userModel.updateUser(req.params.id, updateData);
     
     if (actualizado) {
-      // Get updated user data to confirm changes
       const usuarioActualizado = await userModel.getUserById(req.params.id);
+      const interes = await userModel.getUserInterests(req.params.id);
       res.json({ 
         mensaje: 'Usuario actualizado',
-        usuario: usuarioActualizado
+        usuario: {
+          ...usuarioActualizado,
+          interes
+        }
       });
     } else {
       res.status(404).json({ mensaje: 'Usuario no encontrado' });
@@ -107,6 +120,33 @@ const updateUser = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al actualizar usuario', error: error.message });
   }
 };
+
+const getUserInterests = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const intereses = await userModel.getUserInterests(userId);
+    res.json(intereses);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener intereses', error: error.message });
+  }
+};
+
+const updateUserInterests = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const intereses = req.body.intereses;
+
+    if (!userId || !intereses || !Array.isArray(intereses)) {
+      return res.status(400).json({ mensaje: 'ID de usuario y intereses válidos requeridos' });
+    }
+    await userModel.addUserInterests(userId, intereses);
+    res.json({ mensaje: 'Intereses actualizados' });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar intereses', error: error.message });
+  }
+};
+
+
 const deleteUser = async (req, res) => {
   try {
     const eliminado = await userModel.deleteUser(req.params.id);
@@ -234,12 +274,16 @@ const getCurrentUserProfile = async (req, res) => {
     const userId = req.user.id;
 
     const userProfile = await userModel.getUserById(userId);
+    const intereses = await userModel.getUserInterests(userId);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
     }
 
-    res.json(userProfile);
+    res.json({
+      ...userProfile,
+      intereses
+    });
   } catch (error) {
     res.status(500).json({ mensaje: "Error al obtener el perfil del usuario", error: error.message });
   }
@@ -250,6 +294,7 @@ const getPublicUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
     const userProfile = await userModel.getUserById(userId);
+    const intereses = await userModel.getUserInterests(userId);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
@@ -263,7 +308,8 @@ const getPublicUserProfile = async (req, res) => {
       descripcion_usuario: userProfile.descripcion_usuario,
       email: userProfile.email,
       avatar: userProfile.avatar,
-      estado: userProfile.estado
+      estado: userProfile.estado,
+      intereses: intereses
     };
 
     res.json(publicProfile);
@@ -271,6 +317,8 @@ const getPublicUserProfile = async (req, res) => {
     res.status(500).json({ mensaje: "Error al obtener el perfil del usuario", error: error.message });
   }
 };
+
+
 
 module.exports = {
   getAllUsers,
@@ -283,5 +331,7 @@ module.exports = {
   changePassword,
   getCurrentUserProfile,
   getPublicUserProfile,
+  updateUserInterests,
+  getUserInterests,
   suspendUser
 };

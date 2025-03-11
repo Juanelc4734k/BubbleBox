@@ -108,6 +108,23 @@ function Profile({ profile, isOwnProfile }) {
                     <span className="text-sm lg:text-lg ">{profile.estado}</span>
                   </div>
                 </div>
+                {profile.intereses && profile.intereses.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-lg lg:text-xl font-semibold text-gray-800 mb-2">
+                      Intereses
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.intereses.map((interes) => (
+                        <span
+                          key={interes}
+                          className="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm"
+                        >
+                          {interes}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Update Profile Section */}
