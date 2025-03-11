@@ -1,38 +1,112 @@
 .profile{
-    height: calc(100vh - 10rem);
-    overflow-y: auto;
+    width: calc(100% - 2rem);
+    height: 100%;
 }
-
+.contenedorPro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .profileContent{
-    overflow-y: auto;
     max-height: 100%;
 }
 .imgProfile{
-    width: 8rem;
-    height: 8rem;
+    width: 6.5rem;
+    height: 6.5rem;
+}
+.rightprofile{
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+}
+.textNameP{
+    font-size: 1.3rem;
+}
+.sobreMi{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}
+.textSobe{
+    font-size: 1rem;
+}
+.textDescription{
+    flex: 1;
+    word-break: break-word; /* Rompe palabras largas */
+    overflow-wrap: break-word; /* Asegura que las palabras largas se ajusten */
+    max-width: 100%; /* Para evitar desbordes */
+    font-size: 0.88rem;
+}
+.textInfo{
+    font-size: 1rem;
+}
+.textInteres{
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
 }
 .butonprofil{
     padding-top: 1rem;
 }
-
+.ineterses{
+    margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
+}
 /* Posts section styling - separated from profile */
 .posts-container {
+    width: calc(100% - 2rem);
     margin-top: 2rem;
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    max-width: 80%;
+    max-width: 100%;
     margin-bottom: 2rem;
     position: relative;
     z-index: 1;
     clear: both;
+    border: 1px solid rgba(189, 167, 241, 0.3);
 }
 
 .posts-section {
     padding: 1.5rem;
-    max-height: 300px;
     overflow-y: auto;
+}
+
+.posts-section h3 {
+    color: #8b5cf6;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(189, 167, 241, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.publiAmigo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+.publiAmigoDivi {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(189, 167, 241, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.publiAmigoDivi:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(189, 167, 241, 0.5);
 }
 
 /* Empty posts message styling */
@@ -41,14 +115,56 @@
     color: #6b7280;
     font-style: italic;
 }
+.textPublifecha{
+    color: #a78bfa;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+.textTituloProfile{
+    color: #4b5563;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+.textContenidoPerfil {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+.imgOubliProfile {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    object-position: center; /* Centra la imagen */
+    border-radius: 0.5rem;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(189, 167, 241, 0.2);
+}
 
+.noPubliPerfil{
+    padding: 3rem 0;
+    color: #9ca3af;
+    font-style: italic;
+    text-align: center;
+    background-color: rgba(243, 244, 246, 0.5);
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+}
+.noPubliPerfil:not(:only-child) {
+    padding: 1rem;
+    background-color: rgba(139, 92, 246, 0.1);
+}
 @media (min-width: 768px){
     .profile{
-        height: auto;
         height: calc(100vh - 12.5rem);
-        overflow-y: auto;
     }
     .profileContent{
+        height: 100%;
+        max-height: 100%;
+    }
+    .contenedordelprofile{
         height: 100%;
         max-height: 100%;
     }
@@ -57,26 +173,25 @@
     }
     .rightprofile{
         height: 100%;
-        padding-top: 2rem;
-        margin-top: 3rem;
+        gap: 1rem;
     }
-    .relativeImg{
-        margin-top: 6rem;
+    .textDescription{
+        font-size: 1rem;
     }
-    .textRight{
-        margin-bottom: 1.3rem;
-    }
-    .sobreMi{
-        margin-bottom: 1.5rem;
-    }
-    .informacionGeneral{
-        margin-top: 1rem;
-        margin-bottom: 1.5rem;
-    }
-    
     /* Posts responsive styling */
     .posts-container {
         margin-top: 2rem;
+    }
+    .posts-container {
+        margin-top: 2rem;
+    }
+    
+    .publiAmigo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .publiAmigoDivi h4 {
+        font-size: 1.2rem;
     }
 }
 
@@ -85,24 +200,28 @@
    .profile{
         width: calc(100% - 285px);
         height: calc(100vh - 14rem);
-        overflow-y: auto;
     }
    .profileContent{
         height: 100%;
+    }
+    .imgProfile{
+        width: 8rem;
+        height: 8rem;
     }
    .dentroProfileConent{
         height: 100%;
     }
    .rightprofile{
         height: 100%;
-        padding-top: 2rem;
-        margin-top: 1.5rem;
     }
-    /* Rest of the styles remain unchanged */
-    
-    /* Posts responsive styling */
+    .textDescription{
+        font-size: 1rem;
+    }
     .posts-container {
         width: calc(100% - 285px);
+    }
+    .publiAmigo {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -110,7 +229,13 @@
     .profile {
         width: calc(100% - 350px);
         height: calc(100vh - 18rem);
-        overflow-y: auto;
+    }
+    .imgProfile{
+        width: 10rem;
+        height: 10rem;
+    }
+    .rightprofile{
+        gap: 2rem;
     }
     .profileContent {
         flex-grow: 1;
@@ -123,10 +248,22 @@
         flex-grow: 1;
         height: auto;
     }
-    /* Rest of the styles remain unchanged */
-    
-    /* Posts responsive styling */
+    .ineterses{
+        margin-top: 2rem;
+    }
     .posts-container {
         width:  calc(100% - 350px);
+    }
+    .textDescription{
+        font-size: 1rem;
+    }
+    .posts-container {
+        width: calc(100% - 350px);
+    }
+    .publiAmigo {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .posts-section {
+        padding: 2rem;
     }
 }
