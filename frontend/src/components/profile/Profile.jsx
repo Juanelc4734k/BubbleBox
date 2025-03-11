@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { BsFillBalloonHeartFill, BsEnvelope, BsGeoAlt } from "react-icons/bs";
 import { CiUser } from "react-icons/ci";
 import { TbUserEdit } from "react-icons/tb";
+import { FiFlag } from "react-icons/fi";
+import ModalReport from "../reports/modalReport";
 import UpdateProfile from "./UpdateProfile";
 import { getPostByUserId } from "../../services/posts";
 import '../../assets/css/profile/profile.css';
@@ -9,6 +11,7 @@ import '../../assets/css/profile/profile.css';
 function Profile({ profile, isOwnProfile }) {
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
@@ -129,7 +132,17 @@ function Profile({ profile, isOwnProfile }) {
 
               {/* Update Profile Section */}
               <div className="border-t border-gray-200 butonprofil">
-                {isOwnProfile && <UpdateProfile />} {/* Only show if it's the user's own profile */}
+                {isOwnProfile ? (
+                  <UpdateProfile />
+                ) : (
+                  <button
+                    onClick={() => setShowReportModal(true)}
+                    className="flex items-center gap-2 text-red-500 hover:text-red-600 mt-4"
+                  >
+                    <FiFlag />
+                    <span>Reportar usuario</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -166,6 +179,15 @@ function Profile({ profile, isOwnProfile }) {
           </div>
         </div>
       )}
+
+      {/* Report Modal */}
+      <ModalReport
+        isOpen={showReportModal}
+        onClose={() => setShowReportModal(false)}
+        contentId={profile.id}
+        contentType="usuario"
+        reportedUserId={profile.id}
+      />
     </>
   );
 }

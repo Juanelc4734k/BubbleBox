@@ -104,7 +104,7 @@ const CreateComunity = () => {
             setTimeout(() => {
                 setMensaje("");
             }, 3000);
-            setIsCommunityub(false);
+            setIsCommunitySub(false);
             return
         }
 

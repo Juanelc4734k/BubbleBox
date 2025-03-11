@@ -471,7 +471,7 @@ margin: 2vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1110;
+    z-index: 1200;
 
   }
   .contImagenPost .salir {
