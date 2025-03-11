@@ -130,7 +130,7 @@
   margin: 0;
 }
 
-.close-button {
+.close-buttonPerfil{
   background: none;
   border: none;
   color: #666;
@@ -144,10 +144,11 @@
   justify-content: center;
 }
 
-.close-button:hover {
+.close-buttonPerfil:hover {
   background: rgba(139, 92, 246, 0.1);
   color:  #bda7f1;
 }
+
 
 .message {
   padding: 0.75rem;
@@ -169,7 +170,7 @@
   color: #e53e3e;
 }
 
-.imgProfile {
+.imgProfileAp {
   display: flex;
   justify-content: center;
   margin-bottom: 1.2rem;

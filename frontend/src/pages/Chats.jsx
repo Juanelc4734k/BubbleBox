@@ -133,11 +133,11 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                 <div className="sidebar-chats">
                     <div className="chats-container">
                         {isLoading ? (
-                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                        <div className="p-4 text-center text-gray-600 divTexto">
                             <p>Cargando chats...</p>
                         </div>
                         ) : error ? (
-                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                        <div className="p-4 text-center text-gray-600 divTexto">
                             <p>{error}</p>
                             <p className="mt-2 text-sm">¡Agrega amigos para comenzar a chatear!</p>
                         </div>

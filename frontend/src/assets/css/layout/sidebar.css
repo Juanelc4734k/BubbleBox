@@ -14,7 +14,7 @@
   /* Estilos específicos para el sidebar de usuario */
   .userSidebar {
     background-image: url(../../images/img/imFondo.jpeg);
-    border-radius: 3vh;
+    border-radius: 1rem;
     box-shadow: 2.2px 2.2px 8px rgba(0, 0, 0, 0.5);
   }
   .menu {

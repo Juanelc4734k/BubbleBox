@@ -118,11 +118,11 @@ const SidebarChat = ({onSelectChat}) => {
             <div className="sidebar-chats-Page">
                 <div className="chats-container-Page">
                     {isLoadingSidebar ? (
-                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                        <div className="p-4 text-center text-gray-600 backdrop-blur-md divTextChat ">
                             <p>Cargando chats...</p>
                         </div>
                     ) : errorSidebar ? (
-                        <div className="p-4 text-center text-gray-600 backdrop-blur-md">
+                        <div className="p-4 text-center text-gray-600 backdrop-blur-md divTextChat">
                             <p>{errorSidebar}</p>
                             <p className="mt-2 text-sm">¡Agrega amigos para comenzar a chatear!</p>
                         </div>
