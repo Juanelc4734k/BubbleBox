@@ -131,6 +131,67 @@ const changePassword = (id, newPassword) => {
   });
 };
 
+const addUserInterests = (userId, interests) => {
+  return new Promise((resolve, reject) => {
+    // First delete existing interests for this user
+    db.query('DELETE FROM intereses WHERE user_id = ?', [userId], (deleteError) => {
+      if (deleteError) {
+        reject(deleteError);
+        return;
+      }
+
+      // If there are no interests to add, resolve immediately
+      if (!interests || interests.length === 0) {
+        resolve(true);
+        return;
+      }
+
+      // Prepare the values for multiple inserts
+      const values = interests.map(interest => [userId, interest]);
+      const placeholders = values.map(() => '(?, ?)').join(', ');
+      const flatValues = values.flat();
+
+      // Then insert new interests
+      const query = `INSERT INTO intereses (user_id, interes) VALUES ${placeholders}`;
+      
+      db.query(query, flatValues, (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(true);
+      });
+    });
+  });
+};
+
+const getUserInterests = (userId) => {
+  return new Promise((resolve, reject) => {
+    db.query('SELECT interes FROM intereses WHERE user_id =?', [userId], (error, results) => {
+      if (error) reject(error);
+      resolve(results.map(row => row.interes));
+    });
+  });
+};
+
+const updateUserInterests = (userId, interests) => {
+  return new Promise((resolve, reject) => {
+    db.query('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
+      if (error) reject(error);
+      addUserInterests(userId, interests).then(resolve).catch(reject);
+    });
+  });
+};
+
+const deleteUserInterests = (userId) => {
+  return new Promise((resolve, reject) => {
+    db.query('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
+      if (error) reject(error);
+      resolve(result.affectedRows > 0);
+    });
+  });
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -140,5 +201,10 @@ module.exports = {
   searchUsers,
   updateAvatar,
   changePassword,
-  suspendUser
+  suspendUser,
+
+  addUserInterests,
+  getUserInterests,
+  updateUserInterests,
+  deleteUserInterests,
 };

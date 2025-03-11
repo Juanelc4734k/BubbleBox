@@ -2,6 +2,85 @@
   display: inline-block;
 }
 
+.interests-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.interests-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.interests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.interest-tag {
+  padding: 0.5rem;
+  border: 1px solid #bda7f1;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.interest-tag.selected {
+  background: #bda7f1;
+  color: white;
+}
+
+.interest-tag:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.interests-button {
+  width: 100%;
+  padding: 0.5rem;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.interests-button:hover {
+  background: #e5e7eb;
+}
+
+.close-interests {
+  width: 100%;
+  padding: 0.5rem;
+  background: #bda7f1;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-interests:hover {
+  background: #866bb8;
+}
+
 .edit-button:hover {
   background-color: #866bb8;
   transform: translateY(-2px);

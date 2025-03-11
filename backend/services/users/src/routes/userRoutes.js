@@ -17,7 +17,9 @@ router.put('/actualizar-foto-perfil', authMiddleware, upload.single('imagen'), u
 router.put('/cambiar-contrasena', authMiddleware, userController.changePassword);
 router.get('/health', (req, res) => {
     res.status(200).json({ status: 'healthy' });
-  });  
+  }); 
+router.post('/usuario/:id/interests', userController.updateUserInterests); 
+router.get('/usuario/:id/interests', userController.getUserInterests)
 
 router.put('/suspender-usuario/:id', userController.suspendUser);
 
