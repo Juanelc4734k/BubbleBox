@@ -43,7 +43,7 @@ textarea {
 }
 
 .auth-route {
-  padding-top: 0 !important;
+  padding-top: 6rem !important;
 }
 
 .layout {
@@ -129,7 +129,7 @@ textarea {
   }
 
   .auth-route {
-    padding-top: 80px !important;
+    padding-top: 7rem !important;
   }
 
   .layout {
@@ -159,6 +159,9 @@ textarea {
 @media (min-width: 1024px) {
   .layout {
     height: calc(100vh - 90px);
+  }
+  .auth-route {
+    padding-top: 0 !important;
   }
 
   .sidebar {
@@ -203,6 +206,9 @@ textarea {
     top: 14.5rem;
     width: 5.5rem;
     height: calc(100vh - 15.5rem);
+  }
+  .auth-route {
+    padding-top: 0 !important;
   }
   .navbar{
     height: 12.2rem;
