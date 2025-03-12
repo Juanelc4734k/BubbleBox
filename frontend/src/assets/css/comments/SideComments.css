@@ -13,6 +13,8 @@
     flex-direction: column;
     z-index: 1200;
   }
+
+  
   
   .sidebar-comments-wrapper.closed {
     transform: translateX(100%);
@@ -150,6 +152,13 @@
     padding: 0.8rem 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
+  .reply-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.2rem;
+  }
+
   .reply-item:last-child {
     border-bottom: none;
   }
@@ -161,11 +170,12 @@
   }
   .reply-content {
     flex: 1;
+    position: relative;
   }
   .reply-author {
     font-weight: 600;
     font-size: 0.9rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0;
   }
   .reply-text {
     color: #333;
@@ -256,12 +266,144 @@
     border-radius: 50%;
     object-fit: cover;
   }
+  /* Add these styles for the dropdown menu */
+  .dropdown-menu-container {
+    position: relative;
+    display: inline-block;
+    margin-left: auto;
+  }
+  
+  .more-options-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: #666;
+  }
+  
+  .more-options-button:hover {
+    color: #333;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 120px;
+  }
+  
+  .dropdown-item-2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .report-button {
+    color: #e74c3c;
+  }
+  
   .comment-content {
     flex: 1;
+    position: relative;
   }
+  
+  .comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  
   .comment-author {
     font-weight: 600;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0;
+  }
+  
+  .dropdown-menu-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .more-options-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    color: #666;
+  }
+  
+  .more-options-button:hover {
+    color: #333;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 120px;
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .report-button {
+    color: #e74c3c;
+  }
+  
+  /* Update comment-content to have relative positioning */
+  .comment-content {
+    flex: 1;
+    position: relative;
+  }
+  
+  /* Modify comment-actions to use flex with space-between */
+  .comment-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.8rem;
+  }
+  
+  /* Group the left side buttons */
+  .comment-actions-left {
+    display: flex;
+    gap: 10px;
   }
   .comment-text {
     color: #333;
