@@ -62,6 +62,16 @@ const Community = () => {
     useEffect(() => {
         const fetchMembershipStatus = async (communities) => {
             const statusPromises = communities.map(async (community) => {
+                // Force join creator to their community
+                if (community.id_creador === userId) {
+                    try {
+                        await joinCommunity(community.id, userId);  // Add creator as member
+                        return { [community.id]: true };
+                    } catch (error) {
+                        console.error('Error adding creator to community:', error);
+                        return { [community.id]: true };  // Maintain UI state on error
+                    }
+                }
                 const status = await isMember(community.id, userId);
                 return { [community.id]: status };
             });
@@ -89,11 +99,11 @@ const Community = () => {
         const community = communities.find(c => c.id === communityId);
         
         // Prevent creator from leaving their own community
-        if (community && community.id_creador === userId && membershipStatus[communityId]) {
+        if (community && community.id_creador === userId) {
             Swal.fire({
                 icon: 'info',
-                title: 'No puedes dejar tu propia comunidad',
-                text: 'Como creador, no puedes abandonar esta comunidad.',
+                title: 'Acción no permitida',
+                text: 'Los creadores no pueden abandonar sus propias comunidades',
                 timer: 3000,
                 showConfirmButton: false,
             });
@@ -414,10 +424,10 @@ const Community = () => {
                                     <>
                                     {!isMyCreatedCommunity && (
                                         <button 
-                                        type="button"
-                                        onClick={(e) => handleMembership(e, community.id)}
-                                        className={membershipStatus[community.id] ? 'leave-btn' : 'join-btn'}>
-                                           {membershipStatus[community.id] ? 'Dejar' : 'Unirse'}
+                                            type="button"
+                                            onClick={(e) => handleMembership(e, community.id)}
+                                            className={membershipStatus[community.id] ? 'leave-btn' : 'join-btn'}>
+                                            {membershipStatus[community.id] ? 'Dejar' : 'Unirse'}
                                         </button>
                                     )}
                                     {isMyCreatedCommunity && (
