@@ -163,6 +163,54 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('delete_all_messages', async ({ userId1, userId2 }) => {
+        try {
+            if(!userId1 || !userId2) {
+                socket.emit('error', 'Faltan datos para eliminar los mensajes');
+                return;
+            }
+
+            const areFriends = await friendshipModel.checkFriendship(userId1, userId2);
+            if (!areFriends) {
+                socket.emit('error', 'No puedes eliminar mensajes con usuarios que no son tus amigos');
+                return;
+            }
+
+            const deletedCount = await chatModel.deleteAllMessages(userId1, userId2);
+
+            const roomId = [userId1, userId2].sort().join('-');
+
+            io.in(roomId).emit('all_messages_deleted', {
+                userId1: parseInt(userId1),
+                userId2: parseInt(userId2),
+                deletedCount
+            });
+
+            console.log(`All messages between ${userId1} and ${userId2} deleted`);
+        } catch (error) {
+            console.error('Error al eliminar los mensajes:', error);
+            socket.emit('error', 'Error al eliminar los mensajes');
+        }
+    });
+
+    socket.on('user_blocked', async ({ blockerId, blockedId }) => {
+        try {
+            // Create room ID for the chat
+            const roomId = [blockerId, blockedId].sort().join('-');
+            
+            // Broadcast to the room that a user has been blocked
+            io.in(roomId).emit('user_blocked_notification', {
+                blockerId: parseInt(blockerId),
+                blockedId: parseInt(blockedId)
+            });
+            
+            console.log(`User ${blockerId} blocked user ${blockedId}`);
+        } catch (error) {
+            console.error('Error handling user block:', error);
+            socket.emit('error', 'Error al procesar el bloqueo de usuario');
+        }
+    });
+
     socket.on('mark_messages_read', async ({ userId, friendId }) => {
         try {
             // Mark messages as read in the database

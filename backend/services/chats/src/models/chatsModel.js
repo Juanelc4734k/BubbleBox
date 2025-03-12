@@ -111,6 +111,21 @@ const deleteMessage = (messageId) => {
     });
 };
 
+const deleteAllMessages = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)';
+        db.query(query, [userId1, userId2, userId2, userId1], (error, result) => {
+            if (error) {
+                console.error('Error deleting all messages:', error);
+                reject(error);
+            } else {
+                console.log(`Deleted ${result.affectedRows} messages between users ${userId1} and ${userId2}`);
+                resolve(result.affectedRows);
+            }
+        });
+    });
+};
+
 const updateLastSeen = (userId, status = 'conectado', lastSeen = null) => {
     return new Promise((resolve, reject) => {
         let query;
@@ -203,6 +218,7 @@ module.exports = {
     getMessages,
     updateMessage,
     deleteMessage,
+    deleteAllMessages,
     updateLastSeen,
     getLastSeen,
     saveAudioMessage,
