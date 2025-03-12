@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import "../../assets/css/chats/chatsDetails.css";
 import { IoClose } from "react-icons/io5";
 import { FaRegFaceSmileWink } from "react-icons/fa6";
-import { FaMicrophone, FaStop } from "react-icons/fa";
+import { FaMicrophone, FaStop, FaEdit, FaTrash } from "react-icons/fa";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 const EmojiPicker = lazy(() => import ('emoji-picker-react'))
@@ -15,6 +15,8 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
   const [friendUser, setFriendUser] = useState([]);
   const [avatarUrl, setAvatarUrl] = useState(avatarDefault);
   const [newMessage, setNewMessage] = useState("");
+  const [editingMessageId, setEditingMessageId] = useState(null);
+  const [editMessageContent, setEditMessageContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [pendingMessages, setPendingMessages] = useState(new Set());
@@ -663,6 +665,30 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       );
     });
 
+    socketRef.current.on("message_edited", (updatedMessage) => {
+      console.log("Received edited message:", updatedMessage);
+      setMessages((prev) => 
+        prev.map((msg) => 
+          msg.id === updatedMessage.id 
+            ? { 
+                ...msg, 
+                message: updatedMessage.message, 
+                edited: true,
+                updated_at: updatedMessage.updated_at 
+              } 
+            : msg
+        )
+      );
+    })
+
+    socketRef.current.on("message_deleted", (deletedMessage) => {
+      console.log("Message deleted:", deletedMessage);
+      
+      setMessages((prev) => 
+          prev.filter((msg) => msg.id !== deletedMessage.id)
+      );
+  });
+
       // Fix: Move these handlers outside of the message_sent_confirmation handler
     socketRef.current.on('receive_audio_message', (message) => {
       console.log("Received audio message:", message);
@@ -762,11 +788,82 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       socketRef.current?.off("message_sent_confirmation");
       socketRef.current?.off('receive_audio_message');
       socketRef.current?.off('audio_message_sent_confirmation');
+      socketRef.current?.off("message_edited");
+      socketRef.current?.off("message_deleted");
     };
   }, []);
+
+    const startEditingMessage = (message) => {
+      // Check if the message is within the 15-minute edit window
+      const messageTime = new Date(message.created_at);
+      const currentTime = new Date();
+      const timeDifference = (currentTime - messageTime) / (1000 * 60); // in minutes
+      
+      if (timeDifference > 15) {
+        alert("No puedes editar mensajes después de 15 minutos");
+        return;
+      }
+      
+      setEditingMessageId(message.id);
+      setEditMessageContent(message.message);
+    };
+
+    const cancelEditingMessage = () => {
+      setEditingMessageId(null);
+      setEditMessageContent("");
+    };
+
+    const saveEditedMessage = () => {
+      if (!editMessageContent.trim() || !socketRef.current?.connected) return;
+      
+      socketRef.current.emit("edit_message", {
+        messageId: editingMessageId,
+        senderId: parseInt(senderId),
+        newContent: editMessageContent.trim()
+      });
+      
+      setEditingMessageId(null);
+      setEditMessageContent("");
+    };
+
+    const deleteMessage = (messageId) => {
+      if (window.confirm("¿Estás seguro de que quieres eliminar este mensaje?")) {
+        socketRef.current.emit("delete_message", {
+          messageId,
+          senderId: parseInt(senderId)
+        });
+      }
+    };
+
   // Renderizar contenido del mensaje según su tipo
   const renderMessageContent = (message) => {
-    if (message.message === "audio_message") {
+    if (editingMessageId === message.id) {
+      return (
+        <div className="edit-message-container">
+          <textarea
+            value={editMessageContent}
+            onChange={(e) => setEditMessageContent(e.target.value)}
+            className="edit-message-input"
+            autoFocus
+            rows={Math.min(4, (editMessageContent.match(/\n/g) || []).length + 1)}
+          />
+          <div className="edit-message-actions">
+            <button onClick={cancelEditingMessage} className="cancel-edit-button">
+              <span className="button-icon">✕</span>
+              <span className="button-text">Cancel</span>
+            </button>
+            <button 
+              onClick={saveEditedMessage} 
+              className="save-edit-button"
+              disabled={!editMessageContent.trim()}
+            >
+              <span className="button-icon">✓</span>
+              <span className="button-text">Save</span>
+            </button>
+          </div>
+        </div>
+      );
+    }else if (message.message === "audio_message") {
       const isPlaying = currentAudioId === message.id;
       
       return (
@@ -795,8 +892,11 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     } else {
       // Mensaje de texto normal
       return (
-        <div className="flex items-end gap-2">
-          <span>{message.message}</span>
+        <div className="flex items-end gap-2 message-content-wrapper">
+          <span>
+            {message.message}
+            {message.edited && <span className="edited-indicator"> (editado)</span>}
+          </span>
           {message.pending && (
             <span className="text-xs opacity-70">Sending...</span>
           )}
@@ -865,6 +965,27 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             >
               {renderMessageContent(message)}
             </div>
+            {/* Add message actions for own messages */}
+            {message.sender_id === parseInt(senderId) && 
+               message.message !== "audio_message" &&
+               editingMessageId !== message.id && (
+                <div className="message-actions">
+                  <button 
+                    onClick={() => startEditingMessage(message)} 
+                    className="edit-message-button"
+                    title="Edit message"
+                  >
+                    <FaEdit size={12} />
+                  </button>
+                  <button 
+                    onClick={() => deleteMessage(message.id)} 
+                    className="delete-message-button"
+                    title="Delete message"
+                  >
+                    <FaTrash size={12} />
+                  </button>
+                </div>
+              )}
             {message.sender_id === parseInt(senderId) && (
               <img 
                 src={message.avatar || currentUserAvatar} 
