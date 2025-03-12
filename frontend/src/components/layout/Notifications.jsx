@@ -211,7 +211,7 @@ const Notifications = () => {
     return (
         <div className={`containerNoti ${isOpenNoti ? "active" : ""}`}>
             <NotificationBell 
-                count={notifications.length} 
+                count={notifications.filter(noti => !noti.leida).length} 
                 onClick={() => setIsOpenNoti(!isOpenNoti)} 
             />
             {isOpenNoti && (
