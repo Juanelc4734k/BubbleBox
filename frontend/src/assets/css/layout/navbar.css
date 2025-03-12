@@ -5,7 +5,7 @@
   padding: 0.5rem;
 }
   .navbar.modal-open {
-    z-index: 1200; /* Reducir la prioridad cuando el modal está abierto */
+    z-index: 1190; /* Reducir la prioridad cuando el modal está abierto */
   }
   .user-navbar {
   background-image: url(../../images/img/imFondo.jpeg);

@@ -44,7 +44,7 @@ html, body {
   transition: transform 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
-  z-index: 1200;
+  z-index: 1190;
 }
 .divTexto{
   display: flex;
