@@ -156,6 +156,10 @@ const Notifications = () => {
     const handleDeleteNotification = async (e, notiId) => {
         e.stopPropagation();
         try {
+            const notification = notifications.find(n => n.id === notiId);
+            if (notification?.tipo === 'solicitud_amistad') {
+                await rejectFriendRequest(notification.referencia_id);
+            }
             await deleteNotification(notiId);
             setNotifications(prev => prev.filter(noti => noti.id !== notiId));
         } catch (error) {
