@@ -38,7 +38,7 @@ const Dropdown = () => {
                 <Link
                     className="dropdown-item bubblee"
                     onClick={handleBubbleClick}
-                    to="/users"
+                    to="/configuraciones"
                     onMouseEnter={() => setTooltip("Configuraciones")}
                     onMouseLeave={() => setTooltip("")}
                 >

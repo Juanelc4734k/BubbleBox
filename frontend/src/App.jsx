@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
@@ -21,6 +19,7 @@ import RecoverPassPage from "./pages/ResetPass"
 import ProtectedRouteCommunity from "./components/auth/ProtectedRouteCommunity.jsx"
 import SidebarChat from "./components/chats/SidebarChat.jsx"
 import SidebarComments from "./components/comments/SidebarComments.jsx"
+import Settings from "./components/setting/Settings.jsx"
 
 import { logoutUser } from "./services/auth.js"
 
@@ -295,6 +294,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Profiles />
+                  </ProtectedRoute>
+                }
+              />
+              <Route 
+                path="/configuraciones"
+                element={
+                  <ProtectedRoute>
+                    <Settings />
                   </ProtectedRoute>
                 }
               />
