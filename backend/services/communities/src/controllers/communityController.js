@@ -41,13 +41,22 @@ const getCommunityById = async (req, res) => {
 const createCommunity = async (req, res) => {
     try {
         const { nombre, descripcion, idCreador, privacidad } = req.body;
-        const imagen = req.file ? req.file.filename : null;
+        const avatar = req.files?.avatar?.[0]?.filename || null;
+        const banner = req.files?.banner?.[0]?.filename || null;
 
         if (privacidad && !['publica', 'privada'].includes(privacidad)) {
             return res.status(400).json({ mensaje: 'Privacidad inválida' });
         }
         
-        const idComunidad = await communityModel.crearComunidad(nombre, descripcion, idCreador, imagen, privacidad || 'publica');
+        const idComunidad = await communityModel.crearComunidad(
+            nombre, 
+            descripcion, 
+            idCreador, 
+            avatar,
+            banner,
+            privacidad || 'publica'
+        );
+        
         res.status(201).json({ mensaje: 'Comunidad creada con éxito', id: idComunidad });
     } catch (error) {
         console.error('Error al crear la comunidad:', error);

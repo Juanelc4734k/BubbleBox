@@ -5,6 +5,7 @@ import "../../assets/css/comunity/createComunity.css";
 import { TbUsersPlus } from "react-icons/tb";
 import { CiImageOn } from "react-icons/ci";
 import { createCommunity } from "../../services/comunity";
+import { FaUsers, FaLock } from "react-icons/fa";
 
 const CreateComunity = () => {
     const [openComunity, setOpenComunity] = useState(false);
@@ -111,12 +112,15 @@ const CreateComunity = () => {
         const comunityData = new FormData();
         comunityData.append("nombre", nombre.trim());
         comunityData.append("descripcion", descripcion);
-        comunityData.append("privacidad", privacidad); // Add this line
+        comunityData.append("privacidad", privacidad);
         if (idCreador) {
             comunityData.append("idCreador", idCreador);
         }
-        if(imagen){
-            comunityData.append("imagen", imagen);
+        if(imagenAvatar){
+            comunityData.append("avatar", imagenAvatar);
+        }
+        if(imagenBanner){
+            comunityData.append("banner", imagenBanner);
         }
 
         try{
@@ -144,13 +148,24 @@ const CreateComunity = () => {
         }
     };
 
-    const handleFileChange = (e) => {
+    const [imagenAvatar, setImagenAvatar] = useState(null);
+    const [imagenBanner, setImagenBanner] = useState(null);
+    const [imagenAvatarPreview, setImagenAvatarPreview] = useState(null);
+    const [imagenBannerPreview, setImagenBannerPreview] = useState(null);
+    // Keep existing states except replace imagen/imagenPreview with above
+
+    const handleFileChange = (type) => (e) => {
         const file = e.target.files[0];
         if(file){
-            setImagen(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagenPreview(reader.result);
+                if(type === 'avatar') {
+                    setImagenAvatar(file);
+                    setImagenAvatarPreview(reader.result);
+                } else {
+                    setImagenBanner(file);
+                    setImagenBannerPreview(reader.result);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -210,31 +225,76 @@ const CreateComunity = () => {
                                     rows={5}
                                 />
                             </div>
+
+                            {/* Moved privacy and images section here */}
+                            <div className="form-group privacy-selector">
+                                <div className="privacy-options">
+                                    <button
+                                        type="button"
+                                        className={`privacy-option ${privacidad === 'publica' ? 'active' : ''}`}
+                                        onClick={() => setPrivacidad('publica')}
+                                    >
+                                        <FaUsers className="privacy-icon" />
+                                        <span>Pública</span>
+                                        <small>Cualquiera puede unirse</small>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`privacy-option ${privacidad === 'privada' ? 'active' : ''}`}
+                                        onClick={() => setPrivacidad('privada')}
+                                    >
+                                        <FaLock className="privacy-icon" />
+                                        <span>Privada</span>
+                                        <small>Solo por invitación</small>
+                                    </button>
+                                </div>
+                            </div>
                             <div className="form-group file-input">
-                                <input type="file" id="imagen" accept="image/*" onChange={handleFileChange} className="hidden-input" />
-                                <label htmlFor="imagen" className="file-label">
+                                <input type="file" id="imagenAvatar" accept="image/*" 
+                                    onChange={handleFileChange('avatar')} className="hidden-input" />
+                                <label htmlFor="imagenAvatar" className="file-label">
                                     <CiImageOn />
-                                    <span>Agregar imagen</span>
+                                    <span>Avatar de la comunidad</span>
                                 </label>
-                                {imagenPreview && (
-                                    <div className="image-preview">
-                                        <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
-                                        <button 
-                                            type="button" 
-                                            className="remove-image" 
+                                {imagenAvatarPreview && (
+                                    <div className="image-preview small">
+                                        <img src={imagenAvatarPreview} alt="Avatar Preview" />
+                                        <button type="button" className="remove-image" 
                                             onClick={() => {
-                                                setImagen(null);
-                                                setImagenPreview(null);
-                                                const fileInput = document.getElementById("imagen");
-                                                if(fileInput){
-                                                    fileInput.value = "";
-                                                }
+                                                setImagenAvatar(null);
+                                                setImagenAvatarPreview(null);
+                                                document.getElementById('imagenAvatar').value = '';
                                             }}>
-                                                <IoClose />
+                                            <IoClose />
                                         </button>
                                     </div>
                                 )}
                             </div>
+
+                            <div className="form-group file-input">
+                                <input type="file" id="imagenBanner" accept="image/*" 
+                                    onChange={handleFileChange('banner')} className="hidden-input" />
+                                <label htmlFor="imagenBanner" className="file-label">
+                                    <CiImageOn />
+                                    <span>Banner de la comunidad</span>
+                                </label>
+                                {imagenBannerPreview && (
+                                    <div className="image-preview">
+                                        <img src={imagenBannerPreview} alt="Banner Preview" />
+                                        <button type="button" className="remove-image" 
+                                            onClick={() => {
+                                                setImagenBanner(null);
+                                                setImagenBannerPreview(null);
+                                                document.getElementById('imagenBanner').value = '';
+                                            }}>
+                                            <IoClose />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Removed old image upload section */}
+
                             <button type="submit" className="submit-button" disabled={isCommunitySub}>
                                 {isCommunitySub ? "Creando..." : "Crear Comunidad"}
                             </button>
