@@ -13,7 +13,7 @@
 }
 
 .auth-route {
-  padding-top: 0 !important;
+  padding-top: 6rem !important;
 }
 
 .layout {
@@ -99,7 +99,7 @@
   }
 
   .auth-route {
-    padding-top: 80px !important;
+    padding-top: 7rem !important;
   }
 
   .layout {
@@ -129,6 +129,9 @@
 @media (min-width: 1024px) {
   .layout {
     height: calc(100vh - 90px);
+  }
+  .auth-route {
+    padding-top: 0 !important;
   }
 
   .sidebar {
@@ -173,6 +176,9 @@
     top: 14.5rem;
     width: 5.5rem;
     height: calc(100vh - 15.5rem);
+  }
+  .auth-route {
+    padding-top: 0 !important;
   }
   .navbar{
     height: 12.2rem;
