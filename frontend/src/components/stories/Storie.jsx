@@ -16,6 +16,7 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
     const [showViewers, setShowViewers] = useState(false);
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
     const currentUserId = localStorage.getItem('userId');
+    const [storyBackground, setStoryBackground] = useState(null);
 
     const backgroundColors = [
         'linear-gradient(45deg, #ff6b6b, #feca57)',
@@ -149,9 +150,15 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
         return avatarPorDefecto;
     };
 
+    useEffect(() => {
+        if (isExpanded) {
+            setStoryBackground(getRandomBackground());
+        }
+    }, [isExpanded]);
+
     const getRandomBackground = () => {
-        const randomIndex = Math.floor(Math.random() * backgroundColors.length);
-        return backgroundColors[randomIndex];
+        const seed = currentStoryIndex;  // Use current story index as seed
+        return backgroundColors[seed % backgroundColors.length];
     };
 
 
@@ -170,6 +177,7 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
             return (
                 <div className="story-video-container">
                     <video 
+                        key={currentStory.id}  // Add unique key
                         className="story-video"
                         controls
                         autoPlay
