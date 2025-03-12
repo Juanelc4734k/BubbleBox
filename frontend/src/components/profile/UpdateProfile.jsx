@@ -129,39 +129,27 @@ const UpdateProfile = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-     // Validación de la descripción antes de enviar el formulario
-    if (profile.descripcion_usuario.length < 10) {
-      setMessage("La descripción debe tener al menos 10 caracteres.");
-      return; // Detiene la ejecución de la función y no envía el formulario
-    }
     
     try {
       const updateData = {
         nombre: profile.nombre,
-        username: profile.username,
         email: profile.email,
         descripcion_usuario: profile.descripcion_usuario,
-        estado: profile.estado,
-        intereses: selectedInterests,
+        intereses: selectedInterests
       };
-
-      console.log('Datos a actualizar:', updateData); // Debug log
-      
-      const userId = localStorage.getItem('userId');
-      if (!userId) {
-        throw new Error('No se encontró el ID del usuario');
-      }
 
       await updateProfile(updateData);
       
-      // Refresh profile data after update
+      // Actualizar ambos estados y forzar nueva carga de datos
       const userData = await getProfiles();
       setProfile(prev => ({
         ...prev,
         ...userData,
-        newPassword: "",
-        confirmPassword: "",
+        intereses: selectedInterests
       }));
+      
+      // Sincronizar intereses seleccionados
+      setSelectedInterests(userData.intereses || []);
 
       setMessage("Perfil actualizado con éxito");
       setTimeout(() => {
@@ -170,7 +158,7 @@ const UpdateProfile = () => {
       }, 2000);
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
-      setMessage("Error al actualizar tu perfil");
+      setMessage(error.response?.data?.message || "Error al actualizar tus intereses");
     }
   };
   return (
