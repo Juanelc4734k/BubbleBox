@@ -10,11 +10,7 @@ const crearHistoria = async (req, res) => {
         let mediaType = 'texto';
         let contenido = req.body.contenido;
 
-        // Only check for file if content type is not text
-        if (req.body.tipo !== 'texto') {
-            if (!req.file) {
-                return res.status(400).json({ error: 'Se requiere un archivo de imagen o video' });
-            }
+        if (req.file) {
             mediaType = req.file.mimetype.startsWith('image/') ? 'imagen' : 'video';
             contenido = `/uploads/${req.file.filename}`;
         }
@@ -26,7 +22,7 @@ const crearHistoria = async (req, res) => {
         });
 
         res.status(201).json({ 
-            id: nuevaHistoria, 
+            id: nuevaHistoria,
             mensaje: 'Historia creada con éxito',
             contenido: contenido,
             tipo: mediaType

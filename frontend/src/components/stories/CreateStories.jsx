@@ -201,27 +201,28 @@ const CreateStories = () => {
                     className="mediaInput"
                     onChange={handleFileChange}
                   />
+
                   {preview ? (
-                    <>
-                      {media?.type.startsWith('video/') ? (
-                        <video 
-                          className="previewImage" 
-                          src={preview} 
-                          controls
-                        />
-                      ) : (
-                        <img 
-                          className="previewImage" 
-                          src={preview || "/placeholder.svg"} 
-                          alt="Preview" 
-                        />
-                      )}
-                      <button type="button" className="remove-image-button" onClick={removeImage}>
-                        <IoClose />
-                      </button>
-                    </>
+                      <>
+                          {media?.type.startsWith('video/') ? (
+                              <video 
+                                  className="previewImage" 
+                                  src={preview} 
+                                  controls
+                              />
+                          ) : (
+                              <img 
+                                  className="previewImage" 
+                                  src={preview} 
+                                  alt="Preview" 
+                              />
+                          )}
+                          <button type="button" className="remove-image-button" onClick={removeImage}>
+                              <IoClose />
+                          </button>
+                      </>
                   ) : (
-                    <CiImageOn className="multimedia" />
+                      <CiImageOn className="multimedia" />
                   )}
                 </div>
               )}
