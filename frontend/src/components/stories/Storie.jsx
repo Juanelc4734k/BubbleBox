@@ -166,6 +166,24 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
                 </div>
             );
         }
+        if (currentStory.tipo === 'video') {
+            return (
+                <div className="story-video-container">
+                    <video 
+                        className="story-video"
+                        controls
+                        autoPlay
+                        loop
+                    >
+                        <source 
+                            src={`http://localhost:3003${currentStory.contenido}`} 
+                            type={`video/${currentStory.contenido.split('.').pop()}`}
+                        />
+                        Tu navegador no soporta videos.
+                    </video>
+                </div>
+            );
+        }
         return (
             <img 
                 src={`http://localhost:3003${currentStory.contenido}`}
