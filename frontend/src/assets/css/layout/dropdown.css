@@ -27,7 +27,7 @@
 /* Contenedor de opciones */
 .dro {
     position: absolute;
-    top: 3rem;
+    top: 2.5rem;
     right: -1rem;
     z-index: 1000;
     display: flex;
@@ -144,7 +144,7 @@
 
     .dro {
         padding: 1rem;
-        gap: 1rem;
+        gap: 0.5rem;
     }
 }
 
