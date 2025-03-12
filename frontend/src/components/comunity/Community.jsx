@@ -212,7 +212,7 @@ const Community = () => {
             tipo_privacidad: community.tipo_privacidad || 'publica',
             imagen: null
         });
-        setPreviewImage(`http://localhost:3004/uploads/${community.imagen}`);
+        setPreviewImage(`http://localhost:3004/uploads/${community.banner}`);
         setShowEditModal(true);
         setShowOptionsMenu(null);
     };
@@ -360,7 +360,7 @@ const Community = () => {
                         key={community.id}
                         className='communitys-Info'
                         onClick={(e) => handleCommunityClick(e, community)}
-                        style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.imagen})` }}>
+                        style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.banner})` }}>
 
                             <div className="datosOne">
                                 <div className="datostwo">

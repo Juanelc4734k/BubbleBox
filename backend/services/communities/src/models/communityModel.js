@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const crearComunidad = (nombre, descripcion, idCreador, imagen = null, privacidad) => {
+const crearComunidad = (nombre, descripcion, idCreador, avatar = null, banner = null, privacidad) => {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO comunidades (nombre, descripcion, id_creador, imagen, tipo_privacidad) VALUES (?, ?, ?, ?, ?)";
-        db.query(query, [nombre, descripcion, idCreador, imagen, privacidad], (err, result) => {
+        const query = "INSERT INTO comunidades (nombre, descripcion, id_creador, avatar, banner, tipo_privacidad) VALUES (?, ?, ?, ?, ?, ?)";
+        db.query(query, [nombre, descripcion, idCreador, avatar, banner, privacidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.insertId);
         });

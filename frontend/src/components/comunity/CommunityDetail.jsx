@@ -133,13 +133,13 @@ const getAvatarSrc = () => {
            <div className="imagenCommunity" >
                {/* icono para salir de la comunidad */}
                 <img
-                    src={`http://localhost:3004/uploads/${community.imagen}`}
+                    src={`http://localhost:3004/uploads/${community.banner}`}
                     alt={community.nombre}
                 /> 
             </div> 
             <div className="imagenTwo">
                    <img
-                    src={`http://localhost:3004/uploads/${community.imagen}`}
+                    src={`http://localhost:3004/uploads/${community.avatar}`}
                     alt={community.nombre}
                   /> 
             </div>
