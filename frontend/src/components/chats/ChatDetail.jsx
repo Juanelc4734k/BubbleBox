@@ -919,7 +919,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
           <h2 className="textChatH">{friendUser.nombre}</h2>
           <div className="user-status">
             {isTyping ? (
-              <span className="typing-status">Escribiendo...</span>
+              <span className="typing-status">Escribiendo</span>
             ) : isOnline ? (
               <span className="online-status">En línea</span>
             ) : lastSeen ? (
