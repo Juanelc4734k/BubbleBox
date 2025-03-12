@@ -14,5 +14,6 @@ router.post('/crear-publicacion-comunidad', upload.single('imagen'), postControl
 router.put('/actualizar/:id', postController.updatePost);
 router.delete('/eliminar/:id', postController.deletePost);
 router.get('/buscar', postController.searchPosts);
+router.get('/new-count', postController.getNewsCount);
 
 module.exports = router;

@@ -14,18 +14,66 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const userRole = localStorage.getItem('userRole');
   const [activeIcon, setActiveIcon] = useState(null);
+  const [newPostsCount, setNewPostsCount] = useState(0);
 
-  const renderMenuItem = (icon, path, tooltip, key) => {
+  const [lastChecked, setLastChecked] = useState(
+    localStorage.getItem('lastPostsCheck') || Date.now()
+  );
+
+  useEffect(() => {
+    const fetchNewPosts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3008/posts/new-count?lastChecked=${lastChecked}`
+        );
+        
+        if (!response.ok) throw new Error('Error en la solicitud');
+        
+        const data = await response.json();
+        setNewPostsCount(data.count);
+        // Actualizar el timestamp en cada chequeo exitoso
+        //localStorage.setItem('lastPostsCheck', Date.now());
+        //setLastChecked(Date.now());
+      } catch (error) {
+        console.error('Error fetching new posts:', error);
+      }
+    };
+
+    const interval = setInterval(fetchNewPosts, 5000);
+    return () => clearInterval(interval);
+  }, [lastChecked]);
+
+  // Modify renderMenuItem to include badge counter
+  const renderMenuItem = (icon, path, tooltip, key, onClick, badge) => {
     const Icon = icon;
     const isActive = activeIcon === key;
     return (
       <li
         className={`menu-item ${isActive ? 'active' : ''}`}
         data-tooltip={tooltip}
-        onClick={() => setActiveIcon(key)}
+        onClick={() => {
+          setActiveIcon(key);
+          onClick?.();
+        }}
       >
         <Link className={`menu-link ${isActive ? 'active' : ''}`} to={path}>
           <Icon />
+          {badge > 0 && (
+            <span className="badge" style={{
+              position: 'absolute',
+              top: '8px',
+              right: '8px',
+              background: '#ff4757',
+              color: 'white',
+              borderRadius: '50%',
+              width: '18px',
+              height: '18px',
+              fontSize: '0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>{badge}</span>
+          )}
         </Link>
       </li>
     );
@@ -43,7 +91,13 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
         </>
       ) : (
         <>
-          {renderMenuItem(AiOutlineHome, '/home', 'Inicio', 'home')}
+          {renderMenuItem(AiOutlineHome, '/home', 'Inicio', 'home', () => {
+            setNewPostsCount(0);
+            const newTimestamp = Date.now();
+            setLastChecked(newTimestamp);
+            localStorage.setItem('lastPostsCheck', newTimestamp);
+            window.location.reload();
+          }, newPostsCount)}
           {renderMenuItem(CgSearch, '/home', 'Buscar', 'search')}
           {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
           {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}

@@ -190,6 +190,21 @@ const searchPosts = (query) => {
     });
 };
 
+const getNewsCount = (lastChecked) => {
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT COUNT(*) AS count
+            FROM publicaciones
+            WHERE es_comunidad = FALSE
+            AND fecha_creacion > FROM_UNIXTIME(? / 1000)
+        `;
+        db.query(query, [lastChecked], (err, results) => {
+            if (err) return reject(err);
+            resolve(results[0].count);
+        });
+    });
+};
+
 module.exports = {
     crearPublicacion,
     obtenerTodasLasPublicaciones,
@@ -201,5 +216,6 @@ module.exports = {
     obtenerPublicacionesDeComunidades,
     obtenerPublicacionesDeComunidad,
     crearPublicacionComunidad,
-    searchPosts
+    searchPosts,
+    getNewsCount    
 };

@@ -169,6 +169,15 @@ const searchPosts = async (req, res) => {
     }
 };
 
+const getNewsCount = async (req, res) => {
+    try {
+        const count = await postModel.getNewsCount(req.query.lastChecked);
+        res.json({ count }); // Changed from newsCount to count
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error al obtener el recuento de noticias', error: error.message });
+    }
+};
+
 module.exports = {
     getAllPosts,
     getPostById,
@@ -180,5 +189,6 @@ module.exports = {
     getUserPostsById,
     getCommunityPosts,
     getCommunityPostsById,
-    searchPosts
+    searchPosts,
+    getNewsCount
 };

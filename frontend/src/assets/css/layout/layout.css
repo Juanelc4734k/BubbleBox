@@ -1,3 +1,33 @@
+/* Add at the very top of the file */
+body {
+  cursor: url('/cursor/cursor.png'), auto !important;
+  cursor: auto;
+}
+
+* {
+  cursor: url('/cursor/cursor.png') 16 16, auto !important;
+}
+
+a:hover,
+button:hover, 
+.link1:hover,
+.link2:hover,
+.link3:hover,
+input:hover,
+select:hover,
+textarea:hover,
+[role="button"]:hover {
+  cursor: url('/cursor/cursor-select.png') 16 16, pointer !important;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+  cursor: text;
+}
+
+
 /* Base styles - Mobile first */
 .app {
   display: flex;
