@@ -13,7 +13,7 @@ router.post('/desbloquear', friendController.desbloquearUsuario);
 router.get('/verificar-bloqueo', friendController.verificarBloqueo);
 router.get('/sugerencias/:idUsuario', friendController.obtenerSugerenciasAmigos);
 router.get('/amigos-comunes/:idUsuario1/:idUsuario2', friendController.obtenerAmigosEnComun);
-
+router.get('/amistades-bloqueadas/:idUsuario', friendController.obtenerAmistadesBloqueadas);
 
 
 module.exports = router;

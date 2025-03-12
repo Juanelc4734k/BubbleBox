@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import "../../assets/css/chats/chatsDetails.css";
 import { IoClose } from "react-icons/io5";
 import { FaRegFaceSmileWink } from "react-icons/fa6";
-import { FaMicrophone, FaStop, FaEdit, FaTrash } from "react-icons/fa";
+import { FaMicrophone, FaStop, FaEdit, FaTrash, FaBan } from "react-icons/fa";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 
 const EmojiPicker = lazy(() => import ('emoji-picker-react'))
@@ -647,6 +647,53 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       setError("Error al enviar mensaje de audio");
     }
   };
+
+  const deleteAllMessages = () => {
+    if (window.confirm("¿Estás seguro de que quieres eliminar TODOS los mensajes de esta conversación? Esta acción no se puede deshacer.")) {
+      socketRef.current.emit("delete_all_messages", {
+        userId1: parseInt(senderId),
+        userId2: parseInt(chatId)
+      });
+    }
+  };
+  
+  const blockUser = () => {
+    if (window.confirm(`¿Estás seguro de que quieres bloquear a ${friendUser.nombre}? No podrán enviarte mensajes ni ver tu estado.`)) {
+      // Call the API to block the user
+      fetch('http://localhost:3000/friendships/bloquear', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_usuario1: parseInt(senderId),
+          id_usuario2: parseInt(chatId)
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Block user response:", data);
+        // Check for mensaje property instead of success
+        if (data.mensaje || data.id) {
+          // Notify through socket
+          socketRef.current.emit("user_blocked", {
+            blockerId: parseInt(senderId),
+            blockedId: parseInt(chatId)
+          });
+          
+          alert(`Has bloqueado a ${friendUser.nombre}`);
+          // Close the chat
+          onCloseChat();
+        } else {
+          alert("Error al bloquear usuario: " + (data.message || "Error desconocido"));
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert("Error al bloquear usuario");
+      });
+    }
+  };
   
   useEffect(() => {
     if (!socketRef.current) return;
@@ -687,6 +734,28 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       setMessages((prev) => 
           prev.filter((msg) => msg.id !== deletedMessage.id)
       );
+  });
+
+  socketRef.current.on("all_messages_deleted", (data) => {
+    console.log("All messages deleted:", data);
+    
+    // Check if this event is for our chat
+    if ((parseInt(data.userId1) === parseInt(senderId) && parseInt(data.userId2) === parseInt(chatId)) ||
+        (parseInt(data.userId1) === parseInt(chatId) && parseInt(data.userId2) === parseInt(senderId))) {
+      // Clear all messages
+      setMessages([]);
+      alert(`Se han eliminado ${data.deletedCount} mensajes de esta conversación`);
+    }
+  });
+
+  socketRef.current.on("user_blocked_notification", (data) => {
+    console.log("User blocked notification:", data);
+    
+    // If we were blocked, show a message and close the chat
+    if (parseInt(data.blockedId) === parseInt(senderId)) {
+      alert(`Has sido bloqueado por ${friendUser.nombre}`);
+      onCloseChat();
+    }
   });
 
       // Fix: Move these handlers outside of the message_sent_confirmation handler
@@ -790,8 +859,10 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       socketRef.current?.off('audio_message_sent_confirmation');
       socketRef.current?.off("message_edited");
       socketRef.current?.off("message_deleted");
+      socketRef.current?.off("all_messages_deleted");
+      socketRef.current?.off("user_blocked_notification");
     };
-  }, []);
+  }, [chatId, senderId, friendUser.nombre, onCloseChat]);
 
     const startEditingMessage = (message) => {
       // Check if the message is within the 15-minute edit window
@@ -941,6 +1012,22 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             </div>
           </div>
         </div>
+        <div className="chat-actions">
+        <button 
+          onClick={deleteAllMessages} 
+          className="delete-all-messages-button"
+          title="Eliminar todos los mensajes"
+        >
+          <FaTrash />
+        </button>
+        <button 
+          onClick={blockUser} 
+          className="block-user-button"
+          title="Bloquear usuario"
+        >
+          <FaBan />
+        </button>
+      </div>
       </div>
       <div className="chat-messages">
         {messages.map((message) => (
