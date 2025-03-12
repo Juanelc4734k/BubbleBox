@@ -1,0 +1,146 @@
+.containerSetting{
+    width: calc(100% - 1rem);
+    height: calc(100vh - 10rem);
+    background: rgba(255, 255, 255);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+}
+.containerSettingHeader{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    border-radius: 1rem 1rem 0 0;
+    border-bottom: 3px solid rgba(136, 13, 207, 0.2);
+    padding: 0.8rem;
+}
+.containerSettingHeader .iconSetting{
+    color: rgb(172, 127, 209);
+    font-size: 1.3rem;
+}
+.containerSettingHeader h2{
+    color: rgb(172, 127, 209);
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.containerSettingSubheader{
+    display: flex;
+    flex-direction: column;
+}
+.containerSettingSubheader h3{
+    color: rgb(121, 120, 120);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+.containerSettingSubheader p{
+    color: rgb(160, 159, 159);
+    font-size: 0.8rem;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+.containerSettingItems{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.itemSetting {
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos estén en columna */
+    align-items: flex-start; /* Alinea el contenido a la izquierda */
+    background: #f4f4f4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 100%;
+}
+.itemSetting h3{
+    color: rgb(172, 127, 209);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    flex: 1;
+}
+.itemSettingContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.itemSettingContent p{
+    color: rgb(121, 120, 120);
+    font-size: 0.8rem;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+/* Ajuste del switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background: rgb(172, 127, 209);
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+@media (min-width: 768px) {
+    .containerSetting{
+        height: calc(100vh - 12rem);
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+@media (min-width: 1024px) {
+    .containerSetting{
+        width: calc(100% - 18rem);
+        height: calc(100vh - 14.5rem);
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+@media (min-width: 1440px) {
+    .containerSetting{
+        width: calc(100% - 22.5rem);
+        height: calc(100vh - 18rem);
+        gap: 1rem;
+        padding: 2rem;
+    }
+}
