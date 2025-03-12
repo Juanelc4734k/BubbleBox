@@ -1,10 +1,10 @@
 .community-Conten{
-    width: 85%;
+    width: 100%;
     background-color: #D9D9D9;
     border-radius: 1.5vh;
     overflow: hidden;
-    margin-top: 10vh;
     box-shadow: 0vh 0.1vh 1vh rgb(102, 102, 102);
+    margin: 0 0 0 !important;
 }
 .community-Conten .textOcul h2{
     background-color: #C1A6FF;
@@ -366,5 +366,14 @@
         margin-top: 5vh;
         margin-bottom: 5vh;
     }
+    @media (min-width: 1024px) {
+      .community-Conten{
+           width: calc(100% - 270px);
+       }
+   }
+   @media (min-width: 1440px){
+      .community-Conten{
+           width: calc(100% - 360px);
+      }
 
-}
+}}
