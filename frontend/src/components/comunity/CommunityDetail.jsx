@@ -71,7 +71,18 @@ import Swal from 'sweetalert2';
     fetchCommunityPosts();
     fetchCommunityMembers();
   }, [id, userId]);
+
   const handleMembership = async (e) => {
+    if (community.id_creador === userId) {
+      Swal.fire({
+          icon: 'error',
+          title: 'Acción no permitida',
+          text: 'No puedes abandonar una comunidad que has creado',
+          timer: 3000,
+          showConfirmButton: false,
+      });
+      return;
+  }
     e.preventDefault();
     try {
       if (isMemberStatus) {
@@ -148,12 +159,14 @@ const getAvatarSrc = () => {
             <h1>{community.nombre}</h1>
             <p>{members.length} Miembros</p>
         
-            <button 
-              type="button"
-              onClick={handleMembership}
-              className= {`uni-De ${isMemberStatus ? 'leave-btn' : 'join-btn'}`}>
-              {isMemberStatus ? 'Dejar' : 'Unirme'}
-            </button>
+            {community.id_creador !== userId && (
+                <button 
+                    type="button"
+                    onClick={handleMembership}
+                    className={`uni-De ${isMemberStatus ? 'leave-btn' : 'join-btn'}`}>
+                    {isMemberStatus ? 'Dejar' : 'Unirme'}
+                </button>
+            )}
             <div className="members-list">
                 {members.map(member => (
                     <div key={member.id} className="member-item">
@@ -214,42 +227,42 @@ const getAvatarSrc = () => {
       )}
       </div>
       <div className="communityDetail-Conten3">
- {/* Este es el codigo para las publicaciones de la comunidad */}
- <div className="community-content">
-                <div className="posts-section">
-                    <h2>Publicaciones</h2>
-                    {posts.map(post => (
-                        <div key={post.id} className="community-post">
-                            <div className="post-header">
-                                <img 
-                                    src={post.avatar_usuario || avatarPorDefecto}
-                                    alt={post.nombre_usuario}
-                                    className="user-avatar"
-                                />
-                                <div className="post-info">
-                                    <h3>{post.nombre_usuario}</h3>
-                                    <span> {new Date(post.fecha_creacion).toLocaleString()}</span>
-                                </div>
-                            </div>
-                            <div className="post-content">
-                                <p>{post.contenido}</p>
-                                {post.imagen && (
-                                    <img 
-                                        src={`http://localhost:3008/uploads/${post.imagen}`}
-                                        alt="Post content"
-                                        className="post-image"
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+  {/* Este es el codigo para las publicaciones de la comunidad */}
+  <div className="community-content">
+                  <div className="posts-section">
+                      <h2>Publicaciones</h2>
+                      {posts.map(post => (
+                          <div key={post.id} className="community-post">
+                              <div className="post-header">
+                                  <img 
+                                      src={post.avatar_usuario || avatarPorDefecto}
+                                      alt={post.nombre_usuario}
+                                      className="user-avatar"
+                                  />
+                                  <div className="post-info">
+                                      <h3>{post.nombre_usuario}</h3>
+                                      <span> {new Date(post.fecha_creacion).toLocaleString()}</span>
+                                  </div>
+                              </div>
+                              <div className="post-content">
+                                  <p>{post.contenido}</p>
+                                  {post.imagen && (
+                                      <img 
+                                          src={`http://localhost:3008/uploads/${post.imagen}`}
+                                          alt="Post content"
+                                          className="post-image"
+                                      />
+                                  )}
+                              </div>
+                          </div>
+                      ))}
+                  </div>
 
-                <div className="community-sidebar">
-                   
-                </div>
-            </div>
-      </div>
+                  <div className="community-sidebar">
+                    
+                  </div>
+              </div>
+        </div>
      
     </div>
   );
