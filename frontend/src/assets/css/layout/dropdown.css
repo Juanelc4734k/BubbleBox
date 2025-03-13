@@ -86,7 +86,7 @@
 }
 
 /* Botones del menú */
-.dropdown-item {
+.dropdown-item-Update {
     width: 2.5rem;
     height: 2.5rem;
     display: flex;
@@ -104,7 +104,7 @@
 }
 
 /* Animación de burbuja que estalla */
-.dropdown-item.explode {
+.dropdown-item-Update.explode {
     animation: explode 0.5s ease forwards;
 }
 
@@ -136,7 +136,7 @@
         height: 2rem;
     }
 
-    .dropdown-item {
+    .dropdown-item-Update {
         width: 2.8rem;
         height: 2.8rem;
         font-size: 1.4rem;

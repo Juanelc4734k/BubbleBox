@@ -197,7 +197,7 @@ const CreateComunity = () => {
             {openComunity && (
                 <div className="modal-overlay">
                     <div ref={combinedRef}  className="formComunity">
-                        <div className="form-header">
+                        <div className="form-headerCominuty">
                             <h2><TbUsersPlus className="iconoComunity" /> Crear Comunidad</h2>
                             <button className="close-buttonComi" onClick={toggleComunity}>
                                 <IoClose />
@@ -210,6 +210,39 @@ const CreateComunity = () => {
                             </div>
                         )}
                         <form onSubmit={handleSubmit} encType="multipart/form-data">
+                            <div className="form-group file-input-Avatar">
+                            <input 
+                                type="file" 
+                                id="imagenAvatar" 
+                                accept="image/*" 
+                                onChange={handleFileChange('avatar')} 
+                                className="hidden-input" 
+                            />
+                            
+                            <label htmlFor="imagenAvatar" className="file-label-Avatar">
+                                {imagenAvatarPreview ? (
+                                    <div className="image-preview-Avatar">
+                                        <img src={imagenAvatarPreview} alt="Avatar Preview" />
+                                        <button 
+                                            type="button" 
+                                            className="remove-image-Avatar"
+                                            onClick={() => {
+                                                setImagenAvatar(null);
+                                                setImagenAvatarPreview(null);
+                                                document.getElementById('imagenAvatar').value = '';
+                                            }}
+                                        >
+                                            <IoClose />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <CiImageOn />
+                                        <span>Avatar</span>
+                                    </>
+                                )}
+                            </label>
+                        </div>
                             <div className="form-group">
                                 <input 
                                     type="text" 
@@ -288,27 +321,6 @@ const CreateComunity = () => {
                                         <small>Solo por invitación</small>
                                     </button>
                                 </div>
-                            </div>
-                            <div className="form-group file-input">
-                                <input type="file" id="imagenAvatar" accept="image/*" 
-                                    onChange={handleFileChange('avatar')} className="hidden-input" />
-                                <label htmlFor="imagenAvatar" className="file-label">
-                                    <CiImageOn />
-                                    <span>Avatar de la comunidad</span>
-                                </label>
-                                {imagenAvatarPreview && (
-                                    <div className="image-preview small">
-                                        <img src={imagenAvatarPreview} alt="Avatar Preview" />
-                                        <button type="button" className="remove-image" 
-                                            onClick={() => {
-                                                setImagenAvatar(null);
-                                                setImagenAvatarPreview(null);
-                                                document.getElementById('imagenAvatar').value = '';
-                                            }}>
-                                            <IoClose />
-                                        </button>
-                                    </div>
-                                )}
                             </div>
 
                             <div className="form-group file-input">

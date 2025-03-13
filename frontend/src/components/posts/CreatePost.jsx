@@ -8,7 +8,7 @@ import * as jwt_decode from "jwt-decode"
 const CreatePost = () => {
   const [titulo, setTitulo] = useState("")
   const [contenido, setContenido] = useState("")
-  const [imagen, setImagen] = useState(null)
+  const [imagen, setImagen] = useState(null)  
   const [mensaje, setMensaje] = useState("")
   const [openPost, setOpenPost] = useState(false)
   const [idUsuario, setIdUsuario] = useState(null)
@@ -20,6 +20,18 @@ const CreatePost = () => {
 
   const scrollableRef = useRef(null); 
   const modalRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  // Función para ajustar automáticamente la altura del textarea
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // Restablece la altura
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Ajusta a la altura del contenido
+    }
+  };
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [contenido]); // Llama a la función cada vez que el contenido cambie
 
   const combinedRef = useCallback((node) => {
     if (node) {
@@ -203,10 +215,12 @@ const CreatePost = () => {
                 <textarea
                   id="contenido"
                   value={contenido}
+                  ref={textareaRef} // Referencia al textarea
                   onChange={(e) => setContenido(e.target.value)}
                   placeholder="¿Qué estás pensando?"
-                  rows={5}
-                  min={150}
+                  rows={1}
+                  style={{ overflow: "hidden", resize: "none" }}
+                  maxLength={150}
                 />
               </div>
               <div className="form-group file-input">
@@ -216,11 +230,11 @@ const CreatePost = () => {
                   <span>Agregar imagen</span>
                 </label>
                 {imagenPreview && (
-                  <div className="image-preview">
+                  <div className="image-preview-Post">
                     <img src={imagenPreview || "/placeholder.svg"} alt="Preview" />
                     <button
                       type="button"
-                      className="remove-image"
+                      className="remove-image-post"
                       onClick={() => {
                         setImagen(null)
                         setImagenPreview(null)
