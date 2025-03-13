@@ -175,6 +175,21 @@ const obtenerAmistades = async (req, res) => {
   }
 };
 
+const checkFriendship = async (req, res) => {
+  try {
+    const { idUsuario1, idUsuario2 } = req.params;
+    if (!idUsuario1 ||!idUsuario2) {
+      return res.status(400).json({ mensaje: 'Se requieren idUsuario1 e idUsuario2' });
+    }
+
+    const resultado = await friendModel.checkFriendship(idUsuario1, idUsuario2);
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.error('Error en checkFriendship:', error);
+    res.status(500).json({ mensaje: 'Error interno al verificar la amistad', error: error.message });
+  }
+};
+
 const obtenerAmistadesBloqueadas = async (req, res) => {
   try {
     const { idUsuario } = req.params;
@@ -333,6 +348,7 @@ module.exports = {
   aceptarSolicitudAmistad,
   rechazarSolicitudAmistad,
   obtenerAmistades,
+  checkFriendship,
   obtenerAmistadesBloqueadas,
   eliminarAmistad,
   obtenerSolicitudesPendientes,

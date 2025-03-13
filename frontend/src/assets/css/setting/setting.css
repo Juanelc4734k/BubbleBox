@@ -1,6 +1,6 @@
 .containerSetting{
     width: calc(100% - 1rem);
-    height: calc(100vh - 10rem);
+    height: auto;
     background: rgba(255, 255, 255);
     border-radius: 1rem;
     display: flex;
@@ -45,7 +45,7 @@
 .containerSettingItems{
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 .itemSetting {
     display: flex;
@@ -121,9 +121,56 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(20px);
 }
+
+
+.btn-save-settings {
+    background-color: rgb(172, 127, 209);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-save-settings:hover {
+    background-color: rgb(170, 112, 216);
+}
+
+.btn-save-settings:disabled {
+    background-color: #a29bfe;
+    cursor: not-allowed;
+}
+
+/* Language settings */
+.language-settings {
+    margin-top: 10px;
+}
+
+.language-settings button {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.language-settings button:hover {
+    background-color: #f0f0f0;
+}
+
+.language-settings button.active {
+    background-color: #e9e4ff;
+    border-color: #6c5ce7;
+    color: #6c5ce7;
+}
+
 @media (min-width: 768px) {
     .containerSetting{
-        height: calc(100vh - 12rem);
+        height: auto;
         gap: 1rem;
         padding: 1rem;
     }
@@ -131,7 +178,7 @@ input:checked + .slider:before {
 @media (min-width: 1024px) {
     .containerSetting{
         width: calc(100% - 18rem);
-        height: calc(100vh - 14.5rem);
+        height: auto;
         gap: 1rem;
         padding: 1rem;
     }
@@ -139,7 +186,7 @@ input:checked + .slider:before {
 @media (min-width: 1440px) {
     .containerSetting{
         width: calc(100% - 22.5rem);
-        height: calc(100vh - 18rem);
+        height: auto;
         gap: 1rem;
         padding: 2rem;
     }

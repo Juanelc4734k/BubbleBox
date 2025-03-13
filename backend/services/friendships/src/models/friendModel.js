@@ -85,6 +85,7 @@ const obtenerAmistades = (idUsuario) => {
   });
 };
 
+
 const obtenerAmistadesBloqueadas = (idUsuario) => {
   return new Promise((resolve, reject) => {
     const query = `

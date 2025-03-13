@@ -14,6 +14,7 @@ router.get('/verificar-bloqueo', friendController.verificarBloqueo);
 router.get('/sugerencias/:idUsuario', friendController.obtenerSugerenciasAmigos);
 router.get('/amigos-comunes/:idUsuario1/:idUsuario2', friendController.obtenerAmigosEnComun);
 router.get('/amistades-bloqueadas/:idUsuario', friendController.obtenerAmistadesBloqueadas);
+router.get('check-friendship/:userId1/:userId2', friendController.checkFriendship);
 
 
 module.exports = router;

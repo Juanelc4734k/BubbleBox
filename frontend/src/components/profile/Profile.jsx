@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { BsFillBalloonHeartFill, BsEnvelope, BsGeoAlt } from "react-icons/bs";
 import { CiUser } from "react-icons/ci";
 import { TbUserEdit } from "react-icons/tb";
-import { FiFlag } from "react-icons/fi";
+import { FiFlag, FiLock, FiUsers, FiGlobe } from "react-icons/fi";
 import ModalReport from "../reports/modalReport";
 import UpdateProfile from "./UpdateProfile";
 import { getPostByUserId } from "../../services/posts";
+import { checkFriendship } from "../../services/friends";
 import '../../assets/css/profile/profile.css';
 import { CiGrid41 } from "react-icons/ci";
 
@@ -13,17 +14,102 @@ function Profile({ profile, isOwnProfile }) {
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [canViewProfile, setCanViewProfile] = useState(true);
+  const [isFriend, setIsFriend] = useState(false);
+  const [checkingAccess, setCheckingAccess] = useState(true);
   
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
 
+  // Check if the current user can view this profile
+  useEffect(() => {
+    const checkProfileAccess = async () => {
+      // If it's the user's own profile, they can always view it
+      if (isOwnProfile) {
+        setCanViewProfile(true);
+        setCheckingAccess(false);
+        return;
+      }
+
+      // If profile doesn't have privacy settings or is public, anyone can view
+      if (!profile.privacidad || profile.privacidad === 'publico') {
+        setCanViewProfile(true);
+        setCheckingAccess(false);
+        return;
+      }
+
+      // For private profiles, only the owner can view
+      if (profile.privacidad === 'privado') {
+        setCanViewProfile(false);
+        setCheckingAccess(false);
+        return;
+      }
+
+      // For friends-only profiles, check friendship status
+      if (profile.privacidad === 'amigos') {
+        try {
+          const loggedUserId = localStorage.getItem('userId');
+          if (!loggedUserId) {
+            setCanViewProfile(false);
+            setCheckingAccess(false);
+            return;
+          }
+
+          const areFriends = await checkFriendship(loggedUserId, profile.id);
+          setIsFriend(areFriends);
+          setCanViewProfile(areFriends);
+        } catch (error) {
+          console.error("Error checking friendship status:", error);
+          setCanViewProfile(false);
+        }
+      }
+      
+      setCheckingAccess(false);
+    };
+
+    if (profile && profile.id) {
+      checkProfileAccess();
+    }
+  }, [profile, isOwnProfile]);
+
   // Fetch user posts when component mounts
   useEffect(() => {
-    if (!isOwnProfile && profile.id) {
+    if (!isOwnProfile && profile.id && canViewProfile) {
       fetchUserPosts();
     }
-  }, [profile.id, isOwnProfile]);
+  }, [profile.id, isOwnProfile, canViewProfile]);
+
+  // Add this function to render privacy indicator
+  const renderPrivacyIndicator = () => {
+    if (!profile.privacidad) return null;
+    
+    switch(profile.privacidad) {
+      case 'publico':
+        return (
+          <div className="flex items-center text-green-600 text-sm mt-2">
+            <FiGlobe className="mr-1" />
+            <span>Perfil público</span>
+          </div>
+        );
+      case 'amigos':
+        return (
+          <div className="flex items-center text-blue-600 text-sm mt-2">
+            <FiUsers className="mr-1" />
+            <span>Visible para amigos</span>
+          </div>
+        );
+      case 'privado':
+        return (
+          <div className="flex items-center text-red-600 text-sm mt-2">
+            <FiLock className="mr-1" />
+            <span>Perfil privado</span>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
   const fetchUserPosts = async () => {
     try {
@@ -57,8 +143,39 @@ function Profile({ profile, isOwnProfile }) {
     }
     return avatarPorDefecto;
   };
-  console.log(profile);
 
+  // Render a restricted access message if the user can't view the profile
+  if (!isOwnProfile && !canViewProfile && !checkingAccess) {
+    return (
+      <div className="bg-gradient-to-b profile flex items-center justify-center">
+        <div className="mx-auto bg-white rounded-2xl shadow-xl overflow-hidden profileContent p-8 max-w-md">
+          <div className="text-center">
+            <FiLock className="mx-auto text-red-500" size={48} />
+            <h2 className="text-2xl font-semibold mt-4 mb-2">Perfil Privado</h2>
+            <p className="text-gray-600">
+              {profile.privacidad === 'amigos' 
+                ? "Este perfil solo es visible para amigos. Envía una solicitud de amistad para ver el contenido."
+                : "Este perfil es privado y no está disponible para visualización."}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (checkingAccess) {
+    return (
+      <div className="bg-gradient-to-b profile">
+        <div className="mx-auto bg-white rounded-2xl shadow-xl overflow-hidden profileContent p-8">
+          <div className="text-center">
+            <p>Cargando perfil...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Original return statement with profile content
   return (
     <>
       <div className="bg-gradient-to-b profile">
@@ -76,6 +193,7 @@ function Profile({ profile, isOwnProfile }) {
               <h2 className="mt-3 text-xl font-semibold text-white">
                 {profile.username}
               </h2>
+              {renderPrivacyIndicator()}
             </div>
             {/* Right side - Profile Information */}
             <div className="md:w-2/3 rightprofile">

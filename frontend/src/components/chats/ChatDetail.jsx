@@ -166,7 +166,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       // Set our status as online
       socketRef.current.emit("user_online", {
         userId: parseInt(senderId),
-        status: "conectado"
+        //status: "conectado"
       });
       
       // Fetch messages and initial status

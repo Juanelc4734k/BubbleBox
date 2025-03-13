@@ -79,7 +79,7 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
         }
         // Update connection status if available in the response
         if (userData.estado) {
-          setConnectionStatus(userData.estado);
+          setConnectionStatus(userData.estado === "conectado" ? "conectado" : "desconectado");
         }
       } catch (error) {
         console.error('Error fetching avatar:', error);

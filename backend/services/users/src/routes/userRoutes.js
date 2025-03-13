@@ -23,4 +23,9 @@ router.get('/usuario/:id/interests', userController.getUserInterests)
 
 router.put('/suspender-usuario/:id', userController.suspendUser);
 
+router.put('/actualizar-privacidad', authMiddleware, userController.updatePrivacySettings);
+router.get('/configuraciones/:userId', userController.getUserSettings);
+router.put('/actualizar-configuraciones/:userId', authMiddleware, userController.updateUserSettings);
+router.put('/:userId/status', userController.updateUserStatus);
+
 module.exports = router;

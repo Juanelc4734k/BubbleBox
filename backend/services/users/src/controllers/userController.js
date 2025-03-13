@@ -289,15 +289,44 @@ const getCurrentUserProfile = async (req, res) => {
   }
 };
 
+
+const updatePrivacySettings = async (req, res) => {
+  try {
+    const userId = req.user.id; // Get user ID from auth token
+    const { privacidad } = req.body;
+    
+    if (!privacidad) {
+      return res.status(400).json({ mensaje: 'Se requiere el campo privacidad' });
+    }
+    
+    await userModel.updatePrivacySettings(userId, privacidad);
+    
+    res.json({ mensaje: 'Configuración de privacidad actualizada con éxito' });
+  } catch (error) {
+    console.error('Error updating privacy settings:', error);
+    res.status(500).json({ mensaje: 'Error al actualizar configuración de privacidad', error: error.message });
+  }
+};
+
 // Añadir esta nueva función al final del archivo, antes de module.exports
 const getPublicUserProfile = async (req, res) => {
   try {
     const userId = req.params.id;
+    const requesterId = req.user ? req.user.id : null;
+
     const userProfile = await userModel.getUserById(userId);
     const intereses = await userModel.getUserInterests(userId);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
+    }
+
+    // Verificar si el perfil es público
+    if (userProfile.privacidad === 'friends' && userId !== requesterId) {
+      const areFriends = await userModel.checkFriendship(userId, requesterId);
+      if (!areFriends) {
+        return res.status(403).json({ mensaje: "Este perfil solo es visible para amigos" });
+      }
     }
 
     // Filtrar información sensible
@@ -309,6 +338,7 @@ const getPublicUserProfile = async (req, res) => {
       email: userProfile.email,
       avatar: userProfile.avatar,
       estado: userProfile.estado,
+      privacidad: userProfile.privacidad,
       intereses: intereses
     };
 
@@ -318,6 +348,51 @@ const getPublicUserProfile = async (req, res) => {
   }
 };
 
+const getUserSettings = async (req, res) => {
+  try {
+    const userId = req.query.userId || req.params.userId;
+    const settings = await userModel.getUserSettings(userId);
+    res.json(settings);
+  } catch (error) {
+    console.error('Error getting user settings:', error);
+    res.status(500).json({ mensaje: 'Error al obtener configuraciones de usuario', error: error.message });
+  }
+};
+
+const updateUserSettings = async (req, res) => {
+  try {
+    const userId = req.query.userId || req.params.userId;
+    const settings = req.body;
+    
+    await userModel.updateUserSettings(userId, settings);
+    
+    // Get updated settings to return to client
+    const updatedSettings = await userModel.getUserSettings(userId);
+    
+    res.json({ 
+      mensaje: 'Configuraciones actualizadas con éxito',
+      settings: updatedSettings
+    });
+  } catch (error) {
+    console.error('Error updating user settings:', error);
+    res.status(500).json({ mensaje: 'Error al actualizar configuraciones de usuario', error: error.message });
+  }
+};
+
+const updateUserStatus = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { estado } = req.body;
+    if (!estado) {
+      return res.status(400).json({ mensaje: 'Se requiere el campo estado' });
+    }
+    await userModel.updateUserStatus(userId, estado);
+    res.json({ mensaje: 'Estado actualizado con éxito' });
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    res.status(500).json({ mensaje: 'Error al actualizar estado de usuario', error: error.message });
+  }
+};
 
 
 module.exports = {
@@ -330,6 +405,10 @@ module.exports = {
   updateProfilePhoto,
   changePassword,
   getCurrentUserProfile,
+  updatePrivacySettings,
+  getUserSettings,
+  updateUserSettings,
+  updateUserStatus,
   getPublicUserProfile,
   updateUserInterests,
   getUserInterests,
