@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ChatPreview from './ChatPreview';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { getFriends } from '../../services/friends';
@@ -13,6 +14,7 @@ const SidebarChat = ({onSelectChat}) => {
     const [animateEntry, setAnimateEntry] = useState(false);    
     const [searchTerm, setSearchTerm] = useState(''); // Add search state
     const userId = localStorage.getItem('userId');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleResize = () => {
@@ -153,8 +155,11 @@ const SidebarChat = ({onSelectChat}) => {
                                             key={friend.id_usuario1 + "-" + friend.id_usuario2}
                                             friend={friend}
                                             onSelect={() => {
-                                                const friendId = friend.id_usuario1 === Number.parseInt(userId) ? friend.id_usuario2 : friend.id_usuario1;
-                                                onSelectChat(friendId);
+                                                const friendId = friend.id_usuario1 === Number.parseInt(userId) 
+                                                    ? friend.id_usuario2 
+                                                    : friend.id_usuario1;
+                                                // Navigate with state containing the friend ID
+                                                navigate(`/chats`, { state: { selectedFriendId: friendId } });
                                             }}
                                         />
                                     ))
