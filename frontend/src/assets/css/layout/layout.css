@@ -137,12 +137,12 @@ textarea {
   }
 
   .sidebar {
-    top: 10.5rem;
-    height: calc(100vh - 11rem);
+    top: 9.8rem;
+    height: calc(100vh - 10.5rem);
   }
 
   .navbar {
-    height: 9.4rem;
+    height: 8rem;
   }
 
   .sidebar-visible .main-content {
@@ -204,7 +204,7 @@ textarea {
 @media (min-width: 1440px) {
   .sidebar {
     top: 14.5rem;
-    width: 5.5rem;
+    width: 4.8rem;
     height: calc(100vh - 15.5rem);
   }
   .auth-route {
