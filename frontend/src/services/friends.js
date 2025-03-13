@@ -153,3 +153,22 @@ export const getFriendsInComun = async (userId, usuario_id) => {
         throw error;
     }
 };
+
+// Add this function to your existing friends service
+export const checkFriendship = async (userId1, userId2) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `${API_URL}/friendships/check-friendship/${userId1}/${userId2}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      return response.data.areFriends;
+    } catch (error) {
+      console.error('Error checking friendship status:', error);
+      return false;
+    }
+  };

@@ -308,20 +308,26 @@ io.on('connection', (socket) => {
 
     socket.on('user_online', async ({ userId }) => {
         try {
+            const response = await axios.get(`http://localhost:3000/users/configuraciones/${userId}`);
+            const userSettings = response.data;
+
             // Store in memory map
             onlineUsers.set(parseInt(userId), {
                 socketId: socket.id,
-                lastSeen: new Date()
+                lastSeen: new Date(),
+                visibilityEnable: userSettings.online_visibility === 1,
             });
             
-            // Update last seen in database - explicitly set to 'conectado'
-            await chatModel.updateLastSeen(parseInt(userId), 'conectado');
-            
-            // Broadcast to all users that this user is online - explicitly set isOnline to true
-            io.emit('user_online_status', {
-                userId: parseInt(userId),
-                isOnline: true
-            });
+            if (userSettings.online_visibility === 1) {
+                // Update last seen in database - explicitly set to 'conectado'
+                await chatModel.updateLastSeen(parseInt(userId), 'conectado');
+                
+                // Broadcast to all users that this user is online
+                io.emit('user_online_status', {
+                    userId: parseInt(userId),
+                    isOnline: true
+                });
+            }
         } catch (error) {
             console.error('Error updating online status:', error);
         }
@@ -331,24 +337,63 @@ io.on('connection', (socket) => {
         try {
             console.log(`Broadcasting status for user ${userId}: ${isOnline ? 'online' : 'offline'}`);
             
+            const response = await axios.get(`http://localhost:3000/users/configuraciones/${userId}`);
+            const userSettings = response.data;
+
             // Update in memory
-            if (isOnline) {
-                onlineUsers.set(parseInt(userId), {
-                    socketId: socket.id,
-                    lastSeen: new Date()
-                });
-                
-                // Update database
-                await chatModel.updateLastSeen(parseInt(userId), 'conectado');
-            }
+        onlineUsers.set(parseInt(userId), {
+            socketId: socket.id,
+            lastSeen: new Date(),
+            visibilityEnabled: userSettings.online_visibility === 1
+        });
+        
+        // Only update status and broadcast if visibility is enabled or explicitly going offline
+        if (userSettings.online_visibility === 1 || !isOnline) {
+            // Update database
+            const status = isOnline ? 'conectado' : 'desconectado';
+            await chatModel.updateLastSeen(parseInt(userId), status);
             
             // Broadcast to all connected clients
             io.emit('user_online_status', {
                 userId: parseInt(userId),
                 isOnline: isOnline
             });
+        }
         } catch (error) {
             console.error('Error broadcasting status:', error);
+        }
+    });
+
+    socket.on('visibility_change', async ({ userId, isVisible }) => {
+        try {
+            console.log(`User ${userId} changed visibility to ${isVisible ? 'visible' : 'invisible'}`);
+            
+            // Update user data in memory
+            const userData = onlineUsers.get(parseInt(userId));
+            if (userData) {
+                userData.visibilityEnabled = isVisible;
+                onlineUsers.set(parseInt(userId), userData);
+            }
+            
+            // Update status in database based on visibility
+            const status = isVisible ? 'conectado' : 'invisible';
+            await chatModel.updateLastSeen(parseInt(userId), status);
+            
+            // Broadcast status change to all users
+            if (isVisible) {
+                io.emit('user_online_status', {
+                    userId: parseInt(userId),
+                    isOnline: true
+                });
+            } else {
+                io.emit('user_online_status', {
+                    userId: parseInt(userId),
+                    isOnline: false,
+                    lastSeen: new Date()
+                });
+            }
+        } catch (error) {
+            console.error('Error updating visibility:', error);
         }
     });
     

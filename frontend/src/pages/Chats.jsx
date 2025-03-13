@@ -104,6 +104,38 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
             loadFriends();
         }, [userId]);
 
+        useEffect(() => {
+            // Obtener la configuración de visibilidad del usuario
+            const onlineVisibilityEnabled = localStorage.getItem('onlineVisibilityEnabled') === 'true';
+            
+            // Si hay un socket activo
+            if (window.chatSocket && window.chatSocket.connected) {
+              // Emitir el estado de visibilidad actual
+              window.chatSocket.emit('visibility_change', {
+                userId: parseInt(localStorage.getItem('userId')),
+                isVisible: onlineVisibilityEnabled
+              });
+            }
+            
+            // Escuchar cambios en la configuración de visibilidad
+            const handleVisibilityChange = () => {
+              const newVisibilitySetting = localStorage.getItem('onlineVisibilityEnabled') === 'true';
+              
+              if (window.chatSocket && window.chatSocket.connected) {
+                window.chatSocket.emit('visibility_change', {
+                  userId: parseInt(localStorage.getItem('userId')),
+                  isVisible: newVisibilitySetting
+                });
+              }
+            };
+            
+            window.addEventListener('storage', handleVisibilityChange);
+            
+            return () => {
+              window.removeEventListener('storage', handleVisibilityChange);
+            };
+          }, []);
+
         const filteredFriends = friends.filter(friend => {
             if (!friend) return false;
             

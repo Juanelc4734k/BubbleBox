@@ -137,6 +137,7 @@ const Notifications = () => {
     const [isOpenNoti, setIsOpenNoti] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [activeTab, setActiveTab] = useState('all');
+    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
     const handleNotificationClick = async (noti) => {
         if (!noti.leida) {
@@ -183,22 +184,90 @@ const Notifications = () => {
     };
 
     useEffect(() => {
-        const fetchNotifications = async () => {
+        const fetchNotificationsAndSettings = async () => {
             try {
-                const data = await getNotification();
-                setNotifications(data);
+                // Get user ID from localStorage
+                const userId = localStorage.getItem('userId');
+                if (!userId) return;
+                
+                // Check if notifications setting exists in localStorage
+                let notificationsEnabledSetting = localStorage.getItem('notificationsEnabled');
+                
+                // If setting doesn't exist in localStorage, fetch from database
+                if (notificationsEnabledSetting === null) {
+                    try {
+                        // Import the getUserSettings function
+                        const { getUserSettings } = await import('../../services/users');
+                        const userSettings = await getUserSettings(userId);
+                        
+                        // Update localStorage with fetched settings
+                        notificationsEnabledSetting = !!userSettings.notificaciones;
+                        localStorage.setItem('notificationsEnabled', notificationsEnabledSetting);
+                    } catch (error) {
+                        console.error("Error fetching user settings:", error);
+                        // Default to enabled if there's an error
+                        notificationsEnabledSetting = true;
+                    }
+                } else {
+                    // Convert string to boolean
+                    notificationsEnabledSetting = notificationsEnabledSetting !== 'false';
+                }
+                
+                // Update state with the setting
+                setNotificationsEnabled(notificationsEnabledSetting);
+                
+                // Only fetch notifications if they're enabled
+                if (notificationsEnabledSetting) {
+                    const data = await getNotification();
+                    setNotifications(data);
+                    
+                    // Listen for new notifications
+                    socket.on("nueva_notificacion", (nuevaNotificacion) => {
+                        setNotifications(prev => [nuevaNotificacion, ...prev]);
+                    });
+                }
             } catch (error) {
-                console.error("Error obteniendo las notificaciones", error);
+                console.error("Error in fetchNotificationsAndSettings:", error);
             }
         };
-
-        fetchNotifications();
         
-        socket.on("nueva_notificacion", (nuevaNotificacion) => {
-            setNotifications(prev => [nuevaNotificacion, ...prev]);
-        });
-
+        fetchNotificationsAndSettings();
+        
         return () => socket.off("nueva_notificacion");
+    }, []);
+
+    // Listen for changes in notification settings
+    useEffect(() => {
+        const handleStorageChange = (e) => {
+            if (e.key === 'notificationsEnabled') {
+                setNotificationsEnabled(e.newValue !== 'false');
+                
+                // If notifications were just enabled, fetch them
+                if (e.newValue !== 'false') {
+                    const fetchNotifications = async () => {
+                        try {
+                            const data = await getNotification();
+                            setNotifications(data);
+                        } catch (error) {
+                            console.error("Error obteniendo las notificaciones", error);
+                        }
+                    };
+                    
+                    fetchNotifications();
+                    
+                    // Listen for new notifications
+                    socket.on("nueva_notificacion", (nuevaNotificacion) => {
+                        setNotifications(prev => [nuevaNotificacion, ...prev]);
+                    });
+                } else {
+                    // If notifications were disabled, remove listeners
+                    socket.off("nueva_notificacion");
+                }
+            }
+        };
+        
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
     const filteredNotifications = activeTab === 'all' 
@@ -214,37 +283,41 @@ const Notifications = () => {
 
     return (
         <div className={`containerNoti ${isOpenNoti ? "active" : ""}`}>
-            <NotificationBell 
-                count={notifications.filter(noti => !noti.leida).length} 
-                onClick={() => setIsOpenNoti(!isOpenNoti)} 
-            />
-            {isOpenNoti && (
-                <div className="containerNotiOpen">
-                    <NotificationHeader onClose={() => setIsOpenNoti(false)} />
-                    <NotificationTabs activeTab={activeTab} onTabChange={setActiveTab} />
-                    
-                    {filteredNotifications.length === 0 ? (
-                        <EmptyNotifications />
-                    ) : (
-                        <div className="notifications-list">
-                            {Object.entries(groupedNotifications).map(([date, dateNotifications]) => (
-                                <div key={date} className="notification-group">
-                                    <div className="date-header">{date}</div>
-                                    {dateNotifications.map((noti) => (
-                                        <NotificationItem
-                                            key={noti.id}
-                                            notification={noti}
-                                            onNotificationClick={handleNotificationClick}
-                                            onDelete={handleDeleteNotification}
-                                            onFriendRequest={handleFriendRequest}
-                                        />
+            {notificationsEnabled ? (
+                <>
+                    <NotificationBell 
+                        count={notifications.filter(noti => !noti.leida).length} 
+                        onClick={() => setIsOpenNoti(!isOpenNoti)} 
+                    />
+                    {isOpenNoti && (
+                        <div className="containerNotiOpen">
+                            <NotificationHeader onClose={() => setIsOpenNoti(false)} />
+                            <NotificationTabs activeTab={activeTab} onTabChange={setActiveTab} />
+                            
+                            {filteredNotifications.length === 0 ? (
+                                <EmptyNotifications />
+                            ) : (
+                                <div className="notifications-list">
+                                    {Object.entries(groupedNotifications).map(([date, dateNotifications]) => (
+                                        <div key={date} className="notification-group">
+                                            <div className="date-header">{date}</div>
+                                            {dateNotifications.map((noti) => (
+                                                <NotificationItem
+                                                    key={noti.id}
+                                                    notification={noti}
+                                                    onNotificationClick={handleNotificationClick}
+                                                    onDelete={handleDeleteNotification}
+                                                    onFriendRequest={handleFriendRequest}
+                                                />
+                                            ))}
+                                        </div>
                                     ))}
                                 </div>
-                            ))}
+                            )}
                         </div>
                     )}
-                </div>
-            )}
+                </>
+            ) : null}
         </div>
     );
 };
