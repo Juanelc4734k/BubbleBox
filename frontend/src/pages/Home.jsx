@@ -29,7 +29,8 @@ const Home = ({ openCommentsSidebar }) => {
     const fetchPosts = async () => {
       try {
         const fetchedPosts = await getAllPosts();
-        const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
+        const filteredPosts = fetchedPosts.filter(post => !post.id_comunidad);
+        const sortedPosts = filteredPosts.sort((a, b) => new Date(b.fecha_creacion) - new Date(a.fecha_creacion));
         setPosts(sortedPosts);
       } catch (error) {
         console.error('Error al obtener las publicaciones:', error);

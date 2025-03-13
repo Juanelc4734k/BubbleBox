@@ -11,6 +11,7 @@ const CreateComunity = () => {
     const [openComunity, setOpenComunity] = useState(false);
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
+    const [rules, setRules] = useState(['']);
     const [imagen, setImagen] = useState(null);
     const [idCreador, setIdCreador] = useState("");
     const [imagenPreview, setImagenPreview] = useState(null);
@@ -122,6 +123,8 @@ const CreateComunity = () => {
         if(imagenBanner){
             comunityData.append("banner", imagenBanner);
         }
+        const filteredRules = rules.filter(rule => rule.trim() !== '');
+        comunityData.append("reglas", JSON.stringify(filteredRules.length > 0 ? filteredRules : []));
 
         try{
             const response = await createCommunity(comunityData);
@@ -224,6 +227,43 @@ const CreateComunity = () => {
                                     placeholder="Descripción de la comunidad"
                                     rows={5}
                                 />
+                            </div>
+
+                            {/* Add Rules Section */}
+                            <div className="form-group rules-section">
+                                <h3>Reglas de la comunidad</h3>
+                                {rules.map((rule, index) => (
+                                    <div key={index} className="rule-input-group">
+                                        <span className="rule-number">{index + 1}.</span>
+                                        <input
+                                            type="text"
+                                            value={rule}
+                                            onChange={(e) => {
+                                                const newRules = [...rules];
+                                                newRules[index] = e.target.value;
+                                                setRules(newRules);
+                                            }}
+                                            placeholder={`Regla ${index + 1}`}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="remove-rule"
+                                            onClick={() => {
+                                                const newRules = rules.filter((_, i) => i !== index);
+                                                setRules(newRules.length ? newRules : ['']);
+                                            }}
+                                        >
+                                            <IoClose />
+                                        </button>
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    className="add-rule-btn"
+                                    onClick={() => setRules([...rules, ''])}
+                                >
+                                    + Añadir regla
+                                </button>
                             </div>
 
                             {/* Moved privacy and images section here */}
