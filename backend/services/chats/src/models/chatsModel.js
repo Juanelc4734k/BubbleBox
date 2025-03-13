@@ -11,6 +11,16 @@ const saveMessage = (senderId, receiverId, message) => {
     });
 };
 
+const getMessageById = (messageId) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM messages WHERE id =?';
+        db.query(query, [messageId], (error, results) => {
+            if (error) reject(error);
+            else resolve(results[0]);
+        });
+    });
+};
+
 const saveAudioMessage = (messageData) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO messages (sender_id, receiver_id, audio_path, duration) VALUES (?, ?, ?, ?)';
@@ -74,10 +84,10 @@ const getMessages = (userId1, userId2) => {
     });
 };
 
-const updateMessage = (messageId, newMessage) => {
+const updateMessage = (messageId, newContent) => {
     return new Promise((resolve, reject) => {
         const updateQuery = 'UPDATE messages SET message = ? WHERE id = ?';
-        db.query(updateQuery, [newMessage, messageId], (error, result) => {
+        db.query(updateQuery, [newContent, messageId], (error, result) => {
             if (error) reject(error);
             else if (result.affectedRows === 0) resolve(null);
             else {
@@ -97,6 +107,21 @@ const deleteMessage = (messageId) => {
         db.query(query, [messageId], (error, result) => {
             if (error) reject(error);
             else resolve(result.affectedRows > 0);
+        });
+    });
+};
+
+const deleteAllMessages = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)';
+        db.query(query, [userId1, userId2, userId2, userId1], (error, result) => {
+            if (error) {
+                console.error('Error deleting all messages:', error);
+                reject(error);
+            } else {
+                console.log(`Deleted ${result.affectedRows} messages between users ${userId1} and ${userId2}`);
+                resolve(result.affectedRows);
+            }
         });
     });
 };
@@ -188,10 +213,12 @@ const getAudioMessageByPath = async (audioPath) => {
 
 module.exports = {
     saveMessage,
+    getMessageById,
     saveMessageWithNotification,
     getMessages,
     updateMessage,
     deleteMessage,
+    deleteAllMessages,
     updateLastSeen,
     getLastSeen,
     saveAudioMessage,

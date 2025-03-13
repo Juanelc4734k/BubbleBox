@@ -71,12 +71,29 @@ const rechazarSolicitudAmistad = (id) => {
 const obtenerAmistades = (idUsuario) => {
   return new Promise((resolve, reject) => {
     const query = `
-      SELECT a.*, u1.nombre AS nombre_usuario1, u2.nombre AS nombre_usuario2
+      SELECT a.*, u1.nombre AS nombre_usuario1, u2.nombre AS nombre_usuario2, u1.avatar AS avatar_usuario1, u2.avatar AS avatar_usuario2, u1.estado AS estado_usuario1, u2.estado AS estado_usuario2
       FROM amistades a
       JOIN usuarios u1 ON a.id_usuario1 = u1.id
       JOIN usuarios u2 ON a.id_usuario2 = u2.id
       WHERE (a.id_usuario1 = ? OR a.id_usuario2 = ?) 
       AND a.estado = "aceptada"
+    `;
+    db.query(query, [idUsuario, idUsuario], (error, results) => {
+      if (error) reject(error);
+      else resolve(results);
+    });
+  });
+};
+
+const obtenerAmistadesBloqueadas = (idUsuario) => {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT a.*, u1.nombre AS nombre_usuario1, u2.nombre AS nombre_usuario2, u1.avatar AS avatar_usuario1, u2.avatar AS avatar_usuario2, u1.estado AS estado_usuario1, u2.estado AS estado_usuario2
+      FROM amistades a
+      JOIN usuarios u1 ON a.id_usuario1 = u1.id
+      JOIN usuarios u2 ON a.id_usuario2 = u2.id
+      WHERE (a.id_usuario1 =? OR a.id_usuario2 =?)
+      AND a.estado = "bloqueado"
     `;
     db.query(query, [idUsuario, idUsuario], (error, results) => {
       if (error) reject(error);
@@ -313,7 +330,8 @@ module.exports = {
   desbloquearUsuario,
   verificarBloqueo,
   obtenerSugerenciasAmigos,
-  obtenerAmigosEnComun
+  obtenerAmigosEnComun,
+  obtenerAmistadesBloqueadas
 };
 
 

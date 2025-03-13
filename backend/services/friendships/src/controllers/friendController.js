@@ -175,6 +175,23 @@ const obtenerAmistades = async (req, res) => {
   }
 };
 
+const obtenerAmistadesBloqueadas = async (req, res) => {
+  try {
+    const { idUsuario } = req.params;
+    if (!idUsuario) {
+      return res.status(400).json({ mensaje: 'Se requiere el ID del usuario' });
+    }
+    const amistadesBloqueadas = await friendModel.obtenerAmistadesBloqueadas(idUsuario);
+    if (!amistadesBloqueadas || amistadesBloqueadas.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron amistades bloqueadas para este usuario' });
+    }
+    res.status(200).json(amistadesBloqueadas);
+  } catch (error) {
+    console.error('Error en obtenerAmistadesBloqueadas:', error);
+    res.status(500).json({ mensaje: 'Error interno al obtener las amistades bloqueadas', error: error.message });
+  }
+};
+
 const eliminarAmistad = async (req, res) => {
   try {
     const { id } = req.params;
@@ -316,6 +333,7 @@ module.exports = {
   aceptarSolicitudAmistad,
   rechazarSolicitudAmistad,
   obtenerAmistades,
+  obtenerAmistadesBloqueadas,
   eliminarAmistad,
   obtenerSolicitudesPendientes,
   bloquearUsuario,

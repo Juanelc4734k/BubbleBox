@@ -75,6 +75,142 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('edit_message', async ({ messageId, senderId, newContent }) => {
+        try {
+            const message = await chatModel.getMessageById(messageId);
+
+            if(!message) {
+                socket.emit('error', 'Mensaje no encontrado');
+                return;
+            }
+
+            if (message.sender_id !== parseInt(senderId)) {
+                socket.emit('error', 'No puedes editar mensajes que no son tuyos');
+                return;
+            }
+
+            const messageTime = new Date(message.created_at);
+            const currentTime = new Date();
+            const timeDifference = (currentTime - messageTime) / (1000 * 60);
+
+            if (timeDifference > 15) {
+                socket.emit('error', 'No puedes editar mensajes que han pasado más de 15 minutos');
+                return;
+            }
+
+            const updatedMessage = await chatModel.updateMessage(messageId, newContent);
+
+            if (!updatedMessage) {
+                socket.emit('error', 'Error al editar el mensaje');
+                return;
+            }
+
+            const roomId = [message.sender_id, message.receiver_id].sort().join('-');
+
+            io.in(roomId).emit('message_edited', {
+                id: messageId,
+                senderId: parseInt(senderId),
+                receiverId: message.receiver_id,
+                message: newContent,
+                edited: true,
+                created_at: message.created_at,
+                updated_at: updatedMessage.updated_at
+            });
+
+            console.log(`Message ${messageId} edited by ${senderId}`);
+
+        } catch (error) {
+            console.error('Error al editar el mensaje:', error);
+            socket.emit('error', 'Error al editar el mensaje');
+        }
+    });
+
+
+    socket.on('delete_message', async ({ messageId, senderId }) => {
+        try {
+            const message = await chatModel.getMessageById(messageId);
+
+            if(!message) {
+                socket.emit('error', 'Mensaje no encontrado');
+                return;
+            }
+
+            if (message.sender_id !== parseInt(senderId)) {
+                socket.emit('error', 'No puedes eliminar mensajes que no son tuyos');
+                return;
+            }
+
+            const deleted = await chatModel.deleteMessage(messageId);
+            
+            const roomId = [message.sender_id, message.receiver_id].sort().join('-');
+            
+            if (!deleted) {
+                socket.emit('error', 'Error al eliminar el mensaje');
+                return;
+            }
+
+
+            io.in(roomId).emit('message_deleted', {
+                id: messageId,
+                senderId: parseInt(senderId),
+                receiverId: message.receiver_id
+            });
+
+            console.log(`Message ${messageId} deleted by ${senderId}`);
+        } catch (error) {
+            console.error('Error al eliminar el mensaje:', error);
+            socket.emit('error', 'Error al eliminar el mensaje');
+        }
+    });
+
+    socket.on('delete_all_messages', async ({ userId1, userId2 }) => {
+        try {
+            if(!userId1 || !userId2) {
+                socket.emit('error', 'Faltan datos para eliminar los mensajes');
+                return;
+            }
+
+            const areFriends = await friendshipModel.checkFriendship(userId1, userId2);
+            if (!areFriends) {
+                socket.emit('error', 'No puedes eliminar mensajes con usuarios que no son tus amigos');
+                return;
+            }
+
+            const deletedCount = await chatModel.deleteAllMessages(userId1, userId2);
+
+            const roomId = [userId1, userId2].sort().join('-');
+
+            io.in(roomId).emit('all_messages_deleted', {
+                userId1: parseInt(userId1),
+                userId2: parseInt(userId2),
+                deletedCount
+            });
+
+            console.log(`All messages between ${userId1} and ${userId2} deleted`);
+        } catch (error) {
+            console.error('Error al eliminar los mensajes:', error);
+            socket.emit('error', 'Error al eliminar los mensajes');
+        }
+    });
+
+    socket.on('user_blocked', async ({ blockerId, blockedId }) => {
+        try {
+            // Create room ID for the chat
+            const roomId = [blockerId, blockedId].sort().join('-');
+            
+            // Broadcast to the room that a user has been blocked
+            io.in(roomId).emit('user_blocked_notification', {
+                blockerId: parseInt(blockerId),
+                blockedId: parseInt(blockedId)
+            });
+            
+            console.log(`User ${blockerId} blocked user ${blockedId}`);
+        } catch (error) {
+            console.error('Error handling user block:', error);
+            socket.emit('error', 'Error al procesar el bloqueo de usuario');
+        }
+    });
+
     socket.on('mark_messages_read', async ({ userId, friendId }) => {
         try {
             // Mark messages as read in the database

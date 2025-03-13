@@ -15,6 +15,35 @@ export const getFriends = async (userId) => {
     }
 };
 
+export const getFriendsBlocked = async (userId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/friendships/amistades-bloqueadas/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener amigos bloqueados:', error);
+        throw error;
+    }
+};
+
+export const desbloquearUsuario = async (idUsuarioDesbloquea, idUsuarioDesbloqueado) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post(`${API_URL}/friendships/desbloquear`, {
+            id_usuario1: idUsuarioDesbloquea,
+            id_usuario2: idUsuarioDesbloqueado
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al desbloquear usuario:', error);
+        throw error;
+    }
+};
+
 export const getFriendRequests = async (userData) => {
     try {
         const response = await axios.get(`${API_URL}/friendships/solicitudes-pendientes/${userData}`);
