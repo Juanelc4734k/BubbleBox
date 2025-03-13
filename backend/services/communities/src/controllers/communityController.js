@@ -40,17 +40,20 @@ const getCommunityById = async (req, res) => {
 
 const createCommunity = async (req, res) => {
     try {
-        const { nombre, descripcion, idCreador, privacidad } = req.body;
+        const { nombre, descripcion, reglas, idCreador, privacidad } = req.body;
         const avatar = req.files?.avatar?.[0]?.filename || null;
         const banner = req.files?.banner?.[0]?.filename || null;
 
         if (privacidad && !['publica', 'privada'].includes(privacidad)) {
             return res.status(400).json({ mensaje: 'Privacidad inválida' });
         }
-        
+
+        const parsedReglas = reglas ? JSON.parse(reglas) : [];
+
         const idComunidad = await communityModel.crearComunidad(
             nombre, 
             descripcion, 
+            JSON.stringify(parsedReglas),
             idCreador, 
             avatar,
             banner,
@@ -98,9 +101,8 @@ const leaveCommunity = async (req, res) => {
 
 const updateCommunity = async (req, res) => {
     try {
-        const { nombre, descripcion, imagen } = req.body;
-        console.log('Data:', nombre, descripcion)
-        const actualizado = await communityModel.actualizarComunidad(req.params.id, nombre, descripcion, imagen);
+        const { nombre, descripcion, reglas, imagen } = req.body;
+        const actualizado = await communityModel.actualizarComunidad(req.params.id, nombre, descripcion, reglas, imagen);
         if (actualizado) {
             res.json({ mensaje: 'Comunidad actualizada con éxito' });
         } else {

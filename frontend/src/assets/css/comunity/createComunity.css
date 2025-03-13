@@ -115,6 +115,69 @@
     transition: all 0.3s ease;
     color: #a193af;
   }
+
+  .rules-section {
+    margin-bottom: 20px;
+}
+
+.rules-section h3 {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #333;
+}
+
+.rule-input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.rule-number {
+    min-width: 25px;
+    color: #666;
+    font-weight: 500;
+}
+
+.rule-input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.remove-rule {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.remove-rule:hover {
+    color: #ff4444;
+}
+
+.add-rule-btn {
+    margin-top: 10px;
+    background: none;
+    border: 1px dashed #666;
+    padding: 8px 16px;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.add-rule-btn:hover {
+    background: #f0f0f0;
+    border-color: #333;
+    color: #333;
+}
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;

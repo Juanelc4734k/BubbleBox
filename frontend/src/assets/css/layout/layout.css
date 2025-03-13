@@ -5,7 +5,7 @@ body {
 }
 
 * {
-  cursor: url('/cursor/cursor.png') 16 16, auto !important;
+  cursor: url('/cursor/cursor.png') 10 10, auto !important;
 }
 
 a:hover,

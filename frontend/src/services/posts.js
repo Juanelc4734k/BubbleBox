@@ -29,6 +29,13 @@ export const createPost = async (postData) => {
     const response = await axios.post(`${API_URL}/posts/crear`, postData);
     return response.data;
 };
+
+export const createPostCommunity = async (postData) => {
+    const response = await axios.post(`${API_URL}/posts/crear-publicacion-comunidad`, postData);
+    return response.data;
+};
+
+
 // Add this function if it doesn't exist
 export const updatePost = async (postData) => {
   try {

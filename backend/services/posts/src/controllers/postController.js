@@ -115,7 +115,7 @@ const createPost = async (req, res) => {
 const crearPublicacionComunidad = async (req, res) => {
     try {
         const { titulo, contenido, idUsuario, idComunidad } = req.body;
-        const imagen = req.file ? req.file.path : null;
+        const imagen = req.file ? req.file.filename : null;
         
         const nuevoPostId = await postModel.crearPublicacionComunidad(titulo, contenido, idUsuario, idComunidad, imagen);
         res.status(201).json({ mensaje: 'Publicación de comunidad creada con éxito', id: nuevoPostId });

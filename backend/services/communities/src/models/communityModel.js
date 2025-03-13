@@ -1,9 +1,9 @@
 const db = require('../config/db');
 
-const crearComunidad = (nombre, descripcion, idCreador, avatar = null, banner = null, privacidad) => {
+const crearComunidad = (nombre, descripcion, reglas, idCreador, avatar = null, banner = null, privacidad) => {
     return new Promise((resolve, reject) => {
-        const query = "INSERT INTO comunidades (nombre, descripcion, id_creador, avatar, banner, tipo_privacidad) VALUES (?, ?, ?, ?, ?, ?)";
-        db.query(query, [nombre, descripcion, idCreador, avatar, banner, privacidad], (err, result) => {
+        const query = "INSERT INTO comunidades (nombre, descripcion, reglas, id_creador, avatar, banner, tipo_privacidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        db.query(query, [nombre, descripcion, reglas, idCreador, avatar, banner, privacidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.insertId);
         });
@@ -75,10 +75,10 @@ const obtenerComunidadPorId = (id) => {
     });
 };
 
-const actualizarComunidad = (id, nombre, descripcion) => {
+const actualizarComunidad = (id, nombre, descripcion, reglas) => {
     return new Promise((resolve, reject) => {
-        let query = 'UPDATE comunidades SET nombre = ?, descripcion = ?';
-        let params = [nombre, descripcion];
+        let query = 'UPDATE comunidades SET nombre = ?, descripcion = ?, reglas = ?';
+        let params = [nombre, descripcion, reglas];
         query += ' WHERE id = ?';
         params.push(id);
 

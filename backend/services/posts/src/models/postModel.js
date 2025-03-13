@@ -95,9 +95,10 @@ const obtenerPublicacionesDeComunidades = () => {
 const obtenerPublicacionesDeComunidad = (id) => {
     return new Promise((resolve, reject) => {
         const query = `
-            SELECT p.*, c.nombre AS nombre_comunidad
+            SELECT p.*, c.nombre AS nombre_comunidad, u.nombre AS nombre_usuario, u.avatar AS avatar_usuario
             FROM publicaciones p
             LEFT JOIN comunidades c ON p.id_comunidad = c.id
+            LEFT JOIN usuarios u ON p.id_usuario = u.id
             WHERE p.es_comunidad = TRUE AND p.id_comunidad = ?;
         `;
         db.query(query, [id], (err, results) => {
