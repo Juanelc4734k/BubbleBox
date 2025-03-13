@@ -82,6 +82,8 @@ function Profile({ profile, isOwnProfile }) {
 
   // Add this function to render privacy indicator
   const renderPrivacyIndicator = () => {
+    console.log('Privacy value:', profile); // Add this line to debug
+    
     if (!profile.privacidad) return null;
     
     switch(profile.privacidad) {
