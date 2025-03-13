@@ -36,7 +36,7 @@ const Dropdown = () => {
             <div className="dro">
             <div className="tooltip-container">
                 <Link
-                    className="dropdown-item bubblee"
+                    className="dropdown-item-Update bubblee"
                     onClick={handleBubbleClick}
                     to="/configuraciones"
                     onMouseEnter={() => setTooltip("Configuraciones")}
@@ -48,7 +48,7 @@ const Dropdown = () => {
             </div>
             <div className="tooltip-container">
                 <Link
-                    className="dropdown-item bubblee"
+                    className="dropdown-item-Update bubblee"
                     onClick={handleBubbleClick}
                     to="/perfil"
                     onMouseEnter={() => setTooltip("Perfil")}

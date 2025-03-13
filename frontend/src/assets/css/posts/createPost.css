@@ -155,7 +155,7 @@
   font-size: 1.5rem;
 }
 
-.image-preview {
+.image-preview-Post {
   margin-top: 1rem;
   position: relative;
   border-radius: 0.75rem;
@@ -164,14 +164,14 @@
   overflow-y: auto; /* Barra de desplazamiento interna si la imagen es muy grande */
 }
 
-.image-preview img {
+.image-preview-Post img {
   width: 100%;
   height: auto;
   border-radius: 0.75rem;
   display: block;
 }
 
-.remove-image {
+.remove-image-post {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
