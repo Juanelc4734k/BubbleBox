@@ -275,6 +275,7 @@ const getCurrentUserProfile = async (req, res) => {
 
     const userProfile = await userModel.getUserById(userId);
     const intereses = await userModel.getUserInterests(userId);
+    const userSettings = await userModel.getUserSettings(userId);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
@@ -282,6 +283,7 @@ const getCurrentUserProfile = async (req, res) => {
 
     res.json({
       ...userProfile,
+      privacidad: userSettings.privacidad,
       intereses
     });
   } catch (error) {
@@ -316,13 +318,14 @@ const getPublicUserProfile = async (req, res) => {
 
     const userProfile = await userModel.getUserById(userId);
     const intereses = await userModel.getUserInterests(userId);
+    const userSettings = await userModel.getUserSettings(userId);
 
     if (!userProfile) {
       return res.status(404).json({ mensaje: "Perfil de usuario no encontrado" });
     }
 
     // Verificar si el perfil es público
-    if (userProfile.privacidad === 'friends' && userId !== requesterId) {
+    if (userSettings.privacidad === 'amigos' && userId !== requesterId) {
       const areFriends = await userModel.checkFriendship(userId, requesterId);
       if (!areFriends) {
         return res.status(403).json({ mensaje: "Este perfil solo es visible para amigos" });
@@ -338,7 +341,7 @@ const getPublicUserProfile = async (req, res) => {
       email: userProfile.email,
       avatar: userProfile.avatar,
       estado: userProfile.estado,
-      privacidad: userProfile.privacidad,
+      privacidad: userSettings.privacidad,
       intereses: intereses
     };
 
