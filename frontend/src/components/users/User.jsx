@@ -38,7 +38,6 @@ function User({ user }) {
           console.error('Error al verificar estado de amistad:', error);
         }
       };
-      
       checkFriendshipStatus();
     }, [user.id]);
     

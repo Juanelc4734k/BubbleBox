@@ -152,8 +152,8 @@ html, body {
     padding: 0;
   }
   .sidebar-wrapper {
-    top: 10.5rem;
-    height: calc(100vh - 11rem);
+    top: 9.8rem;
+    height: calc(100vh - 10.5rem);
   }
   .divTexto{
     height: calc(100vh - 11rem);

@@ -189,46 +189,11 @@
   width: 3.5rem;
   height: 3.5rem;
   }
-  .navbar-expanded-content {
-  display: flex;
-  flex-direction: column;
-  width: calc(60% - 2rem);
-  margin-left: 16rem;
-  margin-top: -4rem;
-  background: none;
-  gap: 0.5rem;
-  backdrop-filter: none;
-  padding: 1rem;
-  box-shadow: none;
-  }
-  .navbar-description-p > p{
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 1.5rem;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  margin-left: -1rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-  }
-  .navbar-toggle-description {
-  display: none;
-  }
-  .navbar-expanded-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  }
-  .acciones {
-  flex-direction: row;
-  gap: 0.4rem;
+  .navbar-expanded-content{
+    margin-top: 2rem;
   }
   .acciones p{
   font-size: 0.7rem;
-  }
-  .link2{
-  border-left: 1.5px solid #757475;
-  border-right: 1.5px solid #757475;
-  padding-left: 1rem;
-  padding-right: 1rem;
   }
   }
   /* Desktop styles */
@@ -280,30 +245,34 @@
   background: none;
   gap: 0.2rem;
   backdrop-filter: none;
+  box-shadow: none;
+  }
+  .navbar-toggle-description{
+    display: none;
   }
   
   .navbar-description-p > p{
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 1.5rem;
   padding: 0.8rem 1rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   margin-left: 1rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   }
-
   .acciones {
-  gap: 2rem;
-  margin-top: 0rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: center;
   }
   .acciones p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   }
   .link2{
   border-left: 1.5px solid #757475;
   border-right: 1.5px solid #757475;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  
   }
   .icono0 {
   font-size: 1.5rem;
@@ -342,7 +311,7 @@
   }
   
   .navbar-description-p > p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   padding: 0.5rem 1rem;
   }
   
@@ -352,7 +321,7 @@
   }
   
   .acciones p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   }
   
   .icono0 {

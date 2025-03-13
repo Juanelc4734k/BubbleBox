@@ -7,8 +7,10 @@ import { CgChevronLeftO, CgChevronRightO  } from "react-icons/cg";
 import { IoIosArrowBack, IoIosArrowForward  } from "react-icons/io";
 import CreateGroup from '../components/chats/CreateGroup';
 import { FaSearch } from 'react-icons/fa';
+import { useLocation } from 'react-router-dom';
 
 const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
+    const location = useLocation();
     const [friends, setFriends] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState(null);
     const [error, setError] = useState(null);
@@ -36,6 +38,13 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
+    useEffect(() => {
+        // Check if there's a selected friend ID in the navigation state
+        if (location.state?.selectedFriendId) {
+            setSelectedFriend(location.state.selectedFriendId);
+        }
+    }, [location.state]);
 
     useEffect(() => {
         if (selectedFriend) {
