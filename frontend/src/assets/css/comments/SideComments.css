@@ -11,10 +11,8 @@
     transition: transform 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
-    z-index: 1200;
+    z-index: 1190;
   }
-
-  
   
   .sidebar-comments-wrapper.closed {
     transform: translateX(100%);
@@ -83,7 +81,7 @@
   .comments-list {
       flex: 1;
       overflow-y: auto;
-      padding: 1rem;
+      padding: 0.8rem;
       scrollbar-width: thin;
       scrollbar-color: rgba(123, 111, 202, 0.5) transparent;
   }
@@ -109,12 +107,6 @@
       gap: 0.5rem;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
       z-index: 5;
-  }
-  .comment-item {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   /* Add these styles for comment actions and replies */
   .comment-actions {
@@ -142,7 +134,6 @@
   }
   .replies-container {
     margin-top: 10px;
-    margin-left: 10px;
     padding-left: 10px;
     border-left: 2px solid rgba(123, 111, 202, 0.3);
   }
@@ -162,15 +153,24 @@
   .reply-item:last-child {
     border-bottom: none;
   }
+  .reply-avatar{
+    display: flex;
+    width: 30px; /* Ancho más pequeño para respuestas */
+    flex-shrink: 0;
+  }
   .reply-avatar img {
-    width: 30px;
-    height: 30px;
+    width: 30px; /* Mismo tamaño que el avatar del comentario principal */
+    height: 30px; /* Mismo tamaño que el avatar del comentario principal */
     border-radius: 50%;
     object-fit: cover;
+    border: 2px solid rgba(123, 111, 202, 0.2);
+    flex-shrink: 0;
   }
+  
   .reply-content {
     flex: 1;
     position: relative;
+    min-width: 0;
   }
   .reply-author {
     font-weight: 600;
@@ -181,6 +181,10 @@
     color: #333;
     margin-bottom: 0.2rem;
     font-size: 0.9rem;
+    word-wrap: break-word; /* Permite que las palabras largas se rompan */
+    overflow-wrap: break-word; /* Asegura que el texto se rompa para evitar desbordamiento */
+    white-space: pre-wrap; /* Mantiene los saltos de línea y espacios mientras permite el ajuste */
+    max-width: 100%; /* Asegura que el texto no exceda el ancho del contenedor */
   }
   .reply-date {
     font-size: 0.75rem;
@@ -248,23 +252,25 @@
   /* Enhance comment item styling */
   .comment-item {
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     transition: background-color 0.2s;
+    padding-top: 1rem;
   }
   .comment-item:hover {
     background-color: rgba(123, 111, 202, 0.03);
   }
-  /* Improve scrolling experience */
-  .comments-list {
-    padding-bottom: 1rem;
+  .comment-avatar{
+    display: flex;
+    width: 40px; /* Establecer un ancho fijo */
+    flex-shrink: 0; /* Prevenir que el contenedor se encoja */
   }
   .comment-avatar img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
   }
   /* Add these styles for the dropdown menu */
   .dropdown-menu-container {
@@ -333,6 +339,7 @@
   .comment-author {
     font-weight: 600;
     margin-bottom: 0;
+    font-size: 0.85rem;
   }
   
   .dropdown-menu-container {
@@ -389,6 +396,7 @@
   .comment-content {
     flex: 1;
     position: relative;
+    min-width: 0;
   }
   
   /* Modify comment-actions to use flex with space-between */
@@ -407,7 +415,12 @@
   }
   .comment-text {
     color: #333;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.85rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
   }
   .comment-date {
     font-size: 0.8rem;
