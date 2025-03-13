@@ -129,7 +129,6 @@ html, body {
     flex-direction: column;
     height: 100%;
     max-height: calc(100vh - 9rem);
-    overflow-y: auto;
   }
   
   .chats-container-Page {
@@ -142,6 +141,7 @@ html, body {
   .chat-list-Page {
     flex: 1;
     overflow-y: auto;
+    max-height: calc(100vh - 9rem);
     padding-right: 0.5rem;
     margin-top: 0.5rem;
   }
@@ -173,14 +173,17 @@ html, body {
   /* Media Queries */
   @media (min-width: 768px) {
     .sidebar-wrapper-Page {
-      top: 10.5rem;
-      height: calc(100vh - 11rem);
+      top: 9.8rem;
+      height: calc(100vh - 10.5rem);
+    }
+    .chat-list-Page{
+      max-height: calc(100vh - 10.5rem);
     }
     .divTextChat{
-      height: calc(100vh - 11rem);
+      height: calc(100vh - 10.5rem);
     }
     .chatssDetailPage {
-      max-height: calc(100vh - 12rem);
+      max-height: calc(100vh - 10.5rem);
     }
   }
   
@@ -189,6 +192,9 @@ html, body {
       top: 12rem;
       height: calc(100vh - 13rem);
       width: 18rem;
+    }
+    .chat-list-Page{
+      max-height: calc(100vh - 13rem);
     }
     .divTextChat{
       height: calc(100vh - 13rem);
@@ -205,14 +211,17 @@ html, body {
     .sidebar-wrapper-Page {
       top: 14.5rem;
       height: calc(100vh - 15.5rem);
-      width: 22rem;
+      width: 20rem;
       right: 1rem;
+    }
+    .chat-list-Page{
+      max-height: calc(100vh - 15.5rem);
     }
     .divTextChat{
       height: calc(100vh - 17rem);
     }
     .hederChatPage{
-      padding: 2rem;
+      padding: 1rem;
     }
     .textChatPage{
       font-size: 1.3rem;
