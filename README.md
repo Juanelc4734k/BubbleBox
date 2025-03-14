@@ -1,4 +1,3 @@
-Aquí tienes el README.md actualizado según la estructura y contenido del manual de instalación que proporcionaste:
 
 ---
 
