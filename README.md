@@ -19,6 +19,7 @@ BubbleBox es una red social que busca optimizar la interacción entre usuarios, 
 
 ### **Base de Datos**
 - **MySQL**: Sistema de gestión de bases de datos relacional.
+- **phpMyAdmin**: Gestor de MySQL
 
 ---
 
@@ -144,7 +145,10 @@ nano .env  # Configurar credenciales de MySQL y otros servicios
 ### **2️⃣ Instalar dependencias**
 ```bash
 # Instalar dependencias del backend
-cd backend/
+cd backend/services
+npm install
+
+cd backend/gateway
 npm install
 
 # Instalar dependencias del frontend
@@ -157,6 +161,12 @@ npm install
 ```bash
 cd backend/scripts
 nodemon startAllServices.js
+```
+
+#### **Levantar el dashboard (administración)**
+```bash
+cd dashboard
+php -S localhost:9090
 ```
 
 #### **Levantar el frontend**
@@ -218,12 +228,3 @@ Este proyecto está bajo la **Licencia MIT**.
 - **Yenifer Tamayo Villa** - Desarrolladora Frontend
 - **Mariana Andrea Nisperuza Puerta** - Base de Datos y Arquitectura
 
----
-
-### 🎁 Agradecimientos
-
-A la comunidad Open Source y a todos los que han contribuido a mejorar este proyecto. 🙌
-
----
-
-Con esta versión mejorada del README.md, tienes un documento alineado con el manual de instalación, con instrucciones más estructuradas y optimizadas para usuarios de Windows y Linux. 🚀
