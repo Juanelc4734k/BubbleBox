@@ -1,6 +1,13 @@
+
+.reels-Container {
+    width: 76.5%;
+  }
 .reel-options {
     position: relative;
     margin-left: auto;
+}
+.tabs-Reels{
+   padding: 3vh 0vh;
 }
 
 .options-button {
@@ -49,7 +56,6 @@
 }
 
 .reel {
-    background: #cab3e5;
     border-radius: 24px;
     padding: 16px;
     max-width: 500px;
