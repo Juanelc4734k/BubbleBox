@@ -43,9 +43,8 @@ textarea {
 }
 
 .auth-route {
-  padding-top: 6rem !important;
+  padding-top: 4.5rem !important;
 }
-
 .layout {
   display: flex;
   flex-grow: 1;
