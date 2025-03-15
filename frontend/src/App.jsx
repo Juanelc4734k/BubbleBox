@@ -157,8 +157,10 @@ export default function App() {
 
     // Agregar clase para rutas de autenticación
     if (currentPath === "/login" || currentPath === "/register" || 
-      currentPath === "/recover-password" || currentPath === "/recuperar-contrasena") {
+      currentPath === "/recover-password") {
       classes += " auth-route"
+    } else if (currentPath === "/recuperar-contrasena") {
+      classes += " recover-password-custom"
     }
 
     return classes
