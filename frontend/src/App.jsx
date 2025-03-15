@@ -162,9 +162,10 @@ export default function App() {
     } else if (currentPath === "/recuperar-contrasena") {
       classes += " recover-password-custom"
     }
-
     return classes
+    
   }
+
 
   return (
     <Router>
