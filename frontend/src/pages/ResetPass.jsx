@@ -7,9 +7,7 @@ const ResetPass = () => {
     const token = searchParams.get('token');
     return (
         <div>
-            <h1>Restablecer contraseña</h1>
             <ResetPassComponent token={token} />
-            <Link to='/login'>Iniciar sesión</Link>
         </div>
     );
 };
