@@ -87,7 +87,7 @@ const Post = forwardRef((props, ref) => {
                 console.error('Error fetching comments:', error);
             }
         };
-
+        
         fetchComments();
     }, [post.id]);
 

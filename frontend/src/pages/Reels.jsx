@@ -7,10 +7,6 @@ import '../assets/css/layout/reels.css'
 const Reels = ({ openCommentsSidebar }) => {
   const [reels, setReels] = useState([])
   const [error, setError] = useState(null)
-  const parrafoComm = "Reels recientes"
-  const [mostrarT, setMostrarT] = useState(true)
-  const [noVer, setNoVer] = useState(false)
-  const [textoM, setTextoM] = useState("")
   const [activeTab, setActiveTab] = useState('all') // New state for active tab
   const userId = parseInt(localStorage.getItem('userId')) // Add userId
 
@@ -28,51 +24,27 @@ const Reels = ({ openCommentsSidebar }) => {
     fetchReels()
   }, [])
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMostrarT(false)
-      setTimeout(() => setNoVer(true), 1500)
-    }, 3000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    let i = 0
-    const escribir = setInterval(() => {
-      if (i < parrafoComm.length) {
-        setTextoM((prev) => (prev !== undefined ? prev + (parrafoComm[i] || '') : parrafoComm[i]))
-        i++
-      } else {
-        clearInterval(escribir)
-      }
-    }, 100)
-    
-    return () => clearInterval(escribir)
-  }, [])
-
   // Filter reels based on active tab
   const filteredReels = activeTab === 'my' 
     ? reels.filter(reel => reel.usuario_id === userId)
     : reels;
 
   return (
+    // contenedor principal
+    <div className="reels-Container">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="home-container"
+      className="reelss"
     >
       {error ? (
         <p>{error}</p>
       ) : (
-        <div className='divpostss'>
-          <div className="textOcul">
-            {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
-          </div>
-
+        // contenedor 
+        <div className='Conten-Reels1'>
           {/* Tab Navigation */}
-          <div className="tabs-container">
+          <div className="tabs-Reels">
             <div className="tabs">
               <button 
                 className={`tab ${activeTab === 'all' ? 'active' : ''}`}
@@ -89,7 +61,9 @@ const Reels = ({ openCommentsSidebar }) => {
             </div>
           </div>
 
-          <div className="reels-container">
+
+          <div className="Conten-Reels2">
+            
             {filteredReels.length > 0 ? (
               filteredReels.map(reel => (
                 <Reel 
@@ -110,6 +84,7 @@ const Reels = ({ openCommentsSidebar }) => {
         </div>
       )}
     </motion.div>
+    </div>
   )
 }
 
