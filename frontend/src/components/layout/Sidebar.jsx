@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import CerrarSesion from '../auth/CerrarSesion';
 import '../../assets/css/layout/sidebar.css';
@@ -8,13 +8,60 @@ import { AiOutlineHome, AiOutlineTeam  } from "react-icons/ai";
 import { CgSearch } from "react-icons/cg";
 import { PiVideo } from "react-icons/pi";
 import { HiOutlineUserGroup } from "react-icons/hi2";
-import { IoMdMusicalNote } from "react-icons/io";
 import { IoChatbubblesOutline } from "react-icons/io5";
+import { FiFilter } from "react-icons/fi"; // Icono de filtro
 
 const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const userRole = localStorage.getItem('userRole');
   const [activeIcon, setActiveIcon] = useState(null);
   const [newPostsCount, setNewPostsCount] = useState(0);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showFilter, setShowFilter] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('Todo');
+  const filterRef = useRef(null);
+  const searchRef = useRef(null); // NUEVO: Referencia para el buscador y el filtro
+
+    // Opciones del filtro
+    const filterOptions = ["Todo", "Amigos", "Publicaciones", "Comunidades", "Reels"];
+  useEffect(() => {
+    if (!isExpanded) {
+      setShowSearch(false);
+    }
+  }, [isExpanded]);
+
+  // Ocultar el filtro cuando se haga clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setShowFilter(false);
+      }
+    };
+
+    if (showFilter) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showFilter]);
+
+  const handleFilterClick = () => {
+    setShowFilter(!showFilter);
+  };
+
+  const handleFilterSelect = (option) => {
+    setSelectedFilter(option);
+    setShowFilter(false);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+
+    // Ajusta dinámicamente el ancho basado en la longitud del texto
+    const inputElement = e.target;
+    const textLength = searchTerm.length * 8 + 50; // Calcula el ancho según el texto
+    inputElement.style.width = `${Math.min(Math.max(textLength, 120), 300)}px`;
+  };
 
   const [lastChecked, setLastChecked] = useState(
     localStorage.getItem('lastPostsCheck') || Date.now()
@@ -50,9 +97,12 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
     return (
       <li
         className={`menu-item ${isActive ? 'active' : ''}`}
-        data-tooltip={tooltip}
+        {...(key === "search" && showSearch ? {} : { "data-tooltip": tooltip })}
         onClick={() => {
           setActiveIcon(key);
+          if (key === "search") {
+            setShowSearch(!showSearch); // <-- Activa o desactiva el buscador
+          }
           onClick?.();
         }}
       >
@@ -72,9 +122,37 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
-            }}>{badge}</span>
+            }}>
+              {badge}
+            </span>
           )}
         </Link>
+        {key === "search" && showSearch && (
+         <div className="search-containerSidebar">
+          <input
+            type="text"
+            className="search-inputSidebar"
+            placeholder={`Buscar ${selectedFilter}...`}
+            value={searchTerm}
+            autoFocus
+            onChange={handleInputChange}
+          />
+          {/* Botón de filtro */}
+          <button className="filter-button" onClick={handleFilterClick}>
+            <FiFilter />
+          </button>
+          {/* Opciones de filtro */}
+          {showFilter && (
+            <ul className="filter-dropdown" ref={filterRef}>
+              {filterOptions.map((option) => (
+                <li key={option} onClick={() => handleFilterSelect(option)}>
+                  {option}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        )}
       </li>
     );
   };
