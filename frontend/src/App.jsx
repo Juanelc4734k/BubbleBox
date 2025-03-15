@@ -160,9 +160,10 @@ export default function App() {
       currentPath === "/recover-password" || currentPath === "/recuperar-contrasena") {
       classes += " auth-route"
     }
-
     return classes
+    
   }
+
 
   return (
     <Router>

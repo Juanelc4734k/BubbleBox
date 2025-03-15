@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import '../../assets/css/comunity/communityDetail.css'
 import { FiImage } from "react-icons/fi";
 import { FaChevronUp, FaChevronDown, FaUserTag } from "react-icons/fa";
+import { IoCloseOutline } from 'react-icons/io5';
+import { MdPostAdd } from "react-icons/md";
+
 import {
   getCommunityById,
   getCommunityByPostId,
@@ -32,23 +35,10 @@ import Swal from 'sweetalert2';
   const [mentionSearch, setMentionSearch] = useState('');
   const [showMentions, setShowMentions] = useState(false);
   const [filteredMembers, setFilteredMembers] = useState([]);
-  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [isRulesExpanded, setIsRulesExpanded] = useState(false);
-  const [ isPantallasGrd, setIsPantallasGrd ] = useState(window.innerWidth >=768);
   const userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : null;
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
-  
-    useEffect(() => {
-      const manejo = () =>{
-        setIsPantallasGrd(window.innerWidth >=768);
-      };
 
-      window.addEventListener("resize", manejo);
-      return () => window.removeEventListener("resize", manejo)
-    },[]);
-
-  
     useEffect(() => {
     const fetchCommunityData = async () => {
       try {
@@ -288,7 +278,6 @@ const handleCreatePost = async () => {
   return (
     <div className="communityDetail">
       <div className="communityDetail-Conten1">
-        
            <div className="imagenCommunity" >
                {/* icono para salir de la comunidad */}
                 <img
@@ -327,14 +316,15 @@ const handleCreatePost = async () => {
                         />
                     </div>
                 ))}
+
+
             </div>
-          
-            {isPantallasGrd && isMemberStatus && (
-            <div className="communityPublicConten3">
+      
+            <div className="information-Community">
             <div className={`info-block ${!isClick ? "expanded" : ""}`}>
               <h3>Descripción</h3>
               <div className={`descripcion ${!isClick ? "expanded" : ""}`}>
-                {community.descripcion}
+              {community.descripcion}
               </div>
             </div>
 
@@ -354,7 +344,7 @@ const handleCreatePost = async () => {
               {isClick ? <FaChevronDown /> : <FaChevronUp />}
             </button>
           </div>
-            )}
+
         </div>
         </div>
       </div>
@@ -373,7 +363,7 @@ const handleCreatePost = async () => {
                     handleTextareaChange(e);
                   }}
                   rows="3"
-                ></textarea>
+                > </textarea>
                 {showMentions && filteredMembers.length > 0 && (
                   <div className="mentions-dropdown">
                     {filteredMembers.map(member => (
@@ -408,20 +398,38 @@ const handleCreatePost = async () => {
                   <span>Mencionar</span>
                 </button>
               </div>
+
                 
-                {showModal && (
+              
+              <button className="post-button" onClick={() => handleCreatePost()}>
+                Publicar
+              </button>
+            </div>
+          </div>
+
+          
+        </div>
+      )}
+      </div>
+
+      <div className="communityDetail-Conten2-modal">
+          {showModal && (
                   <div className="modal-overlay">
                     <div className="modal-content">
                       <div className="modal-header">
+                        <div className="Info-header">
+                        <span> <MdPostAdd/> </span>
                         <h3>Crear publicación</h3>
+                        </div>
                         <button onClick={() => {
                           setShowModal(false);
                           setSelectedImage(null);
                           setImagePreview(null);
                           setPostContent('');
-                        }}>×</button>
+                        }}> <IoCloseOutline/> </button>
                       </div>
                       <div className="modal-body">
+                        <p>Descripción</p>
                         <textarea
                           placeholder="¿Qué quieres compartir con la comunidad?"
                           value={postContent}
@@ -436,7 +444,7 @@ const handleCreatePost = async () => {
                           id="image-input"
                         />
                         <label htmlFor="image-input" className="image-upload-button">
-                          <FiImage /> Seleccionar imagen
+                          <span><FiImage /></span>  Seleccionar imagen
                         </label>
                         {imagePreview && (
                           <div className="image-preview">
@@ -444,7 +452,7 @@ const handleCreatePost = async () => {
                             <button onClick={() => {
                               setSelectedImage(null);
                               setImagePreview(null);
-                            }}>Eliminar imagen</button>
+                            }}><IoCloseOutline/> </button>
                           </div>
                         )}
                       </div>
@@ -460,18 +468,14 @@ const handleCreatePost = async () => {
                     </div>
                   </div>
                 )}
-              <button className="post-button" onClick={() => handleCreatePost()}>
-                Publicar
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
       </div>
+    
+        
       <div className="communityDetail-Conten3">
         <div className="community-content">
           <div className="posts-section">
             <h2>Publicaciones</h2>
+            <div className="conten-Post-1">
             {posts.map(post => (
               <div key={post.id} className={`community-post ${post.imagen ? 'with-image' : 'no-image'}`}>
                 <div className="post-header">
@@ -482,8 +486,8 @@ const handleCreatePost = async () => {
                       className="user-avatar"
                     />
                     <div className="post-info">
-                      <h3>{post.nombre_usuario}</h3>
                       <span className="post-date">{new Date(post.fecha_creacion).toLocaleString()}</span>
+                      <h3>{post.nombre_usuario}</h3>
                     </div>
                   </div>
                 </div>
@@ -501,6 +505,7 @@ const handleCreatePost = async () => {
                 </div>
               </div>
             ))}
+            </div>
           </div>
         </div>
       </div>
