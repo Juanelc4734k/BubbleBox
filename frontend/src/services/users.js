@@ -112,3 +112,13 @@ export const updateUserSettings = async (settings) => {
         throw error;
     }
 };
+
+export const getUsersByQuery = async (query) => {
+  try {
+    const response = await axios.get(`${API_URL}/users/buscar-usuarios/query=${query}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al buscar usuarios:', error);
+    throw error;
+  }
+};

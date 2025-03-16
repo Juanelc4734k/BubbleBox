@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { getUsers } from '../../services/users';
+import { getAllPosts } from '../../services/posts';
 import CerrarSesion from '../auth/CerrarSesion';
 import '../../assets/css/layout/sidebar.css';
 import { FaUsers, FaCog, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
@@ -18,7 +20,13 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilter, setShowFilter] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const searchTimeout = useRef(null);
   const [selectedFilter, setSelectedFilter] = useState('Todo');
+  const currentUserId = parseInt(localStorage.getItem('userId'));
+  const avatarDefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const filterRef = useRef(null);
   const searchRef = useRef(null); // NUEVO: Referencia para el buscador y el filtro
 
@@ -55,13 +63,89 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   };
 
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
-
-    // Ajusta dinámicamente el ancho basado en la longitud del texto
+    const value = e.target.value;
+    setSearchTerm(value);
+  
+    // Debounce the search
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+  
+    searchTimeout.current = setTimeout(() => {
+      if (value.trim()) {
+        handleSearch(value, selectedFilter);
+      } else {
+        setSearchResults([]);
+      }
+    }, 500);
     const inputElement = e.target;
-    const textLength = searchTerm.length * 8 + 50; // Calcula el ancho según el texto
+    const textLength = value.length * 8 + 50;
     inputElement.style.width = `${Math.min(Math.max(textLength, 120), 300)}px`;
   };
+
+  const paginateResults = (items) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return items.slice(startIndex, endIndex);
+  };
+
+const handleSearch = async (term, filter) => {
+  try {
+    setCurrentPage(1);
+    let results = [];
+    const searchTerm = term.toLowerCase();
+    
+    switch (filter.toLowerCase()) {
+      case 'usuarios':
+      case 'amigos':
+        const userData = await getUsers();
+        results = userData.filter(user => {
+          const nombre = user.nombre?.toLowerCase() || '';
+          const username = user.username?.toLowerCase() || '';
+          return (user.id !== currentUserId) && // Exclude current user
+                 (nombre.includes(searchTerm) || username.includes(searchTerm));
+        });
+        break;
+        
+      case 'publicaciones':
+        const posts = await getAllPosts();
+        results = posts.filter(post => {
+          const contenido = post.contenido?.toLowerCase() || '';
+          return contenido.includes(searchTerm);
+        });
+        break;
+        
+      case 'todo':
+        const [users, allPosts] = await Promise.all([
+          getUsers(),
+          getAllPosts()
+        ]);
+        
+        const filteredUsers = users.filter(user => {
+          const nombre = user.nombre?.toLowerCase() || '';
+          const username = user.username?.toLowerCase() || '';
+          return nombre.includes(searchTerm) || username.includes(searchTerm);
+        });
+        
+        const filteredPosts = allPosts.filter(post => {
+          const contenido = post.contenido?.toLowerCase() || '';
+          return contenido.includes(searchTerm);
+        });
+        
+        results = { users: filteredUsers, posts: filteredPosts };
+        break;
+
+      default:
+        results = [];
+    }
+    
+    setSearchResults(results);
+    console.log('Search results:', results);
+  } catch (error) {
+    console.error('Error searching:', error);
+    setSearchResults([]);
+  }
+};
 
   const [lastChecked, setLastChecked] = useState(
     localStorage.getItem('lastPostsCheck') || Date.now()
@@ -89,6 +173,8 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
     const interval = setInterval(fetchNewPosts, 5000);
     return () => clearInterval(interval);
   }, [lastChecked]);
+
+  
 
   // Modify renderMenuItem to include badge counter
   const renderMenuItem = (icon, path, tooltip, key, onClick, badge) => {
@@ -128,30 +214,100 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
           )}
         </Link>
         {key === "search" && showSearch && (
-         <div className="search-containerSidebar">
-          <input
-            type="text"
-            className="search-inputSidebar"
-            placeholder={`Buscar ${selectedFilter}...`}
-            value={searchTerm}
-            autoFocus
-            onChange={handleInputChange}
-          />
-          {/* Botón de filtro */}
-          <button className="filter-button" onClick={handleFilterClick}>
-            <FiFilter />
-          </button>
-          {/* Opciones de filtro */}
-          {showFilter && (
-            <ul className="filter-dropdown" ref={filterRef}>
-              {filterOptions.map((option) => (
-                <li key={option} onClick={() => handleFilterSelect(option)}>
-                  {option}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          <div 
+            className="search-containerSidebar" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <input
+              type="text"
+              className="search-inputSidebar"
+              placeholder={`Buscar ${selectedFilter}...`}
+              value={searchTerm}
+              autoFocus
+              onChange={handleInputChange}
+            />
+            <button className="filter-button" onClick={handleFilterClick}>
+              <FiFilter />
+            </button>
+            {showFilter && (
+              <ul className="filter-dropdown" ref={filterRef}>
+                {filterOptions.map((option) => (
+                  <li key={option} onClick={() => handleFilterSelect(option)}>
+                    {option}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {/* Add search results here */}
+            {(Array.isArray(searchResults) ? searchResults.length > 0 : (searchResults.users?.length > 0 || searchResults.posts?.length > 0)) && (
+              <div className="search-results">
+                {Array.isArray(searchResults) ? (
+                  <ul>
+                    {searchResults.map((result) => (
+                      <li key={result.id}>
+                        {result.nombre || result.contenido}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>
+                    {searchResults.users?.length > 0 && (
+                      <div>
+                        <h4>Usuarios</h4>
+                        <ul>
+                          {paginateResults(searchResults.users).map(user => (
+                            <li key={user.id}>
+                              <Link to={`/perfil/${user.id}`} className="user-item">
+                                <img 
+                                  src={user.avatar ? `http://localhost:3009${user.avatar}` : avatarDefault}
+                                  alt={user.nombre} 
+                                  className="user-avatar"
+                                />
+                                <span>{user.nombre}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        {searchResults.users.length > itemsPerPage && (
+                          <div className="pagination">
+                            <button 
+                              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                              disabled={currentPage === 1}
+                              className="pagination-button"
+                            >
+                              ←
+                            </button>
+                            <span className="page-info">{currentPage} / {Math.ceil(searchResults.users.length / itemsPerPage)}</span>
+                            <button 
+                              onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(searchResults.users.length / itemsPerPage)))}
+                              disabled={currentPage >= Math.ceil(searchResults.users.length / itemsPerPage)}
+                              className="pagination-button"
+                            >
+                              →
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {searchResults.posts?.length > 0 && (
+                      <div>
+                        <h4>Publicaciones</h4>
+                        <ul>
+                          {searchResults.posts.map(post => (
+                            <li key={post.id}>
+                              <div className="post-content">
+                                {post.contenido}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         )}
       </li>
     );
