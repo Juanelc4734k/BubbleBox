@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import Communities from "./pages/Communities.jsx"
 import CommunityDetail from "./components/comunity/CommunityDetail.jsx"
+import CommunityAdmin from "./components/comunity/CommunityAdmin.jsx"
 import Sidebar from "./components/layout/Sidebar"
 import Navbar from "./components/layout/Navbar"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
@@ -249,6 +250,16 @@ export default function App() {
                 }
               />
               <Route
+                path="/comunidad/:id/admin"
+                element={
+                  <ProtectedRoute>
+                    <ProtectedRouteCommunity>
+                      <CommunityAdmin />
+                    </ProtectedRouteCommunity>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="/friends"
                 element={
                   <ProtectedRoute>
@@ -315,4 +326,5 @@ export default function App() {
     </Router>
   )
 }
+
 

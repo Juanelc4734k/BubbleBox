@@ -4,6 +4,7 @@ import { getUsers } from '../../services/users';
 import '../../assets/css/comunity/community.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { FaCog } from 'react-icons/fa';
 import { FiMoreVertical, FiEdit, FiTrash2, FiX } from "react-icons/fi";
 import { IoClose } from 'react-icons/io5';
 
@@ -403,6 +404,14 @@ const Community = () => {
                                         
                                         {showOptionsMenu === community.id && (
                                             <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                                <Link 
+                                                    to={`/comunidad/${community.id}/admin`}
+                                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+                                                    onClick={(e) => e.stopPropagation()}
+                                                >
+                                                    <FaCog className="text-gray-500" />
+                                                    <span>Administrar</span>
+                                                </Link>
                                                 <button 
                                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
                                                     onClick={(e) => handleEditCommunity(e, community)}
