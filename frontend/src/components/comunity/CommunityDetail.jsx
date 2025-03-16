@@ -5,6 +5,8 @@ import { FiImage } from "react-icons/fi";
 import { FaChevronUp, FaChevronDown, FaUserTag } from "react-icons/fa";
 import { IoCloseOutline } from 'react-icons/io5';
 import { MdPostAdd } from "react-icons/md";
+import { FiFlag } from "react-icons/fi";
+import ModalReport from '../reports/modalReport';
 
 import {
   getCommunityById,
@@ -28,6 +30,7 @@ import Swal from 'sweetalert2';
   // Add these states at the top of your component
 
   const [showModal, setShowModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -296,14 +299,37 @@ const handleCreatePost = async () => {
             <h1>{community.nombre}</h1>
             <p>{members.length} Miembros</p>
         
-            {community.id_creador !== userId && (
+            <div className="community-actions">
+              {community.id_creador !== userId && (
                 <button 
-                    type="button"
-                    onClick={handleMembership}
-                    className={`uni-De ${isMemberStatus ? 'leave-btn' : 'join-btn'}`}>
-                    {isMemberStatus ? 'Dejar' : 'Unirme'}
+                  type="button"
+                  onClick={handleMembership}
+                  className={`uni-De ${isMemberStatus ? 'leave-btn' : 'join-btn'}`}>
+                  {isMemberStatus ? 'Dejar' : 'Unirme'}
                 </button>
-            )}
+              )}
+              
+              {/* Add report button */}
+              {community.id_creador !== userId && (
+                <button
+                  type="button"
+                  onClick={() => setShowReportModal(true)}
+                  className="report-btn"
+                >
+                  <FiFlag />
+                  <span>Reportar</span>
+                </button>
+              )}
+
+              {/* Add Modal Report component */}
+              <ModalReport
+                isOpen={showReportModal}
+                onClose={() => setShowReportModal(false)}
+                contentId={community?.id}
+                contentType="comunidad"
+                reportedUserId={community?.id_creador}
+              />
+            </div>
             <div className="members-list">
                 {members.map(member => (
                     <div key={member.id} className="member-item">
