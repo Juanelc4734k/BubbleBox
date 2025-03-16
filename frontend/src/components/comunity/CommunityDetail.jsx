@@ -321,14 +321,7 @@ const handleCreatePost = async () => {
                 </button>
               )}
 
-              {/* Add Modal Report component */}
-              <ModalReport
-                isOpen={showReportModal}
-                onClose={() => setShowReportModal(false)}
-                contentId={community?.id}
-                contentType="comunidad"
-                reportedUserId={community?.id_creador}
-              />
+              
             </div>
             <div className="members-list">
                 {members.map(member => (
@@ -535,7 +528,14 @@ const handleCreatePost = async () => {
           </div>
         </div>
       </div>
-     
+     {/* Add Modal Report component */}
+     <ModalReport
+                isOpen={showReportModal}
+                onClose={() => setShowReportModal(false)}
+                contentId={community?.id}
+                contentType="comunidad"
+                reportedUserId={community?.id_creador}
+              />
     </div>
   );
 };
