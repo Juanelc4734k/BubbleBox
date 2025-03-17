@@ -27,7 +27,7 @@ EXPOSE 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012 3013 301
 
 # Definir healthcheck
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/users/health || exit 1
 
 # Establecer el directorio de trabajo para el inicio del servicio
 WORKDIR /app/backend
