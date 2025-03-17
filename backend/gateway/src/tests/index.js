@@ -30,6 +30,12 @@ const servicios = {
   reports: 'http://localhost:3015'
 };
 
+
+app.get('/users/health', (req, res) => {
+  console.log('Healthcheck solicitado para el servicio "users"');
+  proxy.web(req, res, { target: `${servicios.users}/health`, ignorePath: true });
+});
+
 // Middleware para manejar el enrutamiento de solicitudes a microservicios
 app.use((req, res) => {
   const servicio = req.url.split('/')[1];
