@@ -22,12 +22,12 @@ COPY backend/scripts/startAllServices.cjs /app/backend/scripts/
 # Instalar curl para el healthcheck
 RUN apt-get update && apt-get install -y curl
 
-# Exponer los puertos necesarios
+# Exponer los puertos necesarios (3000 a 3015)
 EXPOSE 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012 3013 3014 3015
 
-# Definir healthcheck (se verifica la ruta /users/health)
+# Definir healthcheck (se verifica la ruta /users/health en el gateway)
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:3000/users/health || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${GATEWAY_PORT:-3000}/users/health || exit 1
 
 # Establecer el directorio de trabajo para el inicio del servicio
 WORKDIR /app/backend
