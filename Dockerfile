@@ -2,33 +2,34 @@ FROM node:18
 
 WORKDIR /app
 
-# Copy package files first
+# Copiar los archivos package.json de cada servicio y frontend
 COPY backend/gateway/package*.json ./backend/gateway/
 COPY backend/services/package*.json ./backend/services/
 COPY frontend/package*.json ./frontend/
 
-# Install dependencies
+# Instalar dependencias de cada parte
 RUN cd backend/gateway && npm install
-RUN cd ../services && npm install
-RUN cd ../../frontend && npm install
+RUN cd backend/services && npm install
+RUN cd frontend && npm install
 
-# Copy the entire project
+# Copiar el resto del proyecto
 COPY . .
 
-# Make sure scripts directory exists and copy the start script
+# Asegurarse de que el directorio de scripts exista y copiar el script de inicio
 RUN mkdir -p /app/backend/scripts
 COPY backend/scripts/startAllServices.cjs /app/backend/scripts/
 
-# Install curl for healthcheck
+# Instalar curl para el healthcheck
 RUN apt-get update && apt-get install -y curl
 
-# Expose ports
-EXPOSE 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012
+# Exponer los puertos necesarios
+EXPOSE 3000 3001 3002 3003 3004 3005 3006 3007 3008 3009 3010 3011 3012 3013 3014 3015
 
+# Definir healthcheck
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
-# Set the working directory to where the script is
+# Establecer el directorio de trabajo para el inicio del servicio
 WORKDIR /app/backend
 
 CMD ["node", "scripts/startAllServices.cjs"]
