@@ -13,7 +13,7 @@ import CreateStories from "../stories/CreateStories";
 import Notifications from "./Notifications";
 import CreateGroup from "../chats/CreateGroup";
 
-const Navbar = ({ toggleSidebar, isCreateGroupOpen, setIsCreateGroupOpen }) => {
+const Navbar = ({ toggleSidebar, isCreateGroupOpen, setIsCreateGroupOpen, isModalReport, setIsModalReport }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const userRole = localStorage.getItem("userRole")
@@ -87,7 +87,7 @@ const Navbar = ({ toggleSidebar, isCreateGroupOpen, setIsCreateGroupOpen }) => {
 
   // Navbar para usuario
   const renderUserNavbar = () => (
-    <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""} ${isCreateGroupOpen ? "modal-open" : ""} `}>
+    <nav className={`navbar user-navbar ${isExpanded ? "expanded" : ""} ${isCreateGroupOpen, isModalReport ? "modal-open" : ""} `}>
       <div className="navbar-content">
         <div className="navbar-left">
           <div className="navbar-img">
