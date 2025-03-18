@@ -36,6 +36,7 @@ export default function App() {
   const [commentsContentId, setCommentsContentId] = useState(null)
   const [commentsContentType, setCommentsContentType] = useState(null)
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const [isModalReport, setIsModalReport] = useState(false);
 
   // Detectar cambios de tamaño de pantalla
   useEffect(() => {
@@ -115,7 +116,6 @@ export default function App() {
         try {
           const decodedToken = JSON.parse(atob(token.split(".")[1]))
           const expirationTime = decodedToken.exp * 1000
-
           if (Date.now() >= expirationTime) {
             await logoutUser()
             localStorage.clear()
@@ -155,7 +155,6 @@ export default function App() {
     if (isAuthenticated) {
       classes += isSidebarExpanded ? " sidebar-visible" : " sidebar-hidden"
     }
-
     // Agregar clase para rutas de autenticación
     if (currentPath === "/login" || currentPath === "/register" || 
       currentPath === "/recover-password") {
@@ -177,6 +176,8 @@ export default function App() {
               toggleSidebar={toggleSidebar}
               isCreateGroupOpen={isCreateGroupOpen}
               setIsCreateGroupOpen={setIsCreateGroupOpen}
+              isModalReport={isModalReport}
+              setIsModalReport={setIsModalReport}
             />
             <Sidebar
               isExpanded={isSidebarExpanded}
@@ -199,6 +200,8 @@ export default function App() {
                 contentType={commentsContentType}
                 onClose={closeCommentsSidebar}
                 className={`sidebar-comments visible`}
+                isModalReport={isModalReport}
+                setIsModalReport={setIsModalReport}
               />
             )}
           </>
