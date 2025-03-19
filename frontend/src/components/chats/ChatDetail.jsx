@@ -5,6 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { FaRegFaceSmileWink } from "react-icons/fa6";
 import { FaMicrophone, FaStop, FaEdit, FaTrash, FaBan } from "react-icons/fa";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
+import { IoMdAttach, IoMdImage, IoMdDocument } from "react-icons/io";
 
 const EmojiPicker = lazy(() => import ('emoji-picker-react'))
 
@@ -33,6 +34,11 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
   const [audioBlob, setAudioBlob] = useState(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [currentAudioId, setCurrentAudioId] = useState(null);
+
+  const [showAttachMenu, setShowAttachMenu] = useState(false);
+  const [fileUploadType, setFileUploadType] = useState(null);
+  const [fileToUpload, setFileToUpload] = useState(null);
+  const fileInputRef = useRef(null);
 
   const messagesEndRef = useRef(null);
   const socketRef = useRef();
@@ -413,6 +419,124 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     } catch (err) {
       console.error("Error sending message:", err);
       setError("Error sending message");
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setFileToUpload(file);
+      
+      // Automatically send the file after selection
+      sendFileMessage(file);
+    }
+  };
+
+  const triggerFileInput = (type) => {
+    setFileUploadType(type);
+    setShowAttachMenu(false);
+    
+    // Set a timeout to ensure the state is updated before clicking
+    setTimeout(() => {
+      fileInputRef.current.click();
+    }, 100);
+  };
+
+  const sendFileMessage = async (file) => {
+    if (!file || !socketRef.current?.connected) return;
+  
+    try {
+      const tempId = `temp_${Date.now()}`;
+      const fileType = file.type.split('/')[0]; // 'image', 'application', etc.
+      
+      // Create FormData for sending the file
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('senderId', senderId);
+      formData.append('receiverId', chatId);
+      formData.append('temp_id', tempId);
+      formData.append('senderAvatar', currentUserAvatar);
+      
+      // Add to pending messages
+      setPendingMessages((prev) => new Set([...prev, tempId]));
+      
+      // Create temporary URL for the file
+      const fileUrl = URL.createObjectURL(file);
+      
+      // Add temporary message to UI
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: tempId,
+          sender_id: parseInt(senderId),
+          receiver_id: parseInt(chatId),
+          message: fileType === 'image' ? "image_message" : "file_message",
+          file_url: fileUrl,
+          file_type: fileType,
+          file_name: file.name,
+          created_at: new Date().toISOString(),
+          pending: true,
+          avatar: currentUserAvatar,
+        },
+      ]);
+  
+      console.log("Sending file message with temp_id:", tempId);
+      
+      // Send to server
+      const response = await fetch('http://localhost:3001/chats/file-message', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const responseData = await response.json();
+      console.log("File message upload response:", responseData);
+      
+      if (socketRef.current?.connected) {
+        socketRef.current.emit('send_file_message', {
+          senderId: parseInt(senderId),
+          receiverId: parseInt(chatId),
+          temp_id: tempId,
+          filePath: responseData.filePath,
+          fileType: responseData.fileType,
+          fileName: responseData.fileName,
+          id: responseData.id || responseData.messageId,
+          created_at: new Date().toISOString(),
+          senderAvatar: currentUserAvatar
+        });
+      }
+      
+      // Reset file upload state
+      setFileToUpload(null);
+      setFileUploadType(null);
+      
+      console.log("File message sent successfully");
+  
+      // Manually update the message status if confirmation doesn't come quickly
+      setTimeout(() => {
+        setPendingMessages((prev) => {
+          const newSet = new Set(prev);
+          if (newSet.has(tempId)) {
+            newSet.delete(tempId);
+            // Also update the message to not show pending
+            setMessages((prevMsgs) =>
+              prevMsgs.map((msg) =>
+                msg.id === tempId ? { ...msg, pending: false } : msg
+              )
+            );
+          }
+          return newSet;
+        });
+      }, 3000);
+  
+      if (typeof onMessageSent === 'function') {
+        // Use setTimeout to ensure UI updates before refreshing the chat list
+        setTimeout(() => {
+          onMessageSent();
+        }, 500);
+      }
+    } catch (err) {
+      console.error("Error sending file message:", err);
+      setError("Error al enviar mensaje con archivo");
     }
   };
 
@@ -853,6 +977,90 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       }
     });
 
+    socketRef.current.on('receive_file_message', (message) => {
+      console.log("Received file message:", message);
+      setMessages((prev) => {
+        let messageAvatar;
+        if (parseInt(message.senderId) === parseInt(senderId)) {
+          messageAvatar = message.senderAvatar || currentUserAvatar;
+        } else {
+          messageAvatar = message.senderAvatar || avatarUrl;
+        }
+        
+        let fileUrl = `http://localhost:3001${message.filePath}`;
+        if (message.fileType === 'application/pdf' || (message.fileName && message.fileName.toLowerCase().endsWith('.pdf'))) {
+          // Insert /pdf/ into the path for PDF files
+          const pathParts = message.filePath.split('/');
+          const documentsIndex = pathParts.indexOf('documents');
+          if (documentsIndex !== -1 && documentsIndex < pathParts.length - 1) {
+            pathParts.splice(documentsIndex + 1, 0, 'pdf');
+            fileUrl = `http://localhost:3001${pathParts.join('/')}`;
+          }
+        }
+        const newMessage = {
+          id: message.id,
+          sender_id: parseInt(message.senderId),
+          receiver_id: parseInt(message.receiverId),
+          message: message.fileType === 'image' ? "image_message" : "file_message",
+          file_url: fileUrl,
+          file_type: message.fileType,
+          file_name: message.fileName,
+          created_at: message.created_at,
+          avatar: messageAvatar
+        };
+  
+        if (message.temp_id && parseInt(message.senderId) === parseInt(senderId)) {
+          return prev;
+        }
+  
+        const messageExists = prev.some(
+          (m) =>
+            m.id === newMessage.id ||
+            (m.file_url && m.file_url.includes(message.filePath) &&
+              m.sender_id === newMessage.sender_id &&
+              Math.abs(new Date(m.created_at) - new Date(newMessage.created_at)) < 1000)
+        );
+  
+        if (!messageExists) {
+          return [...prev, newMessage].sort(
+            (a, b) => new Date(a.created_at) - new Date(b.created_at)
+          );
+        }
+        return prev;
+      });
+  });
+  
+  socketRef.current.on('file_message_sent_confirmation', ({ temp_id, id, filePath, fileType, fileName }) => {
+      console.log("File message confirmation received:", { temp_id, id, filePath });
+      
+      // Remove from pending messages
+      setPendingMessages((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(temp_id);
+        return newSet;
+      });
+  
+      // Update the message with the permanent ID and server URL
+      setMessages((prev) => {
+        const updatedMessages = prev.map((msg) =>
+          msg.id === temp_id ? { 
+            ...msg, 
+            id, 
+            pending: false,
+            file_url: `http://localhost:3001${filePath}`
+          } : msg
+        );
+        
+        console.log("Updated messages after file confirmation:", 
+          updatedMessages.find(m => m.id === id || m.id === temp_id));
+        
+        return updatedMessages;
+      });
+      
+      // Force a re-render to ensure UI updates
+      forceUpdate();
+  });
+
     return () => {
       socketRef.current?.off("message_sent_confirmation");
       socketRef.current?.off('receive_audio_message');
@@ -861,6 +1069,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       socketRef.current?.off("message_deleted");
       socketRef.current?.off("all_messages_deleted");
       socketRef.current?.off("user_blocked_notification");
+      socketRef.current?.off('receive_file_message');
     };
   }, [chatId, senderId, friendUser.nombre, onCloseChat]);
 
@@ -955,6 +1164,43 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
           <span className="audio-duration">
             {message.duration || "0:00"}
           </span>
+          {message.pending && (
+            <span className="text-xs opacity-70 ml-2">Sending...</span>
+          )}
+        </div>
+      );
+    } else if (message.message === "image_message") {
+      return (
+        <div className="image-message">
+          <img 
+            src={message.file_url} 
+            alt="Shared image" 
+            className="shared-image"
+            onClick={() => window.open(message.file_url, '_blank')}
+          />
+          {message.pending && (
+            <span className="text-xs opacity-70 ml-2">Sending...</span>
+          )}
+        </div>
+      );
+    } else if (message.message === "file_message") {
+      return (
+        <div className="file-message">
+          <a 
+            href={message.file_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="file-download-link"
+          >
+            <div className="file-icon">
+              {/* You can add different icons based on file type */}
+              📄
+            </div>
+            <div className="file-info">
+              <span className="file-name">{message.file_name}</span>
+              <span className="file-type">{message.file_type}</span>
+            </div>
+          </a>
           {message.pending && (
             <span className="text-xs opacity-70 ml-2">Sending...</span>
           )}
@@ -1100,6 +1346,35 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
               >
                 <FaMicrophone />
               </button>
+              {/* Attachment menu */}
+              {/* Add attachment button here */}
+              <button 
+                type="button" 
+                className="attach-button"
+                onClick={() => setShowAttachMenu(!showAttachMenu)}
+              >
+                <IoMdAttach />
+              </button>
+              
+              {/* Attachment menu */}
+              {showAttachMenu && (
+                <div className="attach-menu">
+                  <button 
+                    type="button"
+                    onClick={() => triggerFileInput('image')}
+                    className="attach-option"
+                  >
+                    <IoMdImage /> Image
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={() => triggerFileInput('document')}
+                    className="attach-option"
+                  >
+                    <IoMdDocument /> Document
+                  </button>
+                </div>
+              )}
               {isEmojiPickerInitialized && (
                 <div className={`emoji-picker-container ${showEmojiPicker ? 'visible' : 'hidden'}`}>
                   <Suspense fallback={<div className="loading-emoji">Cargando emojis...</div>}>
@@ -1154,6 +1429,13 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             </div>
           )}
         </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handleFileSelect}
+          accept={fileUploadType === 'image' ? 'image/*' : '*'}
+        />
         {audioBlob && !isRecording && (
           <div className="audio-preview">
             <div className="audio-preview-controls">
@@ -1189,6 +1471,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             </div>
           </div>
         )}
+
       </form>
     </div>
   );
