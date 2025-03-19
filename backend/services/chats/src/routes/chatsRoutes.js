@@ -6,6 +6,9 @@ const upload = require('../middleware/multer');
 
 router.get('/messages/:userId1/:userId2', chatController.getMessages);
 router.post('/messages', chatController.createMessage);
+
+router.post('/file-message', upload.single('file'), chatController.createFileMessage);
+
 router.put('/messages/:messageId', chatController.updateMessage);
 router.delete('/messages/:messageId', chatController.deleteMessage);
 router.get('/unread/:userId/:friendId', chatController.getUnreadCount);

@@ -75,6 +75,85 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('send_file_message', async (data) => {
+        try {
+            // Check if users are friends
+            const areFriends = await friendshipModel.checkFriendship(data.senderId, data.receiverId);
+            if (!areFriends) {
+                socket.emit('error', 'No puedes enviar mensajes a usuarios que no son tus amigos');
+                return;
+            }
+            
+            // Create room ID for the chat
+            const roomId = [data.senderId, data.receiverId].sort().join('-');
+            
+            const existingMessage = await chatModel.getFileMessageByPath(data.filePath);
+    
+            let savedFile;
+            if(existingMessage) {
+                console.log('File message already exists, using existing record:', existingMessage);
+                savedFile = existingMessage;
+            } else {
+                const messageData = {
+                    sender_id: data.senderId,
+                    receiver_id: data.receiverId,
+                    file_path: data.filePath,
+                    file_type: data.fileType,
+                    file_name: data.fileName
+                };
+    
+                // Save file message to database
+                savedFile = await chatModel.saveFileMessage(messageData);
+                console.log('File message saved to database:', savedFile);
+            }
+    
+            // Log the data received for debugging
+            console.log('File message data received:', data);
+    
+            // Broadcast to all clients in the room, including sender
+            io.in(roomId).emit('receive_file_message', {
+                id: savedFile.id,
+                senderId: data.senderId,
+                receiverId: data.receiverId,
+                filePath: data.filePath,
+                fileType: data.fileType,
+                fileName: data.fileName,
+                created_at: savedFile.createdAt,
+                temp_id: data.temp_id,
+                senderAvatar: data.senderAvatar
+            });
+    
+            // Send confirmation back to sender
+            socket.emit('file_message_sent_confirmation', {
+                temp_id: data.temp_id,
+                id: savedFile.id,
+                filePath: data.filePath,
+                fileType: data.fileType,
+                fileName: data.fileName
+            });
+            
+            // Send notification
+            try {
+                let nombreRemitente = 'Usuario';
+                const respuestaUsuario = await axios.get(`http://localhost:3000/users/usuario/${data.senderId}`);
+                nombreRemitente = respuestaUsuario.data.nombre;
+                
+                const notificationType = data.fileType === 'image' ? 'imagen' : 'archivo';
+                
+                await axios.post(`http://localhost:3000/notifications/send`, {
+                    usuario_id: data.receiverId,
+                    tipo: 'message',
+                    contenido: `Tu amigo ${nombreRemitente} te ha enviado ${data.fileType === 'image' ? 'una imagen' : 'un archivo'}`
+                });
+            } catch (notifError) {
+                console.error('Error al enviar la notificación:', notifError.message);
+            }
+        } catch (error) {
+            console.error('Error saving file message:', error);
+            socket.emit('error', 'Error al enviar el mensaje con archivo');
+        }
+    });
+
     socket.on('edit_message', async ({ messageId, senderId, newContent }) => {
         try {
             const message = await chatModel.getMessageById(messageId);

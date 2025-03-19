@@ -43,6 +43,46 @@ const saveAudioMessage = (messageData) => {
     });
 };
 
+const saveFileMessage = async (messageData) => {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO messages (sender_id, receiver_id, file_path, file_name, file_type, file_size) VALUES (?, ?, ?, ?, ?, ?)';
+        db.query(query, [
+            messageData.sender_id,
+            messageData.receiver_id,
+            messageData.file_path,
+            messageData.file_name,
+            messageData.file_type,
+            messageData.file_size
+        ], (error, result) => {
+            if (error) reject(error);
+            else resolve({
+                id: result.insertId,
+                senderId: messageData.sender_id,
+                receiverId: messageData.receiver_id,
+                filePath: messageData.file_path,
+                fileName: messageData.file_name,
+                fileType: messageData.file_type,
+                fileSize: messageData.file_size,
+                createdAt: new Date()
+            });
+        });
+    });
+};
+
+const getFileMessageByPath = async (filePath) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM messages WHERE file_path =? LIMIT 1';
+        db.query(query, [filePath], (error, results) => {
+            if (error) {
+                console.error('Error checking for existing file message:', error);
+                reject(error);
+            } else {
+                resolve(results.length > 0? results[0] : null);
+            }
+        });
+    });
+};
+
 const saveMessageWithNotification = async (senderId, receiverId, message) => {
     try {
         // Save the message first
@@ -213,6 +253,8 @@ const getAudioMessageByPath = async (audioPath) => {
 
 module.exports = {
     saveMessage,
+    saveFileMessage,
+    getFileMessageByPath,
     getMessageById,
     saveMessageWithNotification,
     getMessages,
