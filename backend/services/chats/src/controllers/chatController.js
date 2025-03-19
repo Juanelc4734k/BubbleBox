@@ -64,7 +64,7 @@ const createFileMessage = async (req, res) => {
         if (fileType === 'image') {
             filePath = `/uploads/images/${req.file.filename}`;
         } else {
-            filePath = `/uploads/documents/${req.file.filename}`;
+            filePath = `/uploads/documents/pdf/${req.file.filename}`;
         }
         
         console.log('File saved at:', filePath);

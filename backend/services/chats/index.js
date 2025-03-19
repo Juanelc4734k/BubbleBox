@@ -25,6 +25,7 @@ const io = socketIO(server, {
 app.set('io', io);
 
 
+app.use('/uploads/documents', express.static(path.join(__dirname, 'uploads/documents')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //middlewares
