@@ -1,4 +1,4 @@
-/* Story Circle Styles */
+ /* Story Circle Styles */
 .story-circle {
     position: relative;
     width: 65px;
@@ -10,6 +10,7 @@
     transition: transform 0.3s ease;
     box-shadow: 0 5px 7px rgba(0, 0, 0, 0.3);
 }
+
 
 .my-story-indicator {
     position: absolute;

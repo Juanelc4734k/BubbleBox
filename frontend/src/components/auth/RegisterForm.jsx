@@ -1,4 +1,4 @@
-import React, { useState  } from 'react';
+import { useState  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../services/auth';
 import '../../assets/css/auth/resgistro.css';
@@ -6,9 +6,7 @@ import Animation from '../../assets/images/logo/logo.jfif';
 import { FaRegUser } from "react-icons/fa6";
 import { HiOutlineMail } from "react-icons/hi";
 import { SlLock } from 'react-icons/sl';
-import { RiInstagramFill } from "react-icons/ri";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa";
+import { FaRegSquare, FaRegCheckSquare } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 export default function RegisterForm({ setMessage }) {
@@ -76,12 +74,26 @@ export default function RegisterForm({ setMessage }) {
         }
     };
 
+        const [ aceptado, setAceptado ] = useState(false);
+
     return (
 
  <div className="registerFrom">
             <div className="bienvenidoRegister">
                 <h1>Bienvenido a BubbleBox</h1>
                 <img src={Animation} alt="" className="registerAnimation" />
+                <div className="conten-bubbles-register">
+                <div className="bubbless1"></div>
+                <div className="bubbless2"></div>
+                <div className="bubbless3"></div>
+                <div className="bubbless4"></div>
+                <div className="bubbless5"></div>
+                <div className="bubbless6"></div>
+                <div className="bubbless7"></div>
+                <div className="bubbless8"></div>
+
+                </div>
+
             </div>
             <div className="FormularioRegister">
                 <form onSubmit={handleSubmit}>
@@ -110,12 +122,10 @@ export default function RegisterForm({ setMessage }) {
                         <input type="password" name='contraseña' className='inpuPass' value={formData.contraseña} onChange={handleChange} placeholder='Contraseña' />
                         <div className='linea'></div>
                     </div>
-
-                   <div className="iconos-register">
-                        <FaFacebookF className='iconoRe'/>
-                        <FaGoogle className='iconoRe'/>
-                        <RiInstagramFill className='iconoRe'/>
-                   </div>
+                    <div className="terminos" onClick={() => setAceptado(!aceptado)}>
+                        {aceptado ? <FaRegCheckSquare size={20} /> : <FaRegSquare size={20} />}
+                        <p>Acepto los <span>Términos y Condiciones</span></p> 
+                    </div>
                     <button type="submit">Registrate</button>
                 </form>
             </div>
