@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bubblebox-ydre.onrender.com/reels';
+const API_URL = 'http://127.0.0.1:3000/reels';
 
 export const getAllReels = async () => {
   try {

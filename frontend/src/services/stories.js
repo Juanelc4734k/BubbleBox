@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://bubblebox-ydre.onrender.com/stories';
+const API_URL = 'http://127.0.0.1:3000/stories';
 
 export const getStoriesFriends = (id) => {
     return axios.get(`${API_URL}/amigos/${id}`);
