@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000/comments';
+const API_URL = 'https://bubblebox-ydre.onrender.com/comments';
 
 export const getCommentsByPost = async (idPost) => {
     try {

@@ -36,7 +36,7 @@ export const recoverPassword = async (userData) => {
 
 export const resetPassword = async (token, newPassword) => {
     try {
-        const response = await axios.post(`http://localhost:3000/auth/restablecer-contrasena/${token}`, {
+        const response = await axios.post(`https://bubblebox-ydre.onrender.com/auth/restablecer-contrasena/${token}`, {
             nuevaContrasena: newPassword
         });
         console.log(response.data);
@@ -87,7 +87,7 @@ export const logoutUser = async (userId) => {
 
 export const updateLastSeen = async (userId, status = 'desconectado', lastSeen = new Date().toISOString()) => {
     try {
-        const response = await axios.put(`http://localhost:3001/chats/update-last-seen/${userId}`, {
+        const response = await axios.put(`https://bubblebox-ydre.onrender.com/chats/update-last-seen/${userId}`, {
             status,
             lastSeen
         });

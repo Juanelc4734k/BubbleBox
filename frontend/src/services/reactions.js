@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000/reactions'
+const API_URL = 'https://bubblebox-ydre.onrender.com/reactions'
 
 //Reacciones publicaciones
 export const getReactionsPosts = async (id) => {

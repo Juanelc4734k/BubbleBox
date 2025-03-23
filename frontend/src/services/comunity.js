@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://bubblebox-ydre.onrender.com';
 
 export const getCommunities = async () => {
     const response = await axios.get(`${API_URL}/communities/obtener-todas`);
