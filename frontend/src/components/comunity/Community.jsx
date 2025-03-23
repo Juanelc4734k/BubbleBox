@@ -9,10 +9,6 @@ import { IoClose } from 'react-icons/io5';
 
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
-    const parrafoComm =" Únete a una comunidad";
-    const [mostrarT, setMostrarT] = useState(true);
-    const [noVer, setNoVer] = useState(false);
-    const [textoM, setTextoM] = useState("");
     const [communities, setCommunities] = useState([]);
     const [users, setUsers] = useState([]);
     const [membershipStatus, setMembershipStatus] = useState({}); // [communityId: boolean
@@ -34,30 +30,6 @@ const Community = () => {
     const [editMessage, setEditMessage] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const editModalRef = useRef(null);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setMostrarT(false);
-            setTimeout(() => setNoVer(true), 1500);
-        }, 3000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-
-    useEffect(() => {
-        let i = 0;
-        const escribir = setInterval(() => {
-          if (i <= parrafoComm.length) {
-            setTextoM(parrafoComm.substring(0, i));
-            i++;
-          } else {
-            clearInterval(escribir);
-          }
-        }, 100);
-        
-        return () => clearInterval(escribir);
-    }, []);
 
     useEffect(() => {
         const fetchMembershipStatus = async (communities) => {
@@ -331,33 +303,38 @@ const Community = () => {
     }, [showOptionsMenu]);
     return (
         <div className="community-Conten">
-            <div className='textOcul'>
-                {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
-            </div>
+            <div className='community-conten-header'>
 
-            {/* Tab Navigation */}
-            <div className="tabs-container">
-                <div className="tabs">
+                <div className="tittle-conten-community">
+                <p>Únete a una comunidad</p>
+                </div>
+                            {/* Tab Navigation */}
+            <div className="tabs-container-community">
+                <div className="tabs-community">
                     <button 
-                        className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                        className={`tabOne ${activeTab === 'all' ? 'active' : ''}`}
                         onClick={() => setActiveTab('all')}
                     >
                         Todas las Comunidades
                     </button>
+                    
                     <button 
-                        className={`tab ${activeTab === 'my' ? 'active' : ''}`}
+                        className={`tabTwo ${activeTab === 'my' ? 'active' : ''}`}
                         onClick={() => setActiveTab('my')}
                     >
                         Creadas por mí
                     </button>
                     <button 
-                        className={`tab ${activeTab === 'joined' ? 'active' : ''}`}
+                        className={`tabThree ${activeTab === 'joined' ? 'active' : ''}`}
                         onClick={() => setActiveTab('joined')}
                     >
                         Comunidades Unidas
                     </button>
                 </div>
             </div>
+            </div>
+
+
 
             <div className='communitys'>
                 {filteredCommunities.map((community) => {
@@ -426,8 +403,8 @@ const Community = () => {
                                         <button 
                                             type="button"
                                             onClick={(e) => handleMembership(e, community.id)}
-                                            className={membershipStatus[community.id] ? 'leave-btn' : 'join-btn'}>
-                                            {membershipStatus[community.id] ? 'Dejar' : 'Unirse'}
+                                            className={membershipStatus[community.id] ? 'leave-commu' : 'join-btn'}>
+                                            {membershipStatus[community.id] ? 'Abandonar' : 'Unirse'}
                                         </button>
                                     )}
                                     {isMyCreatedCommunity && (
