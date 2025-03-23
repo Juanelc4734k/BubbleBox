@@ -9,7 +9,8 @@ const createUser = async (nombre, username, email, contraseña) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(contraseña, salt);
     const query = "INSERT INTO usuarios (nombre, username, email, contraseña) VALUES (?, ?, ?, ?)";
-    const [result] = await db.promise().query(query, [nombre, username, email, hashedPassword]);
+    // Fix: Don't destructure the result, just use it directly
+    const result = await db.queryAsync(query, [nombre, username, email, hashedPassword]);
     return result.insertId;
   } catch (error) {
     console.error('Error al crear el usuario:', error);
@@ -21,7 +22,7 @@ const findUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
         console.log('Iniciando búsqueda de usuario por email:', email);
         const query = 'SELECT * FROM usuarios WHERE email = ?';
-        db.query(query, [email], (err, results) => {
+        db.queryCallback(query, [email], (err, results) => {
             if (err) {
                 console.error('Error al buscar usuario por email:', err);
                 return reject(err);
@@ -40,7 +41,7 @@ const findUserByEmail = (email) => {
 const findUserById = (userId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM usuarios WHERE id = ?';
-        db.query(query, [userId], (err, results) => {
+        db.queryCallback(query, [userId], (err, results) => {
             if (err) return reject(err);
             resolve(results[0]);
         });
@@ -55,7 +56,7 @@ const loginUser = async (email, contraseña) => {
     return new Promise((resolve, reject) => {
         console.log('Iniciando consulta a la base de datos');
         const query = 'SELECT * FROM usuarios WHERE email = ?';
-        db.query(query, [email], async (err, results) => {
+        db.queryCallback(query, [email], async (err, results) => {
             if (err) {
                 console.error('Error en la consulta:', err);
                 return reject(err);
@@ -73,7 +74,7 @@ const loginUser = async (email, contraseña) => {
             if (isMatch) {
                 console.log('Actualizando estado del usuario');
                 const updateQuery = 'UPDATE usuarios SET estado = "conectado" WHERE id = ?';
-                db.query(updateQuery, [user.id], (updateErr) => {
+                db.queryCallback(updateQuery, [user.id], (updateErr) => {
                     if (updateErr) {
                         console.error('Error al actualizar estado:', updateErr);
                         return reject(updateErr);
@@ -93,7 +94,7 @@ const loginUser = async (email, contraseña) => {
 const logoutUser = (userId) => {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE usuarios SET estado = "desconectado" WHERE id = ?';
-      db.query(query, [userId], (err, result) => {
+      db.queryCallback(query, [userId], (err, result) => {
         if (err) return reject(err);
         resolve(result);
       });
@@ -103,7 +104,7 @@ const logoutUser = (userId) => {
   const updateUserStatus = (userId, status) => {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE usuarios SET estado = ? WHERE id = ?';
-      db.query(query, [status, userId], (err, result) => {
+      db.queryCallback(query, [status, userId], (err, result) => {
         if (err) return reject(err);
         resolve(result);
       });
@@ -113,7 +114,7 @@ const logoutUser = (userId) => {
 const actualizarContrasena = (userId, nuevaContrasena) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE usuarios SET contraseña = ? WHERE id = ?';
-    db.query(query, [nuevaContrasena, userId], (err, result) => {
+    db.queryCallback(query, [nuevaContrasena, userId], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -123,7 +124,7 @@ const actualizarContrasena = (userId, nuevaContrasena) => {
 const guardarTokenRecuperacion = (userId, token, expiracion) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE usuarios SET token_recuperacion = ?, token_expiracion = ? WHERE id = ?';
-    db.query(query, [token, expiracion, userId], (err, result) => {
+    db.queryCallback(query, [token, expiracion, userId], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -133,7 +134,7 @@ const guardarTokenRecuperacion = (userId, token, expiracion) => {
 const guardarSecreto2FA = (userId, secret) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE usuarios SET secret2FA = ? WHERE id = ?';
-    db.query(query, [secret, userId], (err, result) => {
+    db.queryCallback(query, [secret, userId], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -142,13 +143,13 @@ const guardarSecreto2FA = (userId, secret) => {
 
 const asignarRol = async (userId, rol) => {
   const query = 'UPDATE usuarios SET rol = ? WHERE id = ?';
-  await db.query(query, [rol, userId]);
+  await db.queryCallback(query, [rol, userId]);
 };
 
 const verificarRol = (userId) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT rol FROM usuarios WHERE id = ?';
-    db.query(query, [userId], (err, results) => {
+    db.queryCallback(query, [userId], (err, results) => {
       if (err) {
         console.error('Error al verificar rol:', err);
         return reject(err);
@@ -164,7 +165,7 @@ const verificarRol = (userId) => {
 const obtenerTokenRecuperacion = (token) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM usuarios WHERE token_recuperacion = ?';
-    db.query(query, [token], (err, results) => {
+    db.queryCallback(query, [token], (err, results) => {
       if (err) {
         reject(err);
       } else {
@@ -177,7 +178,7 @@ const obtenerTokenRecuperacion = (token) => {
 const eliminarTokenRecuperacion = (token) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE usuarios SET token_recuperacion = NULL WHERE token_recuperacion = ?';
-    db.query(query, [token], (err, result) => {
+    db.queryCallback(query, [token], (err, result) => {
       if (err) {
         reject(err);
       } else {

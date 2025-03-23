@@ -7,7 +7,7 @@ const crear = (reel) => {
         (usuario_id, archivo_video, descripcion, fecha_creacion) 
         VALUES (?, ?, ?, NOW())
       `;
-      db.query(query, [reel.usuario_id, reel.archivo_video, reel.descripcion], (error, results) => {
+      db.queryCallback(query, [reel.usuario_id, reel.archivo_video, reel.descripcion], (error, results) => {
         if (error) reject(error);
         else resolve(results);
       });
@@ -22,7 +22,7 @@ const crear = (reel) => {
         LEFT JOIN usuarios u ON r.usuario_id = u.id
         ORDER BY r.fecha_creacion DESC
       `;
-      db.query(query, (error, results) => {
+      db.queryCallback(query, (error, results) => {
         if (error) reject(error);
         else resolve(results);
       });
@@ -31,7 +31,7 @@ const crear = (reel) => {
 
 const obtenerPorId = (id) => {
     return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM reels WHERE id = ?', [id], (error, results) => {
+      db.queryCallback('SELECT * FROM reels WHERE id = ?', [id], (error, results) => {
         if (error) reject(error);
         else resolve(results[0]);
       });
@@ -40,7 +40,7 @@ const obtenerPorId = (id) => {
 
 const obtenerPorUsuario = (usuario_id) => {
   return new Promise((resolve, reject) => {
-    db.query('SELECT * FROM reels WHERE usuario_id = ? ORDER BY fecha_creacion DESC', [usuario_id], (error, results) => {
+    db.queryCallback('SELECT * FROM reels WHERE usuario_id = ? ORDER BY fecha_creacion DESC', [usuario_id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -70,7 +70,7 @@ const actualizar = (id, reel) => {
       query += ' WHERE id = ?';
       valores.push(id);
   
-      db.query(query, valores, (error, results) => {
+      db.queryCallback(query, valores, (error, results) => {
         if (error) reject(error);
         else resolve(results);
       });
@@ -79,7 +79,7 @@ const actualizar = (id, reel) => {
 
 const eliminar = (id) => {
   return new Promise((resolve, reject) => {
-    db.query('DELETE FROM reels WHERE id = ?', [id], (error, results) => {
+    db.queryCallback('DELETE FROM reels WHERE id = ?', [id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -97,7 +97,7 @@ const searchReels = (query) => {
       ORDER BY r.fecha_creacion DESC
     `;
     
-    db.query(searchQuery, [searchId], (error, results) => {
+    db.queryCallback(searchQuery, [searchId], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });

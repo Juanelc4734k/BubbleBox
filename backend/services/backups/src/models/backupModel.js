@@ -3,7 +3,7 @@ const db = require('../config/db');
 const createBackup = (filename, userId) => {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO backups (filename, created_at, created_by) VALUES (?, NOW(), ?)";
-        db.query(query, [filename, userId], (err, result) => {
+        db.queryCallback(query, [filename, userId], (err, result) => {
             if(err) return reject(err);
             resolve(result);
         });
@@ -18,7 +18,7 @@ const getBackups = () => {
             LEFT JOIN usuarios u ON b.created_by = u.id
             ORDER BY b.created_at DESC
         `;
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if(err) return reject(err);
             resolve(results);
         });
@@ -28,7 +28,7 @@ const getBackups = () => {
 const logRestore = (filename, userId) => {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO backup_restores (backup_filename, restored_at, restored_by) VALUES (?, NOW(), ?)";
-        db.query(query, [filename, userId], (err, result) => {
+        db.queryCallback(query, [filename, userId], (err, result) => {
             if(err) return reject(err);
             resolve(result);
         });
@@ -38,7 +38,7 @@ const logRestore = (filename, userId) => {
 const deleteBackupRecord = (filename) => {
     return new Promise((resolve, reject) => {
         const query = "DELETE FROM backups WHERE filename = ?";
-        db.query(query, [filename], (err, result) => {
+        db.queryCallback(query, [filename], (err, result) => {
             if(err) return reject(err);
             resolve(result);
         });
@@ -55,7 +55,7 @@ const getBackupStats = () => {
                 (SELECT DATE_FORMAT(MAX(restored_at), '%Y-%m-%d %H:%i:%s') FROM backup_restores) as last_restore_date
             FROM backups
         `;
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if(err) return reject(err);
             resolve(results[0]);
         });
@@ -73,7 +73,7 @@ const getBackupsByMonth = () => {
             GROUP BY DATE_FORMAT(created_at, '%Y-%m')
             ORDER BY month ASC
         `;
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if(err) return reject(err);
             resolve(results);
         });

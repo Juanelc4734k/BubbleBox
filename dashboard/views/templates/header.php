@@ -14,6 +14,8 @@
     <script src="https://kit.fontawesome.com/71b3b9fce3.js" crossorigin="anonymous"></script>
     <!-- CSS Files -->
     <link id="pagestyle" href="../../public/assets/css/argon-dashboard.css" rel="stylesheet" />
+    <!-- ... otros scripts ... -->
+    <script src="../../public/assets/js/pdfGenerator.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="g-sidenav-show bg-gray-100">

@@ -12,7 +12,7 @@ const crearSolicitudAmistad = (idUsuario1, idUsuario2) => {
           SELECT * FROM amistades 
           WHERE (id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?)
         `;
-        db.query(checkQuery, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (checkError, checkResults) => {
+        db.queryCallback(checkQuery, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (checkError, checkResults) => {
           if (checkError) {
             reject(checkError);
           } else if (checkResults.length > 0) {
@@ -28,7 +28,7 @@ const crearSolicitudAmistad = (idUsuario1, idUsuario2) => {
           } else {
             // No existe relación, creamos una nueva solicitud
             const insertQuery = 'INSERT INTO amistades (id_usuario1, id_usuario2, estado, fecha_creacion, fecha_actualizacion) VALUES (?, ?, "pendiente", NOW(), NOW())';
-            db.query(insertQuery, [idUsuario1, idUsuario2], (insertError, insertResults) => {
+            db.queryCallback(insertQuery, [idUsuario1, idUsuario2], (insertError, insertResults) => {
               if (insertError) {
                 reject(insertError);
               } else {
@@ -45,7 +45,7 @@ const crearSolicitudAmistad = (idUsuario1, idUsuario2) => {
 const aceptarSolicitudAmistad = (id) => {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE amistades SET estado = "aceptada", fecha_actualizacion = NOW() WHERE id = ?';
-      db.query(query, [id], (error, results) => {
+      db.queryCallback(query, [id], (error, results) => {
         if (error) reject(error);
         else {
           if (results.affectedRows > 0) {
@@ -61,7 +61,7 @@ const aceptarSolicitudAmistad = (id) => {
 const rechazarSolicitudAmistad = (id) => {
   return new Promise((resolve, reject) => {
     const query = 'UPDATE amistades SET estado = "rechazada", fecha_actualizacion = NOW() WHERE id = ?';
-    db.query(query, [id], (error, results) => {
+    db.queryCallback(query, [id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -78,7 +78,7 @@ const obtenerAmistades = (idUsuario) => {
       WHERE (a.id_usuario1 = ? OR a.id_usuario2 = ?) 
       AND a.estado = "aceptada"
     `;
-    db.query(query, [idUsuario, idUsuario], (error, results) => {
+    db.queryCallback(query, [idUsuario, idUsuario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -96,7 +96,7 @@ const obtenerAmistadesBloqueadas = (idUsuario) => {
       WHERE (a.id_usuario1 =? OR a.id_usuario2 =?)
       AND a.estado = "bloqueado"
     `;
-    db.query(query, [idUsuario, idUsuario], (error, results) => {
+    db.queryCallback(query, [idUsuario, idUsuario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -106,7 +106,7 @@ const obtenerAmistadesBloqueadas = (idUsuario) => {
 const eliminarAmistad = (id) => {
   return new Promise((resolve, reject) => {
     const query = 'DELETE FROM amistades WHERE id = ?';
-    db.query(query, [id], (error, results) => {
+    db.queryCallback(query, [id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -121,7 +121,7 @@ const obtenerSolicitudesPendientes = (idUsuario) => {
       JOIN usuarios u ON a.id_usuario1 = u.id
       WHERE a.id_usuario2 = ? AND a.estado = "pendiente"
     `;
-    db.query(query, [idUsuario], (error, results) => {
+    db.queryCallback(query, [idUsuario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -131,7 +131,7 @@ const obtenerSolicitudesPendientes = (idUsuario) => {
 const verificarEstadoSolicitud = (id) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT estado FROM amistades WHERE id = ?';
-    db.query(query, [id], (error, results) => {
+    db.queryCallback(query, [id], (error, results) => {
       if (error) reject(error);
       else resolve(results[0]);
     });
@@ -145,7 +145,7 @@ const verificarEstadoSolicitud = (id) => {
         WHERE ((id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?))
         AND estado = "aceptada"
       `;
-      db.query(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
+      db.queryCallback(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
         if (error) reject(error);
         else resolve(results.length > 0);
       });
@@ -155,7 +155,7 @@ const verificarEstadoSolicitud = (id) => {
   const obtenerSolicitudPorId = (id) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM amistades WHERE id = ?';
-        db.query(query, [id], (error, results) => {
+        db.queryCallback(query, [id], (error, results) => {
             if (error) reject(error);
             else resolve(results[0]);
         });
@@ -170,7 +170,7 @@ const bloquearUsuario = (idUsuarioBloquea, idUsuarioBloqueado) => {
       WHERE id_usuario1 = ? AND id_usuario2 = ?
     `;
 
-    db.query(queryEstadoAnterior, [idUsuarioBloquea, idUsuarioBloqueado], (error, results) => {
+    db.queryCallback(queryEstadoAnterior, [idUsuarioBloquea, idUsuarioBloqueado], (error, results) => {
       if (error) {
         console.error('Error al obtener estado anterior:', error);
         reject(error);
@@ -185,7 +185,7 @@ const bloquearUsuario = (idUsuarioBloquea, idUsuarioBloqueado) => {
         ON DUPLICATE KEY UPDATE estado = 'bloqueado', estado_anterior = ?, fecha_actualizacion = NOW()
       `;
 
-      db.query(queryBloqueo, [idUsuarioBloquea, idUsuarioBloqueado, estadoAnterior, estadoAnterior], (error, results) => {
+      db.queryCallback(queryBloqueo, [idUsuarioBloquea, idUsuarioBloqueado, estadoAnterior, estadoAnterior], (error, results) => {
         if (error) {
           console.error('Error al bloquear usuario:', error);
           reject(error);
@@ -206,7 +206,7 @@ const desbloquearUsuario = (idUsuarioDesbloquea, idUsuarioDesbloqueado) => {
           fecha_actualizacion = NOW() 
       WHERE id_usuario1 = ? AND id_usuario2 = ? AND estado = 'bloqueado'
     `;
-    db.query(query, [idUsuarioDesbloquea, idUsuarioDesbloqueado], (error, results) => {
+    db.queryCallback(query, [idUsuarioDesbloquea, idUsuarioDesbloqueado], (error, results) => {
       if (error) {
         console.error('Error al desbloquear usuario:', error);
         reject(error);
@@ -228,7 +228,7 @@ const verificarBloqueo = (idUsuario1, idUsuario2) => {
       WHERE ((id_usuario1 = ? AND id_usuario2 = ?) OR (id_usuario1 = ? AND id_usuario2 = ?))
       AND estado = "bloqueado"
     `;
-    db.query(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
+    db.queryCallback(query, [idUsuario1, idUsuario2, idUsuario2, idUsuario1], (error, results) => {
       if (error) reject(error);
       else resolve(results.length > 0);
     });
@@ -262,7 +262,7 @@ const obtenerSugerenciasAmigos = (idUsuario, limite = 20) => {
       LIMIT ?
     `;
     
-    db.query(query, [idUsuario, idUsuario, idUsuario, idUsuario, limite], (error, results) => {
+    db.queryCallback(query, [idUsuario, idUsuario, idUsuario, idUsuario, limite], (error, results) => {
       if (error) {
         console.error('Error al obtener sugerencias de amigos:', error);
         reject(error);
@@ -301,7 +301,7 @@ const obtenerAmigosEnComun = (idUsuario1, idUsuario2) => {
       ORDER BY u.nombre ASC;
     `;
 
-    db.query(query, [
+    db.queryCallback(query, [
       idUsuario1, idUsuario1, idUsuario1,
       idUsuario2, idUsuario2, idUsuario2,
       idUsuario1, idUsuario2
