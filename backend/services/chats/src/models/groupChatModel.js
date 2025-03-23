@@ -3,7 +3,7 @@ const db = require('../config/db');
 const createGroup = (userId, name, descripcion, imagen) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO grupos (id_creador, name, descripcion, imagen) VALUES (?, ?, ?, ?)';
-        db.query(query, [userId, name, descripcion, imagen], (error, result) => {
+        db.queryCallback(query, [userId, name, descripcion, imagen], (error, result) => {
             if (error) reject(error);
             else resolve({ id: result.insertId, name, imagen });
         });
@@ -13,7 +13,7 @@ const createGroup = (userId, name, descripcion, imagen) => {
 const saveGroupMessage = (senderId, groupId, message) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO mensajes_grupos (group_id, sender_id, message) VALUES (?, ?, ?)';
-        db.query(query, [groupId, senderId, message], (error, result) => {
+        db.queryCallback(query, [groupId, senderId, message], (error, result) => {
             if (error) reject(error);
             else resolve(result.affectedRows > 0);
         });
@@ -24,7 +24,7 @@ const saveGroupMessage = (senderId, groupId, message) => {
 const addUserToGroup = (userId, groupId) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO miembros_grupos (group_id, user_id) VALUES (?, ?)';
-        db.query(query, [userId, groupId], (error, result) => {
+        db.queryCallback(query, [userId, groupId], (error, result) => {
             if (error) reject(error);
             else resolve(result.affectedRows > 0);
         });
@@ -38,7 +38,7 @@ const getGroups = (userId) => {
             FROM grupos g 
             LEFT JOIN miembros_grupos mg ON g.id = mg.group_id 
             WHERE g.id_creador = ? OR mg.user_id = ?`;
-        db.query(query, [userId, userId], (error, results) => {
+        db.queryCallback(query, [userId, userId], (error, results) => {
             if (error) reject(error);
             else resolve(results);
         });
@@ -48,7 +48,7 @@ const getGroups = (userId) => {
 const getGroup = (groupId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM grupos WHERE id =?';
-        db.query(query, [groupId], (error, results) => {
+        db.queryCallback(query, [groupId], (error, results) => {
             if (error) reject(error);
             else resolve(results[0]);
         });
@@ -59,7 +59,7 @@ const getGroup = (groupId) => {
 const getUsersByGroup = (groupId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM usuarios WHERE id IN (SELECT user_id FROM miembros_grupos WHERE group_id = ?)';
-        db.query(query, [groupId], (error, results) => {
+        db.queryCallback(query, [groupId], (error, results) => {
             if (error) reject(error);
             else resolve(results);
         });
@@ -69,7 +69,7 @@ const getUsersByGroup = (groupId) => {
 const saveGroupMessageWithTimestamp = (senderId, groupId, message) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO mensajes_grupos (sender_id, group_id, message) VALUES (?, ?, ?)';
-        db.query(query, [senderId, groupId, message], (error, result) => {
+        db.queryCallback(query, [senderId, groupId, message], (error, result) => {
             if (error) reject(error);
             else resolve({ id: result.insertId, senderId, groupId, message, createdAt: new Date() });
         });
@@ -79,7 +79,7 @@ const saveGroupMessageWithTimestamp = (senderId, groupId, message) => {
 const getGroupMessages = (groupId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM mensajes_grupos WHERE group_id = ? ORDER BY created_at ASC';
-        db.query(query, [groupId], (error, results) => {
+        db.queryCallback(query, [groupId], (error, results) => {
             if (error) reject(error);
             else resolve(results);
         });
@@ -89,7 +89,7 @@ const getGroupMessages = (groupId) => {
 const deleteGroupMessage = (messageId) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM mensajes_grupos WHERE id = ?';
-        db.query(query, [messageId], (error, result) => {
+        db.queryCallback(query, [messageId], (error, result) => {
             if (error) reject(error);
             else resolve(result.affectedRows > 0);
         });
@@ -99,7 +99,7 @@ const deleteGroupMessage = (messageId) => {
 const isMember = (groupId, userId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM miembros_grupos WHERE group_id = ? AND user_id = ?';
-        db.query(query, [groupId, userId], (error, results) => {
+        db.queryCallback(query, [groupId, userId], (error, results) => {
             if (error) reject(error);
             else resolve(results.length > 0);
         });

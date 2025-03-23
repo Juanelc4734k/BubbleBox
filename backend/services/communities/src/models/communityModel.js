@@ -3,7 +3,7 @@ const db = require('../config/db');
 const crearComunidad = (nombre, descripcion, reglas, idCreador, avatar = null, banner = null, privacidad) => {
     return new Promise((resolve, reject) => {
         const query = "INSERT INTO comunidades (nombre, descripcion, reglas, id_creador, avatar, banner, tipo_privacidad) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        db.query(query, [nombre, descripcion, reglas, idCreador, avatar, banner, privacidad], (err, result) => {
+        db.queryCallback(query, [nombre, descripcion, reglas, idCreador, avatar, banner, privacidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.insertId);
         });
@@ -13,7 +13,7 @@ const crearComunidad = (nombre, descripcion, reglas, idCreador, avatar = null, b
 const unirseAComunidad = (idUsuario, idComunidad) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO usuarios_comunidades (id_usuario, id_comunidad) VALUES (?,?)';
-        db.query(query, [idUsuario, idComunidad], (err, result) => {
+        db.queryCallback(query, [idUsuario, idComunidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.affectedRows > 0);
         });
@@ -23,7 +23,7 @@ const unirseAComunidad = (idUsuario, idComunidad) => {
 const salirDeComunidad = (idUsuario, idComunidad) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM usuarios_comunidades WHERE id_usuario =? AND id_comunidad =?';
-        db.query(query, [idUsuario, idComunidad], (err, result) => {
+        db.queryCallback(query, [idUsuario, idComunidad], (err, result) => {
             if(err) return reject(err);
             resolve(result.affectedRows > 0);
         });
@@ -37,7 +37,7 @@ const obtenerTodasLasComunidades = () => {
             FROM comunidades c
             LEFT JOIN usuarios u ON c.id_creador = u.id;
         `;
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if (err) {
                 console.error('Error al obtener comunidades:', err);
                 return reject(err);
@@ -55,7 +55,7 @@ const obtenerMiembrosDeComunidad = (idComunidad) => {
             INNER JOIN usuarios_comunidades uc ON u.id = uc.id_usuario
             WHERE uc.id_comunidad = ?;
         `;
-        db.query(query, [idComunidad], (err, results) => {
+        db.queryCallback(query, [idComunidad], (err, results) => {
             if (err) {
                 console.error('Error al obtener miembros de la comunidad:', err);
                 return reject(err);
@@ -68,7 +68,7 @@ const obtenerMiembrosDeComunidad = (idComunidad) => {
 const obtenerComunidadPorId = (id) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM comunidades WHERE id = ?';
-        db.query(query, [id], (err, results) => {
+        db.queryCallback(query, [id], (err, results) => {
             if (err) return reject(err);
             resolve(results[0]);
         });
@@ -82,7 +82,7 @@ const actualizarComunidad = (id, nombre, descripcion, reglas) => {
         query += ' WHERE id = ?';
         params.push(id);
 
-        db.query(query, params, (err, result) => {
+        db.queryCallback(query, params, (err, result) => {
             if (err) return reject(err);
             resolve(result.affectedRows > 0);
         });
@@ -92,7 +92,7 @@ const actualizarComunidad = (id, nombre, descripcion, reglas) => {
 const eliminarComunidad = (id) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM comunidades WHERE id = ?';
-        db.query(query, [id], (err, result) => {
+        db.queryCallback(query, [id], (err, result) => {
             if (err) return reject(err);
             resolve(result.affectedRows > 0);
         });
@@ -102,7 +102,7 @@ const eliminarComunidad = (id) => {
 const isMember = (userId, communityId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT COUNT(*) as count FROM usuarios_comunidades WHERE id_usuario = ? AND id_comunidad = ?';
-        db.query(query, [userId, communityId], (err, results) => {
+        db.queryCallback(query, [userId, communityId], (err, results) => {
             if (err) return reject(err);
             resolve(results[0].count > 0);
         });
@@ -121,7 +121,7 @@ const searchCommunities = (query) => {
             ORDER BY c.fecha_creacion DESC
         `;
         
-        db.query(searchQuery, [searchId, `%${query}%`], (err, results) => {
+        db.queryCallback(searchQuery, [searchId, `%${query}%`], (err, results) => {
             if (err) return reject(err);
             resolve(results);
         });
@@ -136,7 +136,7 @@ const suspendCommunity = (communityId, estado, motivo, duracion) => {
         
         // Update community with suspension details
         const query = 'UPDATE comunidades SET tipo_privacidad = ?, fecha_fin_suspension = ?, motivo = ?, duracion = ? WHERE id = ?';
-        db.query(query, [estado, suspensionEndDate, motivo, duracion, communityId], (err, result) => {
+        db.queryCallback(query, [estado, suspensionEndDate, motivo, duracion, communityId], (err, result) => {
             if (err) return reject(err);
             resolve(result.affectedRows > 0);
         });
@@ -147,7 +147,7 @@ const activateCommunity = (communityId, estado) => {
     return new Promise((resolve, reject) => {
         // Update community with suspension details
         const query = 'UPDATE comunidades SET tipo_privacidad =?, fecha_fin_suspension =?, motivo =?, duracion =? WHERE id =?';
-        db.query(query, [estado, null, null, null, communityId], (err, result) => {
+        db.queryCallback(query, [estado, null, null, null, communityId], (err, result) => {
             if (err) return reject(err);
             resolve(result.affectedRows > 0);
         });

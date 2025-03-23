@@ -14,7 +14,7 @@ const createReport = (tipo_reporte, id_contenido, id_usuario_reportante, motivo,
             ) VALUES (?, ?, ?, ?, ?, 'pendiente', NOW())
         `;
         
-        db.query(
+        db.queryCallback(
             query,
             [tipo_reporte, id_contenido, id_usuario_reportante, motivo, descripcion],
             (err, result) => {
@@ -28,7 +28,7 @@ const createReport = (tipo_reporte, id_contenido, id_usuario_reportante, motivo,
 const getReports = () => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM reportes';
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if(err) return reject(err);
             resolve(results);
         });
@@ -38,7 +38,7 @@ const getReports = () => {
 const getReportById = (reportId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM reportes WHERE id = ?';
-        db.query(query, [reportId], (err, results) => {
+        db.queryCallback(query, [reportId], (err, results) => {
             if(err) return reject(err);
             resolve(results[0]);
         });
@@ -48,7 +48,7 @@ const getReportById = (reportId) => {
 const updateReportStatus = (reportId, newStatus) => {
     return new Promise((resolve, reject) => {
         const query = 'UPDATE reportes SET estado = ? WHERE id = ?';
-        db.query(query, [newStatus, reportId], (err, result) => {
+        db.queryCallback(query, [newStatus, reportId], (err, result) => {
             if(err) return reject(err);
             resolve(result);
         });
@@ -58,7 +58,7 @@ const updateReportStatus = (reportId, newStatus) => {
 const deleteReport = (reportId) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM reportes WHERE id = ?';
-        db.query(query, [reportId], (err, result) => {
+        db.queryCallback(query, [reportId], (err, result) => {
             if(err) return reject(err);
             resolve(result);
         });
@@ -91,7 +91,7 @@ const getFilteredReports = (filters = {}, limit = 10, offset = 0) => {
         query += ' LIMIT ? OFFSET ?';
         params.push(parseInt(limit), parseInt(offset));
         
-        db.query(query, params, (err, results) => {
+        db.queryCallback(query, params, (err, results) => {
             if(err) return reject(err);
             resolve(results);
         });
@@ -115,7 +115,7 @@ const countReports = (filters = {}) => {
             params.push(filters.estado);
         }
         
-        db.query(query, params, (err, results) => {
+        db.queryCallback(query, params, (err, results) => {
             if(err) return reject(err);
             resolve(results[0]);
         });
@@ -134,7 +134,7 @@ const getReportStats = () => {
             FROM reportes
         `;
         
-        db.query(query, (err, results) => {
+        db.queryCallback(query, (err, results) => {
             if(err) return reject(err);
             resolve(results[0]);
         });
@@ -145,7 +145,7 @@ const getReportStats = () => {
 const resolveReport = (reportId, data) => {
     return new Promise((resolve, reject) => {
         // Check if the table has the necessary columns
-        db.query('SHOW COLUMNS FROM reportes LIKE "id_admin"', (err, columns) => {
+        db.queryCallback('SHOW COLUMNS FROM reportes LIKE "id_admin"', (err, columns) => {
             let query;
             let params;
             
@@ -173,7 +173,7 @@ const resolveReport = (reportId, data) => {
                 params = [data.estado, data.accion_tomada, reportId];
             }
             
-            db.query(query, params, (err, result) => {
+            db.queryCallback(query, params, (err, result) => {
                 if(err) return reject(err);
                 resolve(result);
             });
