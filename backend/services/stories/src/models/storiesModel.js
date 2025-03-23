@@ -6,7 +6,7 @@ const crear = (historia) => {
       INSERT INTO historias (usuario_id, contenido, tipo, fecha_creacion, fecha_expiracion)
       VALUES (?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 24 HOUR))
     `;
-    db.queryCallback(query, [historia.usuario_id, historia.contenido, historia.tipo], (error, results) => {
+    db.query(query, [historia.usuario_id, historia.contenido, historia.tipo], (error, results) => {
       if (error) reject(error);
       else resolve(results.insertId);
     });
@@ -20,7 +20,7 @@ const obtenerPorUsuario = (usuario_id) => {
       WHERE usuario_id = ? AND fecha_expiracion > NOW()
       ORDER BY fecha_creacion DESC
     `;
-    db.queryCallback(query, [usuario_id], (error, results) => {
+    db.query(query, [usuario_id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -34,7 +34,7 @@ const obtenerTodas = () => {
       WHERE fecha_expiracion > NOW()
       ORDER BY fecha_creacion DESC
     `;
-    db.queryCallback(query, (error, results) => {
+    db.query(query, (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -61,7 +61,7 @@ const ObtenerHistoriasAmigos = (usuario_id) => {
       WHERE h.fecha_expiracion > NOW()
       ORDER BY h.fecha_creacion DESC
     `;
-    db.queryCallback(query, [usuario_id, usuario_id, usuario_id, usuario_id], (error, results) => {
+    db.query(query, [usuario_id, usuario_id, usuario_id, usuario_id], (error, results) => {
       if (error) {
         console.error('Error en ObtenerHistoriasAmigos:', error);
         reject(error);
@@ -78,7 +78,7 @@ const registrarVista = (historia_id, usuario_id) => {
       VALUES (?, ?, NOW())
       ON DUPLICATE KEY UPDATE fecha_vista = NOW()
     `;
-    db.queryCallback(query, [historia_id, usuario_id], (error, results) => {
+    db.query(query, [historia_id, usuario_id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -93,7 +93,7 @@ const obtenerVistas = (historia_id) => {
       JOIN usuarios u ON vh.usuario_id = u.id
       WHERE vh.historia_id = ?
     `;
-    db.queryCallback(query, [historia_id], (error, results) => {
+    db.query(query, [historia_id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -103,17 +103,7 @@ const obtenerVistas = (historia_id) => {
 const eliminar = (historia_id) => {
   return new Promise((resolve, reject) => {
     const query = 'DELETE FROM historias WHERE id = ?';
-    db.queryCallback(query, [historia_id], (error, results) => {
-      if (error) reject(error);
-      else resolve(results);
-    });
-  });
-};
-
-const eliminarExpiradas = () => {
-  return new Promise((resolve, reject) => {
-    const query = 'DELETE FROM historias WHERE fecha_expiracion <= NOW()';
-    db.queryCallback(query, [], (error, results) => {
+    db.query(query, [historia_id], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -127,6 +117,5 @@ module.exports = {
   ObtenerHistoriasAmigos,
   registrarVista,
   obtenerVistas,
-  eliminar,
-  eliminarExpiradas
-};
+  eliminar, 
+}

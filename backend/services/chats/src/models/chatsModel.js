@@ -4,7 +4,7 @@ const axios = require('axios')
 const saveMessage = (senderId, receiverId, message) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)';
-        db.queryCallback(query, [senderId, receiverId, message], (error, result) => {
+        db.query(query, [senderId, receiverId, message], (error, result) => {
             if (error) reject(error);
             else resolve({ id: result.insertId, senderId, receiverId, message, createdAt: new Date() });
         });
@@ -14,7 +14,7 @@ const saveMessage = (senderId, receiverId, message) => {
 const getMessageById = (messageId) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM messages WHERE id =?';
-        db.queryCallback(query, [messageId], (error, results) => {
+        db.query(query, [messageId], (error, results) => {
             if (error) reject(error);
             else resolve(results[0]);
         });
@@ -24,7 +24,7 @@ const getMessageById = (messageId) => {
 const saveAudioMessage = (messageData) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO messages (sender_id, receiver_id, audio_path, duration) VALUES (?, ?, ?, ?)';
-        db.queryCallback(query, [
+        db.query(query, [
             messageData.sender_id,
             messageData.receiver_id,
             messageData.audio_path,
@@ -46,7 +46,7 @@ const saveAudioMessage = (messageData) => {
 const saveFileMessage = async (messageData) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO messages (sender_id, receiver_id, file_path, file_name, file_type, file_size) VALUES (?, ?, ?, ?, ?, ?)';
-        db.queryCallback(query, [
+        db.query(query, [
             messageData.sender_id,
             messageData.receiver_id,
             messageData.file_path,
@@ -72,7 +72,7 @@ const saveFileMessage = async (messageData) => {
 const getFileMessageByPath = async (filePath) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM messages WHERE file_path =? LIMIT 1';
-        db.queryCallback(query, [filePath], (error, results) => {
+        db.query(query, [filePath], (error, results) => {
             if (error) {
                 console.error('Error checking for existing file message:', error);
                 reject(error);
@@ -117,7 +117,7 @@ const saveMessageWithNotification = async (senderId, receiverId, message) => {
 const getMessages = (userId1, userId2) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?) ORDER BY created_at ASC';
-        db.queryCallback(query, [userId1, userId2, userId2, userId1], (error, results) => {
+        db.query(query, [userId1, userId2, userId2, userId1], (error, results) => {
             if (error) reject(error);
             else resolve(results);
         });
@@ -127,12 +127,12 @@ const getMessages = (userId1, userId2) => {
 const updateMessage = (messageId, newContent) => {
     return new Promise((resolve, reject) => {
         const updateQuery = 'UPDATE messages SET message = ? WHERE id = ?';
-        db.queryCallback(updateQuery, [newContent, messageId], (error, result) => {
+        db.query(updateQuery, [newContent, messageId], (error, result) => {
             if (error) reject(error);
             else if (result.affectedRows === 0) resolve(null);
             else {
                 const selectQuery = 'SELECT * FROM messages WHERE id = ?';
-                db.queryCallback(selectQuery, [messageId], (error, results) => {
+                db.query(selectQuery, [messageId], (error, results) => {
                     if (error) reject(error);
                     else resolve(results[0]);
                 });
@@ -144,7 +144,7 @@ const updateMessage = (messageId, newContent) => {
 const deleteMessage = (messageId) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM messages WHERE id = ?';
-        db.queryCallback(query, [messageId], (error, result) => {
+        db.query(query, [messageId], (error, result) => {
             if (error) reject(error);
             else resolve(result.affectedRows > 0);
         });
@@ -154,7 +154,7 @@ const deleteMessage = (messageId) => {
 const deleteAllMessages = (userId1, userId2) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)';
-        db.queryCallback(query, [userId1, userId2, userId2, userId1], (error, result) => {
+        db.query(query, [userId1, userId2, userId2, userId1], (error, result) => {
             if (error) {
                 console.error('Error deleting all messages:', error);
                 reject(error);
@@ -181,7 +181,7 @@ const updateLastSeen = (userId, status = 'conectado', lastSeen = null) => {
             params = [status, userId];
         }
 
-        db.queryCallback(query, params, (error, result) => {
+        db.query(query, params, (error, result) => {
             if (error) {
                 console.error('Error updating lastSeen:', error);
                 reject(error);
@@ -202,7 +202,7 @@ const getLastSeen = (userId) => {
     return new Promise((resolve, reject) => {
         // Updated to use usuarios table instead of user_status
         const query = 'SELECT lastSeen, estado FROM usuarios WHERE id = ?';
-        db.queryCallback(query, [userId], (error, results) => {
+        db.query(query, [userId], (error, results) => {
             if (error) {
                 console.error('Error getting user status:', error);
                 reject(error);
@@ -220,7 +220,7 @@ const getLastSeen = (userId) => {
 const getUnreadCount = (userId, friendId) => {
     return new Promise((resolve, reject) => {
       const query = 'SELECT COUNT(*) as count FROM messages WHERE sender_id = ? AND receiver_id = ? AND read_status = 0';
-      db.queryCallback(query, [friendId, userId], (error, results) => {
+      db.query(query, [friendId, userId], (error, results) => {
         if (error) reject(error);
         else resolve(results[0].count);
       });
@@ -230,7 +230,7 @@ const getUnreadCount = (userId, friendId) => {
   const markMessagesAsRead = (userId, friendId) => {
     return new Promise((resolve, reject) => {
       const query = 'UPDATE messages SET read_status = 1 WHERE sender_id = ? AND receiver_id = ? AND read_status = 0';
-      db.queryCallback(query, [friendId, userId], (error, result) => {
+      db.query(query, [friendId, userId], (error, result) => {
         if (error) reject(error);
         else resolve(result.affectedRows);
       });
@@ -240,7 +240,7 @@ const getUnreadCount = (userId, friendId) => {
 const getAudioMessageByPath = async (audioPath) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM messages WHERE audio_path = ? LIMIT 1';
-        db.queryCallback(query, [audioPath], (error, results) => {
+        db.query(query, [audioPath], (error, results) => {
             if (error) {
                 console.error('Error checking for existing audio message:', error);
                 reject(error);

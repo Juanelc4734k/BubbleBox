@@ -81,7 +81,7 @@ const getGrowthStats = (metric) => {
             LIMIT 1;`;
         }
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -120,7 +120,7 @@ const getCountPostsToday = () => {
             FROM publicaciones
             WHERE DATE(fecha_creacion) = CURDATE()`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -146,7 +146,7 @@ const getPostsFeatured = () => {
                 WHERE r.id_contenido = p.id
             ) >= 20`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -162,7 +162,7 @@ const getTotalComents = () => {
             SELECT COUNT(*) as count
             FROM comentarios`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -185,7 +185,7 @@ const getUsersSummary = () => {
             GROUP BY DATE_FORMAT(created_at, '%Y-%m')
             ORDER BY month ASC`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -275,7 +275,7 @@ const getGrowthStatsUsuarios = () => {
                 END as featured_growth
         `;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -425,7 +425,7 @@ const getGrowthStatsComentarios = () => {
             ORDER BY date DESC
             LIMIT 1;`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -577,7 +577,7 @@ const getGrowthStatsPublicaciones = () => {
             ORDER BY date DESC
             LIMIT 1;`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -611,7 +611,7 @@ const getPostsMontly = () => {
             GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
             ORDER BY month DESC`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -629,7 +629,7 @@ const getPostCount = () => {
             FROM publicaciones
             WHERE fecha_creacion >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -651,7 +651,7 @@ const getCountCommentsByType = (type) => {
             GROUP BY DATE(fecha_creacion)
             ORDER BY date DESC`;
 
-        db.queryCallback(query, [type], (error, results) => {
+        db.query(query, [type], (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -672,7 +672,7 @@ const getCommentsMonthly = () => {
             GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
             ORDER BY month ASC`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -699,7 +699,7 @@ const getUsersFeatured = () => {
             ORDER BY (post_count + reel_count) DESC
             LIMIT 100`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -778,7 +778,7 @@ const getReelsGrowthStats = () => {
                 (SELECT COUNT(*) FROM FeaturedReels) as featured_reels
             FROM DailyGrowth dg`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -807,7 +807,7 @@ const getReelsSummary = () => {
             GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
             ORDER BY month ASC`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;
@@ -836,7 +836,7 @@ const getCommunitiesSummary = () => {
             GROUP BY DATE_FORMAT(fecha_creacion, '%Y-%m')
             ORDER BY month ASC`;
 
-        db.queryCallback(query, (error, results) => {
+        db.query(query, (error, results) => {
             if (error) {
                 reject(error);
                 return;

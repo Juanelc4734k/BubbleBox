@@ -4,7 +4,7 @@ const db = require('../config/db');
 const crearNotificacion = (datos) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO notificaciones (usuario_id, tipo, contenido, leida, referencia_id) VALUES (?, ?, ?, ?, ?)';
-        db.queryCallback(query, [datos.usuario_id, datos.tipo, datos.contenido, false, datos.referencia_id || null], (error, results) => {
+        db.query(query, [datos.usuario_id, datos.tipo, datos.contenido, false, datos.referencia_id || null], (error, results) => {
             if (error) {
                 reject(error);
             } else {
@@ -23,7 +23,7 @@ const obtenerNotificacionesPorUsuario = (usuarioId) => {
             WHERE usuario_id = ? 
             ORDER BY fecha_creacion DESC
         `;
-        db.queryCallback(query, [usuarioId], (error, results) => {
+        db.query(query, [usuarioId], (error, results) => {
             if (error) {
                 reject(error);
             } else {
@@ -37,7 +37,7 @@ const obtenerNotificacionesPorUsuario = (usuarioId) => {
 const marcarComoLeida = (notificacionId) => {
     return new Promise((resolve, reject) => {
         const query = 'UPDATE notificaciones SET leida = true WHERE id = ?';
-        db.queryCallback(query, [notificacionId], (error, results) => {
+        db.query(query, [notificacionId], (error, results) => {
             if (error) {
                 reject(error);
             } else {
@@ -51,7 +51,7 @@ const marcarComoLeida = (notificacionId) => {
 const eliminarNotificacion = (notificacionId) => {
     return new Promise((resolve, reject) => {
         const query = 'DELETE FROM notificaciones WHERE id = ?';
-        db.queryCallback(query, [notificacionId], (error, results) => {
+        db.query(query, [notificacionId], (error, results) => {
             if (error) {
                 reject(error);
             } else {
