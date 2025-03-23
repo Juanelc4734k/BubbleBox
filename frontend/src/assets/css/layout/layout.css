@@ -119,8 +119,6 @@ textarea {
   z-index: 1200;
 }
 
-
-
 /* Tablet styles */
 @media (min-width: 768px) {
   .app {
