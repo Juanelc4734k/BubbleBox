@@ -93,7 +93,8 @@ export const updateUserSettings = async (settings) => {
   export const updateUserStatus = async (userId, status) => {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:3000/users/${userId}/status`, {
+        // Fix: Use API_URL instead of hardcoded localhost URL
+        const response = await fetch(`${API_URL}/users/${userId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

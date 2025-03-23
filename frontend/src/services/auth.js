@@ -36,7 +36,8 @@ export const recoverPassword = async (userData) => {
 
 export const resetPassword = async (token, newPassword) => {
     try {
-        const response = await axios.post(`https://bubblebox-ydre.onrender.com/auth/restablecer-contrasena/${token}`, {
+        // Fix: Use API_URL instead of hardcoded URL
+        const response = await axios.post(`${API_URL}/auth/restablecer-contrasena/${token}`, {
             nuevaContrasena: newPassword
         });
         console.log(response.data);
@@ -87,7 +88,8 @@ export const logoutUser = async (userId) => {
 
 export const updateLastSeen = async (userId, status = 'desconectado', lastSeen = new Date().toISOString()) => {
     try {
-        const response = await axios.put(`https://bubblebox-ydre.onrender.com/chats/update-last-seen/${userId}`, {
+        // Fix: Use API_URL instead of hardcoded URL
+        const response = await axios.put(`${API_URL}/chats/update-last-seen/${userId}`, {
             status,
             lastSeen
         });
