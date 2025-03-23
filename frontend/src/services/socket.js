@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 //Conectar con el backend 
-const socket = io("http://localhost:3007", { transports: ["websocket"]});
+const socket = io("https://bubblebox-ydre.onrender.com", { transports: ["websocket"]});
 
 // Setup event listeners
 socket.on('connect', () => {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000';
+const API_URL = 'https://bubblebox-ydre.onrender.com';
 
 export const getUsers = async () => {
     const response = await axios.get(`${API_URL}/users/usuarios`);
