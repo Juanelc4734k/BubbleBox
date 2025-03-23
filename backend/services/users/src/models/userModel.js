@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 const getAllUsers = () => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at, rol FROM usuarios', (error, results) => {
+    db.query('SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at, rol FROM usuarios', (error, results) => {
       if (error) reject(error);
       resolve(results);
     });
@@ -11,7 +11,7 @@ const getAllUsers = () => {
 
 const getUserById = (id) => {
     return new Promise((resolve, reject) => {
-      db.queryCallback('SELECT * FROM usuarios WHERE id = ?', [id], (error, results) => {
+      db.query('SELECT * FROM usuarios WHERE id = ?', [id], (error, results) => {
         if (error) {
           console.error('Error en la consulta SQL:', error);
           reject(error);
@@ -25,7 +25,7 @@ const getUserById = (id) => {
   const updatePrivacySettings = (userId, privacidad) => {
     return new Promise((resolve, reject) => {
       // First check if settings exist for this user
-      db.queryCallback('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
+      db.query('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
         if (error) {
           reject(error);
           return;
@@ -33,7 +33,7 @@ const getUserById = (id) => {
         
         if (results.length === 0) {
           // If no settings exist, create a new record
-          db.queryCallback('INSERT INTO configuraciones_usuario (usuario_id, privacidad) VALUES (?, ?)', 
+          db.query('INSERT INTO configuraciones_usuario (usuario_id, privacidad) VALUES (?, ?)', 
             [userId, privacidad], (insertError) => {
             if (insertError) {
               reject(insertError);
@@ -43,7 +43,7 @@ const getUserById = (id) => {
           });
         } else {
           // If settings exist, update the privacy setting
-          db.queryCallback('UPDATE configuraciones_usuario SET privacidad = ? WHERE usuario_id = ?', 
+          db.query('UPDATE configuraciones_usuario SET privacidad = ? WHERE usuario_id = ?', 
             [privacidad, userId], (updateError) => {
             if (updateError) {
               reject(updateError);
@@ -59,7 +59,7 @@ const getUserById = (id) => {
   const updateUserSettings = (userId, settings) => {
     return new Promise((resolve, reject) => {
       // First check if settings exist for this user
-      db.queryCallback('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
+      db.query('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
         if (error) {
           reject(error);
           return;
@@ -70,11 +70,11 @@ const getUserById = (id) => {
           const query = `
             INSERT INTO configuraciones_usuario 
             (usuario_id, privacidad, notificaciones, audio_enabled, files_access_enabled, 
-             online_visibility, idioma, autoplay_videos) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+             online_visibility, idioma, mostrar_cumpleanos, autoplay_videos) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           `;
           
-          db.queryCallback(query, [
+          db.query(query, [
             userId, 
             settings.privacidad || 'publico',
             settings.notificaciones !== undefined ? settings.notificaciones : true,
@@ -82,6 +82,7 @@ const getUserById = (id) => {
             settings.files_access_enabled !== undefined ? settings.files_access_enabled : true,
             settings.online_visibility !== undefined ? settings.online_visibility : true,
             settings.idioma || 'es',
+            settings.mostrar_cumpleanos !== undefined ? settings.mostrar_cumpleanos : true,
             settings.autoplay_videos !== undefined ? settings.autoplay_videos : true
           ], (insertError) => {
             if (insertError) {
@@ -120,6 +121,10 @@ const getUserById = (id) => {
             updateFields.push('idioma = ?');
             updateValues.push(settings.idioma);
           }
+          if (settings.mostrar_cumpleanos !== undefined) {
+            updateFields.push('mostrar_cumpleanos = ?');
+            updateValues.push(settings.mostrar_cumpleanos);
+          }
           if (settings.autoplay_videos !== undefined) {
             updateFields.push('autoplay_videos = ?');
             updateValues.push(settings.autoplay_videos);
@@ -136,7 +141,7 @@ const getUserById = (id) => {
           
           const query = `UPDATE configuraciones_usuario SET ${updateFields.join(', ')} WHERE usuario_id = ?`;
           
-          db.queryCallback(query, updateValues, (updateError) => {
+          db.query(query, updateValues, (updateError) => {
             if (updateError) {
               reject(updateError);
               return;
@@ -151,7 +156,7 @@ const getUserById = (id) => {
 
   const getUserSettings = (userId) => {
     return new Promise((resolve, reject) => {
-      db.queryCallback('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
+      db.query('SELECT * FROM configuraciones_usuario WHERE usuario_id = ?', [userId], (error, results) => {
         if (error) reject(error);
         // If no settings found, return default values
         if (results.length === 0) {
@@ -182,7 +187,7 @@ const checkFriendship = (userId1, userId2) => {
       AND estado = 'aceptada'
     `;
     
-    db.queryCallback(query, [userId1, userId2, userId2, userId1], (error, results) => {
+    db.query(query, [userId1, userId2, userId2, userId1], (error, results) => {
       if (error) reject(error);
       resolve(results.length > 0);
     });
@@ -191,7 +196,7 @@ const checkFriendship = (userId1, userId2) => {
 
 const createUser = (userData) => {
     return new Promise((resolve, reject) => {
-      db.queryCallback('INSERT INTO usuarios (nombre, username, email, contraseña, avatar, estado, descripcion_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+      db.query('INSERT INTO usuarios (nombre, username, email, contraseña, avatar, estado, descripcion_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)', 
         [userData.nombre, userData.username, userData.email, userData.contraseña, userData.avatar, userData.estado, userData.descripcion_usuario], 
         (error, result) => {
           if (error) {
@@ -208,7 +213,7 @@ const createUser = (userData) => {
 
   const suspendUser = (id, estado) => {
     return new Promise((resolve, reject) => {
-      db.queryCallback('UPDATE usuarios SET estado = ? WHERE id = ?', [estado, id], (error, result) => {
+      db.query('UPDATE usuarios SET estado = ? WHERE id = ?', [estado, id], (error, result) => {
         if (error) reject(error);
         resolve(result.affectedRows > 0);
       });
@@ -241,7 +246,7 @@ const createUser = (userData) => {
       
       console.log('Query values:', values);
       
-      db.queryCallback(query, values, (error, result) => {
+      db.query(query, values, (error, result) => {
         if (error) {
           console.error('Error en la actualización:', error);
           reject(error);
@@ -256,7 +261,7 @@ const createUser = (userData) => {
 
 const deleteUser = (id) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('DELETE FROM usuarios WHERE id = ?', [id], (error, result) => {
+    db.query('DELETE FROM usuarios WHERE id = ?', [id], (error, result) => {
       if (error) reject(error);
       resolve(result.affectedRows > 0);
     });
@@ -266,7 +271,7 @@ const deleteUser = (id) => {
 const searchUsers = (query) => {
   return new Promise((resolve, reject) => {
     // Add parameter for email search that was missing in the array
-    db.queryCallback(
+    db.query(
       'SELECT id, nombre, username, email, avatar, estado, descripcion_usuario, created_at FROM usuarios WHERE id LIKE ? OR nombre LIKE ? OR username LIKE ? OR email LIKE ?', 
       [`%${query}%`, `%${query}%`, `%${query}%`, `%${query}%`],
       (error, results) => {
@@ -282,7 +287,7 @@ const searchUsers = (query) => {
 
 const updateAvatar = (userId, avatarUrl) => {
     return new Promise((resolve, reject) => {
-      db.queryCallback('UPDATE usuarios SET avatar = ? WHERE id = ?', [avatarUrl, userId], (error, result) => {
+      db.query('UPDATE usuarios SET avatar = ? WHERE id = ?', [avatarUrl, userId], (error, result) => {
         if (error) reject(error);
         resolve(result.affectedRows > 0);
       });
@@ -291,7 +296,7 @@ const updateAvatar = (userId, avatarUrl) => {
 
 const changePassword = (id, newPassword) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('UPDATE usuarios SET contraseña = ? WHERE id = ?', [newPassword, id], (error, result) => {
+    db.query('UPDATE usuarios SET contraseña = ? WHERE id = ?', [newPassword, id], (error, result) => {
       if (error) reject(error);
       resolve(result.affectedRows > 0);
     });
@@ -301,7 +306,7 @@ const changePassword = (id, newPassword) => {
 const addUserInterests = (userId, interests) => {
   return new Promise((resolve, reject) => {
     // First delete existing interests for this user
-    db.queryCallback('DELETE FROM intereses WHERE user_id = ?', [userId], (deleteError) => {
+    db.query('DELETE FROM intereses WHERE user_id = ?', [userId], (deleteError) => {
       if (deleteError) {
         reject(deleteError);
         return;
@@ -321,7 +326,7 @@ const addUserInterests = (userId, interests) => {
       // Then insert new interests
       const query = `INSERT INTO intereses (user_id, interes) VALUES ${placeholders}`;
       
-      db.queryCallback(query, flatValues, (error, result) => {
+      db.query(query, flatValues, (error, result) => {
         if (error) {
           reject(error);
           return;
@@ -334,7 +339,7 @@ const addUserInterests = (userId, interests) => {
 
 const getUserInterests = (userId) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('SELECT interes FROM intereses WHERE user_id =?', [userId], (error, results) => {
+    db.query('SELECT interes FROM intereses WHERE user_id =?', [userId], (error, results) => {
       if (error) reject(error);
       resolve(results.map(row => row.interes));
     });
@@ -343,7 +348,7 @@ const getUserInterests = (userId) => {
 
 const updateUserInterests = (userId, interests) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
+    db.query('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
       if (error) reject(error);
       addUserInterests(userId, interests).then(resolve).catch(reject);
     });
@@ -352,7 +357,7 @@ const updateUserInterests = (userId, interests) => {
 
 const deleteUserInterests = (userId) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
+    db.query('DELETE FROM intereses WHERE user_id =?', [userId], (error, result) => {
       if (error) reject(error);
       resolve(result.affectedRows > 0);
     });
@@ -361,7 +366,7 @@ const deleteUserInterests = (userId) => {
 
 const updateUserStatus = (userId, status) => {
   return new Promise((resolve, reject) => {
-    db.queryCallback('UPDATE usuarios SET estado =? WHERE id =?', [status, userId], (error, result) => {
+    db.query('UPDATE usuarios SET estado =? WHERE id =?', [status, userId], (error, result) => {
       if (error) reject(error);
       resolve(result.affectedRows > 0);
     });

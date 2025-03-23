@@ -83,12 +83,11 @@ const createFileMessage = async (req, res) => {
         }
 
         const messageData = {
-            sender_id: senderId || null,
-            receiver_id: receiverId || null,
-            file_path: filePath || null,
-            file_type: fileType || null,
-            file_name: req.file.originalname || null,
-            file_size: req.file.size || null,
+            sender_id: senderId,
+            receiver_id: receiverId,
+            file_path: filePath,
+            file_type: fileType,
+            file_name: req.file.originalname
         };
 
         const savedMessage = await chatModel.saveFileMessage(messageData);

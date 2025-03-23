@@ -7,7 +7,7 @@ const TIPO_HISTORIA = 'historia';
 const crearComentario = (idUsuario, idContenido, tipoContenido, contenido) => {
   return new Promise((resolve, reject) => {
     const query = 'INSERT INTO comentarios (id_usuario, id_contenido, tipo_contenido, contenido) VALUES (?, ?, ?, ?)';
-    db.queryCallback(query, [idUsuario, idContenido, tipoContenido, contenido], (error, results) => {
+    db.query(query, [idUsuario, idContenido, tipoContenido, contenido], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -21,7 +21,7 @@ const crearRespuestaComentarioPublicacion = (idUsuario, idComentario, contenido)
       INSERT INTO respuestas_comentarios_publicaciones (id_usuario, id_comentario, contenido, fecha_creacion)
       VALUES (?, ?, ?, NOW())
     `;
-    db.queryCallback(query, [idUsuario, idComentario, contenido], (error, results) => {
+    db.query(query, [idUsuario, idComentario, contenido], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -35,7 +35,7 @@ const obtenerRespuestasComentarioPublicacion = (idComentario) => {
       WHERE id_comentario = ?
       ORDER BY fecha_creacion DESC
     `;
-    db.queryCallback(query, [idComentario], (error, results) => {
+    db.query(query, [idComentario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -49,7 +49,7 @@ const crearRespuestaComentarioReel = (idUsuario, idComentario, contenido) => {
       INSERT INTO respuestas_comentarios_reels (id_usuario, id_comentario, contenido, fecha_creacion)
       VALUES (?, ?, ?, NOW())
     `;
-    db.queryCallback(query, [idUsuario, idComentario, contenido], (error, results) => {
+    db.query(query, [idUsuario, idComentario, contenido], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -63,7 +63,7 @@ const obtenerRespuestasComentarioReel = (idComentario) => {
       WHERE id_comentario = ?
       ORDER BY fecha_creacion DESC
     `;
-    db.queryCallback(query, [idComentario], (error, results) => {
+    db.query(query, [idComentario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -73,7 +73,7 @@ const obtenerRespuestasComentarioReel = (idComentario) => {
 const obtenerComentarios = (idContenido, tipoContenido) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE id_contenido = ? AND tipo_contenido = ?';
-    db.queryCallback(query, [idContenido, tipoContenido], (error, results) => {
+    db.query(query, [idContenido, tipoContenido], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -108,7 +108,7 @@ const obtenerComentariosHistoria = (idHistoria) => {
 const obtenerComentarioPorId = (idComentario) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE id = ?';
-    db.queryCallback(query, [idComentario], (error, results) => {
+    db.query(query, [idComentario], (error, results) => {
       if (error) {
         reject(error);
       } else if (results.length === 0) {
@@ -123,7 +123,7 @@ const obtenerComentarioPorId = (idComentario) => {
 const obtenerInformacionPublicacion = (idPublicacion) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT id_usuario FROM publicaciones WHERE id = ?';
-    db.queryCallback(query, [idPublicacion], (error, results) => {
+    db.query(query, [idPublicacion], (error, results) => {
       if (error) {
         reject(error);
       } else if (results.length === 0) {
@@ -138,7 +138,7 @@ const obtenerInformacionPublicacion = (idPublicacion) => {
 const obtenerComentariosPorUsuario = (idUsuario) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE id_usuario =?';
-    db.queryCallback(query, [idUsuario], (error, results) => {
+    db.query(query, [idUsuario], (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -148,7 +148,7 @@ const obtenerComentariosPorUsuario = (idUsuario) => {
 const getCommentsByPosts = async (req, res) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE tipo_contenido = "publicacion"';
-    db.queryCallback(query, (error, results) => {
+    db.query(query, (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -158,7 +158,7 @@ const getCommentsByPosts = async (req, res) => {
 const getCommentsByReels = async (req, res) => {
   return new Promise((resolve, reject) => {
     const query = 'SELECT * FROM comentarios WHERE tipo_contenido = "reel"';
-    db.queryCallback(query, (error, results) => {
+    db.query(query, (error, results) => {
       if (error) reject(error);
       else resolve(results);
     });
@@ -177,7 +177,7 @@ const searchComments = (query) => {
           ORDER BY c.fecha_creacion DESC
       `;
       
-      db.queryCallback(searchQuery, [searchId, `%${query}%`], (err, results) => {
+      db.query(searchQuery, [searchId, `%${query}%`], (err, results) => {
           if (err) return reject(err);
           resolve(results);
       });
@@ -188,7 +188,7 @@ const deleteComment = (commentId) => {
   return new Promise((resolve, reject) => {
       const deleteQuery = 'DELETE FROM comentarios WHERE id =?';
 
-      db.queryCallback(deleteQuery, [commentId], (err, result) => {
+      db.query(deleteQuery, [commentId], (err, result) => {
           if (err) return reject(err);
           resolve(result);
       });
