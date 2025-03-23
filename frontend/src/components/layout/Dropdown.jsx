@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation  } from "react-router-dom";
 import "../../assets/css/layout/dropdown.css";
 import bubbleSound from "../../assets/sounds/bubble-sound-43207.mp3";
 import { TbSettings } from "react-icons/tb";
@@ -8,6 +8,7 @@ import { AiOutlineUser } from "react-icons/ai";
 const Dropdown = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [tooltip, setTooltip] = useState("");
+    const location = useLocation(); // Hook para detectar cambios en la URL
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -27,6 +28,11 @@ const Dropdown = () => {
             bubble.classList.remove("explode");
         }, 500);
     };
+
+        // Cerrar el menú cuando la URL cambie (es decir, después de la redirección)
+        useEffect(() => {
+            setIsOpen(false);
+        }, [location.pathname]);
 
     return (
         <div className={`dropdown ${isOpen ? "active" : ""}`}>
