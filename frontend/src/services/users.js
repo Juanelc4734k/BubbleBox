@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bubblebox-ydre.onrender.com';
+const API_URL = 'http://localhost:3000';
 
 export const getUsers = async () => {
     const response = await axios.get(`${API_URL}/users/usuarios`);
@@ -93,8 +93,7 @@ export const updateUserSettings = async (settings) => {
   export const updateUserStatus = async (userId, status) => {
     try {
         const token = localStorage.getItem('token');
-        // Fix: Use API_URL instead of hardcoded localhost URL
-        const response = await fetch(`${API_URL}/users/${userId}/status`, {
+        const response = await fetch(`http://localhost:3000/users/${userId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

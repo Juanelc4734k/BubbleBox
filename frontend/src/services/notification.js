@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = 'https://bubblebox-ydre.onrender.com/notifications';
+const API_URL = 'http://localhost:3000/notifications';
 
 export const getNotification = async () => {
     const token = localStorage.getItem('token');

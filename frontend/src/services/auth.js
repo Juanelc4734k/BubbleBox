@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://bubblebox-ydre.onrender.com';
+const API_URL = 'http://localhost:3000';
 
 export const register = async (userData) => {
     const response = await axios.post(`${API_URL}/auth/register`, userData);
@@ -36,8 +36,7 @@ export const recoverPassword = async (userData) => {
 
 export const resetPassword = async (token, newPassword) => {
     try {
-        // Fix: Use API_URL instead of hardcoded URL
-        const response = await axios.post(`${API_URL}/auth/restablecer-contrasena/${token}`, {
+        const response = await axios.post(`http://localhost:3000/auth/restablecer-contrasena/${token}`, {
             nuevaContrasena: newPassword
         });
         console.log(response.data);
@@ -88,8 +87,7 @@ export const logoutUser = async (userId) => {
 
 export const updateLastSeen = async (userId, status = 'desconectado', lastSeen = new Date().toISOString()) => {
     try {
-        // Fix: Use API_URL instead of hardcoded URL
-        const response = await axios.put(`${API_URL}/chats/update-last-seen/${userId}`, {
+        const response = await axios.put(`http://localhost:3001/chats/update-last-seen/${userId}`, {
             status,
             lastSeen
         });

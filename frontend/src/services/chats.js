@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://bubblebox-ydre.onrender.com/chats';
-const API_URL2 = 'https://bubblebox-ydre.onrender.com/chats';
+const API_URL = 'http://localhost:3001/chats';
+const API_URL2 = 'http://localhost:3000/chats';
 
 export const getChatMessages = async (senderId, receiverId) => {
   const token = localStorage.getItem('token');
