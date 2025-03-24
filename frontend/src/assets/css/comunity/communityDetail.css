@@ -88,6 +88,38 @@
     width: 100%;
 }
 
+.community-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.report-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 20px;
+  color: #ff4757;
+  background: white;
+  border: 2px solid #ff4757;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.report-btn:hover {
+  background: #fff1f2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 71, 87, 0.2);
+}
+
+.report-btn svg {
+  font-size: 16px;
+}
+
 .communityInfo h1 {
     font-size: 28px;
     font-weight: 700;
@@ -103,18 +135,19 @@
 
 /* Join/Leave button */
 .uni-De {
-    background-color: #9F6DFF;
-    border-radius: 8px;
-    height: 40px;
-    width: 120px;
-    font-size: 16px;
-    color: #fff;
-    border: none;
-    box-shadow: 0 4px 8px rgba(157, 108, 255, 0.3);
-    margin-bottom: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: #9F6DFF;
+  border-radius: 25px;
+  height: 40px;
+  min-width: 120px;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 4px rgba(157, 108, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px 25px;
 }
+
 
 .uni-De:hover {
     background-color: #8a5ae0;

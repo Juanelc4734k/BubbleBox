@@ -48,6 +48,82 @@ const createMessage = async (req, res) => {
     }
 };
 
+
+const createFileMessage = async (req, res) => {
+    try {
+        const { senderId, receiverId, temp_id } = req.body;
+        
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file provided' });
+        }
+        
+        // Get the file path
+        const fileType = req.file.mimetype.split('/')[0]; // 'image', 'application', etc.
+        let filePath;
+        
+        if (fileType === 'image') {
+            filePath = `/uploads/images/${req.file.filename}`;
+        } else {
+            filePath = `/uploads/documents/pdf/${req.file.filename}`;
+        }
+        
+        console.log('File saved at:', filePath);
+
+        const existingMessage = await chatModel.getFileMessageByPath(filePath);
+
+        if(existingMessage) {
+            console.log('File message already exists, returning existing record');
+            return res.status(200).json({
+                messageId: existingMessage.id,
+                filePath: existingMessage.file_path,
+                fileType: existingMessage.file_type,
+                fileName: existingMessage.file_name,
+                temp_id
+            });
+        }
+
+        const messageData = {
+            sender_id: senderId,
+            receiver_id: receiverId,
+            file_path: filePath,
+            file_type: fileType,
+            file_name: req.file.originalname
+        };
+
+        const savedMessage = await chatModel.saveFileMessage(messageData);
+        
+        // Emit socket event for real-time updates
+        const io = req.app.get('io');
+        if (io) {
+            io.emit('send_file_message', {
+                senderId,
+                receiverId,
+                filePath,
+                fileType,
+                fileName: req.file.originalname,
+                temp_id,
+                id: savedMessage.id
+            });
+            console.log('Socket event emitted for file message');
+        } else {
+            console.warn('Socket.io instance not available');
+        }
+        
+        // Return success response
+        res.status(200).json({ 
+            success: true, 
+            filePath,
+            fileType,
+            fileName: req.file.originalname,
+            message: 'File message received and processing'
+        });
+    } catch (error) {
+        console.error('Error in createFileMessage:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 const createAudioMessage = async (req, res) => {
     try {
         const { senderId, receiverId, temp_id, duration } = req.body;
@@ -180,6 +256,7 @@ const getUnreadCount = async (req, res) => {
 module.exports = {
     getMessages,
     createMessage,
+    createFileMessage,
     updateMessage,
     deleteMessage,
     updateLastSeen,

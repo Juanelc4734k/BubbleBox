@@ -1,4 +1,3 @@
-
 export const availableInterests = [
 
   "Arte", "Pintura", "Escultura", "Arquitectura", "Diseño",

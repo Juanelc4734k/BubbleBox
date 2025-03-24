@@ -1,5 +1,5 @@
 .containerSetting{
-    width: calc(100% - 1rem);
+    width: calc(100% - 0.5rem);
     height: auto;
     background: rgba(255, 255, 255);
     border-radius: 1rem;
@@ -177,7 +177,7 @@ input:checked + .slider:before {
 }
 @media (min-width: 1024px) {
     .containerSetting{
-        width: calc(100% - 18rem);
+        width: calc(100% - 17rem);
         height: auto;
         gap: 1rem;
         padding: 1rem;
