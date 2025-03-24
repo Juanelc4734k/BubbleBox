@@ -45,14 +45,15 @@ html, body {
     position: relative;
     display: flex;
     align-items: center;
-    background-color: #dacee2;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #c3b1e1, #bde0fe);
+    border-radius: 0.7rem;
     padding: 15px 20px;
     transition: all 0.3s ease;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
 }
 
 .search-icon {
-  color: #8a8d91;
+  color: #ffffff;
   margin-right: 8px;
   font-size: 14px;
 }
@@ -63,12 +64,12 @@ html, body {
     outline: none;
     width: 100%;
     font-size: 14px;
-    color: #333;
+    color: #ffffff;
     box-shadow: none;
 }
 
 .search-input::placeholder {
-    color: #8a8d91;
+    color: #ffffff;
 }
   
   .sidebar-wrapper-Page.closed {

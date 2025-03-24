@@ -1,24 +1,18 @@
 const mysql = require('mysql2');
 
-// Create a connection pool instead of a single connection
-const pool = mysql.createPool({
+const conexion = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || '',
-    database: process.env.DB_NAME || 'bubblebox2',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    database: process.env.DB_NAME || 'bubblebox2'
 });
 
-// Test the connection
-pool.getConnection((err, connection) => {
+conexion.connect(err => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
         return;
     }
     console.log('Conectado a la base de datos MySQL');
-    connection.release(); // Release the connection
 });
 
-module.exports = pool;
+module.exports = conexion;

@@ -197,8 +197,8 @@ include 'views/templates/sidebar.php';
                                         <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                                             <div class="d-flex align-items-center">
                                                 <?php
-                                                $communityImageUrl = isset($community['imagen']) && $community['imagen']
-                                                    ? 'http://localhost:3004/uploads/' . $community['imagen']
+                                                $communityImageUrl = isset($community['avatar']) && $community['avatar']
+                                                    ? 'http://localhost:3004/uploads/' . $community['avatar']
                                                     : './public/assets/img/icons/community-banner-placeholder.jpg';
                                                 ?>
                                                 <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
@@ -298,8 +298,8 @@ include 'views/templates/sidebar.php';
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
                                                             <?php
-                                                            $communityImageUrl = isset($community['imagen']) && $community['imagen']
-                                                                ? 'http://localhost:3004/uploads/' . $community['imagen']
+                                                            $communityImageUrl = isset($community['avatar']) && $community['avatar']
+                                                                ? 'http://localhost:3004/uploads/' . $community['avatar']
                                                                 : './public/assets/img/icons/community-banner-placeholder.jpg';
                                                             ?>
                                                             <img src="<?php echo $communityImageUrl; ?>" class="avatar avatar-sm me-3" alt="community image">

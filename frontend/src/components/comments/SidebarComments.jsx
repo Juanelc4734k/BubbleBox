@@ -16,7 +16,7 @@ import { FiFlag, FiMoreVertical } from "react-icons/fi";
 import "../../assets/css/comments/SideComments.css";
 import ModalReport from "../reports/modalReport";
 
-const SidebarComments = ({ contentId, contentType, onClose }) => {
+const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setIsModalReport }) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -519,6 +519,7 @@ const SidebarComments = ({ contentId, contentType, onClose }) => {
                                       e.stopPropagation();
                                       setSelectedComment(comment);
                                       setShowReportModal(true);
+                                      setIsModalReport(true);
                                       setOpenDropdownId(null);
                                     }}
                                   >
@@ -544,9 +545,13 @@ const SidebarComments = ({ contentId, contentType, onClose }) => {
                             
                             {showReportModal && selectedComment && (
                               <ModalReport
-                                isOpen={showReportModal}
+                                isOpen={() => {
+                                  showReportModal
+                                  setIsModalReport
+                                }}
                                 onClose={() => {
                                   setShowReportModal(false);
+                                  setIsModalReport(false);
                                   setSelectedComment(null);
                                 }}
                                 contentId={selectedComment.id}

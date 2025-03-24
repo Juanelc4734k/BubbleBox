@@ -93,16 +93,16 @@ include 'views/templates/sidebar.php';
                                     <div class="card-body">
                                         <div class="text-center mb-4">
                                             <?php
-                                            $bannerUrl = isset($community['imagen']) && $community['imagen']
-                                                ? 'http://localhost:3004/uploads/' . $community['imagen']
+                                            $bannerUrl = isset($community['banner']) && $community['banner']
+                                                ? 'http://localhost:3004/uploads/' . $community['banner']
                                                 : './public/assets/img/icons/community-banner-placeholder.jpg';
                                             ?>
                                             <div class="position-relative mb-3">
                                                 <img src="<?php echo $bannerUrl; ?>" class="img-fluid rounded shadow-sm" alt="Community banner" style="max-height: 150px; width: 100%; object-fit: cover;">
 
                                                 <?php
-                                                $avatarUrl = isset($community['imagen']) && $community['imagen']
-                                                    ? 'http://localhost:3004/uploads/' . $community['imagen']
+                                                $avatarUrl = isset($community['avatar']) && $community['avatar']
+                                                    ? 'http://localhost:3004/uploads/' . $community['avatar']
                                                     : './public/assets/img/icons/community-banner-placeholder.jpg';
                                                 ?>
                                                 <img src="<?php echo $avatarUrl; ?>" class="avatar avatar-xxl rounded-circle shadow border border-white position-absolute"
@@ -261,8 +261,8 @@ include 'views/templates/sidebar.php';
                                                                             <img src="<?php echo $memberAvatarUrl; ?>" class="avatar avatar-sm me-3" alt="user avatar">
                                                                         </div>
                                                                         <div class="d-flex flex-column justify-content-center">
-                                                                            <h6 class="mb-0 text-sm"><?php echo htmlspecialchars($member['username'] ?? 'Usuario ' . $member['id_usuario']); ?></h6>
-                                                                            <p class="text-xs text-secondary mb-0">ID: <?php echo $member['id_usuario']; ?></p>
+                                                                            <h6 class="mb-0 text-sm"><?php echo htmlspecialchars($member['username'] ?? 'Usuario ' . $member['id']); ?></h6>
+                                                                            <p class="text-xs text-secondary mb-0">ID: <?php echo $member['id']; ?></p>
                                                                         </div>
                                                                     </div>
                                                                 </td>

@@ -5,7 +5,6 @@ import { getFriends } from '../services/friends'
 import '../assets/css/layout/sidebarChats.css'
 import { CgChevronLeftO, CgChevronRightO  } from "react-icons/cg";
 import { IoIosArrowBack, IoIosArrowForward  } from "react-icons/io";
-import CreateGroup from '../components/chats/CreateGroup';
 import { FaSearch } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 
@@ -186,9 +185,6 @@ const Chats = ({isCreateGroupOpen, setIsCreateGroupOpen}) => {
                         <div className="chatssDetail">
                             <div className="hederChat">
                                 <h2 className="textChat">Tus Chats</h2>  
-                                {(isSidebarVisibleChat || window.innerWidth >= 1024) && (
-                                    <CreateGroup isCreateGroupOpen={isCreateGroupOpen} setIsCreateGroupOpen={setIsCreateGroupOpen}/>
-                                )} 
                             </div>
                                 <div className="search-container">
                                     <div className="search-input-wrapper">

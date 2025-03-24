@@ -6,6 +6,111 @@
 
     transition: transform 0.3s ease;
   } */
+
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid rgba(159, 90, 216, 0.2);
+  }
+  
+  .pagination-button {
+    background: rgba(115, 84, 187, 0.1);
+    border: 1px solid rgba(159, 90, 216, 0.3);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background: rgba(115, 84, 187, 0.2);
+  }
+  
+  .pagination-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .page-info {
+    font-size: 0.9rem;
+    color: #7354bb;
+  }
+
+  .search-results {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(159, 90, 216, 0.2);
+  }
+  
+  .search-results ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .search-results li {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(238, 238, 238, 0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+  }
+  
+  .search-results li:hover {
+    background: rgba(115, 84, 187, 0.1);
+  }
+  
+  .search-results h4 {
+    padding: 12px 15px;
+    margin: 0;
+    background: rgba(115, 84, 187, 0.05);
+    font-weight: bold;
+    color: #7354bb;
+    border-bottom: 1px solid rgba(159, 90, 216, 0.2);
+  }
+  
+  .search-results .user-item {
+    color: #504f4f;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .search-results .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(159, 90, 216, 0.3);
+  }
+  
+  .search-results .post-content {
+    color: #504f4f;
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .search-containerSidebar {
     position: absolute;
     display: flex;

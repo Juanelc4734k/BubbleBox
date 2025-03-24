@@ -77,7 +77,7 @@ export default function LoginForm({ setIsAuthenticated }) {
                 // Redirección solo cuando el usuario haga clic en "Ir a la página"
                 if (decodedToken.rol === 'administrador') {
                     // Pass token as query parameter to Laravel dashboard
-                    window.location.href = `http://localhost:8000/?token=${response.token}`;
+                    window.location.href = `http://localhost:9090/?token=${response.token}`;
                 } else {
                     setIsAuthenticated(true);
                     navigate('/home');
