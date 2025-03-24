@@ -1,17 +1,21 @@
 import { useState, useEffect, useRef } from "react"
 import { getProfiles, updateProfile } from "../../services/users"
-import { availableInterests } from "../../data/interests"
 import "../../assets/css/profile/updateProfile.css"
+import { availableInterests, categoryColors, categorizedInterests } from '../../data/interests'
 import { TbUserEdit } from "react-icons/tb"
 import { IoClose } from "react-icons/io5"
+import { IoIosClose } from "react-icons/io";
 import { FaCamera } from "react-icons/fa"
 import axios from 'axios'
 
-const UpdateProfile = () => {
+const UpdateProfile = ({ onProfileUpdate }) => {
   // Add new state for preview
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedInterests, setSelectedInterests] = useState([]);
   const [showInterestsModal, setShowInterestsModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("Todos"); 
+  const [searchTerm, setSearchTerm] = useState(""); 
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState({
@@ -66,7 +70,7 @@ const UpdateProfile = () => {
       if (prev.includes(interest)) {
         return prev.filter(i => i !== interest);
       }
-      if (prev.length >= 5) {
+      if (prev.length >= 7) {
         setMessage("Máximo 5 intereses permitidos");
         return prev;
       }
@@ -85,6 +89,12 @@ const UpdateProfile = () => {
       setMessage("");
     }
   }
+  
+  // Cambia la categoría activa
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setSearchTerm(""); // Reinicia el buscador al cambiar de categoría
+  };
   
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -110,10 +120,15 @@ const UpdateProfile = () => {
         );
   
         if (response.data.avatarUrl) {
-          setProfile(prev => ({
-            ...prev,
+          const updateProfile = {
+            ...profile,
             avatar: `http://localhost:3009${response.data.avatarUrl}`
-          }));
+          }
+          setProfile(updateProfile);
+          if (onProfileUpdate) {
+            onProfileUpdate(updateProfile);
+          }
+
           // Delay clearing the preview until the new image is loaded
           setTimeout(() => {
             URL.revokeObjectURL(previewUrl);
@@ -142,11 +157,20 @@ const UpdateProfile = () => {
       
       // Actualizar ambos estados y forzar nueva carga de datos
       const userData = await getProfiles();
-      setProfile(prev => ({
-        ...prev,
+
+      const updatedProfile = {
+        ...profile,
         ...userData,
         intereses: selectedInterests
-      }));
+      }
+
+
+
+      setProfile(updatedProfile);
+
+      if(onProfileUpdate) {
+        onProfileUpdate(updatedProfile)
+      }
       
       // Sincronizar intereses seleccionados
       setSelectedInterests(userData.intereses || []);
@@ -160,6 +184,16 @@ const UpdateProfile = () => {
       console.error("Error al actualizar el perfil:", error);
       setMessage(error.response?.data?.message || "Error al actualizar tus intereses");
     }
+  };
+
+
+  const getCategoryColor = (interest) => {
+    for (let category in categorizedInterests) {
+      if (category !== "Todos" && categorizedInterests[category].includes(interest)) {
+        return categoryColors[category]; 
+      }
+    }
+    return "#ddd"; 
   };
   return (
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
@@ -236,22 +270,105 @@ const UpdateProfile = () => {
           </div>
           {/* Interests Modal */}
           {showInterestsModal && (
-            <div className="interests-modal">
-              <div className="interests-modal-content">
-                <h3>Selecciona tus intereses (máximo 5)</h3>
-                <div className="interests-grid">
-                  {availableInterests.map((interest) => (
+      <div className="interests-modal">
+      <div className="interests-modal-content">
+        <div className="contador-profile">
+
+        <h3>Selecciona tus intereses (máximo 7)</h3>
+        <p>{selectedInterests.length} / 7</p>
+        </div>
+      <div className="progress-container">
+          <div
+            className="progress-bar"
+            style={{ width: `${(selectedInterests.length / 7) * 100}%` }}
+          ></div>
+        </div>
+        <div className="profile-interests-busqueda">
+
+        <div className="search-container-profiles">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            placeholder="Buscar intereses..." 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-interests"
+          />
+        </div>            
+            {/* Agregamos tabs de categorías */}
+            <div className="filtrar-interes-profi">
+              <div className="filter-conten">
+                <i className="fa-solid fa-filter"></i>
+                <button type="button" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+                    Filtrar
+                  </button>
+
+              </div>
+
+              {isFilterOpen && (
+                <div  className={`conten-tabs-profile ${isFilterOpen ? "active" : ""}`}>
+                  {availableInterests.map((category) => (
                     <button
-                      key={interest}
-                      type="button"
-                      className={`interest-tag ${selectedInterests.includes(interest) ? 'selected' : ''}`}
-                      onClick={() => handleInterestToggle(interest)}
-                      disabled={selectedInterests.length >= 5 && !selectedInterests.includes(interest)}
-                    >
-                      {interest}
+                     key={category}
+                     type="button"
+                    className={`category-tab ${selectedCategory === category ? "active" : ""}`}
+                    onClick={() => handleCategoryChange(category)}
+                  >
+                      {category}
                     </button>
                   ))}
-                </div>
+                  </div>
+                )}
+            </div> 
+            
+        </div>
+        <div className="interests-Profil">
+          <div className="texto-select-interet">
+          <i className="fa-regular fa-heart"></i>
+              <p>Tus intereses seleccionados</p>
+          </div>
+              
+              <div className="button-select-profile">
+                {selectedInterests.map((interest) =>(
+
+                <button
+                  key={interest}
+                  type="button"
+                  className= "interests-tag-select  selected"
+                  style={{ backgroundImage: selectedInterests.includes(interest) ? getCategoryColor(interest) : "linear-gradient(135deg, #ddd, #bbb)" }}
+                >
+                    {interest}
+                    <IoIosClose className="circlee" onClick={() => handleInterestToggle(interest)}/>
+              </button>  
+              ))}
+              </div>
+              
+            </div>
+
+            <div className="interests-grid">
+              
+            {categorizedInterests[selectedCategory]
+              .filter(interest => interest.toLowerCase().includes(searchTerm.toLowerCase())).map((interest) => (
+                <button
+                  key={interest}
+                  type="button"
+                  className={`interest-tag ${selectedInterests.includes(interest) ? 'selected' : ''}`}
+                  onClick={() => handleInterestToggle(interest)}
+                  disabled={selectedInterests.length >= 7 && !selectedInterests.includes(interest)}
+                  style={{ backgroundImage: selectedInterests.includes(interest) ? getCategoryColor(interest) : "linear-gradient(135deg, #ffffff, #ffffff)" }}
+
+                >
+                {selectedInterests.includes(interest) ? (
+                    <i className="fa-solid fa-circle-check icon-circle-profi selected-icon"></i>
+                  ) : (
+                    <i className="fa-regular fa-circle icon-circle-profile"></i>
+                  )}              
+                  {interest}
+
+                                </button>
+                            ))}
+
+          </div>
                 <button 
                   type="button" 
                   className="close-interests"
@@ -264,9 +381,10 @@ const UpdateProfile = () => {
                     }));
                   }}
                 >
-                  Cerrar
+                  Guardar
                 </button>
               </div>
+
             </div>
           )}
           <button type="submit" className="submit-button">

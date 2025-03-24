@@ -17,31 +17,38 @@ body{
 
 .form{
     background-color: white;
+    margin-top: 16rem;
+    margin-bottom: 1.5rem;
     width: 100%;
     display: flex;
     flex-direction: column;
     border-radius: 2vh;
     box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.3);
     align-items: center;
-    overflow: hidden;
- 
+    overflow: hidden; 
 }
 .form .text{
     background: linear-gradient(to bottom,  #B17DFF, #fff);
     width: 100%;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 4vh;
+    overflow: hidden;
+    position: relative;
 }
 .form .text h1{
     text-align: center;
-    margin-top: 3%;
-    width: 80%;
+    width: 50%;
     border-radius: 3vh;
-    font-size: 4.5vh;
+    font-size: 5.5vh;
     color: #ffffff;
+    position: relative;
+    z-index: 2;
+    font-size: 5.5vh;
+    margin-top: -16vh;
 }
 
 .form .text img{
@@ -52,6 +59,97 @@ body{
     background-color: white;
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
+
+.conten-bubbles-login {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+.conten-bubbles-login .bubbles1{
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: -18vw;
+    top: -22vw;
+}
+.conten-bubbles-login .bubbles2{
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 55vw;
+    top: 40vw;
+}
+.conten-bubbles-login .bubbles3{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 76vw;
+    top: 15.1vw;
+}
+.conten-bubbles-login .bubbles4{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 59vw;
+    top: 35vw;
+}
+.conten-bubbles-login .bubbles5{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 62vw;
+    top: 42vw;
+}
+.conten-bubbles-login .bubbles6{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 25vw;
+    top: 33vw;
+}
+
+.conten-bubbles-login .bubbles7{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 31vw;
+    top: 50vw;
+}
+.conten-bubbles-login .bubbles8{
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left: 3vw;
+    top: 50vw;
+}
+
 
 /* Codigo de estilos del formulario de inicio de sesion*/
 
@@ -67,14 +165,16 @@ body{
     flex-direction: column;
     padding: 4%;
     gap: 1rem;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
     border-radius: 5vh;
-    background-color: white;
     margin-top: 1rem;
 }
 .form .formulario form h2{
-    font-size: 3vh;
+    font-size: 4.5vh;
     text-align: center;
+    background: linear-gradient(100deg, #6349d5,#bea1fbd8); /* Degradado */
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(2px 2px 1.5px rgb(170, 170, 170));
 }
 .form .formulario form label{
     font-size: 2vh;
@@ -85,6 +185,15 @@ body{
 .containerIconPassword
 {
     position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 1.5vh;
+    width: 100%;
+    height: 7vh;
+    box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.438);
+    overflow: hidden;
+    margin-top: -2vh;
+    margin-bottom: 1.5vh;
 }
 
 .form .formulario form 
@@ -95,23 +204,32 @@ body{
     position: absolute;
     border-top-left-radius: 2vh;
     border-bottom-left-radius: 2vh;
-    padding: 1.5vh 1.7vh;
+    padding: 6vh 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: white;
     height: 6vh;
-    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); /* Sombra en la parte inferior */
-    transition: box-shadow 0.3s ease; /* Suaviza la animación al enfocar */
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
+    transition: box-shadow 0.3s ease; 
+    
 }
 
 .form .formulario form input{
     padding: 0.5vh;
     width: 100%;
-    height: 6vh;
     border: 1px solid rgb(231, 230, 230);
     border-radius: 2vh;
     background-color: rgb(235, 232, 232);
     padding-left: 7vh;
-    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); /* Sombra en la parte inferior */
+    /* box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); */
     transition: box-shadow 0.3s ease; /* Suaviza la animación al enfocar */
+    height: 7vh;
+    border-radius: 1.5vh;
+    padding-left: 7.6vh;
+    font-size: 1.7vh;
+    border: 1px solid #cfbcec;
+    background-color: #b398f232;
 }
 .form .formulario form input:focus{
     outline: none;
@@ -130,7 +248,7 @@ body{
 }
 
 input:focus ~ .line{
-    width: 90%;
+    width: 100%;
     transition: .7s ease;
 }
 .recuperar{
@@ -140,28 +258,28 @@ input:focus ~ .line{
 .recuperarContraseña{
     color: black;
     text-decoration: 2px underline rgb(0, 0, 0) ;
-    font-size: 1.4vh;
+    font-size: 1.5vh;
 }
 .recuperarContraseña:hover{
     text-decoration: 2px underline rgb(148, 84, 233) ;
     color: rgb(148, 84, 233);
 }
-.form .formulario form .icons{
-    width: 100%;
+.terminos-login{
     display: flex;
-    border-radius: 4vh;
-    justify-content: space-around;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-left: 1vh;
 }
-.form .formulario form .icons .icono{
-    display: flex;
-    border-radius: 100%;    
-    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2);
-    font-size: 2.5rem;
-    padding: 0.4rem;
-    background-color: rgb(198, 130, 238, 0.4);
+.terminos-login p{
+    font-size: 11px;
 }
+.terminos-login span{
+    color: #a187de;
+    text-decoration: underline;
+}
+
 .form .formulario form .buttonLogin{
     border: 1px solid rgb(185, 129, 250);
     background-color: #B17DFF;
@@ -182,6 +300,8 @@ input:focus ~ .line{
     flex-direction: column;
     align-items: center;
     margin-bottom: 3%;
+    position: relative;
+    z-index: 2;
 }
 
 .form  .otro p{
@@ -200,43 +320,117 @@ input:focus ~ .line{
     color: rgb(148, 84, 233);
 }
 .error-message{
-    background: rgba(245, 101, 101, 0.2);
-    color: #e53e3e;
+    color: #ba66f7;
+    border: 1px solid #ccbcec;
+    background-color: #f5efff;
     padding: 0.75rem;
     backdrop-filter: blur(10px);
-    border-radius: 0.75rem;
+    border-radius: 1.5vh;
     text-align: center;
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.2);
+    font-size: 13px;
+    box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.129);
+
 }
 
+
+@media (min-width: 768px) {
+
+    .conten-bubbles-login .bubbles1{
+        left: -14vw;
+        top: -13vw;
+    }
+    .conten-bubbles-login .bubbles2{
+        left: 55vw;
+        top: 35vw;
+    }
+    .conten-bubbles-login .bubbles3{
+        left: 74vw;
+        top: 15.1vw;
+    }
+    .conten-bubbles-login .bubbles4{
+        left: 57vw;
+        top: 28vw;
+    }
+    .conten-bubbles-login .bubbles5{
+        left: 59vw;
+        top: 33vw;
+    }
+    .conten-bubbles-login .bubbles6{
+        width: 30px;
+        height: 30px;
+        left: 24vw;
+        top: 27vw;
+    }
+    
+    .conten-bubbles-login .bubbles7{  
+        left: 35vw;
+        top: 38vw;
+    }
+    .conten-bubbles-login .bubbles8{
+        left: 5vw;
+        top: 38vw;
+    }
+
+}
 @media (min-width: 1024px){
     .form{
         flex-direction: row;
-        flex-wrap: wrap;
         width: 70%;
+        height: 80vh;
         margin: 0 auto;
-        margin-top: 2rem;
         border-radius: 2vh;
     }
     .form .text{
-        flex-direction: row;
-        flex-wrap: wrap;
-        height: 89vh;
         width: 45%;
+        height: 80vh;
         border-top-left-radius: 2vh;
-        margin-top: -7.5vh;
         border-bottom-left-radius: 2vh;
+        top: 0;
         
     }
     .form .text h1{
         font-size: 4vh;
     }
     .form .text img{
-        width: 30vh;
-        height: 30vh;
-        position: relative;
-        top: -15vh;
+        width: 25vh;
+        height: 25vh;
     }
+    
+    .conten-bubbles-login .bubbles1{
+        left: -10vw;
+        top: -13vw;
+    }
+    .conten-bubbles-login .bubbles2{
+        left: 12vw;
+        top: 25vw;
+    }
+    .conten-bubbles-login .bubbles3{
+        left: 23vw;
+        top: 7vw;
+    }
+    .conten-bubbles-login .bubbles4{
+        left: 21vw;
+        top: 14vw;
+    }
+    .conten-bubbles-login .bubbles5{
+        left: 22.5vw;
+        top: 17vw;
+    }
+    .conten-bubbles-login .bubbles6{
+        left: 7vw;
+        top: 13.5vw;
+    }
+    
+    .conten-bubbles-login .bubbles7{
+        left: 6.4vw;
+        top: 23vw;
+    }
+    .conten-bubbles-login .bubbles8{
+        left: 1vw;
+        top: 28vw;
+    }
+
+
     .form .formulario{
         width: 55%;
         align-items: flex-start;
@@ -264,7 +458,7 @@ input:focus ~ .line{
     .iconLoginEmail,
     .iconLoginPassword{
         height: 7vh;
-        padding: 2.2vh 3.5vh;
+        padding: 2.2vh 2.5vh;
     }
     input:focus ~ .line{
         width: 93%;
@@ -284,10 +478,11 @@ input:focus ~ .line{
         margin-top: 1rem;
     }
     .form .otro{
-        margin-top: -22%;
-        margin-left: 15%;
+        margin-top: 32%;
+        margin-left: 9.5%;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: absolute;
     }
 }

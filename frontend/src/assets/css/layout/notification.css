@@ -32,9 +32,9 @@
 /* Notification container styles */
 .containerNotiOpen {
     position: absolute;
-    top: 7rem;
-    left: -6rem;
-    width: 300px;
+    top: 6.5rem;
+    left: -10rem;
+    width: 350px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 11px rgba(0,0,0,0.3);
@@ -43,10 +43,11 @@
     flex-direction: column;
     opacity: 0;
     z-index: 1001;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(151, 71, 255, 0.5) rgba(151, 71, 255, 0.1);
+    overflow: hidden;
+    padding: 0vh 1vh;
+
 }
+
 
 .containerNoti.active .containerNotiOpen {
     opacity: 1;
@@ -89,6 +90,7 @@
 
 .notification-item.solicitud_amistad {
     padding-bottom: 16px;
+    
 }
 
 /* Header styles */
@@ -102,6 +104,8 @@
     align-items: center;
     padding: 12px;
     border-bottom: 1px solid #eee;
+    margin: -1vh -1vh 1vh -1vh; /* Contrarresta el padding del contenedor padre */
+
 }
 
 .headerNoti .textNoti {
@@ -113,64 +117,76 @@
 }
 
 .closeNoti {
-    background: rgba(231, 229, 235, 0.2);
     backdrop-filter: blur(10px);
     border: none;
     color: #ffffff;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    padding: 0.4rem;
+    padding: 0.2rem;
     border-radius: 50%;
     transition: all 0.3s ease;
 }
 
 .closeNoti:hover {
-    background: rgba(17, 17, 17, 0.1);
-    color: #9747ff;
+    background: rgba(255, 255, 255, 0.244);
 }
 
 /* Tab navigation styles */
 .notification-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
-    padding: 4px;
+    justify-content: space-between;
+    gap: 3px;
+    padding: 10px 4px;
     border-bottom: 1px solid #eee;
     position: relative;
     transition: margin-bottom 0.3s ease;
+   
 }
 .notification-tabs.menu-open {
-    margin-bottom: 15rem; /* Ajusta este valor según la altura del menú */
+    margin-bottom: 10rem; /* Ajusta este valor según la altura del menú */
 }
 
 .tab-button {
     display: flex;
     align-items: center;
-    gap: 2px;
-    padding: 4px 6px;
+    gap: 4px;
+    padding: 9.5px 6px;
     border: none;
-    border-radius: 12px;
-    background: #f0f2f5;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s;
-    font-size: 0.9em;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 0.8em;
+    background-color: #f7f7f7;
+    box-shadow: 0px 0.5px 4px -1px rgba(128, 128, 128, 0.735);
 }
 
+.main-active-tab {
+    border-radius: 20px;
+    padding: 8px 16px;
+    background-color: #f0f0f0; 
+    box-shadow: 0px 2px 5.5px -2px rgb(39, 39, 39);
+}
 .tab-button.active {
     background: #c6b2f5;
     color: white;
 }
 .menu-button {
-    background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     cursor: pointer;
-    padding: 8px;
-    background: #f0f2f5;
+    padding: 4px 4px;
+    margin-right: 0.3rem;
     border-radius: 50%;
     position: relative;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    color: #2a2a2a;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    
+}
+.menu-button:hover{
+    background-color: #77777741;
 }
 .menu-button.active{
     background: #ddd3f7;
@@ -178,29 +194,36 @@
 }
 .menu-dropdown {
     position: absolute;
-    top: 100%;  /* Se posiciona justo debajo del botón */
+    top: 100%;  
     right: 0;
-    background: white;
-    border-radius: 5px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 10;
-    padding: 8px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     min-width: 120px;
-    gap: 5px;
+    gap: 7.7px;
     opacity: 0;
-    transform: translateY(-10px);
+    height: 10rem;
+    transform: translateY(-1px);
     transition: opacity 0.3s ease, transform 0.5s ease;
-}
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 1vh;
+    box-shadow: 0px 0px 4px rgba(128, 128, 128, 0.465);
 
+}
+&::-webkit-scrollbar {
+display: none;
+}
 .menu-dropdown.open{
     opacity: 1;
     transform: translateY(0);
 }
 /* Notification list styles */
 .notifications-list {
-    overflow-y: auto;
+    overflow-y: 1px;
     padding: 8px;
 }
 
@@ -288,15 +311,14 @@
 
 @media (min-width: 768px) {
     .containerNotiOpen {
-        top: 8.5rem;
-        left: 0;
+        top: 7rem ;
     }
 }
 
 /* Responsive styles */
 @media(min-width: 1024px) {
     .containerNotiOpen {
-        top: 9rem;
+        top: 8.3rem;
         max-height: 470px;
     }
     .headerNoti .textNoti {

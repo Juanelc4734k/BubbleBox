@@ -9,8 +9,10 @@ import { getPostByUserId } from "../../services/posts";
 import { checkFriendship } from "../../services/friends";
 import '../../assets/css/profile/profile.css';
 import { CiGrid41 } from "react-icons/ci";
+import { updateProfile } from "../../services/users";
 
-function Profile({ profile, isOwnProfile }) {
+function Profile({ profile: initialProfile, isOwnProfile, }) {
+  const [profile, setProfile] = useState(initialProfile);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
@@ -21,6 +23,18 @@ function Profile({ profile, isOwnProfile }) {
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
+
+  useEffect(() => {
+    setProfile(initialProfile);
+  }, [initialProfile]);
+
+  const handleProfileUpdate = (updatedProfile) => {
+    setProfile(prevProfile => ({
+      ...prevProfile,
+      ...updatedProfile
+    }))
+  }
+
 
   // Check if the current user can view this profile
   useEffect(() => {
@@ -199,7 +213,7 @@ function Profile({ profile, isOwnProfile }) {
             </div>
             {/* Right side - Profile Information */}
             <div className="md:w-2/3 rightprofile">
-              <div className="flex items-center gap-5 textRight">
+              <div className="flex items-center gap-5 textRight" >
                 <CiUser className="text-purple-500" size={24} />
                 <h1 className="font-bold text-gray-800 textNameP">
                   {profile.nombre}
@@ -208,7 +222,7 @@ function Profile({ profile, isOwnProfile }) {
               {/* About Me Section */}
               <div className="sobreMi">
                 <h3 className="font-semibold text-gray-800 mb-1 textSobe">
-                  Sobre mi
+                  Biografía
                 </h3>
                 <p className="text-gray-600 textDescription">
                   {profile.descripcion_usuario || defaultDescription}
@@ -220,11 +234,11 @@ function Profile({ profile, isOwnProfile }) {
                   Información General
                 </h4>
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-gray-600">
+                  <div className="flex items-center gap-3 text-gray-600 ml-2">
                     <BsEnvelope size={20} className="text-purple-500" />
                     <span className="text-sm lg:text-lg  ">{profile.email}</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-600">
+                  <div className="flex items-center gap-3 text-gray-600 ml-2">
                     <BsGeoAlt size={20} className="text-purple-500" />
                     <span className="text-sm lg:text-lg ">{profile.estado}</span>
                   </div>
@@ -250,7 +264,7 @@ function Profile({ profile, isOwnProfile }) {
               {/* Update Profile Section */}
               <div className="border-t border-gray-200 butonprofil">
                 {isOwnProfile ? (
-                  <UpdateProfile />
+                  <UpdateProfile onProfileUpdate={handleProfileUpdate} />
                 ) : (
                   <button
                     onClick={() => setShowReportModal(true)}

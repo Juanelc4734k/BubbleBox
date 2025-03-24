@@ -13,10 +13,6 @@ const Home = ({ openCommentsSidebar }) => {
   const [activeTab, setActiveTab] = useState('all'); // New state for active tab
   const [currentStoryGroupIndex, setCurrentStoryGroupIndex] = useState(0);
 
-  const parrafoComm = "Publicaciones recientes";
-  const [mostrarT, setMostrarT] = useState(true);
-  const [noVer, setNoVer] = useState(false);
-  const [textoM, setTextoM] = useState("");
   const userId = localStorage.getItem('userId');
 
   const { id: targetPostId } = useParams();
@@ -175,26 +171,31 @@ const Home = ({ openCommentsSidebar }) => {
         </div>
       </div>
       <div className="home-container">
-            <div className="textOcul">
-              {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
-            </div>
-        {/* Tab Navigation - Now inside home-container */}
-        <div className="tabs-container">
-          <div className="tabs">
-            <button 
-              className={`tab ${activeTab === 'all' ? 'active' : ''}`}
-              onClick={() => setActiveTab('all')}
-            >
-              Publicaciones
-            </button>
-            <button 
-              className={`tab ${activeTab === 'my' ? 'active' : ''}`}
-              onClick={() => setActiveTab('my')}
-            >
-              Mis Publicaciones
-            </button>
+        <div className="conten-home-header">
+          <div className="tittle-conten-header-home">
+            <p>Publicaciones recientes</p>
           </div>
+            <div className="tabs-container">
+                <button 
+                  className={`tab-1 ${activeTab === 'all' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('all')}
+                >
+                  Publicaciones
+                </button>
+
+                <button 
+                  className={`tab-2 ${activeTab === 'my' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('my')}
+                >
+                  Mis Publicaciones
+                </button>
+            </div>
         </div>
+            {/* <div className="textOcul">
+              {!noVer && <h2 className={mostrarT ? "ver" : "noVer"}>{textoM}</h2>}
+            </div> */}
+        {/* Tab Navigation - Now inside home-container */}
+       
         
         {error ? (
           <p>{error}</p>

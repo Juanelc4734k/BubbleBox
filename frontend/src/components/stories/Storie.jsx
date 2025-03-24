@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getUserProfile } from '../../services/users';
 import { registerVista, getVista } from '../../services/stories';
-import { TiDeleteOutline } from "react-icons/ti";
 import { FaEye } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import '../../assets/css/layout/stories.css';
@@ -217,10 +216,16 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
                 }
             </div>
 
-            {isExpanded && (
-                <div className="story-modal">
-                    <TiDeleteOutline className='close-button left-aligned' onClick={handleClose}/>
-                    <div className="story-modal-content">
+            {isExpanded &&(
+                <div     className="story-modal" 
+                onMouseDown={(e) => {
+                    if (e.target === e.currentTarget) {
+                        handleClose();
+                    }
+                }} 
+                title="Toca para salir"
+            >
+                    <div className="story-modal-content" onMouseDown={(e) => e.stopPropagation()}>
                         <div className="story-header">
                             <img 
                                 src={getAvatarSrc()}
@@ -248,6 +253,7 @@ const Storie = ({ stories, onPrevUser, onNextUser, isFirst, isLast }) => {
                                     <ul>
                                         {viewersList[currentStory.id].map(viewer => (
                                             <li key={viewer.id} className="viewer-item">
+                                                <img src= {viewer.img} alt="" />
                                                 <span className="viewer-name">{viewer.nombre}</span>
                                                 <span className="viewer-time">
                                                     {new Date(viewer.fecha_vista).toLocaleString()}
