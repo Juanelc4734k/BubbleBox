@@ -7,9 +7,7 @@ import fondoLogin from  '../../assets/images/img/fondo1.jpeg';
 import { HiOutlineMail } from 'react-icons/hi';
 import { SlLock } from 'react-icons/sl';
 import logo from '../../assets/images/logo/logo.jfif'
-import { RiInstagramFill } from "react-icons/ri";
-import { FaGoogle } from "react-icons/fa";
-import { FaFacebookF } from "react-icons/fa";
+import { FaRegSquare, FaRegCheckSquare } from "react-icons/fa";
 import Swal from 'sweetalert2';
 
 export default function LoginForm({ setIsAuthenticated }) {
@@ -99,6 +97,7 @@ export default function LoginForm({ setIsAuthenticated }) {
             }
         }
     };
+    const [ aceptado, setAceptado ] = useState(false);
     
     return (
         <>
@@ -107,6 +106,17 @@ export default function LoginForm({ setIsAuthenticated }) {
             <div className="text">
                 <h1>Bienvenidos a BubbleBox</h1>
                 <img src={logo} alt="icono"/>
+                <div className="conten-bubbles-login">
+                <div className="bubbles1"></div>
+                <div className="bubbles2"></div>
+                <div className="bubbles3"></div>
+                <div className="bubbles4"></div>
+                <div className="bubbles5"></div>
+                <div className="bubbles6"></div>
+                <div className="bubbles7"></div>
+                <div className="bubbles8"></div>
+
+                </div>
             </div>
             <div className="formulario">
                 <form onSubmit={handleSubmit}>
@@ -125,15 +135,15 @@ export default function LoginForm({ setIsAuthenticated }) {
                         <div className='line line2'></div>
                     </div>
                     
+                    <div className="terminos-login" onClick={() => setAceptado(!aceptado)}>
+                                            {aceptado ? <FaRegCheckSquare size={20} /> : <FaRegSquare size={20} />}
+                                            <p>Acepto los <span>Términos y Condiciones</span></p> 
+                                        </div>
+                    
+                    <button className='buttonLogin' type="submit">Login</button>
                     <div className="recuperar">
                         <Link to ="/recover-password" className='recuperarContraseña'>Recuperar Contraseña</Link>
                     </div>
-                    <div className="icons">
-                        <FaFacebookF className='icono'/>
-                        <FaGoogle className='icono'/>
-                        <RiInstagramFill className='icono'/>
-                    </div>
-                    <button className='buttonLogin' type="submit">Login</button>
                 </form>
             </div>
             <div className="otro">

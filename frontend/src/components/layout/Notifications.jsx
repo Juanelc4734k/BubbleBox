@@ -13,6 +13,7 @@ const NOTIFICATION_TABS = [
 ];
 
 const EXTRA_TABS = [
+    { id: 'all', label: 'Todas', icon: <FaBell /> },
     { id: 'message', label: 'Mensajes', icon: <MdMessage /> },
     { id: 'amistad_aceptada', label: 'Solicitudes Aceptadas', icon: <MdPeople /> },
     { id: 'solicitud_amistad', label: 'Solicitudes de Amistad', icon: <MdPersonAdd /> },
@@ -44,17 +45,16 @@ const NotificationHeader = ({ onClose }) => (
 const NotificationTabs = ({ activeTab, onTabChange }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     return(
-        <div className={`notification-tabs ${isMenuOpen ? "menu-open" : ""}`}>
-        {NOTIFICATION_TABS.map(tab => (
-            <button
-                key={tab.id}
-                className={`tab-button ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => onTabChange(tab.id)}
-            >
-                {tab.icon}
-                <span>{tab.label}</span>
-            </button>
-        ))}
+   <div className={`notification-tabs ${isMenuOpen ? "menu-open" : ""}`}>
+        {(() => {
+            const activeTabData = [...NOTIFICATION_TABS, ...EXTRA_TABS].find(tab => tab.id === activeTab);
+            return activeTabData ? (
+                <button className="tab-button active main-active-tab">
+                    {activeTabData.icon}
+                    <span>{activeTabData.label}</span>
+                </button>
+            ) : null;
+        })()}
 
         {/* Botón de tres puntos para mostrar más opciones */}
         <div className="extra-options">

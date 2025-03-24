@@ -5,10 +5,11 @@ import { deletePost, updatePost } from '../../services/posts';
 import { getCommentsByPost } from '../../services/comments';
 import '../../assets/css/layout/post.css';
 import { BsHandThumbsUp } from "react-icons/bs";
-import { MdOutlineInsertComment } from "react-icons/md";
+// import { MdOutlineInsertComment } from "react-icons/md";
 import { IoArrowRedoOutline } from "react-icons/io5";
 import { TiDeleteOutline } from "react-icons/ti";
 import { FiMoreVertical, FiEdit, FiTrash2, FiFlag } from "react-icons/fi";
+import { IoMdTime } from "react-icons/io";
 import { IoClose } from 'react-icons/io5';
 import Swal from 'sweetalert2'
 import '../../assets/css/app/sweetCustom.css'
@@ -40,6 +41,9 @@ const Post = forwardRef((props, ref) => {
     const [editMessage, setEditMessage] = useState('');
     const [isSubmittingEdit, setIsSubmittingEdit] = useState(false);
     const editModalRef = useRef(null);
+    const [likedd, setLikedd] = useState(false);
+    const [linkedComments, setLikedComments] = useState(false);
+    const [ linkedReenviar, setLinkedReenviar] = useState(false);
 
 
 
@@ -58,7 +62,6 @@ const Post = forwardRef((props, ref) => {
             openCommentsSidebar(post.id, 'post');
         }
     };
-    
     const checkIfEditable = () => {
         if (!post.fecha_creacion) return false;
         
@@ -90,6 +93,7 @@ const Post = forwardRef((props, ref) => {
         
         fetchComments();
     }, [post.id]);
+
 
     //Lista de reacciones
     const reactionTypes = [
@@ -430,6 +434,7 @@ const Post = forwardRef((props, ref) => {
         }
     };
 
+
     const handleCopyLink = () => {
         navigator.clipboard.writeText(shareUrl).then(() => {
             Swal.fire({
@@ -486,16 +491,21 @@ const Post = forwardRef((props, ref) => {
         console.log('Modal state:', showEditModal);
     }, [showEditModal]);
 
+
     
+  
     return (
         <>
             <div className="posts" ref={ref}>
                 <div className='post'>
 
-                    <div className="autor-info">
-                        <p className='fechacreate'>{post.fecha_creacion ? new Date(post.fecha_creacion).toLocaleString() : 'Fecha desconocida'}</p>
-                       <div className="ft-name">
-                            <div className="imguser">
+                    <div className="post-autor-info">
+                        <p 
+                        className='post-fecha-create'>
+                        {post.fecha_creacion ? new Date(post.fecha_creacion).toLocaleString() : 'Fecha desconocida'}
+                        </p>
+                       <div className="post-ft-name">
+                            <div className="post-imguser">
                                 <img 
                                     src={getAvatarSrc()} 
                                     alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
@@ -512,22 +522,22 @@ const Post = forwardRef((props, ref) => {
                             {/* Post options menu */}
                             <div className="post-options relative ml-auto">
                                 <button 
-                                    className="options-button p-1 rounded-full hover:bg-gray-100"
+                                    className="options-button w-9 p-1 rounded-full hover:bg-gray-100"
                                     onClick={toggleOptionsMenu}
                                 >
-                                    <FiMoreVertical className="text-xl text-gray-600" />
+                                    <i className="fa-solid fa-ellipsis-vertical text-xl text-gray-600"></i>
                                 </button>
                                 
                                 {showOptionsMenu && (
-                                    <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                    <div className="Post-options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36">
                                         {isMyPost && isMyPostsTab ? (
                                             <>
                                                 {isEditable ? (
                                                     <button 
-                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
+                                                        className="edit-post w-full text-left px-4 py-2 flex items-center gap-2 "
                                                         onClick={handleEditPost}
                                                     >
-                                                        <FiEdit className="text-blue-500" />
+                                                        <i className="fa-solid fa-pen-to-square"></i>
                                                         <span>Editar</span>
                                                     </button>
                                                 ) : (
@@ -543,15 +553,15 @@ const Post = forwardRef((props, ref) => {
                                                             });
                                                         }}
                                                     >
-                                                        <FiEdit className="text-gray-400" />
-                                                        <span>Editar (expirado)</span>
+                                                        <i className="fa-solid fa-pen-to-square "></i>
+                                                        <span>Expirado</span>
                                                     </button>
                                                 )}
                                                 <button 
-                                                    className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                    className="post-delete w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
                                                     onClick={handleDeletePost}
                                                 >
-                                                    <FiTrash2 />
+                                                    <i className="fa-solid fa-trash"></i>
                                                     <span>Eliminar</span>
                                                 </button>
                                             </>
@@ -576,7 +586,7 @@ const Post = forwardRef((props, ref) => {
                     </div>
 
                     <div className="contenido-post">
-                    <div className="description">
+                    <div className="post-description">
                         {post.contenido && (
                             <>
                                 <div className="hidden md:block">
@@ -585,7 +595,7 @@ const Post = forwardRef((props, ref) => {
                                             {isExpanded ? post.contenido : `${post.contenido.slice(0, 50)}...`}
                                             <button 
                                                 onClick={toggleExpand}
-                                                className="text-blue-500 hover:text-blue-700 ml-2 font-medium"
+                                                className="text-purple-500 hover:text-purple-800 ml-2 font-medium"
                                             >
                                                 {isExpanded ? 'Leer menos' : 'Leer más'}
                                             </button>
@@ -600,7 +610,7 @@ const Post = forwardRef((props, ref) => {
                             </>
                         )}
                     </div>
-                    <div className="imgconten w-[90%] sm:w-[95%] xl:w-[95.5%] h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh]  mx-3 overflow-hidden rounded-md shadow-lg">
+                    <div className="post-conten-img w-[90%] sm:w-[95%] xl:w-[95.5%] h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh] overflow-hidden rounded-md shadow-lg">
                     {post.imagen && <img 
                     src={`http://localhost:3008/uploads/${post.imagen}`} 
                     alt={post.titulo} 
@@ -612,17 +622,14 @@ const Post = forwardRef((props, ref) => {
                     <div className='reaction-summary text-sm text-gray-600 min-h-[25px] pl-12 pb-1 flex items-center'>
                         {reactionSummary}
                     </div>
-                    <div className="lineTwo"></div>
-                    <div className="aption flex justify-between items-center px-4 py-2">
-                        <div className="grup1 flex gap-6 relative">
-                            <div className={`reacciones flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors ${isLiked ? 'text-blue-500' : ''}`}>
-                                <div className="relative"
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
-                                >
+                    <div className="post-lineTwo"></div>
+                    <div className="post-aption flex justify-between items-center px-4 py-2">
+                        <div className="post-grup1 flex gap-6 relative">
+                            <div className={`post-reacciones flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors ${isLiked ? 'text-blue-500' : ''}`}>
+                                <div className="post-conten-reaction relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
                                     {currentReaction && currentReaction !== 'like' ? (
                                         <span 
-                                            className="text-xl reaction-emoji animate-reaction flex items-center justify-center w-[1em] h-[1em]" 
+                                            className="post-reaction-emoji text-xl flex items-center justify-center w-[1em] h-[1em]" 
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 handleReaction(currentReaction);
@@ -631,16 +638,20 @@ const Post = forwardRef((props, ref) => {
                                             {reactionTypes.find(r => r.type === currentReaction)?.emoji}
                                         </span>
                                     ) : (
-                                        <BsHandThumbsUp 
-                                            className="text-xl" 
-                                            onClick={(e) => {
+
+                                            <i
+                                              className={`fa-${likedd ? "solid" : "regular"} fa-thumbs-up text-xl cursor-pointer`}
+                                              onClick={(e) => {
                                                 e.stopPropagation();
+                                                setLikedd(!likedd); 
                                                 handleReaction('like');
-                                            }}
-                                        />
+                                              }}
+                                            ></i>
+
+
                                     )}
                                     {showReactions && (
-                                        <div className="reactions-menu">
+                                        <div className="post-reactions-menu mb-3">
                                             {reactionTypes.map((reaction) => (
                                                 <button
                                                     key={reaction.type}
@@ -662,47 +673,70 @@ const Post = forwardRef((props, ref) => {
                                     </span>
                                 )}
                             </div>
-                            <div className="comentarios flex items-center gap-2 cursor-pointer hover:text-blue-500 transition-colors" onClick={handleCommentClick}>
-                                <MdOutlineInsertComment className="text-xl"/>
-                                <span className="text-sm font-medium">{commentCount}</span>
+                        
+                            <div className="post-comentarios flex items-center gap-2 cursor-pointer"
+                             onClick={(e) =>{
+                                e.stopPropagation();
+                                setLikedComments(!linkedComments);
+                                handleCommentClick();
+                             }}
+                             >
+                            <i className={`  fa-${linkedComments ? "solid" : "regular"} fa-regular fa-comment text-xl cursor-pointer`}></i>
+
+                            <span className="text-sm font-medium ">{commentCount}</span>
                             </div>
                         </div>
                         <div className="grup2">
-                            <div className="reenviar relative cursor-pointer hover:text-blue-500 transition-colors" onClick={handleShare} title='Compartir publicación'>
-                                <IoArrowRedoOutline className="text-xl"/>
-                                
-                                {showShareMenu && (
-                                    <div className="share-menu absolute right-0 bottom-10 bg-white rounded-md shadow-lg z-10 w-40 py-1">
+                            <div className="post-reenviar relative cursor-pointer" onClick={handleShare} title='Compartir publicación'>
+                            <div className="icon-post-share">
+
+                            <i className="fa-solid fa-share-nodes"></i>                
+                            </div>
+            
+                               
+                               {showShareMenu && (
+                                    <div className="post-share-menu absolute right-0 bottom-10 bg-purple-300 rounded-md shadow-lg z-10 w-40 mb-5">
+                                       
                                         <button 
-                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100"
+                                            className="w-full text-left"
                                             onClick={handleNativeShare}
                                         >
+                                            <i className="fa-solid fa-share"></i>
                                             Compartir
                                         </button>
+
                                         <button 
-                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100"
+                                            className="w-full text-left"
                                             onClick={handleCopyLink}
                                         >
+                                            <i className="fa-solid fa-paperclip"></i>
                                             Copiar enlace
                                         </button>
+
                                         <button 
-                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-blue-600"
+                                            className="w-full text-left text-blue-600"
                                             onClick={shareToFacebook}
                                         >
+                                            <i className="fa-brands fa-facebook-f"></i>
                                             Facebook
                                         </button>
+
                                         <button 
-                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-blue-400"
+                                            className="w-full text-left text-blue-400"
                                             onClick={shareToTwitter}
                                         >
+                                            <i className="fa-brands fa-twitter"></i>
                                             Twitter
                                         </button>
+
                                         <button 
-                                            className="w-full text-left px-3 py-1.5 hover:bg-gray-100 text-green-500"
+                                            className="w-full text-left text-green-500"
                                             onClick={shareToWhatsApp}
                                         >
+                                            <i className="fa-brands fa-whatsapp"></i>
                                             WhatsApp
                                         </button>
+                                        
                                     </div>
                                 )}
                             </div>
@@ -712,9 +746,7 @@ const Post = forwardRef((props, ref) => {
 
             </div>
             {imgaiAmplia && (
-                <div className= {`contImagenPost ${imgaiAmplia ? 'imagen' :''}`} >
-
-                    <TiDeleteOutline className='salir' onClick={imgCerrar}/>
+                <div className= {`contImagenPost ${imgaiAmplia ? 'imagen' :''}`} onClick={imgCerrar}   title="Toca para salir">
                     <div className="fondo">
 
                     <div  className='imgpost'>
@@ -737,7 +769,9 @@ const Post = forwardRef((props, ref) => {
             {/* Edit Post Modal */}
             {showEditModal && (
                 <div className="edit-modal-overlay">
+
                     <div ref={editModalRef} className="edit-form-post">
+                        <div className="form-header-modal-post">
                         <div className="edit-form-header">
                             <h2 className="edit-text-publi">
                                 <FiEdit className="edit-icono-publicacion" /> Editar Publicación
@@ -746,16 +780,25 @@ const Post = forwardRef((props, ref) => {
                                 <IoClose />
                             </button>
                         </div>
-                        {post.fecha_creacion && (
-                            <div className="text-sm text-gray-500 mb-3">
-                                <p>Las publicaciones solo pueden editarse dentro de las primeras 24 horas</p>
+                        <div className="edit-time">
+                            {post.fecha_creacion && (
+                            <div className="time-edit-2">
+                                <IoMdTime className='ico-time-2' />
+                                <p> Las publicaciones solo pueden editarse dentro de las primeras 24 horas</p>
                             </div>
                         )}
-                        {editMessage && (
+                        </div>
+                        </div>
+                        
+                        <div className="modal-body-form-post">
+                                                 <div className="conten-edit-mensaje">
+                         {editMessage && (
                             <div className={`edit-mensaje ${editMessage.includes('Error') || editMessage.includes('No se puede') ? 'error' : 'success'}`}>
                                 {editMessage}
-                            </div>
+                        </div>
                         )}
+                        </div>
+
                         <form onSubmit={handleEditSubmit}>  {/* Change this line */}
                             <div className="edit-form-group">
                                 <input
@@ -775,7 +818,7 @@ const Post = forwardRef((props, ref) => {
                             </div>
                             {post.imagen && (
                                 <div className="edit-image-preview">
-                                    <p className="text-sm text-gray-500 mb-2">Imagen actual (no se puede cambiar):</p>
+                                    <p className="text-sm text-gray-500 mb-2">Imagen actual (<span>no se puede cambiar</span>):</p> 
                                     <img 
                                         src={`http://localhost:3008/uploads/${post.imagen}`} 
                                         alt={post.titulo} 
@@ -786,7 +829,9 @@ const Post = forwardRef((props, ref) => {
                             <button type="submit" className="edit-submit-button" disabled={isSubmittingEdit}>
                                 {isSubmittingEdit ? "Actualizando..." : "Actualizar"}
                             </button>
-                        </form>
+                        </form>   
+                        </div>
+
                     </div>
                 </div>
             )}

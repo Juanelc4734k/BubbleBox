@@ -28,18 +28,52 @@
 .sobreMi{
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 96%;
     overflow: hidden;
+    border-left: 3px solid rgb(206, 176, 246);
+    padding-left: 2vh;
+    margin-left: 3vh;
+    background-color: #d4c1ff5d;
+    border-radius: 0.8vh;
+    padding: 1vh;
+    box-shadow: 0px 3px 6px -2px gray;
+    margin-bottom: 2vh;
+}
+.sobreMi h3{
+    color: #7d45fd;
+    text-shadow: 0px 0.9px 2px gray;
+    font-size: 1rem;
+}
+.sobreMi p{
+    font-size: 0.9rem;
+}
+.informacionGeneral{
+    border-left: 3px solid rgb(206, 176, 246);
+    padding-left: 2vh;
+    margin-left: 3vh;
+    background-color: #d4c1ff68;
+    border-radius: 0.8vh;
+    width: 96%;
+    padding: 1vh;
+    box-shadow: 0px 3px 6px -2px gray;
+
+
+}
+.informacionGeneral h4{
+    color: #7d45fd;
+    text-shadow: 0px 0.9px 2px gray;
+    font-size: 1rem;
 }
 .textSobe{
     font-size: 1rem;
 }
 .textDescription{
     flex: 1;
-    word-break: break-word; /* Rompe palabras largas */
-    overflow-wrap: break-word; /* Asegura que las palabras largas se ajusten */
-    max-width: 100%; /* Para evitar desbordes */
+    word-break: break-word; 
+    overflow-wrap: break-word;
+    max-width: 100%;
     font-size: 0.88rem;
+    
 }
 .textInfo{
     font-size: 1rem;
@@ -47,6 +81,14 @@
 .textInteres{
     font-size: 1rem;
     margin-bottom: 0.2rem;
+}
+.intereses-profilee{
+  color: rgb(255, 255, 255);
+  padding: 8px 12px;
+  border-radius: 5vh;
+  font-size: 11px;
+  box-shadow: 0px 4px 3px -2px gray;
+  background-color: #4b5563;
 }
 .butonprofil{
     padding-top: 1rem;

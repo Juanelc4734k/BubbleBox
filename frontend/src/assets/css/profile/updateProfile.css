@@ -19,35 +19,218 @@
   z-index: 1000;
 }
 
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background-color: #ddd; /* Color de fondo */
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 5px 0;
+}
+
+
 .interests-modal-content {
   background: white;
   padding: 2rem;
   border-radius: 1rem;
   max-width: 600px;
   width: 90%;
-  max-height: 80vh;
+  max-height: 85vh;
   overflow-y: auto;
+  scrollbar-width: none;
+
+}
+&::-webkit-scrollbar {
+display: none;
+}
+.contador-profile{
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(to right, #b584e4, #7542b9, #9f62ee);
+  transition: width 0.3s ease-in-out; 
+}
+
+.profile-interests-busqueda{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  margin-top: 2vh;
+  
+}
+
+.search-container-profiles{
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 70%;
+}
+
+.search-container-profiles i {
+  position: absolute;
+  left: 7px; /* Ajusta según necesidad */
+  color: #aaa;
+}
+.search-container-profiles .search-interests{
+  padding: 10px 25px;
+  border-radius: 1vh;
+  font-size: 12px;
+  width: 100%;
+  border: 1px solid #ccc;
+}
+.filtrar-interes-profi{
+  width: 27%;
+  border-radius: 1vh;
+  border: 1px solid #ccc;
+  box-shadow: 0px 1px 6px -2px gray;
+}
+.filtrar-interes-profi i{
+  color: #b584e4;
+}
+.filter-conten{
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  font-size: 13.6px;
+  border-radius: 1vh;
+  background-color: white;
+  padding: 10px;
+}
+.conten-tabs-profile {
+  background-color: #ffffff;
+  opacity: 0;
+  opacity: 0;
+  position: absolute; 
+  width: 50%; 
+  max-height: 300px; 
+  overflow-y: auto; 
+  z-index: 9999;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
+  display: flex;
+  flex-direction: column;
+  margin-left: -28vh;
+  border-radius: 1vh;
+  overflow-x: hidden;
+  scrollbar-width: none;
+
+}
+&::-webkit-scrollbar {
+display: none;
+}
+.category-tab{
+  text-align: left;
+  padding: 10px 4px;
+}
+.conten-tabs-profile.active {
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .interests-Profil{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: 12.5px;
+    gap: 9px;
+    margin-top: 7px;
+  }
+  .texto-select-interet{
+    display: flex;
+    flex-direction: row;
+    gap: 3.5px;
+  }
+  .texto-select-interet i{
+    margin-top: 1px;
+    font-size: 14px;
+    color: #f82467;
+  }
+  .button-select-profile{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+.interests-tag-select{
+  color: rgb(255, 255, 255);
+  padding: 6px 6px;
+  border-radius: 2vh;
+  font-size: 11px;
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 3px -2px gray;
+  opacity: 0.9;
+}
+.interests-Profil .interests-tag-select .circlee{
+  font-size: 15px;
+  order: 1;
+  cursor: pointer;
+}
 .interests-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas por fila */
   gap: 0.5rem;
   margin: 1rem 0;
+  padding: 2vh;
+  border-radius: 1vh;
+  border: 1px solid gray;  
+  max-height: 200px; 
+  overflow-y: auto;
+  scrollbar-width: none;
+
+}
+&::-webkit-scrollbar {
+display: none;
+}
+ .contenselector{
+  width: 2vh;
+  height: 2vh;
 }
 
 .interest-tag {
   padding: 0.5rem;
   border: 1px solid #bda7f1;
   border-radius: 0.5rem;
-  background: white;
+  background-color: white;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  flex-direction:row;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 2px 4px -2px gray;
+  font-size: 13px;
+
+}
+.interest-tag .icon-circle-profile,
+.interest-tag .icon-circle-profi{
+  color: rgba(128, 128, 128, 0.39);
+  order:1;
+  font-size: 3vh;
+}
+.interest-tag .icon-circle-profi{
+  color: rgba(255, 255, 255, 0.871);
+  backdrop-filter: blur(10px);
 }
 
+
 .interest-tag.selected {
-  background: #bda7f1;
-  color: white;
+  /* background: linear-gradient(to right, #b584e4, #7542b9, #9f62ee); */
+  color: rgb(255, 255, 255);
 }
 
 .interest-tag:disabled {
