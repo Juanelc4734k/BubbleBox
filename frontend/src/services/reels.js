@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:3000/reels';
+const API_URL = 'http://localhost:3002/reels';
 
 export const getAllReels = async () => {
   try {
@@ -8,6 +8,21 @@ export const getAllReels = async () => {
     return response.data;
   } catch (error) {
     console.error('Error fetching reels:', error);
+    throw error;
+  }
+}
+
+export const createReel = async (formData) => {
+  try {
+    const response = await axios.post(`${API_URL}/crearReel`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating reel:', error);
     throw error;
   }
 }
