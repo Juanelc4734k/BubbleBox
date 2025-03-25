@@ -84,6 +84,14 @@ include 'views/templates/sidebar.php';
     <?php include 'views/templates/navbar.php' ?>
 
     <div class="container-fluid py-4">
+        <!-- Title and PDF button -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>Dashboard de Usuarios</h4>
+            <button class="btn btn-primary" onclick="generateUsersPDF()">
+                <i class="ni ni-cloud-download-95 me-2"></i> Descargar PDF
+            </button>
+        </div>
+        
         <!-- Your dashboard content here -->
         <div class="row">
             <!-- Total Users Card -->
@@ -472,6 +480,24 @@ include 'views/templates/sidebar.php';
 
     </div>
     
+    <!-- PDF Generation Script -->
+    <script>
+        function generateUsersPDF() {
+            // Recopilar los datos para el PDF
+            const userData = {
+                totalUsers: <?php echo $totalUsers; ?>,
+                connectedUsers: <?php echo $connectedUsers; ?>,
+                inactiveUsers: <?php echo $inactiveUsers; ?>,
+                featuredUsers: <?php echo $featuredUsers; ?>
+            };
+            
+            // Datos mensuales para el gráfico
+            const monthlyData = <?php echo json_encode($userSummary ?? []); ?>;
+            
+            // Llamar a la función de generación de PDF
+            pdfGenerator.generateUsersPDF(userData, monthlyData);
+        }
+    </script>
 </main>
 
 <?php

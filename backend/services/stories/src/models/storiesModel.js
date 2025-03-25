@@ -117,5 +117,5 @@ module.exports = {
   ObtenerHistoriasAmigos,
   registrarVista,
   obtenerVistas,
-  eliminar,
-};
+  eliminar, 
+}

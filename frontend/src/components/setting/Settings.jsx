@@ -446,41 +446,6 @@ const Settings = () => {
                         </label>
                     </div>
                 </div>
-
-                {/* Idioma */}
-                <div className="itemSetting">
-                    <h3>Idioma</h3>
-                    <div className="language-settings mt-2">
-                        <p className="mb-3">Selecciona el idioma de la aplicación.</p>
-                        <div className="flex space-x-4">
-                            <button
-                                onClick={() => handleLanguageChange('es')}
-                                className={`p-2 rounded-md ${
-                                    language === 'es' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
-                                }`}
-                            >
-                                Español
-                            </button>
-                            <button
-                                onClick={() => handleLanguageChange('en')}
-                                className={`p-2 rounded-md ${
-                                    language === 'en' ? 'bg-purple-100 text-purple-600' : 'hover:bg-gray-100'
-                                }`}
-                            >
-                                English
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="containerSettingFooter">
-                <button 
-                    className="btn-save-settings"
-                    disabled={loading}
-                    onClick={() => toast.success('Configuraciones guardadas')}
-                >
-                    {loading ? 'Guardando...' : 'Guardar cambios'}
-                </button>
             </div>
         </div>
     );
