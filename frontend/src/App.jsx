@@ -55,6 +55,7 @@ export default function App() {
     }
   }, [])
 
+  
   // Detectar cambios de ruta
   useEffect(() => {
     const handleRouteChange = () => {
@@ -290,6 +291,7 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+
               <Route
                 path="/reels"
                 element={
