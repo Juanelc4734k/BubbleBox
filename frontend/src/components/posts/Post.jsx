@@ -511,7 +511,7 @@ const Post = forwardRef((props, ref) => {
                                     alt={`Avatar de ${post.nombre_usuario || 'Usuario desconocido'}`} 
                                     className="avatar-usuario"
                                     width="100"
-                                    style={ {objectFit: 'contain' }} 
+                                    style={ {objectFit: 'cover' }} 
                                     />
                             </div>
                             <div className="info-post">
@@ -610,7 +610,7 @@ const Post = forwardRef((props, ref) => {
                             </>
                         )}
                     </div>
-                    <div className="post-conten-img w-[90%] sm:w-[95%] xl:w-[95.5%] h-[35vh] sm:max-h-[10vh] lg:max-h-[50vh] overflow-hidden rounded-md shadow-lg">
+                    <div className="post-conten-img w-[90%] sm:w-[95%] xl:w-[95%] overflow-hidden rounded-md shadow-lg">
                     {post.imagen && <img 
                     src={`http://localhost:3008/uploads/${post.imagen}`} 
                     alt={post.titulo} 
@@ -619,7 +619,7 @@ const Post = forwardRef((props, ref) => {
                 </div>
                     </div>
 
-                    <div className='reaction-summary text-sm text-gray-600 min-h-[25px] pl-12 pb-1 flex items-center'>
+                    <div className='reaction-summary text-sm text-gray-600 min-h-[25px] pl-7 pb-1 flex items-center'>
                         {reactionSummary}
                     </div>
                     <div className="post-lineTwo"></div>
