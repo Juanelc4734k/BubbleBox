@@ -417,3 +417,7 @@
      }
      
  }
+
+ .hidden-input {
+    display: none !important;
+  }
