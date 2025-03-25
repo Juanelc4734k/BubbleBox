@@ -25,6 +25,13 @@ const Reels = ({ openCommentsSidebar }) => {
       }
       return avatarPorDefecto;
   };
+  useEffect(() => {
+    document.body.classList.add("reels-page");
+
+    return () =>{
+      document.body.classList.remove("reels-page");
+    }
+  },[]);
 
 
   useEffect(() => {
