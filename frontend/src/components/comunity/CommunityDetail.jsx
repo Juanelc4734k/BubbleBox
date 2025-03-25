@@ -5,6 +5,8 @@ import { FiImage } from "react-icons/fi";
 import { FaChevronUp, FaChevronDown, FaUserTag } from "react-icons/fa";
 import { IoCloseOutline } from 'react-icons/io5';
 import { MdPostAdd } from "react-icons/md";
+import { IoShieldCheckmarkOutline } from "react-icons/io5";
+
 
 import {
   getCommunityById,
@@ -18,7 +20,8 @@ import { createPostCommunity } from "../../services/posts";
 import Swal from 'sweetalert2';
 
   const CommunityDetail = () => {
-  const [isClick, setIsClick] = useState(false);
+  const [isClickDescri, setIsClickDescri] = useState(false);
+  const [isClickReglas, setIsClickReglas] = useState(false);
   const { id } = useParams();
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -319,18 +322,28 @@ const handleCreatePost = async () => {
 
 
             </div>
-      
-            <div className="information-Community">
-            <div className={`info-block ${!isClick ? "expanded" : ""}`}>
+                <div className="DescripcionButton">
+                  <div className="complement-button">
+                  <i className="fa-regular fa-clipboard"></i>
+                <p>Descripción</p>
+                <button onClick={() => setIsClickDescri(!isClickDescri)} className="toggle-button">
+              {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
+            </button>
+                  </div>
+            <div className={`info-block ${!isClickDescri ? "expanded" : ""}`}>
               <h3>Descripción</h3>
-              <div className={`descripcion ${!isClick ? "expanded" : ""}`}>
+              <div className={`descripcion ${!isClickDescri ? "expanded" : ""}`}>
               {community.descripcion}
               </div>
             </div>
 
-            <div className={`info-block ${!isClick ? "expanded" : ""}`}>
+                </div>
+                <div className="reglas-communidad">
+                <IoShieldCheckmarkOutline />
+                <p>Reglas de la comunidad</p>
+            <div className={`info-block ${!isClickReglas ? "expanded" : ""}`}>
               <h3>Reglas de la comunidad</h3>
-              <div className={`reglas ${!isClick ? "expanded" : ""}`}>
+              <div className={`reglas ${!isClickReglas ? "expanded" : ""}`}>
                 {community.reglas && JSON.parse(community.reglas).map((rule, index) => (
                   <div key={index} className="rule-item">
                     <span className="rule-number">{index + 1}.</span>
@@ -339,11 +352,11 @@ const handleCreatePost = async () => {
                 ))}
               </div>
             </div>
+              <button onClick={() => setIsClickReglas(!isClickReglas)} className="toggle-button">
+                {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
+              </button>
+                </div>
 
-            <button onClick={() => setIsClick(!isClick)} className="toggle-button">
-              {isClick ? <FaChevronDown /> : <FaChevronUp />}
-            </button>
-          </div>
 
         </div>
         </div>
