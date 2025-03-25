@@ -77,15 +77,16 @@ function Users() {
     const displayUsers = getDisplayUsers();
 
     return (
-        <>
+        <div className='conten-users'>
             {/* Tab Navigation similar to Home.jsx */}
+
             <div className="tabs-container-2">
                 <div className="tabs">
                     <button 
                         className={`tab ${activeTab === 'all' ? 'active' : ''}`}
                         onClick={() => setActiveTab('all')}
                     >
-                        Todos los Usuarios
+                        Usuarios
                     </button>
                     <button 
                         className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
@@ -103,7 +104,7 @@ function Users() {
                         className={`tab ${activeTab === 'requests' ? 'active' : ''}`}
                         onClick={() => setActiveTab('requests')}
                     >
-                        Solicitudes Pendientes
+                        Solicitudes
                     </button>
                 </div>
             </div>
@@ -135,7 +136,7 @@ function Users() {
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 }
 

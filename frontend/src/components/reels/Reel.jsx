@@ -22,6 +22,7 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const userId = localStorage.getItem('userId');
     const isMyReel = reel.usuario_id === parseInt(userId);
 
+
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
 
     const getAvatarSrc = () => {
@@ -272,85 +273,108 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
 
     return (
         <div className="reel">
-            <div className="reel-header">
-                <div className="reel-info">
-                    <div className="reel-author">
-                        <img src={getAvatarSrc()} alt={`Avatar de ${reel.username || 'Usuario desconocido'}`} />
-                        <div className="reel-author-info">
-                            <p>{reel.username || 'Usuario desconocido'}</p>
-                            <p>{new Date(reel.fecha_creacion).toLocaleString()}</p>
-                        </div>
-                        {isMyReel && isMyReelsTab && (
-                            <div className="reel-options relative ml-auto">
-                                <button 
-                                    className="options-button p-1 rounded-full hover:bg-gray-100"
-                                    onClick={toggleOptionsMenu}
-                                >
-                                    <FiMoreVertical className="text-xl text-gray-600" />
-                                </button>
-                                
-                                {showOptionsMenu && (
-                                    <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
-                                        {isMyReel ? (
-                                            <button 
-                                                className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
-                                                onClick={handleDeleteReel}
-                                            >
-                                                <FiTrash2 />
-                                                <span>Eliminar</span>
-                                            </button>
-                                        ) : (
-                                            <button 
-                                                className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
-                                                onClick={() => setShowReportModal(true)}
-                                            >
-                                                <FiFlag />
-                                                <span>Reportar</span>
-                                            </button>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </div>
+
 
             <div className="reel-content">
-                <div className={`reel-video-container ${isHorizontal ? 'horizontal' : ''}`}>
-                    <video
-                        ref={videoRef}
-                        className="reel-video"
-                        src={`http://localhost:3002/uploads/${reel.archivo_video}`}
-                        onTimeUpdate={handleTimeUpdate}
-                        onClick={togglePlay}
-                        onLoadedMetadata={handleLoadedMetadata}
-                    />
-                    <div className="video-controls">
-                        <button className="video-control-button" onClick={togglePlay}>
-                            {isPlaying ? <BsPauseFill size={24} /> : <BsPlayFill size={24} />}
-                        </button>
-                        <div className="video-progress" onClick={handleProgressClick}>
-                            <div
-                                className="video-progress-filled"
-                                style={{ width: `${progress}%` }}
-                            />
+                <div className="conten video-info">
+                    <div className={`reel-video-container ${isHorizontal ? 'horizontal' : ''}`}>
+                        <div className="conten-progress-video">
+                        <video
+                            ref={videoRef}
+                            className="reel-video"
+                            src={`http://localhost:3002/uploads/${reel.archivo_video}`}
+                            onTimeUpdate={handleTimeUpdate}
+                            onClick={togglePlay}
+                            onLoadedMetadata={handleLoadedMetadata}
+                        />
+                        <div className="contenido-video">
+                        <div className="video-controls">
+                            <button className="video-control-button" onClick={togglePlay}>
+
+                                {isPlaying ? <BsPauseFill size={24} /> : <BsPlayFill size={80} />}
+                            </button>
                         </div>
+                        <div className="reel-header">
+                                    <div className="reel-info">
+                                            <div className="reel-author">
+                                                <img src={getAvatarSrc()} alt={`Avatar de ${reel.username || 'Usuario desconocido'}`} />
+                                                <div className="reel-author-info">
+                                                    <p>{reel.username || 'Usuario desconocido'}</p>
+                                                    {/* <p>{new Date(reel.fecha_creacion).toLocaleString()}</p> */}
+                                                    <p className="reel-description">{reel.descripcion}</p>
+
+                                                </div>
+                                                {isMyReel && isMyReelsTab && (
+                                                    <div className="reel-options relative ml-auto">
+                                                        <button 
+                                                            className="options-button p-1 rounded-full hover:bg-gray-100"
+                                                            onClick={toggleOptionsMenu}
+                                                        >
+                                                            <FiMoreVertical className="text-xl text-gray-600" />
+                                                        </button>
+                                                        
+                                                        {showOptionsMenu && (
+                                                            <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                                                {isMyReel ? (
+                                                                    <button 
+                                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                                        onClick={handleDeleteReel}
+                                                                    >
+                                                                        <FiTrash2 />
+                                                                        <span>Eliminar</span>
+                                                                    </button>
+                                                                ) : (
+                                                                    <button 
+                                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                                        onClick={() => setShowReportModal(true)}
+                                                                    >
+                                                                        <FiFlag />
+                                                                        <span>Reportar</span>
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                        <div className="video-progress" onClick={handleProgressClick}>
+                                <div
+                                    className="video-progress-filled"
+                                    style={{ width: `${progress}%` }}
+                                />
                     </div>
+                            </div>
+                        </div>
+
+
+                        
+
+                        </div>
+                        
+                        
+
+                            
+                    </div>
+
                 </div>
 
                 <div className={`reel-actions-vertical ${isHorizontal ? 'horizontal' : ''}`}>
+                    <div className="button-reels-he">
                     <button 
                         className={`reel-action-button ${isLiked ? 'liked' : ''}`} 
                         onClick={handleReaction}>
                         <BsHandThumbsUp 
                             size={24} 
-                            className={isLiked ? 'text-blue-500' : ''}/>
+                            className={isLiked ? '' : ''}/>
                     </button>
                     <button className="reel-action-button" onClick={handleCommentClick}>
                         <MdOutlineInsertComment size={24} />
                     </button>
-                    <button className="reel-action-button relative" onClick={handleShare}>
+                    </div>
+
+                    <button className="reel-action-button-shere relative" onClick={handleShare}>
                         <IoArrowRedoOutline size={24} />
                         
                         {showShareMenu && (
@@ -390,9 +414,7 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                     </button>
                 </div>
             </div>
-            
-            <p className="reel-description">{reel.descripcion}</p>
-
+           
             {/* Report Modal */}
             <ModalReport
                 isOpen={showReportModal}
