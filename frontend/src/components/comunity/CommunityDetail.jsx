@@ -5,10 +5,7 @@ import { FiImage } from "react-icons/fi";
 import { FaChevronUp, FaChevronDown, FaUserTag } from "react-icons/fa";
 import { IoCloseOutline } from 'react-icons/io5';
 import { MdPostAdd } from "react-icons/md";
-<<<<<<< HEAD
-=======
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
->>>>>>> 20b08f19bde5c5f877675c9f0f435b9b021e3f3a
 import { FiFlag } from "react-icons/fi";
 import ModalReport from '../reports/modalReport';
 
@@ -24,12 +21,9 @@ import { createPostCommunity } from "../../services/posts";
 import Swal from 'sweetalert2';
 
   const CommunityDetail = () => {
-<<<<<<< HEAD
   const [isClick, setIsClick] = useState(true);
-=======
   const [isClickDescri, setIsClickDescri] = useState(false);
   const [isClickReglas, setIsClickReglas] = useState(false);
->>>>>>> 20b08f19bde5c5f877675c9f0f435b9b021e3f3a
   const { id } = useParams();
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
