@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import Communities from "./pages/Communities.jsx"
 import CommunityDetail from "./components/comunity/CommunityDetail.jsx"
+import CommunityAdmin from "./components/comunity/CommunityAdmin.jsx"
 import Sidebar from "./components/layout/Sidebar"
 import Navbar from "./components/layout/Navbar"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
@@ -35,6 +36,7 @@ export default function App() {
   const [commentsContentId, setCommentsContentId] = useState(null)
   const [commentsContentType, setCommentsContentType] = useState(null)
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
+  const [isModalReport, setIsModalReport] = useState(false);
 
   // Detectar cambios de tamaño de pantalla
   useEffect(() => {
@@ -114,7 +116,6 @@ export default function App() {
         try {
           const decodedToken = JSON.parse(atob(token.split(".")[1]))
           const expirationTime = decodedToken.exp * 1000
-
           if (Date.now() >= expirationTime) {
             await logoutUser()
             localStorage.clear()
@@ -154,7 +155,6 @@ export default function App() {
     if (isAuthenticated) {
       classes += isSidebarExpanded ? " sidebar-visible" : " sidebar-hidden"
     }
-
     // Agregar clase para rutas de autenticación
     if (currentPath === "/login" || currentPath === "/register" || 
       currentPath === "/recover-password") {
@@ -176,6 +176,8 @@ export default function App() {
               toggleSidebar={toggleSidebar}
               isCreateGroupOpen={isCreateGroupOpen}
               setIsCreateGroupOpen={setIsCreateGroupOpen}
+              isModalReport={isModalReport}
+              setIsModalReport={setIsModalReport}
             />
             <Sidebar
               isExpanded={isSidebarExpanded}
@@ -198,6 +200,8 @@ export default function App() {
                 contentType={commentsContentType}
                 onClose={closeCommentsSidebar}
                 className={`sidebar-comments visible`}
+                isModalReport={isModalReport}
+                setIsModalReport={setIsModalReport}
               />
             )}
           </>
@@ -244,6 +248,16 @@ export default function App() {
                   <ProtectedRoute>
                     <ProtectedRouteCommunity>
                       <CommunityDetail openCommentsSidebar={openCommentsSidebar} />
+                    </ProtectedRouteCommunity>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/comunidad/:id/admin"
+                element={
+                  <ProtectedRoute>
+                    <ProtectedRouteCommunity>
+                      <CommunityAdmin />
                     </ProtectedRouteCommunity>
                   </ProtectedRoute>
                 }
@@ -315,4 +329,5 @@ export default function App() {
     </Router>
   )
 }
+
 

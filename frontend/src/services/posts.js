@@ -52,3 +52,8 @@ export const deletePost = async (postId) => {
     const response = await axios.delete(`${API_URL}/posts/eliminar/${postId}`);
     return response.data;
 };
+
+export const getPostByQuery = async (query) => {
+    const response = await axios.get(`${API_URL}/posts/buscar/${query}`);
+    return response.data;
+};
