@@ -7,6 +7,109 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.conten-bubbles-profile {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+.conten-bubbles-profile .bubbles-1{
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:2vw;
+    top: 3vw;
+}
+.conten-bubbles-profile .bubbles-2{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:10vw;
+    bottom: 1vh;
+}
+.conten-bubbles-profile .bubbles-3{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:7vw;
+    bottom: 13vh;
+}
+.conten-bubbles-profile .bubbles-4{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:70%;
+    top: 10vh;
+}
+.conten-bubbles-profile .bubbles-5{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:29%;
+    top: 13vh;
+}
+.conten-bubbles-profile .bubbles-6{
+    position: absolute;
+    width: 43px;
+    height: 43px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    left:64%;
+    top: 17vh;
+}
+
+.conten-bubbles-profile .bubbles-7{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    right: -3vw;
+    bottom: -3vw;
+}
+.conten-bubbles-profile .bubbles-8{
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    right: 14vw;
+    bottom: 2vw;
+}
+
+.conten-bubbles-profile .bubbles-9{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff4d;
+    backdrop-filter: blur(80px);
+    border-radius: 50%;
+    right: 2vw;
+    top: 3vw;
 }
 .profileContent{
     max-height: 100%;
@@ -22,44 +125,105 @@
     justify-content: center;
     gap: 0;
 }
+.textRight{
+    border-bottom: 1px solid rgb(234, 225, 247);
+    padding-bottom: 1.3vh;
+}
 .textNameP{
     font-size: 1.3rem;
 }
 .sobreMi{
     display: flex;
     flex-direction: column;
-    width: 96%;
-    overflow: hidden;
-    border-left: 3px solid rgb(206, 176, 246);
-    padding-left: 2vh;
-    margin-left: 3vh;
-    background-color: #d4c1ff5d;
-    border-radius: 0.8vh;
-    padding: 1vh;
-    box-shadow: 0px 3px 6px -2px gray;
+}
+.tittle-bio{
+    border-bottom: 1px solid rgb(234, 225, 247);
     margin-bottom: 2vh;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.tittle-bio .icon-user-profile{
+    padding: 0.4vh;
+    border-radius: 0.8vh;
+    background-color: #e9e1f5d6;
 }
 .sobreMi h3{
     color: #7d45fd;
     text-shadow: 0px 0.9px 2px gray;
     font-size: 1rem;
 }
-.sobreMi p{
+.sobreMi .biografia-text{
     font-size: 0.9rem;
-}
-.informacionGeneral{
     border-left: 3px solid rgb(206, 176, 246);
     padding-left: 2vh;
-    margin-left: 3vh;
-    background-color: #d4c1ff68;
+    background-color: #f4eaff;
     border-radius: 0.8vh;
-    width: 96%;
-    padding: 1vh;
-    box-shadow: 0px 3px 6px -2px gray;
-
-
+    padding: 2vh;
+    box-shadow: 0px 3px 4px -2px gray;
+    margin-bottom: 4vh;
+}
+.informacion-profile{
+    border-bottom: 1px solid rgb(234, 225, 247);
+    margin-bottom: 2vh;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.informacion-profile .icon-email-profile{
+    padding: 0.4vh;
+    border-radius: 0.8vh;
+    background-color: #e9e1f5;
+}
+.contenido-informacionGeneral{
+    border-left: 3px solid rgb(206, 176, 246);
+    padding-left: 2vh;
+    background-color: #f4eaff;
+    border-radius: 0.8vh;
+    padding: 2vh;
+    box-shadow: 0px 3px 4px -2px gray;
+    margin-bottom: 4vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
 }
 .informacionGeneral h4{
+    color: #7d45fd;
+    text-shadow: 0px 0.9px 2px gray;
+    font-size: 1rem;
+}
+
+
+.intereses-tittle{
+    border-bottom: 1px solid rgb(234, 225, 247);
+    margin-bottom: 2vh;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.icon-intereses-heart{
+    padding: 0.4vh;
+    border-radius: 0.8vh;
+    background-color: #e9e1f5;
+    font-size: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1vh;
+}
+.intereses-profile{
+    margin-top: -1vh;
+
+}
+.intereses-conteen{
+    padding-left: 2vh;
+    background-color: #f4eaff;
+    border-radius: 0.8vh;
+    padding: 2vh;
+    box-shadow: 0px 3px 4px -2px gray;
+    
+}
+.intereses-tittle h4{
     color: #7d45fd;
     text-shadow: 0px 0.9px 2px gray;
     font-size: 1rem;
@@ -254,8 +418,23 @@
         height: 100%;
     }
    .rightprofile{
+        overflow-y: auto;
         height: 100%;
     }
+    .sobreMi .biografia-text,
+    .contenido-informacionGeneral{
+        margin-bottom: 2vh;
+        gap: 1vh;
+        
+    }
+    .sobreMi .biografia-text p,
+    .contenido-informacionGeneral span{
+        font-size: 13px;
+
+    }
+    /* .textRight{
+        margin-top: 17vh;
+    } */
     .textDescription{
         font-size: 1rem;
     }

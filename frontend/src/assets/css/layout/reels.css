@@ -1,10 +1,17 @@
-.main-content{
+.reels-page .layout{
     background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png'), #121212;
     background-blend-mode: overlay; 
     overflow: hidden;
     overflow-y: auto;
     scrollbar-width: none;
 }
+.reels-page .user-navbar::after{
+    background-image:none;
+    background-color: #000;
+  }
+  .reels-page .app{
+    background-color: #000;
+  }
 .reels-Container {
     display: flex;
     flex-direction: column;

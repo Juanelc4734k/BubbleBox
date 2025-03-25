@@ -199,6 +199,19 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
           <div className="flex flex-col md:flex-row contenedordelprofile">
             {/* Left side - Avatar and Username */}
             <div className="md:w-1/3 bg-[#bda7f1] p-5 contenedorPro">
+            <div className="conten-bubbles-profile">
+                <div className="bubbles-1"></div>
+                <div className="bubbles-2"></div>
+                <div className="bubbles-3"></div>
+                <div className="bubbles-4"></div>
+                <div className="bubbles-5"></div>
+                <div className="bubbles-6"></div>
+                <div className="bubbles-7"></div>
+                <div className="bubbles-8"></div>
+                <div className="bubbles-9"></div>
+
+
+                </div>
               <div className="relativeImg">
                 <img
                   src={getAvatarSrc()}
@@ -221,19 +234,29 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
               </div>
               {/* About Me Section */}
               <div className="sobreMi">
+                <div className="tittle-bio">
+                <CiUser className="icon-user-profile text-purple-500" size={24} />
                 <h3 className="font-semibold text-gray-800 mb-1 textSobe">
                   Biografía
                 </h3>
+                </div>
+                <div className="biografia-text">
                 <p className="text-gray-600 textDescription">
                   {profile.descripcion_usuario || defaultDescription}
                 </p>
+                </div>
               </div>
               {/* General Information */}
               <div className="informacionGeneral">
+
+                <div className="informacion-profile">
+                <BsEnvelope size={24} className="icon-email-profile text-purple-500" />
                 <h4 className="font-semibold text-gray-800 mb-2 textInfo">
                   Información General
                 </h4>
-                <div className="space-y-4">
+                </div>
+
+                <div className="contenido-informacionGeneral">
                   <div className="flex items-center gap-3 text-gray-600 ml-2">
                     <BsEnvelope size={20} className="text-purple-500" />
                     <span className="text-sm lg:text-lg  ">{profile.email}</span>
@@ -243,16 +266,22 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
                     <span className="text-sm lg:text-lg ">{profile.estado}</span>
                   </div>
                 </div>
-                {profile.intereses && profile.intereses.length > 0 && (
+              </div>
+
+              <div className="intereses-profile">
+              {profile.intereses && profile.intereses.length > 0 && (
                   <div className="ineterses">
+                    <div className="intereses-tittle">
+                    <i className="icon-intereses-heart fa-regular fa-heart text-purple-500"></i>
                     <h4 className="font-semibold text-gray-800 textInteres">
                       Intereses
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    </div>
+                    <div className="intereses-conteen flex flex-wrap gap-2">
                       {profile.intereses.map((interes) => (
                         <span
                           key={interes}
-                          className="px-3 py-1 bg-purple-100 text-purple-600 rounded-full text-sm"
+                          className="px-4 py-1 bg-purple-300 text-purple-600 rounded-full text-sm"
                         >
                           {interes}
                         </span>
