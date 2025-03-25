@@ -70,7 +70,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
       if (prev.includes(interest)) {
         return prev.filter(i => i !== interest);
       }
-      if (prev.length >= 7) {
+      if (prev.length >= 5) {
         setMessage("Máximo 5 intereses permitidos");
         return prev;
       }
@@ -195,7 +195,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
     }
     return "#ddd"; 
   };
-  return (
+  return(
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
       <button className="w-full md:w-auto bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
         <TbUserEdit className="icon" />
@@ -274,13 +274,13 @@ const UpdateProfile = ({ onProfileUpdate }) => {
       <div className="interests-modal-content">
         <div className="contador-profile">
 
-        <h3>Selecciona tus intereses (máximo 7)</h3>
-        <p>{selectedInterests.length} / 7</p>
+        <h3>Selecciona tus intereses (máximo 5)</h3>
+        <p>{selectedInterests.length} / 5</p>
         </div>
       <div className="progress-container">
           <div
             className="progress-bar"
-            style={{ width: `${(selectedInterests.length / 7) * 100}%` }}
+            style={{ width: `${(selectedInterests.length / 5) * 100}%` }}
           ></div>
         </div>
         <div className="profile-interests-busqueda">
@@ -296,30 +296,30 @@ const UpdateProfile = ({ onProfileUpdate }) => {
           />
         </div>            
             {/* Agregamos tabs de categorías */}
-            <div className="filtrar-interes-profi">
-              <div className="filter-conten">
-                <i className="fa-solid fa-filter"></i>
-                <button type="button" onClick={() => setIsFilterOpen(!isFilterOpen)}>
-                    Filtrar
-                  </button>
-
-              </div>
-
-              {isFilterOpen && (
-                <div  className={`conten-tabs-profile ${isFilterOpen ? "active" : ""}`}>
-                  {availableInterests.map((category) => (
-                    <button
-                     key={category}
-                     type="button"
-                    className={`category-tab ${selectedCategory === category ? "active" : ""}`}
-                    onClick={() => handleCategoryChange(category)}
-                  >
-                      {category}
+              <div className="filtrar-interes-profi">
+                <div className="filter-conten">
+                  <i className="fa-solid fa-filter"></i>
+                  <button type="button" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+                      Filtrar
                     </button>
-                  ))}
-                  </div>
-                )}
-            </div> 
+
+                </div>
+
+                {isFilterOpen && (
+                  <div  className={`conten-tabs-profile ${isFilterOpen ? "active" : ""}`}>
+                      {Object.keys(categorizedInterests).map((category) => (
+                      <button
+                      key={category}
+                      type="button"
+                      className={`category-tab ${selectedCategory === category ? "active" : ""}`}
+                      onClick={() => handleCategoryChange(category)}
+                    >
+                        {category}
+                      </button>
+                    ))}
+                    </div>
+                  )}
+              </div> 
             
         </div>
         <div className="interests-Profil">
