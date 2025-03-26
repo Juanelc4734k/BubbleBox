@@ -33,17 +33,18 @@ const RecoverPass = () => {
                         onChange={(e) => setEmail(e.target.value)} 
                         placeholder="Email" 
                         required 
-                        className='w-full pl-12 p-2 rounded-xl overflow-hidden'
+                        className=' pl-12 p-2 rounded-xl overflow-hidden coo'
                     />
                     <div className="linee bg-purple-500"></div>
                 </div>
                     <button 
-                        className='bg-purple-500 mt-7 lg:ml-56 ml-14 p-2 pl-6 pr-8  flex text-white rounded-lg buttonPass' type="submit">
+                        className='bg-purple-500 mt-7 p-2 pl-6 pr-8  flex text-white rounded-lg buttonPass' type="submit">
                         <MdLockReset className="text-lg mr-2 mt-[3px]" />
                         Recuperar
                     </button>
             </form>
             {message && <p>{message}</p>}
+
         </div>
     );
 };

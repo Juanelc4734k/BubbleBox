@@ -7,6 +7,8 @@ import { IoCloseOutline } from 'react-icons/io5';
 import { MdPostAdd } from "react-icons/md";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { FiFlag } from "react-icons/fi";
+import { FaRegClipboard } from "react-icons/fa6";
+
 import ModalReport from '../reports/modalReport';
 
 import {
@@ -21,9 +23,9 @@ import { createPostCommunity } from "../../services/posts";
 import Swal from 'sweetalert2';
 
   const CommunityDetail = () => {
+  const [isClickDescri, setIsClickDescri] = useState(true);
+  const [isClickReglas, setIsClickReglas] = useState(true);
   const [isClick, setIsClick] = useState(true);
-  const [isClickDescri, setIsClickDescri] = useState(false);
-  const [isClickReglas, setIsClickReglas] = useState(false);
   const { id } = useParams();
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -238,9 +240,9 @@ const handleCreatePostWithImage = async () => {
 const handleCreatePost = async () => {
   if (!postContent.trim()) {
     Swal.fire({
-      icon: 'warning',
-      title: 'Campo vacío',
-      text: 'Por favor escribe algo para publicar',
+      icon: "warning",
+      title: "Campo vacío",
+      text: "Por favor escribe algo para publicar",
       timer: 2000,
       showConfirmButton: false,
     });
@@ -254,32 +256,76 @@ const handleCreatePost = async () => {
       idComunidad: parseInt(id),
     };
 
-    console.log('Post data:', postData); // Debug log
-
     await createPostCommunity(postData);
-    
-    // Refresh posts
+
+    // Obtener las publicaciones actualizadas
     const updatedPosts = await getCommunityByPostId(id);
-    setPosts(updatedPosts);
-    
-    // Clear textarea
-    setPostContent('');
-    
+
+    setPosts(prevPosts => {
+      return updatedPosts.map(post => {
+        const existingPost = prevPosts.find(p => p.id === post.id);
+
+        return {
+          ...post,
+          bgColor: post.imagen
+            ? null
+            : existingPost?.bgColor || generateRandomColor(),
+        };
+      });
+    });
+
+    // Limpiar el textarea
+    setPostContent("");
+
     Swal.fire({
-      icon: 'success',
-      title: 'Publicación creada',
+      icon: "success",
+      title: "Publicación creada",
       timer: 1500,
       showConfirmButton: false,
     });
   } catch (error) {
-    console.error('Error creating post:', error);
+    console.error("Error creating post:", error);
     Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: 'No se pudo crear la publicación',
+      icon: "error",
+      title: "Error",
+      text: "No se pudo crear la publicación",
     });
   }
 };
+
+const generateRandomColor = () => {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+const fetchPosts = async () => {
+  try {
+    const postsFromAPI = await getCommunityByPostId(id);
+
+    setPosts(prevPosts => {
+      return postsFromAPI.map(post => {
+        // Buscar si el post ya tiene un color asignado
+        const existingPost = prevPosts.find(p => p.id === post.id);
+
+        return {
+          ...post,
+          bgColor: post.imagen
+            ? null
+            : existingPost?.bgColor || generateRandomColor(), // Mantener color existente
+        };
+      });
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
+};
+
+
+  fetchPosts();
 
   return (
     <div className="communityDetail">
@@ -343,23 +389,46 @@ const handleCreatePost = async () => {
             </div>
                 <div className="DescripcionButton">
                   <div className="complement-button">
-                  <i className="fa-regular fa-clipboard"></i>
-                <p>Descripción</p>
-                <button onClick={() => setIsClickDescri(!isClickDescri)} className="toggle-button">
-              {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
-            </button>
+                    <div className="infoCo">
+                      <div className="ico-community-tittle">
+                    <FaRegClipboard />
+                        
+                      </div>
+                    <p>Descripción</p>
+                    </div>
+                    <div className="buton-description">
+                      <button onClick={() => setIsClickDescri(!isClickDescri)} className="toggle-button">
+                      {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
+                      </button>
+                    </div>
                   </div>
-            <div className={`info-block ${!isClickDescri ? "expanded" : ""}`}>
-              <h3>Descripción</h3>
-              <div className={`descripcion ${!isClickDescri ? "expanded" : ""}`}>
-              {community.descripcion}
-              </div>
-            </div>
 
+                <div className={`info-block ${!isClickDescri ? "expanded" : ""}`}>
+                  <div className={`descripcion ${!isClickDescri ? "expanded" : ""}`}>
+                  {community.descripcion}
+                  </div>
                 </div>
+
+              </div>
+
                 <div className="reglas-communidad">
-                <IoShieldCheckmarkOutline />
-                <p>Reglas de la comunidad</p>
+                  <div className="complement-button">
+                  <div className="infoRegla">
+                    <div className="ico-community-tittle">
+                  <IoShieldCheckmarkOutline  />
+
+                    </div>
+                  <p>Reglas de la comunidad</p>
+                  </div>
+
+                  <div className="buton-reglass">
+                  <button onClick={() => setIsClickReglas(!isClickReglas)} className="toggle-button">
+                    {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
+                   </button>
+                  </div>
+
+                  </div>
+
             <div className={`info-block ${!isClickReglas ? "expanded" : ""}`}>
               <h3>Reglas de la comunidad</h3>
               <div className={`reglas ${!isClickReglas ? "expanded" : ""}`}>
@@ -371,9 +440,8 @@ const handleCreatePost = async () => {
                 ))}
               </div>
             </div>
-              <button onClick={() => setIsClickReglas(!isClickReglas)} className="toggle-button">
-                {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
-              </button>
+
+             
                 </div>
 
 
@@ -463,6 +531,7 @@ const handleCreatePost = async () => {
                       <div className="modal-body">
                         <p>Descripción</p>
                         <textarea
+    
                           placeholder="¿Qué quieres compartir con la comunidad?"
                           value={postContent}
                           onChange={(e) => setPostContent(e.target.value)}
@@ -509,7 +578,10 @@ const handleCreatePost = async () => {
             <h2>Publicaciones</h2>
             <div className="conten-Post-1">
             {posts.map(post => (
-              <div key={post.id} className={`community-post ${post.imagen ? 'with-image' : 'no-image'}`}>
+              <div 
+              key={post.id} 
+              className={`community-post ${post.imagen ? 'with-image' : 'no-image'}`} 
+              >
                 <div className="post-header">
                   <div className="post-header-left">
                     <img 
@@ -524,7 +596,8 @@ const handleCreatePost = async () => {
                   </div>
                 </div>
                 <div className={`post-content ${post.imagen ? 'with-image' : ''}`}>
-                  <p className="post-text">{post.contenido}</p>
+                  <p className="post-text"  style={post.imagen ? {} : { backgroundColor: post.bgColor, display: 'inline-block', padding: '5px 10px', borderRadius: '5px'  }}  
+                  >{post.contenido}</p>
                   {post.imagen && (
                     <div className="post-image-container">
                       <img 
