@@ -63,6 +63,15 @@ import Swal from 'sweetalert2';
     const fetchCommunityPosts = async () => {
       try {
         const data = await getCommunityByPostId(id);
+        setPosts(prevPosts => {
+          return data.map(post => {
+            const existingPost = prevPosts.find(p => p.id === post.id);
+            return {
+              ...post,
+              bgColor: post.imagen ? null : existingPost?.bgColor || generateRandomColor(),
+            };
+          });
+        });
         setPosts(data);
       } catch (error) {
         console.error("Error al obtener publicaciones de la comunidad", error);
@@ -301,31 +310,6 @@ const generateRandomColor = () => {
   }
   return color;
 };
-
-const fetchPosts = async () => {
-  try {
-    const postsFromAPI = await getCommunityByPostId(id);
-
-    setPosts(prevPosts => {
-      return postsFromAPI.map(post => {
-        // Buscar si el post ya tiene un color asignado
-        const existingPost = prevPosts.find(p => p.id === post.id);
-
-        return {
-          ...post,
-          bgColor: post.imagen
-            ? null
-            : existingPost?.bgColor || generateRandomColor(), // Mantener color existente
-        };
-      });
-    });
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-  }
-};
-
-
-  fetchPosts();
 
   return (
     <div className="communityDetail">
