@@ -420,7 +420,7 @@ const Post = forwardRef((props, ref) => {
             if (navigator.share) {
                 await navigator.share({
                     title: post.titulo || 'Publicación de BubbleBox',
-                    text: post.contenido || 'Mira esta publicación en BubbleBox',
+                    text: `¡Descubre este post en BubbleBox! ${post.titulo || 'Mira esta publicación'}: ${post.contenido || 'Revisa contenido interesante en BubbleBox'}`,
                     url: shareUrl,
                 });
                 setShowShareMenu(false);
@@ -439,7 +439,7 @@ const Post = forwardRef((props, ref) => {
         navigator.clipboard.writeText(shareUrl).then(() => {
             Swal.fire({
                 title: '¡Enlace copiado!',
-                text: 'El enlace ha sido copiado al portapapeles',
+                text: 'El enlace ha sido copiado al portapapeles. ¡Compártelo con tus amigos!',
                 icon: 'success',
                 confirmButtonColor: '#b685e4',
                 timer: 2000,
@@ -458,21 +458,32 @@ const Post = forwardRef((props, ref) => {
     };
 
     const shareToFacebook = () => {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
+        const text = `¡No te pierdas esta publicación en BubbleBox! ${post.titulo || 'Descubre esta increíble publicación'}: ${post.contenido || 'Haz clic y conoce más sobre este tema interesante.'}`;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(text)}`, '_blank');
         setShowShareMenu(false);
     };
-
+    
     const shareToTwitter = () => {
-        const text = post.titulo || 'Mira esta publicación en BubbleBox';
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`, '_blank');
+        const text = `¡Descubre este post en BubbleBox! ${post.titulo || 'Mira esta publicación'}: ${shareUrl}`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
         setShowShareMenu(false);
     };
-
+    
     const shareToWhatsApp = () => {
-        const text = `${post.titulo || 'Mira esta publicación en BubbleBox'}: ${shareUrl}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        const text = `${post.titulo || 'Mira esta publicación en BubbleBox'}\n\nLee más aquí: ${shareUrl}`;
+    
+        // Asegurarse de que la URL y el texto estén correctamente codificados
+        const encodedText = encodeURIComponent(text);
+    
+        // WhatsApp espera el texto de la siguiente manera
+        const whatsappUrl = `https://wa.me/?text=${encodedText}`;
+    
+        // Abrir WhatsApp para compartir el enlace
+        window.open(whatsappUrl, '_blank');
         setShowShareMenu(false);
     };
+    
+    
 
     useEffect(() => {
         const handleClickOutside = () => {

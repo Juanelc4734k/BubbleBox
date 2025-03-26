@@ -34,6 +34,7 @@ const Home = ({ openCommentsSidebar }) => {
       }
     };
 
+
     const fetchStories = async () => {
       try {
         // Obtener historias de amigos

@@ -4,6 +4,7 @@ import { CiCirclePlus, CiImageOn } from "react-icons/ci"
 import { IoClose } from "react-icons/io5"
 import "../../assets/css/posts/createPost.css"
 import * as jwt_decode from "jwt-decode"
+import DOMPurify from "dompurify";
 
 const CreatePost = () => {
   const [titulo, setTitulo] = useState("")
@@ -21,6 +22,10 @@ const CreatePost = () => {
   const scrollableRef = useRef(null); 
   const modalRef = useRef(null);
   const textareaRef = useRef(null);
+
+  const sanitizeInput = (input) => {
+    return DOMPurify.sanitize(input);
+  };
 
   // Función para ajustar automáticamente la altura del textarea
   const adjustTextareaHeight = () => {
@@ -118,9 +123,13 @@ const CreatePost = () => {
       return
     }
 
+    // Sanitizar título y contenido
+    const sanitizedTitulo = sanitizeInput(titulo.trim());
+    const sanitizedContenido = sanitizeInput(contenido);
+
     const postData = new FormData()
-    postData.append("titulo", titulo.trim())
-    postData.append("contenido", contenido)
+    postData.append("titulo", sanitizedTitulo)
+    postData.append("contenido", sanitizedContenido)
     if (imagen) {
       postData.append("imagen", imagen)
     }
