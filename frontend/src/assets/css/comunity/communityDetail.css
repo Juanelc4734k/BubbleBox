@@ -78,13 +78,11 @@
     justify-content: center;
     margin-top: 20px;
     text-align: center;
-    padding: 0 20px 20px;
+    margin-bottom: 3vh;
 }
 
 .communityInfo {
     border-radius: 8px;
-    padding: 15px;
-    max-width: 600px;
     width: 100%;
 }
 
@@ -127,11 +125,6 @@
     margin-bottom: 8px;
 }
 
-.communityInfo p {
-    font-size: 16px;
-    color: #9262eb;
-    margin-bottom: 16px;
-}
 
 /* Join/Leave button */
 .uni-De {
@@ -199,32 +192,71 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     object-fit: cover;
 }
+.DescripcionButton,
+.reglas-communidad{
+  border: 1px solid rgb(192, 154, 245);
+    border-radius: 8px;
+    background-color: #f3e7ff;
+    margin-bottom: 2vh;
+    padding: 1vh;
+    margin: 2vh;
+    transition: all 0.5s ease, transform 0.1s ease, background-color 0.5s ease;
 
-/* Description section */
-.information-Community{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: white;
-  margin-top: 16px;
-  border-bottom: 3px solid #AA7DFF;
+}
+.DescripcionButton:hover,
+.reglas-communidad:hover{
+  transform: translateY(-2px);
+  background-color: #e8d8f7;
+
 }
 
+ .complement-button{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1vh 2vh;
+
+}
+.infoCo, .infoRegla{
+  display: flex;
+  gap: 2vh;
+  justify-content: center;
+  align-items: center;
+  color: #5d35a8;
+}
+.ico-community-tittle{
+  background-color: #dbd2f0;
+  border-radius: 10vh;
+  width: 7vh;
+  height: 7vh;
+  font-size: 3vh;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 2px 5px -2px gray;
+}
+.toggle-button{
+    color: #8a5ae0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    transition: color 0.2s;
+    
+}
 .info-block {
 max-height: 0;
 overflow: hidden;
 opacity: 0;
 visibility: hidden;
 transition: all 0.3s ease-out;
-background: linear-gradient(to bottom right, #e7d6fc, #d6d6f2);
 text-align: left;
 border-radius: 5px;
 padding: 1vh;
-box-shadow: 0px 0.7px 3px rgb(125, 124, 124);
 text-shadow: 0px 0.5px 1px rgba(97, 97, 97, 0.3);
+display: none;
 } 
 
 .info-block.expanded {
@@ -233,6 +265,7 @@ opacity: 1;
 visibility: visible;
 margin-bottom: 20px;
 transition: all 0.3s ease-in;
+display: block;
 }
 
 .descripcion{
@@ -242,7 +275,6 @@ font-size: 14px;
 }
 
 .descripcion.expanded, .reglas.expanded {
-max-height: 500px;
 opacity: 1;
 visibility: visible;
 transition: all 0.3s ease-in;
@@ -296,14 +328,6 @@ width: 100%;
 .information-Community button:hover {
   color: #8b64d4;
   transform: scale(1.2);
-}
-.toggle-button {
-width: 10%;
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 3px;
-transition: color 0.2s;
 }
 
 .information-Community .suave {
@@ -749,6 +773,7 @@ overflow: hidden;
   overflow: hidden;
 
 }
+
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -851,7 +876,6 @@ overflow: hidden;
         width: 180px;
         height: 180px;
     }
-
 }
 
 @media (min-width: 1440px) {

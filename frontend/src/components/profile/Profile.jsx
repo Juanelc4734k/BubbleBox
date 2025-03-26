@@ -193,25 +193,12 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
 
   // Original return statement with profile content
   return (
-    <>
+    <div className="contenprofile">
       <div className="bg-gradient-to-b profile">
-        <div className="mx-auto bg-white rounded-2xl shadow-xl overflow-hidden profileContent">
+        <div className="mx-auto bg-white rounded-2xl shadow-xl  profileContent">
           <div className="flex flex-col md:flex-row contenedordelprofile">
             {/* Left side - Avatar and Username */}
             <div className="md:w-1/3 bg-[#bda7f1] p-5 contenedorPro">
-            <div className="conten-bubbles-profile">
-                <div className="bubbles-1"></div>
-                <div className="bubbles-2"></div>
-                <div className="bubbles-3"></div>
-                <div className="bubbles-4"></div>
-                <div className="bubbles-5"></div>
-                <div className="bubbles-6"></div>
-                <div className="bubbles-7"></div>
-                <div className="bubbles-8"></div>
-                <div className="bubbles-9"></div>
-
-
-                </div>
               <div className="relativeImg">
                 <img
                   src={getAvatarSrc()}
@@ -348,7 +335,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
         contentType="usuario"
         reportedUserId={profile.id}
       />
-    </>
+    </div>
   );
 }
 
