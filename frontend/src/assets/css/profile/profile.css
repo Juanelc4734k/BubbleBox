@@ -1,3 +1,6 @@
+.contenprofile{
+    padding-bottom: 2rem;
+}
 .profile{
     width: calc(100% - 2rem);
     height: 100%;
@@ -5,112 +8,40 @@
 .contenedorPro{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content:center;
     align-items: center;
     overflow: hidden;
     position: relative;
+    
 }
+.profileContent {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #b377ee #f3e8ff;
+  }
+  
+  .profileContent::-webkit-scrollbar {
+    width: 8px; 
+    border-radius: 10px;
+    
+  }
+  
+  .profileContent::-webkit-scrollbar-thumb {
+    background-color: #b377ee;
+    border-radius: 10px;
+    border: 2px solid #f3e8ff;
+  }
+  
+  .profileContent::-webkit-scrollbar-track {
+    background: #f3e8ff; 
+    border-radius: 10px;
+  }
+  .profileContent::-webkit-scrollbar-button:single-button{
+    display: none;
+    width: 0;
+    height: 0;
+  }
 
-.conten-bubbles-profile {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-}
-.conten-bubbles-profile .bubbles-1{
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:2vw;
-    top: 3vw;
-}
-.conten-bubbles-profile .bubbles-2{
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:10vw;
-    bottom: 1vh;
-}
-.conten-bubbles-profile .bubbles-3{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:7vw;
-    bottom: 13vh;
-}
-.conten-bubbles-profile .bubbles-4{
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:70%;
-    top: 10vh;
-}
-.conten-bubbles-profile .bubbles-5{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:29%;
-    top: 13vh;
-}
-.conten-bubbles-profile .bubbles-6{
-    position: absolute;
-    width: 43px;
-    height: 43px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left:64%;
-    top: 17vh;
-}
-
-.conten-bubbles-profile .bubbles-7{
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    right: -3vw;
-    bottom: -3vw;
-}
-.conten-bubbles-profile .bubbles-8{
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    right: 14vw;
-    bottom: 2vw;
-}
-
-.conten-bubbles-profile .bubbles-9{
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    right: 2vw;
-    top: 3vw;
-}
 .profileContent{
     max-height: 100%;
 }
@@ -370,10 +301,12 @@
         height: 100%;
         max-height: 100%;
     }
-    .contenedordelprofile{
+    /* .contenedordelprofile{
         height: 100%;
         max-height: 100%;
-    }
+
+
+    } */
     .dentroProfileConent{
         height: 100%;
     }
@@ -403,6 +336,9 @@
 
 /* Rest of the media queries remain the same but with height: auto */
 @media (min-width: 1024px){
+    .contenprofile{
+        padding-bottom: 1rem;
+    }
    .profile{
         width: calc(100% - 285px);
         height: calc(100vh - 14rem);

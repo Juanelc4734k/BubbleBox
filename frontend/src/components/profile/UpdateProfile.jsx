@@ -314,7 +314,13 @@ const UpdateProfile = ({ onProfileUpdate }) => {
                       className={`category-tab ${selectedCategory === category ? "active" : ""}`}
                       onClick={() => handleCategoryChange(category)}
                     >
+
                         {category}
+                        {selectedInterests.includes(category) ? (
+                    <i className="fa-solid fa-circle-check icon-circle-profi selected-icon"></i>
+                  ) : (
+                    <i className="fa-regular fa-circle icon-circle-profile"></i>
+                  )}  
                       </button>
                     ))}
                     </div>

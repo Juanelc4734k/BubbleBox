@@ -1,5 +1,6 @@
 .reels-page .layout{
-    background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png'), #121212;
+    /* background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png'), #121212; */
+    background-color: #000;
     background-blend-mode: overlay; 
     overflow: hidden;
     overflow-y: auto;
@@ -22,7 +23,7 @@
       width: 100%;
       display: flex;
       justify-content: center;
-      padding: 20px;
+      background-color: #2563eb;
     }
 .tabs-reel{
         display: flex;
@@ -62,7 +63,7 @@
     background: #c59bed;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0vh 0vh 3vh rgb(37, 37, 37);
+    /* box-shadow: 0vh 0vh 3vh rgb(37, 37, 37); */
     display: flex;
     flex-direction: column;
         
