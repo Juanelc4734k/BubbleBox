@@ -23,8 +23,14 @@ import { createPostCommunity } from "../../services/posts";
 import Swal from 'sweetalert2';
 
   const CommunityDetail = () => {
+<<<<<<< HEAD
   const [isClickDescri, setIsClickDescri] = useState(true);
   const [isClickReglas, setIsClickReglas] = useState(true);
+=======
+  const [isClick, setIsClick] = useState(true);
+  const [isClickDescri, setIsClickDescri] = useState(false);
+  const [isClickReglas, setIsClickReglas] = useState(false);
+>>>>>>> 138c93154191e3d7d4269869ecdd3e156575d9ab
   const { id } = useParams();
   const [community, setCommunity] = useState(null);
   const [posts, setPosts] = useState([]);
