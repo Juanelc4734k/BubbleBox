@@ -3,6 +3,8 @@
 }
 .containerrecover{
     position: relative;
+    overflow: hidden;
+    border-radius: 2vh;
 }
 .iconResetContra{
     background-color: #B17DFF;
@@ -11,9 +13,13 @@
     border-bottom-left-radius: 2vh;
     padding: 1.5vh 1.7vh;
     color: white;
-    height: 6vh;
+    height: 100%;
+    top: 0;
     box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.2); /* Sombra en la parte inferior */
     transition: box-shadow 0.3s ease; /* Suaviza la animación al enfocar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 @media (min-width: 768px ){
     .recover-password-custom{
@@ -22,10 +28,9 @@
 }
 @media (min-width: 1024px ){
     .iconResetContra{
-        height: 7vh;
-        padding: 2.2vh 3.5vh;
+        padding: 2.2vh 2.4vh;
     }
     input:focus ~ .line{
-        width: 93%;
+        width: 100%;
     }
 }
