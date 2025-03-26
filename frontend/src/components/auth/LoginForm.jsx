@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 
 export default function LoginForm({ setIsAuthenticated }) {
     const [formData, setFormData] = useState({ email: '', contraseña: '' });
+    const [aceptado, setAceptado] = useState(false); // Estado para el checkbox de términos y condiciones
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -39,6 +40,11 @@ export default function LoginForm({ setIsAuthenticated }) {
             if (decodedToken.estado === 'suspendido') {
                 setError('Tu cuenta ha sido suspendida. Por favor, contacta con el administrador.');
                 return;
+            }
+
+            if (!aceptado) { // Validación para asegurarse de que se haya aceptado los términos
+                setError("Debe aceptar los términos y condiciones.");
+                return false;
             }
             
             // Only set localStorage items for non-admin users
@@ -97,7 +103,6 @@ export default function LoginForm({ setIsAuthenticated }) {
             }
         }
     };
-    const [ aceptado, setAceptado ] = useState(false);
     
     return (
         <>

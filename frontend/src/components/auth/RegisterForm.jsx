@@ -1,6 +1,6 @@
 import { useState  } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../../services/auth';
+import { register, checkEmail } from '../../services/auth';
 import '../../assets/css/auth/resgistro.css';
 import Animation from '../../assets/images/logo/logo.jfif';
 import { FaRegUser } from "react-icons/fa6";
@@ -11,9 +11,26 @@ import Swal from "sweetalert2";
 
 export default function RegisterForm({ setMessage }) {
     const [formData, setFormData] = useState({ nombre: '', username: '', email: '', contraseña: '' });
+    const [aceptado, setAceptado] = useState(false); // Estado para el checkbox de términos y condiciones
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+
+    const checkEmailExists = async (email) => {
+        try {
+            const response = await checkEmail(email);
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error("Error al verificar el correo electrónico:", error);
+            return false; // Si ocurre un error, asumimos que el correo no está en uso
+        }
+    };
+
+    // Sanitizar los valores de entrada antes de enviarlos
+    const sanitizeInput = (input) => {
+        return input.replace(/^\s+|\s+$/g, ''); // Eliminar espacios al inicio y al final
+    };
 
     // Validaciones
     const validateForm = () => {
@@ -27,16 +44,41 @@ export default function RegisterForm({ setMessage }) {
             setError("El nombre debe tener al menos 3 caracteres.");
             return false;
         }
+
+        if (/^\d+$/.test(formData.nombre.trim())) {
+            setError("El nombre no puede ser solo números.");
+            return false;
+        }
+
         if (formData.username.trim().length < 3) {
             setError("El nombre de usuario debe tener al menos 3 caracteres.");
             return false;
         }
+
+        if (/^\d+$/.test(formData.username.trim())) {
+            setError("El nombre de usuario no puede ser solo números.");
+            return false;
+        }
+
         if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
             setError("Ingrese un correo electrónico válido.");
             return false;
         }
+
+        const emailExists = checkEmailExists(formData.email);
+        if (emailExists) {
+            setError("El correo electrónico ya está en uso.");
+            return false;
+        }
+
+
         if (formData.contraseña.length < 5 || !/\d/.test(formData.contraseña) || !/[a-zA-Z]/.test(formData.contraseña)) {
             setError("La contraseña debe tener al menos 6 caracteres y contener letras y números.");
+            return false;
+        }
+
+        if (!aceptado) { // Validación para asegurarse de que se haya aceptado los términos
+            setError("Debe aceptar los términos y condiciones.");
             return false;
         }
         setError(""); // Limpiar error si todo está bien
@@ -44,7 +86,8 @@ export default function RegisterForm({ setMessage }) {
     };
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: sanitizeInput(value) });
         // Limpiar el error cuando el usuario empieza a escribir
         if (error) {
             setError('');
@@ -53,9 +96,19 @@ export default function RegisterForm({ setMessage }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const sanitizedData = {
+            nombre: sanitizeInput(formData.nombre),
+            username: sanitizeInput(formData.username),
+            email: sanitizeInput(formData.email),
+            contraseña: sanitizeInput(formData.contraseña)
+        };
+
+        setFormData(sanitizedData);
+
         if (!validateForm()) return; // Detener el envío si hay errores
         try {
-            const response = await register(formData);
+            const response = await register(sanitizedData);
             setMessage(response.message);
 
             // Muestra la alerta y redirige solo al hacer clic en el botón
@@ -73,8 +126,6 @@ export default function RegisterForm({ setMessage }) {
             setMessage(error.response?.data?.message || "Error en el registro.");
         }
     };
-
-        const [ aceptado, setAceptado ] = useState(false);
 
     return (
 
@@ -113,7 +164,7 @@ export default function RegisterForm({ setMessage }) {
 
                     <div className="contaiEmail">
                         <div className="iconEmail"><HiOutlineMail/></div>
-                        <input type="email" name='email'  className='inpuEmail' value={formData.email} onChange={handleChange} placeholder='Email' />
+                        <input type="text" name='email'  className='inpuEmail' value={formData.email} onChange={handleChange} placeholder='Email' />
                         <div className='linea'></div>
                     </div>
 

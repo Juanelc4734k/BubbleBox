@@ -16,5 +16,6 @@ router.post('/restablecer-contrasena/:token', authController.restablecerContrase
 router.post('/generar-2fa', authMiddleware, authController.generar2FA);
 router.post('/verificar-2fa', authMiddleware, authController.verificar2FA);
 router.get('/verify-role', authMiddleware, authController.handleVerifyRole);
+router.get('/verify-email/:email', authController.checkEmail);
 
 module.exports = router;

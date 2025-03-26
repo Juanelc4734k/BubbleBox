@@ -6,6 +6,7 @@ import { TbUsersPlus } from "react-icons/tb";
 import { CiImageOn } from "react-icons/ci";
 import { createCommunity } from "../../services/comunity";
 import { FaUsers, FaLock } from "react-icons/fa";
+import DOMPurify from "dompurify";
 
 const CreateComunity = () => {
     const [openComunity, setOpenComunity] = useState(false);
@@ -23,6 +24,10 @@ const CreateComunity = () => {
 
     const scrollableRef = useRef(null);
     const modalRef = useRef(null);
+
+    const sanitizeInput = (input) => {
+        return DOMPurify.sanitize(input);
+      };
 
     // Combinar ambas referencias en una sola función de ref
     const combinedRef = useCallback((node) => {
@@ -110,9 +115,12 @@ const CreateComunity = () => {
             return
         }
 
+        const sanitizedNombre = sanitizeInput(nombre.trim());
+        const sanitizedDescripcion = sanitizeInput(descripcion);
+
         const comunityData = new FormData();
-        comunityData.append("nombre", nombre.trim());
-        comunityData.append("descripcion", descripcion);
+        comunityData.append("nombre", sanitizedNombre);
+        comunityData.append("descripcion", sanitizedDescripcion);
         comunityData.append("privacidad", privacidad);
         if (idCreador) {
             comunityData.append("idCreador", idCreador);

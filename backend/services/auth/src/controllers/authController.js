@@ -150,11 +150,12 @@ const recoverPassword = async (req, res) => {
     await authModel.guardarTokenRecuperacion(usuario.id, tokenUnicoUso, tokenExpiracion);
     
     const transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      host: 'smtp.gmail.com', // Usa el servidor SMTP de Gmail
+      port: 465, // Puerto seguro (SSL)
+      secure: true, // Necesario para Gmail
       auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
+        user: process.env.EMAIL, // Tu correo de Gmail
+        pass: process.env.APP_PASSWORD // La contraseña de aplicación generada
       }
     });
     
@@ -180,6 +181,7 @@ const recoverPassword = async (req, res) => {
     res.status(500).json({ error: 'Error al procesar la solicitud de recuperación de contraseña' });
   }
 }
+
 
 const restablecerContrasena = async (req, res) => {
   const { token } = req.params;
@@ -251,6 +253,23 @@ const handleVerifyRole = async (req, res) => {
   }
 };
 
+const checkEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const usuario = await authModel.findUserByEmail(email);
+    if (usuario) {
+      res.status(200).json({ existe: true });   
+    }  
+    else {
+      res.status(200).json({ existe: false }); 
+    }
+  }  
+  catch (error) {
+    console.error('Error al verificar el email:', error);
+    res.status(500).json({ error: 'Error al verificar el email' });  
+  }
+}
+
 
 module.exports = {
     registerUser,
@@ -260,5 +279,6 @@ module.exports = {
     logoutUser,
     generar2FA,
     verificar2FA,
-    handleVerifyRole
+    handleVerifyRole,
+    checkEmail
 };
