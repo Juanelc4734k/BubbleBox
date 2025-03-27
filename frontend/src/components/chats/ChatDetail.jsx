@@ -1543,14 +1543,14 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
                     onClick={() => triggerFileInput("image")}
                     className="attach-option"
                   >
-                    <IoMdImage /> Image
+                    <IoMdImage /> Imagen
                   </button>
                   <button
                     type="button"
                     onClick={() => triggerFileInput("document")}
                     className="attach-option"
                   >
-                    <IoMdDocument /> Document
+                    <IoMdDocument /> Documento
                   </button>
                 </div>
               )}
