@@ -100,12 +100,7 @@ export const updateLastSeen = async (userId, status = 'desconectado', lastSeen =
 }
 
 export const checkEmail = async (email) => {
-    try {
-        const response = await axios.get(`${API_URL}/auth/verify-email/${email}`);
-        console.log('Email checked:', response.data);
-        return response.data;
-    } catch (error) {
-        console.error('Error checking email:', error);
-        throw error;
-    }
-}
+    const encodedEmail = encodeURIComponent(email);
+    const response = await axios.get(`${API_URL}/auth/verify-email/${encodedEmail}`);
+    return response.data;
+};

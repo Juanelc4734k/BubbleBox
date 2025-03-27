@@ -254,14 +254,16 @@ const handleVerifyRole = async (req, res) => {
 };
 
 const checkEmail = async (req, res) => {
-  const { email } = req.body;
+  const email = req.params.email;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ existe: false, error: 'Formato de email inválido' });
+  }
   try {
     const usuario = await authModel.findUserByEmail(email);
     if (usuario) {
-      res.status(200).json({ existe: true });   
-    }  
-    else {
-      res.status(200).json({ existe: false }); 
+      res.status(200).json({ existe: true });
+    } else {
+      res.status(200).json({ existe: false });
     }
   }  
   catch (error) {
