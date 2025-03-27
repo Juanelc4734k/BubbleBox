@@ -13,6 +13,7 @@ import { FaRegFaceSmileWink } from "react-icons/fa6";
 import { FaMicrophone, FaStop, FaEdit, FaTrash, FaBan } from "react-icons/fa";
 import { BsFillPlayFill, BsPauseFill } from "react-icons/bs";
 import { IoMdAttach, IoMdImage, IoMdDocument } from "react-icons/io";
+import { FaRegPaperPlane } from "react-icons/fa";
 
 const EmojiPicker = lazy(() => import("emoji-picker-react"));
 
@@ -1247,6 +1248,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             value={editMessageContent}
             onChange={(e) => setEditMessageContent(e.target.value)}
             className="edit-message-input"
+            spellCheck={false} 
             autoFocus
             rows={Math.min(
               4,
@@ -1346,7 +1348,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     } else {
       // Mensaje de texto normal
       return (
-        <div className="flex items-end gap-2 message-content-wrapper">
+        <div className="message-content-wrapper">
           <span>
             {message.message}
             {message.edited && (
@@ -1442,6 +1444,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             {/* Add message actions for own messages */}
             {message.sender_id === parseInt(senderId) &&
               message.message !== "audio_message" &&
+              message.message !== "document_message" && message.message !== "image_message" &&
               editingMessageId !== message.id && (
                 <div className="message-actions">
                   <button
@@ -1474,7 +1477,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       </div>
 
       <form onSubmit={handleSendMessage} className="chat-input-form">
-        <div className="flex space-x-2">
+        <div className="chatinput">
           {!isRecording ? (
             <>
               <button
@@ -1491,7 +1494,38 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
               >
                 <FaMicrophone />
               </button>
-              {/* Attachment menu */}
+
+              {isEmojiPickerInitialized && (
+                <div
+                  className={`emoji-picker-container ${
+                    showEmojiPicker ? "visible" : "hidden"
+                  }`}
+                >
+                  <Suspense
+                    fallback={
+                      <div className="loading-emoji">Cargando emojis...</div>
+                    }
+                  >
+                    <EmojiPicker
+                      onEmojiClick={onEmojiClick}
+                      disableAutoFocus={true}
+                      searchPlaceholder="Buscar emoji..."
+                      width={300}
+                      height={400}
+                      lazyLoadEmojis={true}
+                    />
+                  </Suspense>
+                </div>
+              )}
+              <input
+                type="text"
+                value={newMessage}
+                spellCheck={false} 
+                onChange={handleTyping}
+                placeholder="Type a message..."
+                className="chat-input"
+              />
+                            {/* Attachment menu */}
               {/* Add attachment button here */}
               <button
                 type="button"
@@ -1520,41 +1554,12 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
                   </button>
                 </div>
               )}
-              {isEmojiPickerInitialized && (
-                <div
-                  className={`emoji-picker-container ${
-                    showEmojiPicker ? "visible" : "hidden"
-                  }`}
-                >
-                  <Suspense
-                    fallback={
-                      <div className="loading-emoji">Cargando emojis...</div>
-                    }
-                  >
-                    <EmojiPicker
-                      onEmojiClick={onEmojiClick}
-                      disableAutoFocus={true}
-                      searchPlaceholder="Buscar emoji..."
-                      width={300}
-                      height={400}
-                      lazyLoadEmojis={true}
-                    />
-                  </Suspense>
-                </div>
-              )}
-              <input
-                type="text"
-                value={newMessage}
-                onChange={handleTyping}
-                placeholder="Type a message..."
-                className="chat-input"
-              />
               <button
                 type="submit"
                 disabled={!newMessage.trim()}
                 className="send-button"
               >
-                Send
+                <FaRegPaperPlane/>
               </button>
             </>
           ) : (
