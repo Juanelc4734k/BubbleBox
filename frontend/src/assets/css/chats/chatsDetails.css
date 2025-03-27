@@ -1142,6 +1142,9 @@
     width: 100%;
     margin:0;
   }
+  .attach-menu{
+    right: 28rem;
+  }
 }
 /* Ajuste general cuando el sidebar está cerrado */
 .sidebar-wrapper.closed ~ .chat-detail-container {
