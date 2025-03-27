@@ -133,7 +133,11 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
           const duration = lastMsg.duration || '0:00';
           setLastMessage(`Audio (${duration})`);
         } else if (lastMsg.message) {
-          setLastMessage(lastMsg.message);
+          // Limitar el mensaje a 25 caracteres y agregar "..." si es más largo
+          const truncatedMessage = lastMsg.message.length > 15 
+            ? lastMsg.message.substring(0, 15) + '...' 
+            : lastMsg.message;
+          setLastMessage(truncatedMessage);
         } else {
           setLastMessage('');
         }

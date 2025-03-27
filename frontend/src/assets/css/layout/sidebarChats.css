@@ -7,7 +7,7 @@ html, body {
 .conSide {
   display: flex;
   position: relative;
-  width: 100%;
+  width: calc(100% - 1rem);
   height: calc(100vh - 10rem);
   overflow: hidden;
   align-items: center;  
@@ -16,8 +16,8 @@ html, body {
 .dideChat {
   flex: 1;
   position: relative;
+  width: 100%;
   height: calc(100vh - 10rem);
-  padding: 1rem;
   border-radius: 1rem;
 }
 
@@ -148,8 +148,7 @@ html, body {
   }
   .dideChat {
     width: 100%;
-    height: calc(100vh - 12rem);
-    padding: 0;
+    height: calc(100vh - 13rem);
   }
   .sidebar-wrapper {
     top: 9.8rem;
@@ -176,7 +175,7 @@ html, body {
   }
   .dideChat {
     width: 100%;
-    height: calc(100vh - 14rem);
+    height: calc(100vh - 15rem);
   }
   .selectChat {
     width: 100%;
