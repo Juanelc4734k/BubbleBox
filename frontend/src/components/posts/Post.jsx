@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale";
 import {
   getReactionsPosts,
   createReactionPost,
@@ -538,11 +540,19 @@ const Post = forwardRef((props, ref) => {
       <div className="posts" ref={ref}>
         <div className="post">
           <div className="post-autor-info">
-            <p className="post-fecha-create">
-              {post.fecha_creacion
-                ? new Date(post.fecha_creacion).toLocaleString()
-                : "Fecha desconocida"}
-            </p>
+          <p className="post-fecha-create">
+            {post.fecha_creacion
+              ? (formatDistanceToNow(new Date(post.fecha_creacion), {
+                  addSuffix: true,
+                  locale: es,
+                })[0].toUpperCase() +
+                  formatDistanceToNow(new Date(post.fecha_creacion), {
+                    addSuffix: true,
+                    locale: es,
+                  }).slice(1))
+              : "Fecha desconocida"}
+          </p>
+
             <div className="post-ft-name">
               <div className="post-imguser">
                 <img
