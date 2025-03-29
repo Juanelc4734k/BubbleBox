@@ -193,7 +193,7 @@ export default function RegisterForm({ setMessage }) {
               value={formData.username}
               onChange={handleChange}
               placeholder="User name"
-              maxLength={9}
+              maxLength={30}
             />
             <div className="linea"></div>
           </div>
