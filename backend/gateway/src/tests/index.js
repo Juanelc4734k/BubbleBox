@@ -9,7 +9,7 @@ const PORT = process.env.PUERTO || 3000;
 
 if (cluster.isMaster) {
   const numCPUs = os.cpus().length;
-  console.log(`Iniciando ${numCPUs} workers...`);
+  
 
   // Crear un worker por cada núcleo de CPU
   for (let i = 0; i < numCPUs; i++) {
@@ -18,7 +18,7 @@ if (cluster.isMaster) {
 
   // Si un worker muere, lo reiniciamos
   cluster.on("exit", (worker, code, signal) => {
-    console.log(`⚠️ Worker ${worker.process.pid} murió. Creando uno nuevo...`);
+    
     cluster.fork();
   });
 } else {
@@ -53,13 +53,13 @@ if (cluster.isMaster) {
   app.use((req, res) => {
     const servicio = req.url.split('/')[1];
     if (servicios[servicio]) {
-      console.log(`Redirigiendo a ${servicios[servicio]}${req.url}`);
+      
       proxy.web(req, res, {
         target: servicios[servicio],
         ignorePath: false
       });
     } else {
-      console.log(`Servicio no encontrado para la ruta: ${req.url}`);
+      
       res.status(404).send('Servicio no encontrado');
     }
   });
@@ -72,6 +72,6 @@ if (cluster.isMaster) {
 
   // Iniciar el servidor
   app.listen(PORT, () => {
-    console.log(`Worker ${process.pid} escuchando en el puerto ${PORT}`);
+    
   });
 }

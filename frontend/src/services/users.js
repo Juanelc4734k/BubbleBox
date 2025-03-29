@@ -4,7 +4,7 @@ const API_URL = 'http://localhost:3000';
 
 export const getUsers = async () => {
     const response = await axios.get(`${API_URL}/users/usuarios`);
-    console.log('Respuesta: ', response.data);
+    
     return response.data;
 };
 

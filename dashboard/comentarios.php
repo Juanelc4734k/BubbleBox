@@ -733,8 +733,8 @@ include 'views/templates/sidebar.php';
 
                 // Make sure we have at least some data to display
                 const hasData = publicacionCount > 0 || reelCount > 0;
-                console.log('Publicaciones count:', publicacionCount);
-                console.log('Reels count:', reelCount);
+                
+                
 
                 // Create the pie chart - removed Historias
                 new Chart(ctx2, {

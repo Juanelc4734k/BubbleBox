@@ -7,11 +7,11 @@ import ModalReport from "../reports/modalReport";
 import UpdateProfile from "./UpdateProfile";
 import { getPostByUserId } from "../../services/posts";
 import { checkFriendship } from "../../services/friends";
-import '../../assets/css/profile/profile.css';
+import "../../assets/css/profile/profile.css";
 import { CiGrid41 } from "react-icons/ci";
 import { updateProfile } from "../../services/users";
 
-function Profile({ profile: initialProfile, isOwnProfile, }) {
+function Profile({ profile: initialProfile, isOwnProfile }) {
   const [profile, setProfile] = useState(initialProfile);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,22 +19,22 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
   const [canViewProfile, setCanViewProfile] = useState(true);
   const [isFriend, setIsFriend] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  
+
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
-  const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
+  const defaultDescription =
+    "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
 
   useEffect(() => {
     setProfile(initialProfile);
   }, [initialProfile]);
 
   const handleProfileUpdate = (updatedProfile) => {
-    setProfile(prevProfile => ({
+    setProfile((prevProfile) => ({
       ...prevProfile,
-      ...updatedProfile
-    }))
-  }
-
+      ...updatedProfile,
+    }));
+  };
 
   // Check if the current user can view this profile
   useEffect(() => {
@@ -47,23 +47,23 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
       }
 
       // If profile doesn't have privacy settings or is public, anyone can view
-      if (!profile.privacidad || profile.privacidad === 'publico') {
+      if (!profile.privacidad || profile.privacidad === "publico") {
         setCanViewProfile(true);
         setCheckingAccess(false);
         return;
       }
 
       // For private profiles, only the owner can view
-      if (profile.privacidad === 'privado') {
+      if (profile.privacidad === "privado") {
         setCanViewProfile(false);
         setCheckingAccess(false);
         return;
       }
 
       // For friends-only profiles, check friendship status
-      if (profile.privacidad === 'amigos') {
+      if (profile.privacidad === "amigos") {
         try {
-          const loggedUserId = localStorage.getItem('userId');
+          const loggedUserId = localStorage.getItem("userId");
           if (!loggedUserId) {
             setCanViewProfile(false);
             setCheckingAccess(false);
@@ -78,7 +78,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
           setCanViewProfile(false);
         }
       }
-      
+
       setCheckingAccess(false);
     };
 
@@ -96,26 +96,26 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
 
   // Add this function to render privacy indicator
   const renderPrivacyIndicator = () => {
-    console.log('Privacy value:', profile); // Add this line to debug
-    
+    // Add this line to debug
+
     if (!profile.privacidad) return null;
-    
-    switch(profile.privacidad) {
-      case 'publico':
+
+    switch (profile.privacidad) {
+      case "publico":
         return (
           <div className="flex items-center text-green-600 text-sm mt-2">
             <FiGlobe className="mr-1" />
             <span>Perfil público</span>
           </div>
         );
-      case 'amigos':
+      case "amigos":
         return (
           <div className="flex items-center text-blue-600 text-sm mt-2">
             <FiUsers className="mr-1" />
             <span>Visible para amigos</span>
           </div>
         );
-      case 'privado':
+      case "privado":
         return (
           <div className="flex items-center text-red-600 text-sm mt-2">
             <FiLock className="mr-1" />
@@ -131,16 +131,16 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
     try {
       setLoading(true);
       const data = await getPostByUserId(profile.id);
-      
+
       // Assuming getPostByUserId returns the data directly
       // If it's an array, use it directly
       if (Array.isArray(data)) {
         setUserPosts(data);
-      } 
+      }
       // If it's an object with a data property
-      else if (data && typeof data === 'object') {
+      else if (data && typeof data === "object") {
         setUserPosts(Array.isArray(data.data) ? data.data : []);
-      } 
+      }
       // Otherwise set empty array
       else {
         setUserPosts([]);
@@ -169,7 +169,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
             <FiLock className="mx-auto text-red-500" size={48} />
             <h2 className="text-2xl font-semibold mt-4 mb-2">Perfil Privado</h2>
             <p className="text-gray-600">
-              {profile.privacidad === 'amigos' 
+              {profile.privacidad === "amigos"
                 ? "Este perfil solo es visible para amigos. Envía una solicitud de amistad para ver el contenido."
                 : "Este perfil es privado y no está disponible para visualización."}
             </p>
@@ -213,7 +213,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
             </div>
             {/* Right side - Profile Information */}
             <div className="md:w-2/3 rightprofile">
-              <div className="flex items-center gap-5 textRight" >
+              <div className="flex items-center gap-5 textRight">
                 <CiUser className="text-purple-500" size={24} />
                 <h1 className="font-bold text-gray-800 textNameP">
                   {profile.nombre}
@@ -222,47 +222,56 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
               {/* About Me Section */}
               <div className="sobreMi">
                 <div className="tittle-bio">
-                <CiUser className="icon-user-profile text-purple-500" size={24} />
-                <h3 className="font-semibold text-gray-800 mb-1 textSobe">
-                  Biografía
-                </h3>
+                  <CiUser
+                    className="icon-user-profile text-purple-500"
+                    size={24}
+                  />
+                  <h3 className="font-semibold text-gray-800 mb-1 textSobe">
+                    Biografía
+                  </h3>
                 </div>
                 <div className="biografia-text">
-                <p className="text-gray-600 textDescription">
-                  {profile.descripcion_usuario || defaultDescription}
-                </p>
+                  <p className="text-gray-600 textDescription">
+                    {profile.descripcion_usuario || defaultDescription}
+                  </p>
                 </div>
               </div>
               {/* General Information */}
               <div className="informacionGeneral">
-
                 <div className="informacion-profile">
-                <BsEnvelope size={24} className="icon-email-profile text-purple-500" />
-                <h4 className="font-semibold text-gray-800 mb-2 textInfo">
-                  Información General
-                </h4>
+                  <BsEnvelope
+                    size={24}
+                    className="icon-email-profile text-purple-500"
+                  />
+                  <h4 className="font-semibold text-gray-800 mb-2 textInfo">
+                    Información General
+                  </h4>
                 </div>
 
                 <div className="contenido-informacionGeneral">
                   <div className="flex items-center gap-3 text-gray-600 ml-2">
                     <BsEnvelope size={20} className="text-purple-500" />
-                    <span className="text-sm lg:text-lg  ">{profile.email}</span>
+                    <span className="text-sm lg:text-lg  ">
+                      {profile.email}
+                    </span>
                   </div>
                   <div className="flex items-center gap-3 text-gray-600 ml-2">
                     <BsGeoAlt size={20} className="text-purple-500" />
-                    <span className="text-sm lg:text-lg ">{profile.estado}</span>
+                    <span className="text-sm lg:text-lg ">
+                      {profile.estado}
+                    </span>
                   </div>
                 </div>
               </div>
 
               <div className="intereses-profile">
-              {profile.intereses && profile.intereses.length > 0 && (
+                {profile.intereses && profile.intereses.length > 0 && (
                   <div className="ineterses">
                     <div className="intereses-tittle">
-                    <i className="icon-intereses-heart fa-regular fa-heart text-purple-500"></i>
-                    <h4 className="font-semibold text-gray-800 textInteres">
-                      Intereses
-                    </h4>
+                      <i className="icon-intereses-heart fa-regular fa-heart text-purple-500"></i>
+                      <h4 className="font-semibold text-gray-800 textInteres">
+                        Intereses
+                      </h4>
                     </div>
                     <div className="intereses-conteen flex flex-wrap gap-2">
                       {profile.intereses.map((interes) => (
@@ -295,25 +304,35 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
           </div>
         </div>
       </div>
-      
+
       {/* User Posts Section - Completely separate from profile */}
       {!isOwnProfile && (
         <div className="posts-container">
           <div className="posts-section">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4"> <CiGrid41/> Publicaciones Recientes</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              {" "}
+              <CiGrid41 /> Publicaciones Recientes
+            </h3>
             {loading ? (
-              <p className="text-center text-gray-500">Cargando publicaciones...</p>
+              <p className="text-center text-gray-500">
+                Cargando publicaciones...
+              </p>
             ) : userPosts.length > 0 ? (
               <div className="publiAmigo">
                 {userPosts.map((post) => (
-                  <div key={post.id} className="p-4 rounded-lg shadow-sm publiAmigoDivi">
-                    <p className="textPublifecha">{new Date(post.fecha_creacion).toLocaleDateString()}</p>
+                  <div
+                    key={post.id}
+                    className="p-4 rounded-lg shadow-sm publiAmigoDivi"
+                  >
+                    <p className="textPublifecha">
+                      {new Date(post.fecha_creacion).toLocaleDateString()}
+                    </p>
                     <h4 className="textTituloProfile">{post.titulo}</h4>
                     <p className="textContenidoPerfil">{post.contenido}</p>
                     {post.imagen && (
-                      <img 
-                        src={`http://localhost:3008/uploads/${post.imagen}`} 
-                        alt="Post" 
+                      <img
+                        src={`http://localhost:3008/uploads/${post.imagen}`}
+                        alt="Post"
                         className="imgOubliProfile"
                       />
                     )}
@@ -321,7 +340,9 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
                 ))}
               </div>
             ) : (
-              <p className="noPubliPerfil">Este usuario aún no tiene publicaciones.</p>
+              <p className="noPubliPerfil">
+                Este usuario aún no tiene publicaciones.
+              </p>
             )}
           </div>
         </div>

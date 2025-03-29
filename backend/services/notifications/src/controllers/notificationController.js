@@ -1,7 +1,7 @@
 const notificationModel = require('../models/notificationModel');
 
 const enviarNotificacion = (io) => async (req, res) => {
-    console.log('Recibiendo solicitud de notificacion');
+    
     try {
         const { usuario_id, tipo, contenido, referencia_id } = req.body;
         const notificacionId = await notificationModel.crearNotificacion({ 
@@ -11,7 +11,7 @@ const enviarNotificacion = (io) => async (req, res) => {
             referencia_id 
         });
         
-        console.log('Notificacion creada con exito');
+        
 
         if (io) {
             io.to(usuario_id.toString()).emit('nueva_notificacion', { 
@@ -23,7 +23,7 @@ const enviarNotificacion = (io) => async (req, res) => {
                 leida: false,
                 usuario_id
             });
-            console.log('Notificacion enviada a usuario con referencia_id:', referencia_id);
+            
         } else {
             console.error('El objeto io no está definido');
         }

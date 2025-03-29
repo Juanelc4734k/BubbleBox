@@ -36,12 +36,12 @@ app.use(express.json());
 app.use('/chats', chatRoutes);
 
 io.on('connection', (socket) => {
-    console.log('Nuevo cliente conectado');
+    
 
     socket.on('join_chat', ({ senderId, receiverId }) => {
         const roomId = [senderId, receiverId].sort().join('-');
         socket.join(roomId);
-        console.log(`User ${senderId} joined room ${roomId}`);
+        
     });
 
     socket.on('send_private_message', async ({ senderId, receiverId, message, temp_id, senderAvatar }) => {
@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
     
             let savedFile;
             if(existingMessage) {
-                console.log('File message already exists, using existing record:', existingMessage);
+                
                 savedFile = existingMessage;
             } else {
                 const messageData = {
@@ -105,11 +105,11 @@ io.on('connection', (socket) => {
     
                 // Save file message to database
                 savedFile = await chatModel.saveFileMessage(messageData);
-                console.log('File message saved to database:', savedFile);
+                
             }
     
             // Log the data received for debugging
-            console.log('File message data received:', data);
+            
     
             // Broadcast to all clients in the room, including sender
             io.in(roomId).emit('receive_file_message', {
@@ -197,7 +197,7 @@ io.on('connection', (socket) => {
                 updated_at: updatedMessage.updated_at
             });
 
-            console.log(`Message ${messageId} edited by ${senderId}`);
+            
 
         } catch (error) {
             console.error('Error al editar el mensaje:', error);
@@ -236,7 +236,7 @@ io.on('connection', (socket) => {
                 receiverId: message.receiver_id
             });
 
-            console.log(`Message ${messageId} deleted by ${senderId}`);
+            
         } catch (error) {
             console.error('Error al eliminar el mensaje:', error);
             socket.emit('error', 'Error al eliminar el mensaje');
@@ -266,7 +266,7 @@ io.on('connection', (socket) => {
                 deletedCount
             });
 
-            console.log(`All messages between ${userId1} and ${userId2} deleted`);
+            
         } catch (error) {
             console.error('Error al eliminar los mensajes:', error);
             socket.emit('error', 'Error al eliminar los mensajes');
@@ -284,7 +284,7 @@ io.on('connection', (socket) => {
                 blockedId: parseInt(blockedId)
             });
             
-            console.log(`User ${blockerId} blocked user ${blockedId}`);
+            
         } catch (error) {
             console.error('Error handling user block:', error);
             socket.emit('error', 'Error al procesar el bloqueo de usuario');
@@ -305,7 +305,7 @@ io.on('connection', (socket) => {
                 chatId: parseInt(friendId)
             });
             
-            console.log(`User ${userId} marked messages from ${friendId} as read`);
+            
         } catch (error) {
             console.error('Error marking messages as read:', error);
             socket.emit('error', 'Error marking messages as read');
@@ -328,7 +328,7 @@ io.on('connection', (socket) => {
 
             let savedAudio;
             if(existingMessage) {
-                console.log('Audio message already exists, using existing record:', existingMessage);
+                
                 savedAudio = existingMessage;
             } else {
                 const messageData = {
@@ -340,11 +340,11 @@ io.on('connection', (socket) => {
 
                 // Save audio message to database
                 savedAudio = await chatModel.saveAudioMessage(messageData);
-                console.log('Audio message saved to database:', savedAudio);
+                
             }
 
             // Log the data received for debugging
-            console.log('Audio message data received:', data);
+            
 
             // Broadcast to all clients in the room, including sender
             io.in(roomId).emit('receive_audio_message', {
@@ -415,7 +415,7 @@ io.on('connection', (socket) => {
 
     socket.on('broadcast_status', async ({ userId, isOnline }) => {
         try {
-            console.log(`Broadcasting status for user ${userId}: ${isOnline ? 'online' : 'offline'}`);
+            
             
             const response = await axios.get(`http://localhost:3000/users/configuraciones/${userId}`);
             const userSettings = response.data;
@@ -446,7 +446,7 @@ io.on('connection', (socket) => {
 
     socket.on('visibility_change', async ({ userId, isVisible }) => {
         try {
-            console.log(`User ${userId} changed visibility to ${isVisible ? 'visible' : 'invisible'}`);
+            
             
             // Update user data in memory
             const userData = onlineUsers.get(parseInt(userId));
@@ -478,7 +478,7 @@ io.on('connection', (socket) => {
     });
     
     socket.on('request_user_status', ({ requesterId, userId }) => {
-        console.log(`User ${requesterId} requested status for user ${userId}`);
+        
         
         // Forward the request to all clients
         // The client with matching userId will respond
@@ -489,7 +489,7 @@ io.on('connection', (socket) => {
     });
     
     socket.on('user_status_response', ({ responderId, requesterId, isOnline }) => {
-        console.log(`User ${responderId} responding to ${requesterId} with status: ${isOnline}`);
+        
         
         // Forward the response directly to the requester
         const requesterSocket = Array.from(io.sockets.sockets.values())
@@ -525,7 +525,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('user_typing', ({ senderId, receiverId, userId }) => {
-        console.log(`User ${senderId} is typing to ${receiverId}`);
+        
         const roomId = [senderId, receiverId].sort().join('-');
         
         // Broadcast to the room that this user is typing
@@ -545,7 +545,7 @@ io.on('connection', (socket) => {
     });
     socket.on('user_offline', async ({ userId, lastSeen }) => {
         try {
-            console.log(`User ${userId} went offline at ${lastSeen}`);
+            
             
             // Update last seen in database
             await chatModel.updateLastSeen(parseInt(userId), 'desconectado');
@@ -569,7 +569,7 @@ io.on('connection', (socket) => {
             const isMember = await groupChatModel.isMember(groupId, userId);
             if(isMember) {
                 socket.join(`group_${groupId}`);
-                console.log(`User ${userId} joined group ${groupId}`);
+                
             } else {
                 socket.emit('error', 'No puedes unirte a un grupo del que no eres miembro');
             }
@@ -628,10 +628,10 @@ io.on('connection', (socket) => {
             }
         }
 
-        console.log('Cliente desconectado');
+        
     });
 });
 
 
 const PORT =  process.env.CHATS_PORT || 3001;
-server.listen(PORT, () => console.log(`Service Chats running on port ${PORT}`));
+server.listen(PORT, () => );

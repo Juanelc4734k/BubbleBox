@@ -14,4 +14,4 @@ app.use('/backups', backupRoutes);
 
 const PORT = process.env.BACKUPS_PORT || 3014;
 
-app.listen(PORT, () => console.log(`Service Communities running on port ${PORT}`));
+app.listen(PORT, () => );

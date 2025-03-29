@@ -18,4 +18,4 @@ app.use('/users', userRoutes);
 
 const PORT = process.env.USERS_PORT || 3009;
 
-app.listen(PORT, () => console.log(`Service Users running on port ${PORT}`));
+app.listen(PORT, () => );
