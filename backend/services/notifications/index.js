@@ -16,7 +16,7 @@ app.use(express.json());
 const PORT = process.env.NOTIFICATION_PORT || 3007;
 
 server.listen(PORT, () => {
-    
+    console.log(`Service Notifications running on port ${PORT}`);
     io = socketIo(server, {
         cors: {
             origin: '*',
@@ -25,15 +25,13 @@ server.listen(PORT, () => {
     });
 
     io.on('connection', (socket) => {
-        
 
         socket.on('join', (userId) => {
             socket.join(userId);
-            
         });
 
         socket.on('disconnect', () => {
-            
+            console.log('User disconnected');
         });
     });
 

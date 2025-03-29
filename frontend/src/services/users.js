@@ -15,7 +15,6 @@ export const getProfiles = async () => {
         headers: { Authorization: `Bearer ${token}` }
     };
     const response = await axios.get(`${API_URL}/users/perfil`, config);
-    console.table(response.data);
     return response.data;
 };
 

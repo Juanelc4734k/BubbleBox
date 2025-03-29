@@ -13,7 +13,7 @@ app.use('/reactions', reactionsRoutes);
 
 const PORT = process.env.REACTIONS_PORT || 3012;
 
-app.listen(PORT, () => );
+app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
 
 
 

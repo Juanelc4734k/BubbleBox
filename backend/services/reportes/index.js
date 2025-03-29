@@ -14,4 +14,4 @@ app.use('/reports', reportsRoutes);
 
 const PORT = process.env.REPORTS_PORT || 3015;
 
-app.listen(PORT, () => );
+app.listen(PORT, () => console.log(`Service Reels running on port ${PORT}`));

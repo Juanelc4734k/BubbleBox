@@ -13,7 +13,7 @@ app.use('/comments', commentsRoutes);
 
 const PORT = process.env.COMMENTS_PORT || 3011;
 
-app.listen(PORT, () => );
+app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
 
 
 
