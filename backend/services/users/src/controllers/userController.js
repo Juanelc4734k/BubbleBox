@@ -72,7 +72,7 @@ const createUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    console.log('Datos recibidos:', req.params.id, req.body);
+    
     
     if (!req.params.id) {
       return res.status(400).json({ mensaje: 'ID de usuario requerido' });
@@ -98,7 +98,7 @@ const updateUser = async (req, res) => {
       await userModel.addUserInterests(req.params.id, intereses);
     }
 
-    console.log('Datos a actualizar:', updateData);
+    
 
     const actualizado = await userModel.updateUser(req.params.id, updateData);
     

@@ -24,7 +24,7 @@ export default function RegisterForm({ setMessage }) {
   const checkEmailExists = async (email) => {
     try {
       const response = await checkEmail(email);
-      console.log(response);
+
       // Validar estructura de respuesta
       if (!response || typeof response.existe !== "boolean") {
         console.error("Respuesta inválida del servidor:", response);

@@ -47,7 +47,7 @@ export const desbloquearUsuario = async (idUsuarioDesbloquea, idUsuarioDesbloque
 export const getFriendRequests = async (userData) => {
     try {
         const response = await axios.get(`${API_URL}/friendships/solicitudes-pendientes/${userData}`);
-        console.log('Respuesta: ', response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Error al obtener las solicitudes de amistad: ', error);
@@ -57,7 +57,7 @@ export const getFriendRequests = async (userData) => {
 
 export const sendFriendRequest = async (userData) => {
     const response = await axios.post(`${API_URL}/friendships/solicitar`, userData);
-    console.log('Respuesta: ', response.data);
+    
     return response.data;
 };
 

@@ -22,13 +22,13 @@ app.use(express.json());
 
 //routes
 app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
+    
     next();
 });
 app.use('/auth', authRoutes);
 
 const PORT = process.env.AUTH_PORT || 3010 ;
-// console.log('Ruta actual:', __dirname);
-// console.log('JWT_SECRET:', process.env.JWT_SECRET);
+// 
+// 
 
-app.listen(PORT, () => console.log(`Service Auht running on port ${PORT}`));
+app.listen(PORT, () => );

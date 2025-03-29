@@ -18,4 +18,4 @@ app.use('/stories', storiesRoutes);
 
 const PORT = process.env.STORIES_PORT || 3003;
 
-app.listen(PORT, () => console.log(`Service Stories running on port ${PORT}`));
+app.listen(PORT, () => );

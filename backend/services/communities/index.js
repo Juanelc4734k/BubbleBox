@@ -16,4 +16,4 @@ app.use('/communities', communityRoutes);
 
 const PORT = process.env.COMMU_PORT || 3004;
 
-app.listen(PORT, () => console.log(`Service Communities running on port ${PORT}`));
+app.listen(PORT, () => );

@@ -6,8 +6,6 @@ import * as jwt_decode from "jwt-decode";
 import { AiOutlineUsergroupAdd } from "react-icons/ai";
 
 const CreateGroup = ({ isCreateGroupOpen, setIsCreateGroupOpen }) => {
-  console.log("isCreateGroupOpen:", isCreateGroupOpen);
-  console.log("setIsCreateGroupOpen:", setIsCreateGroupOpen);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [imagen, setImagen] = useState(null);
@@ -116,14 +114,16 @@ const CreateGroup = ({ isCreateGroupOpen, setIsCreateGroupOpen }) => {
   return (
     <div className={`create-group ${openGroup ? "active" : ""}`}>
       <div className="tooltipGroupContainer">
-          <button 
-            className="create-group-button" 
-            onClick={toggleGroup}
-            onMouseEnter={() => setIsTooltip("CrearGrupo")}
-            onMouseLeave={() => setIsTooltip("")}
-          >
+        <button
+          className="create-group-button"
+          onClick={toggleGroup}
+          onMouseEnter={() => setIsTooltip("CrearGrupo")}
+          onMouseLeave={() => setIsTooltip("")}
+        >
           <AiOutlineUsergroupAdd className="icono0" />
-          {isTooltip === "CrearGrupo" && <span className="tooltipGroup">Crear Grupo</span>}
+          {isTooltip === "CrearGrupo" && (
+            <span className="tooltipGroup">Crear Grupo</span>
+          )}
         </button>
       </div>
       {openGroup && (
@@ -138,7 +138,11 @@ const CreateGroup = ({ isCreateGroupOpen, setIsCreateGroupOpen }) => {
               </button>
             </div>
             {mensaje && (
-              <div className={`mensaje ${mensaje.includes("Error") ? "error" : "success"}`}>
+              <div
+                className={`mensaje ${
+                  mensaje.includes("Error") ? "error" : "success"
+                }`}
+              >
                 {mensaje}
               </div>
             )}
@@ -159,7 +163,11 @@ const CreateGroup = ({ isCreateGroupOpen, setIsCreateGroupOpen }) => {
                   rows={5}
                 />
               </div>
-              <button type="submit" className="submit-button" disabled={isSubmitting}>
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? "Creando..." : "Crear Grupo"}
               </button>
             </form>

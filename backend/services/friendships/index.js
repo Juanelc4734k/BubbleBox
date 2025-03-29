@@ -13,4 +13,4 @@ app.use('/friendships', friendRoutes);
 
 const PORT = process.env.FRIENDSHIPS_PORT || 3005;
 
-app.listen(PORT, () => console.log(`Service FriendShips running on port ${PORT}`));
+app.listen(PORT, () => );

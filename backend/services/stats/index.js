@@ -16,4 +16,4 @@ app.use('/stats/pdf', pdfRoutes);
 
 const PORT = process.env.STATS_PORT || 3013;
 
-app.listen(PORT, () => console.log(`Service Users running on port ${PORT}`));
+app.listen(PORT, () => );

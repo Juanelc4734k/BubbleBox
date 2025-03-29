@@ -20,4 +20,4 @@ app.use('/posts', postRoutes);
 
 const PORT = process.env.POSTS_PORT || 3008;
 
-app.listen(PORT, () => console.log(`Service Posts running on port ${PORT}`));
+app.listen(PORT, () => );

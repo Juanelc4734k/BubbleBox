@@ -528,7 +528,7 @@ include 'views/templates/sidebar.php';
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function showImageInModal(imageUrl) {
-            console.log('Direct function - Image URL:', imageUrl);
+            
             document.getElementById('expandedImage').src = imageUrl;
         }
 
@@ -556,7 +556,7 @@ include 'views/templates/sidebar.php';
                     contenido: formData.get('contenido')
                 };
 
-                console.log('Sending notification data:', notificationData);
+                
 
                 fetch('<?php echo NOTIFICATIONS_API; ?>/send', {
                     method: 'POST',
@@ -567,7 +567,7 @@ include 'views/templates/sidebar.php';
                     body: JSON.stringify(notificationData)
                 })
                 .then(response => {
-                    console.log('Response status:', response.status);
+                    
                     // Check if response is ok (status in the range 200-299)
                     if (!response.ok) {
                         throw new Error('Network response was not ok: ' + response.status);
@@ -582,7 +582,7 @@ include 'views/templates/sidebar.php';
                     });
                 })
                 .then(data => {
-                    console.log('Response data:', data);
+                    
                     if (data.mensaje && data.mensaje.includes('éxito')) {
                         alert('Notificación enviada correctamente');
                         const modal = bootstrap.Modal.getInstance(document.getElementById('sendMessageModal'));
@@ -614,7 +614,7 @@ include 'views/templates/sidebar.php';
             imageModal.addEventListener('show.bs.modal', function(event) {
                 const button = event.relatedTarget;
                 const imageUrl = button.getAttribute('data-image-url');
-                console.log('Image URL:', imageUrl); // Debug log
+                 // Debug log
                 
                 document.getElementById('expandedImage').src = imageUrl;
             });

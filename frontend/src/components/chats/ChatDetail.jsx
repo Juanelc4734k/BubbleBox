@@ -91,7 +91,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
           `http://localhost:3000/users/usuario/${chatId}`
         );
         const userData = await userResponse.json();
-        console.log(userData);
+
         setFriendUser(userData);
         setAvatarUrl(
           userData.avatar
@@ -208,8 +208,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     });
 
     socketRef.current.on("connect", () => {
-      console.log("Connected to chat server");
-
       // Join chat room and set online status
       socketRef.current.emit("join_chat", {
         senderId: parseInt(senderId),
@@ -235,21 +233,17 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     });
 
     socketRef.current.on("user_typing", (data) => {
-      console.log("Typing event received:", data);
       if (parseInt(data.userId) === parseInt(chatId)) {
-        console.log("User is typing");
         setIsTyping(true);
 
         clearTimeout(typingTimeoutRef.current);
         typingTimeoutRef.current = setTimeout(() => {
-          console.log("Typing timeout cleared");
           setIsTyping(false);
         }, 3000);
       }
     });
 
     socketRef.current.on("user_online_status", (data) => {
-      console.log("Online status received:", data);
       if (parseInt(data.userId) === parseInt(chatId)) {
         console.log(
           "Setting online status for user",
@@ -259,14 +253,12 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         );
         setIsOnline(Boolean(data.isOnline));
         if (!data.isOnline && data.lastSeen) {
-          console.log("Setting last seen:", data.lastSeen);
           setLastSeen(data.lastSeen);
         }
       }
     });
 
     socketRef.current.on("receive_private_message", (message) => {
-      console.log("Received message:", message);
       setMessages((prev) => {
         let messageAvatar;
         if (parseInt(message.senderId) === parseInt(senderId)) {
@@ -339,7 +331,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     // Handle component unmount - set user as offline
     return () => {
       if (socketRef.current?.connected) {
-        console.log("Component unmounting, setting user offline");
         socketRef.current.emit("user_offline", {
           userId: parseInt(senderId),
           lastSeen: new Date().toISOString(),
@@ -366,7 +357,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
       // If someone is requesting our status, respond directly
       if (parseInt(data.userId) === parseInt(senderId)) {
-        console.log("Responding to status request with online status");
         socketRef.current.emit("user_status_response", {
           responderId: parseInt(senderId),
           requesterId: parseInt(data.requesterId),
@@ -377,7 +367,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
     // Handle direct status responses
     socketRef.current.on("user_status_response", (data) => {
-      console.log("Received direct status response:", data);
       if (parseInt(data.responderId) === parseInt(chatId)) {
         console.log(
           "Setting online status from direct response for user",
@@ -398,7 +387,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     if (!socketRef.current) return;
 
     const handleOnlineStatusEvent = (data) => {
-      console.log("Online status received:", data);
       if (parseInt(data.userId) === parseInt(chatId)) {
         console.log(
           "Setting online status for user",
@@ -412,7 +400,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
         // Only update lastSeen if user is actually offline
         if (data.isOnline !== true && data.lastSeen) {
-          console.log("Setting last seen:", data.lastSeen);
           setLastSeen(data.lastSeen);
           forceUpdate(); // Force re-render
         }
@@ -423,7 +410,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     const handleLeaveChat = (data) => {
       if (parseInt(data.userId) === parseInt(chatId)) {
         // Don't set as offline, just note they left the chat
-        console.log("User left chat but still online");
       }
     };
 
@@ -441,7 +427,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     setNewMessage(e.target.value);
 
     if (socketRef.current?.connected && e.target.value.trim() !== "") {
-      console.log("Emitting typing event from", senderId, "to", chatId);
       socketRef.current.emit("user_typing", {
         senderId: parseInt(senderId),
         receiverId: parseInt(chatId),
@@ -547,8 +532,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         },
       ]);
 
-      console.log("Sending file message with temp_id:", tempId);
-
       // Send to server
       const response = await fetch("http://localhost:3001/chats/file-message", {
         method: "POST",
@@ -556,7 +539,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       });
 
       const responseData = await response.json();
-      console.log("File message upload response:", responseData);
 
       // Update the temporary message with the actual file data
       setMessages((prev) =>
@@ -590,8 +572,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       // Reset file upload state
       setFileToUpload(null);
       setFileUploadType(null);
-
-      console.log("File message sent successfully");
 
       // Manually update the message status if confirmation doesn't come quickly
       setTimeout(() => {
@@ -653,11 +633,9 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         // Fix: Handle duration calculation properly
         audioPlayerRef.current.addEventListener("loadedmetadata", () => {
           const duration = audioPlayerRef.current.duration;
-          console.log("Audio duration:", duration, "for audio ID:", audioId);
 
           if (!isNaN(duration) && isFinite(duration)) {
             const formattedDuration = formatTime(duration);
-            console.log("Formatted duration:", formattedDuration);
 
             if (audioId !== "preview") {
               setMessages((prev) =>
@@ -797,8 +775,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
         },
       ]);
 
-      console.log("Sending audio message with temp_id:", tempId);
-
       // Enviar al servidor
       const response = await fetch(
         "http://localhost:3001/chats/audio-message",
@@ -809,7 +785,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       );
 
       const responseData = await response.json();
-      console.log("Audio message upload response:", responseData);
 
       if (socketRef.current?.connected) {
         socketRef.current.emit("send_audio_message", {
@@ -826,8 +801,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
       // Resetear blob de audio
       setAudioBlob(null);
-
-      console.log("Audio message sent successfully");
 
       // Manually update the message status if confirmation doesn't come quickly
       setTimeout(() => {
@@ -890,7 +863,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Block user response:", data);
           // Check for mensaje property instead of success
           if (data.mensaje || data.id) {
             // Notify through socket
@@ -934,7 +906,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     });
 
     socketRef.current.on("message_edited", (updatedMessage) => {
-      console.log("Received edited message:", updatedMessage);
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === updatedMessage.id
@@ -950,14 +921,10 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     });
 
     socketRef.current.on("message_deleted", (deletedMessage) => {
-      console.log("Message deleted:", deletedMessage);
-
       setMessages((prev) => prev.filter((msg) => msg.id !== deletedMessage.id));
     });
 
     socketRef.current.on("all_messages_deleted", (data) => {
-      console.log("All messages deleted:", data);
-
       // Check if this event is for our chat
       if (
         (parseInt(data.userId1) === parseInt(senderId) &&
@@ -974,8 +941,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     });
 
     socketRef.current.on("user_blocked_notification", (data) => {
-      console.log("User blocked notification:", data);
-
       // If we were blocked, show a message and close the chat
       if (parseInt(data.blockedId) === parseInt(senderId)) {
         alert(`Has sido bloqueado por ${friendUser.nombre}`);
@@ -985,8 +950,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
 
     // Fix: Move these handlers outside of the message_sent_confirmation handler
     socketRef.current.on("receive_audio_message", (message) => {
-      console.log("Received audio message:", message);
-
       setMessages((prev) => {
         const audioUrl = message.audioPath
           ? `http://localhost:3001${message.audioPath}`
@@ -1088,7 +1051,6 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
     );
 
     socketRef.current.on("receive_file_message", (message) => {
-      console.log("Received file message:", message);
       setMessages((prev) => {
         let messageAvatar;
         if (parseInt(message.senderId) === parseInt(senderId)) {
@@ -1248,7 +1210,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             value={editMessageContent}
             onChange={(e) => setEditMessageContent(e.target.value)}
             className="edit-message-input"
-            spellCheck={false} 
+            spellCheck={false}
             autoFocus
             rows={Math.min(
               4,
@@ -1444,7 +1406,8 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
             {/* Add message actions for own messages */}
             {message.sender_id === parseInt(senderId) &&
               message.message !== "audio_message" &&
-              message.message !== "document_message" && message.message !== "image_message" &&
+              message.message !== "document_message" &&
+              message.message !== "image_message" &&
               editingMessageId !== message.id && (
                 <div className="message-actions">
                   <button
@@ -1520,12 +1483,12 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
               <input
                 type="text"
                 value={newMessage}
-                spellCheck={false} 
+                spellCheck={false}
                 onChange={handleTyping}
                 placeholder="Type a message..."
                 className="chat-input"
               />
-                            {/* Attachment menu */}
+              {/* Attachment menu */}
               {/* Add attachment button here */}
               <button
                 type="button"
@@ -1559,7 +1522,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
                 disabled={!newMessage.trim()}
                 className="send-button"
               >
-                <FaRegPaperPlane/>
+                <FaRegPaperPlane />
               </button>
             </>
           ) : (

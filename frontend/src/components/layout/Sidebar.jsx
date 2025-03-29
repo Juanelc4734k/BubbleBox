@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import { getUsers } from '../../services/users';
-import { getAllPosts } from '../../services/posts';
-import CerrarSesion from '../auth/CerrarSesion';
-import '../../assets/css/layout/sidebar.css';
-import { FaUsers, FaCog, FaChartBar, FaSignOutAlt } from 'react-icons/fa';
-import { MdDashboard, MdGroup } from 'react-icons/md';
-import { AiOutlineHome, AiOutlineTeam  } from "react-icons/ai";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { getUsers } from "../../services/users";
+import { getAllPosts } from "../../services/posts";
+import CerrarSesion from "../auth/CerrarSesion";
+import "../../assets/css/layout/sidebar.css";
+import { FaUsers, FaCog, FaChartBar, FaSignOutAlt } from "react-icons/fa";
+import { MdDashboard, MdGroup } from "react-icons/md";
+import { AiOutlineHome, AiOutlineTeam } from "react-icons/ai";
 import { CgSearch } from "react-icons/cg";
 import { PiVideo } from "react-icons/pi";
 import { HiOutlineUserGroup } from "react-icons/hi2";
@@ -14,24 +14,31 @@ import { IoChatbubblesOutline } from "react-icons/io5";
 import { FiFilter } from "react-icons/fi"; // Icono de filtro
 
 const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
-  const userRole = localStorage.getItem('userRole');
+  const userRole = localStorage.getItem("userRole");
   const [activeIcon, setActiveIcon] = useState(null);
   const [newPostsCount, setNewPostsCount] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
   const searchTimeout = useRef(null);
-  const [selectedFilter, setSelectedFilter] = useState('Todo');
-  const currentUserId = parseInt(localStorage.getItem('userId'));
-  const avatarDefault = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
+  const [selectedFilter, setSelectedFilter] = useState("Todo");
+  const currentUserId = parseInt(localStorage.getItem("userId"));
+  const avatarDefault =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
   const filterRef = useRef(null);
   const searchRef = useRef(null); // NUEVO: Referencia para el buscador y el filtro
 
-    // Opciones del filtro
-    const filterOptions = ["Todo", "Amigos", "Publicaciones", "Comunidades", "Reels"];
+  // Opciones del filtro
+  const filterOptions = [
+    "Todo",
+    "Amigos",
+    "Publicaciones",
+    "Comunidades",
+    "Reels",
+  ];
   useEffect(() => {
     if (!isExpanded) {
       setShowSearch(false);
@@ -47,10 +54,10 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
     };
 
     if (showFilter) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener("click", handleClickOutside);
     }
 
-    return () => document.removeEventListener('click', handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, [showFilter]);
 
   const handleFilterClick = () => {
@@ -65,12 +72,12 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
   const handleInputChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-  
+
     // Debounce the search
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
-  
+
     searchTimeout.current = setTimeout(() => {
       if (value.trim()) {
         handleSearch(value, selectedFilter);
@@ -89,66 +96,67 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
     return items.slice(startIndex, endIndex);
   };
 
-const handleSearch = async (term, filter) => {
-  try {
-    setCurrentPage(1);
-    let results = [];
-    const searchTerm = term.toLowerCase();
-    
-    switch (filter.toLowerCase()) {
-      case 'usuarios':
-      case 'amigos':
-        const userData = await getUsers();
-        results = userData.filter(user => {
-          const nombre = user.nombre?.toLowerCase() || '';
-          const username = user.username?.toLowerCase() || '';
-          return (user.id !== currentUserId) && // Exclude current user
-                 (nombre.includes(searchTerm) || username.includes(searchTerm));
-        });
-        break;
-        
-      case 'publicaciones':
-        const posts = await getAllPosts();
-        results = posts.filter(post => {
-          const contenido = post.contenido?.toLowerCase() || '';
-          return contenido.includes(searchTerm);
-        });
-        break;
-        
-      case 'todo':
-        const [users, allPosts] = await Promise.all([
-          getUsers(),
-          getAllPosts()
-        ]);
-        
-        const filteredUsers = users.filter(user => {
-          const nombre = user.nombre?.toLowerCase() || '';
-          const username = user.username?.toLowerCase() || '';
-          return nombre.includes(searchTerm) || username.includes(searchTerm);
-        });
-        
-        const filteredPosts = allPosts.filter(post => {
-          const contenido = post.contenido?.toLowerCase() || '';
-          return contenido.includes(searchTerm);
-        });
-        
-        results = { users: filteredUsers, posts: filteredPosts };
-        break;
+  const handleSearch = async (term, filter) => {
+    try {
+      setCurrentPage(1);
+      let results = [];
+      const searchTerm = term.toLowerCase();
 
-      default:
-        results = [];
+      switch (filter.toLowerCase()) {
+        case "usuarios":
+        case "amigos":
+          const userData = await getUsers();
+          results = userData.filter((user) => {
+            const nombre = user.nombre?.toLowerCase() || "";
+            const username = user.username?.toLowerCase() || "";
+            return (
+              user.id !== currentUserId && // Exclude current user
+              (nombre.includes(searchTerm) || username.includes(searchTerm))
+            );
+          });
+          break;
+
+        case "publicaciones":
+          const posts = await getAllPosts();
+          results = posts.filter((post) => {
+            const contenido = post.contenido?.toLowerCase() || "";
+            return contenido.includes(searchTerm);
+          });
+          break;
+
+        case "todo":
+          const [users, allPosts] = await Promise.all([
+            getUsers(),
+            getAllPosts(),
+          ]);
+
+          const filteredUsers = users.filter((user) => {
+            const nombre = user.nombre?.toLowerCase() || "";
+            const username = user.username?.toLowerCase() || "";
+            return nombre.includes(searchTerm) || username.includes(searchTerm);
+          });
+
+          const filteredPosts = allPosts.filter((post) => {
+            const contenido = post.contenido?.toLowerCase() || "";
+            return contenido.includes(searchTerm);
+          });
+
+          results = { users: filteredUsers, posts: filteredPosts };
+          break;
+
+        default:
+          results = [];
+      }
+
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Error searching:", error);
+      setSearchResults([]);
     }
-    
-    setSearchResults(results);
-    console.log('Search results:', results);
-  } catch (error) {
-    console.error('Error searching:', error);
-    setSearchResults([]);
-  }
-};
+  };
 
   const [lastChecked, setLastChecked] = useState(
-    localStorage.getItem('lastPostsCheck') || Date.now()
+    localStorage.getItem("lastPostsCheck") || Date.now()
   );
 
   useEffect(() => {
@@ -157,16 +165,16 @@ const handleSearch = async (term, filter) => {
         const response = await fetch(
           `http://localhost:3008/posts/new-count?lastChecked=${lastChecked}`
         );
-        
-        if (!response.ok) throw new Error('Error en la solicitud');
-        
+
+        if (!response.ok) throw new Error("Error en la solicitud");
+
         const data = await response.json();
         setNewPostsCount(data.count);
         // Actualizar el timestamp en cada chequeo exitoso
         //localStorage.setItem('lastPostsCheck', Date.now());
         //setLastChecked(Date.now());
       } catch (error) {
-        console.error('Error fetching new posts:', error);
+        console.error("Error fetching new posts:", error);
       }
     };
 
@@ -174,15 +182,13 @@ const handleSearch = async (term, filter) => {
     return () => clearInterval(interval);
   }, [lastChecked]);
 
-  
-
   // Modify renderMenuItem to include badge counter
   const renderMenuItem = (icon, path, tooltip, key, onClick, badge) => {
     const Icon = icon;
     const isActive = activeIcon === key;
     return (
       <li
-        className={`menu-item ${isActive ? 'active' : ''}`}
+        className={`menu-item ${isActive ? "active" : ""}`}
         {...(key === "search" && showSearch ? {} : { "data-tooltip": tooltip })}
         onClick={() => {
           setActiveIcon(key);
@@ -192,30 +198,33 @@ const handleSearch = async (term, filter) => {
           onClick?.();
         }}
       >
-        <Link className={`menu-link ${isActive ? 'active' : ''}`} to={path}>
+        <Link className={`menu-link ${isActive ? "active" : ""}`} to={path}>
           <Icon />
           {badge > 0 && (
-            <span className="badge" style={{
-              position: 'absolute',
-              top: '8px',
-              right: '8px',
-              background: '#ff4757',
-              color: 'white',
-              borderRadius: '50%',
-              width: '18px',
-              height: '18px',
-              fontSize: '0.75rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
+            <span
+              className="badge"
+              style={{
+                position: "absolute",
+                top: "8px",
+                right: "8px",
+                background: "#ff4757",
+                color: "white",
+                borderRadius: "50%",
+                width: "18px",
+                height: "18px",
+                fontSize: "0.75rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {badge}
             </span>
           )}
         </Link>
         {key === "search" && showSearch && (
-          <div 
-            className="search-containerSidebar" 
+          <div
+            className="search-containerSidebar"
             onClick={(e) => e.stopPropagation()}
           >
             <input
@@ -239,7 +248,10 @@ const handleSearch = async (term, filter) => {
               </ul>
             )}
             {/* Add search results here */}
-            {(Array.isArray(searchResults) ? searchResults.length > 0 : (searchResults.users?.length > 0 || searchResults.posts?.length > 0)) && (
+            {(Array.isArray(searchResults)
+              ? searchResults.length > 0
+              : searchResults.users?.length > 0 ||
+                searchResults.posts?.length > 0) && (
               <div className="search-results">
                 {Array.isArray(searchResults) ? (
                   <ul>
@@ -255,12 +267,19 @@ const handleSearch = async (term, filter) => {
                       <div>
                         <h4>Usuarios</h4>
                         <ul>
-                          {paginateResults(searchResults.users).map(user => (
+                          {paginateResults(searchResults.users).map((user) => (
                             <li key={user.id}>
-                              <Link to={`/perfil/${user.id}`} className="user-item">
-                                <img 
-                                  src={user.avatar ? `http://localhost:3009${user.avatar}` : avatarDefault}
-                                  alt={user.nombre} 
+                              <Link
+                                to={`/perfil/${user.id}`}
+                                className="user-item"
+                              >
+                                <img
+                                  src={
+                                    user.avatar
+                                      ? `http://localhost:3009${user.avatar}`
+                                      : avatarDefault
+                                  }
+                                  alt={user.nombre}
                                   className="user-avatar"
                                 />
                                 <span>{user.nombre}</span>
@@ -270,17 +289,38 @@ const handleSearch = async (term, filter) => {
                         </ul>
                         {searchResults.users.length > itemsPerPage && (
                           <div className="pagination">
-                            <button 
-                              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            <button
+                              onClick={() =>
+                                setCurrentPage((prev) => Math.max(prev - 1, 1))
+                              }
                               disabled={currentPage === 1}
                               className="pagination-button"
                             >
                               ←
                             </button>
-                            <span className="page-info">{currentPage} / {Math.ceil(searchResults.users.length / itemsPerPage)}</span>
-                            <button 
-                              onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(searchResults.users.length / itemsPerPage)))}
-                              disabled={currentPage >= Math.ceil(searchResults.users.length / itemsPerPage)}
+                            <span className="page-info">
+                              {currentPage} /{" "}
+                              {Math.ceil(
+                                searchResults.users.length / itemsPerPage
+                              )}
+                            </span>
+                            <button
+                              onClick={() =>
+                                setCurrentPage((prev) =>
+                                  Math.min(
+                                    prev + 1,
+                                    Math.ceil(
+                                      searchResults.users.length / itemsPerPage
+                                    )
+                                  )
+                                )
+                              }
+                              disabled={
+                                currentPage >=
+                                Math.ceil(
+                                  searchResults.users.length / itemsPerPage
+                                )
+                              }
                               className="pagination-button"
                             >
                               →
@@ -293,7 +333,7 @@ const handleSearch = async (term, filter) => {
                       <div>
                         <h4>Publicaciones</h4>
                         <ul>
-                          {searchResults.posts.map(post => (
+                          {searchResults.posts.map((post) => (
                             <li key={post.id}>
                               <div className="post-content">
                                 {post.contenido}
@@ -314,29 +354,60 @@ const handleSearch = async (term, filter) => {
   };
 
   const renderSidebarContent = () => (
-    <ul className={`menu ${userRole === 'administrador' ? 'adminSidebar' : 'userSidebar'}`}>
-      {userRole === 'administrador' ? (
+    <ul
+      className={`menu ${
+        userRole === "administrador" ? "adminSidebar" : "userSidebar"
+      }`}
+    >
+      {userRole === "administrador" ? (
         <>
-          {renderMenuItem(MdDashboard, '/admin', 'Panel de Control', 'dashboard')}
-          {renderMenuItem(FaUsers, '/admin/usuarios', 'Usuarios', 'users')}
-          {renderMenuItem(MdGroup, '/admin/contenido', 'Contenido', 'content')}
-          {renderMenuItem(FaChartBar, '/admin/estadisticas', 'Estadísticas', 'stats')}
-          {renderMenuItem(FaCog, '/admin/configuracion', 'Configuración', 'settings')}
+          {renderMenuItem(
+            MdDashboard,
+            "/admin",
+            "Panel de Control",
+            "dashboard"
+          )}
+          {renderMenuItem(FaUsers, "/admin/usuarios", "Usuarios", "users")}
+          {renderMenuItem(MdGroup, "/admin/contenido", "Contenido", "content")}
+          {renderMenuItem(
+            FaChartBar,
+            "/admin/estadisticas",
+            "Estadísticas",
+            "stats"
+          )}
+          {renderMenuItem(
+            FaCog,
+            "/admin/configuracion",
+            "Configuración",
+            "settings"
+          )}
         </>
       ) : (
         <>
-          {renderMenuItem(AiOutlineHome, '/home', 'Inicio', 'home', () => {
-            setNewPostsCount(0);
-            const newTimestamp = Date.now();
-            setLastChecked(newTimestamp);
-            localStorage.setItem('lastPostsCheck', newTimestamp);
-            window.location.reload();
-          }, newPostsCount)}
-          {renderMenuItem(CgSearch, '/home', 'Buscar', 'search')}
-          {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
-          {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
-          {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
-          {renderMenuItem(PiVideo, '/reels', 'Reels', 'reels')}
+          {renderMenuItem(
+            AiOutlineHome,
+            "/home",
+            "Inicio",
+            "home",
+            () => {
+              setNewPostsCount(0);
+              const newTimestamp = Date.now();
+              setLastChecked(newTimestamp);
+              localStorage.setItem("lastPostsCheck", newTimestamp);
+              window.location.reload();
+            },
+            newPostsCount
+          )}
+          {renderMenuItem(CgSearch, "/home", "Buscar", "search")}
+          {renderMenuItem(AiOutlineTeam, "/users", "Amigos", "users")}
+          {renderMenuItem(IoChatbubblesOutline, "/chats", "Chats", "chats")}
+          {renderMenuItem(
+            HiOutlineUserGroup,
+            "/comunidades",
+            "Comunidades",
+            "communities"
+          )}
+          {renderMenuItem(PiVideo, "/reels", "Reels", "reels")}
         </>
       )}
       <li className="menu-item" data-tooltip="Cerrar Sesión">
@@ -349,7 +420,7 @@ const handleSearch = async (term, filter) => {
 
   return (
     <div className="sidebar-container">
-      <nav className={`sidebar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+      <nav className={`sidebar ${isExpanded ? "expanded" : "collapsed"}`}>
         {renderSidebarContent()}
       </nav>
     </div>
