@@ -5,11 +5,7 @@ const rateLimiter = require('../middleware/rateLimiter');
 const router = express.Router();
 
 router.post('/register', authController.registerUser);
-router.post('/login', (req, res, next) => {
-    console.log('Recibida solicitud de login');
-    console.log('Body:', req.body);
-    next();
-}, authController.loginUser);
+router.post('/login', rateLimiter ,authController.loginUser);
 router.put('/logout', authMiddleware, authController.logoutUser);
 router.post('/recover-password', authController.recoverPassword);
 router.post('/restablecer-contrasena/:token', authController.restablecerContrasena);
