@@ -17,6 +17,7 @@ const CreateStories = () => {
   const scrollableRef = useRef(null)
   const [textModal, setTextModal] = useState(false)
   const [isStoriesSub, setIsStoriesSub] = useState(false);
+  const [showBubbles, setShowBubbles] = useState(false)
   
   const modalRef = useRef(null);
 
@@ -107,7 +108,7 @@ const CreateStories = () => {
         }
         setTimeout(() => {
           setMessage("");
-        }, 3000);
+        }, 2000);
         setIsStoriesSub(false);
         return
       }
@@ -116,9 +117,10 @@ const CreateStories = () => {
       if (scrollableRef.current) {
         scrollableRef.current.scrollTop = 0
       }
+      setShowBubbles(true)
       setTimeout(() => {
         toggleStories()
-      }, 2000)
+      }, 800)
     } catch (error) {
       setMessage("Error al crear la historia")
       if (scrollableRef.current) {
@@ -126,7 +128,7 @@ const CreateStories = () => {
       }
       setTimeout(() => {
         toggleStories()
-      }, 2000)
+      }, 1000)
       console.error("Error: ", error)
     } finally {
       setIsStoriesSub(false);
@@ -152,6 +154,17 @@ const CreateStories = () => {
       fileInput.value = ""
     }
   }
+  const createBubbles = () => {
+    return Array.from({ length: 10 }).map((_, index) => {
+      const style = {
+        left: `${Math.random() * 90 + 5}%`, // Evita valores extremos en los bordes
+      "--tx": `${(Math.random() - 0.5) * 40}px`, // Movimiento horizontal más suave
+      "--ty": `${-100 - Math.random() * 100}px`, // Asegura que suban más uniformemente
+      animationDelay: `${Math.random() * 1}s`, // Aumenta la variación del delay
+      }
+      return <div key={index} className="bubble" style={style}></div>
+    })
+  }
 
   return (
     <div className={`createStories ${openStories ? "active" : ""}`}>
@@ -171,7 +184,10 @@ const CreateStories = () => {
               </button>
             </div>
             {message && (
-              <div className={`mensajeStories ${message.includes("Error") ? "error" : "success"}`}>{message}</div>
+              <div className={`mensajeStories ${message.includes("Error") ? "error" : "success"}`}>
+                {message}
+                {showBubbles && createBubbles()}
+              </div>
             )}
             <form onSubmit={handleSubmitStories} encType="multipart/form-data">
               <div className="modeToggle">

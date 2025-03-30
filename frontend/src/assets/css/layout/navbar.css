@@ -149,7 +149,7 @@
   }
   .navbar-expanded-content {
     max-height: 0;
-    opacity: 0;
+    display: none;
     transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out, padding 0.4s ease-in-out;
     padding: 0 1rem; /* Padding lateral fijo */
     background: linear-gradient(135deg, #E0BBE4, #C5E1FA);
@@ -161,7 +161,7 @@
 /* Cuando se expande */
 .navbar.expanded .navbar-expanded-content {
     max-height: 500px; /* Ajusta según el contenido */
-    opacity: 1;
+    display: block;
     padding: 0.5rem 1rem; /* Vuelve a mostrar el padding vertical */
 }
 
@@ -322,14 +322,15 @@
   }
   
   .navbar-expanded-content {
-  margin-left: 28rem;
-  margin-top: -1.5rem;
+  margin-left: 24rem;
+  margin-top: -1rem;
   padding: 0;
+  gap: 0.5rem;
   }
   
   .navbar-description-p > p {
-  font-size: 1.1rem;
-  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  padding: 0.8rem 4rem;
   }
   
   .acciones {
