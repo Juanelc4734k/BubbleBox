@@ -223,7 +223,7 @@ const createUser = (userData) => {
 
   const updateUser = (id, userData) => {
     return new Promise((resolve, reject) => {
-      console.log('Actualizando usuario:', id, 'con datos:', userData);
+      
       
       const query = `
         UPDATE usuarios 
@@ -244,7 +244,7 @@ const createUser = (userData) => {
         id
       ];
       
-      console.log('Query values:', values);
+      
       
       db.query(query, values, (error, result) => {
         if (error) {
@@ -253,7 +253,7 @@ const createUser = (userData) => {
           return;
         }
         
-        console.log('Resultado de la actualización:', result);
+        
         resolve(result.affectedRows > 0);
       });
     });

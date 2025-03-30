@@ -67,12 +67,12 @@ const createFileMessage = async (req, res) => {
             filePath = `/uploads/documents/pdf/${req.file.filename}`;
         }
         
-        console.log('File saved at:', filePath);
+        
 
         const existingMessage = await chatModel.getFileMessageByPath(filePath);
 
         if(existingMessage) {
-            console.log('File message already exists, returning existing record');
+            
             return res.status(200).json({
                 messageId: existingMessage.id,
                 filePath: existingMessage.file_path,
@@ -104,7 +104,7 @@ const createFileMessage = async (req, res) => {
                 temp_id,
                 id: savedMessage.id
             });
-            console.log('Socket event emitted for file message');
+            
         } else {
             console.warn('Socket.io instance not available');
         }
@@ -134,12 +134,12 @@ const createAudioMessage = async (req, res) => {
         
         // Get the file path
         const audioPath = `/uploads/audios/${req.file.filename}`;
-        console.log('Audio file saved at:', audioPath);
+        
 
         const existingMessage = await chatModel.getAudioMessageByPath(audioPath);
 
         if(existingMessage) {
-            console.log('Audio message already exists, returning existing record');
+            
             return res.status(200).json({
                 messageId: existingMessage.id,
                 filePath: existingMessage.audio_path,
@@ -167,7 +167,7 @@ const createAudioMessage = async (req, res) => {
                 temp_id,
                 id: savedMessage.id
             });
-            console.log('Socket event emitted for audio message');
+            
         } else {
             console.warn('Socket.io instance not available');
         }

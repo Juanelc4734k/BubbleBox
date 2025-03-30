@@ -51,18 +51,18 @@ const iniciarServicio = (servicio) => {
     });
 
     proceso.on('close', (code) => {
-        console.log(`${colores.amarillo}${servicio.nombre} finalizado con código ${code} (${Date.now() - tiempoInicioServicio}ms)`);
+         - tiempoInicioServicio}ms)`);
     });
 
-    console.log(`${colores.verde}El servicio ${servicio.nombre} está corriendo en el puerto ${servicio.puerto} (${Date.now() - tiempoInicioServicio}ms)`);
+     - tiempoInicioServicio}ms)`);
 };
 
-console.log(`${colores.amarillo}iniciando gateway...`);
+
 iniciarServicio(gateway);
 
 setTimeout(() => {
-    console.log(`${colores.amarillo}iniciando servicios...`);
+    
     servicios.forEach(iniciarServicio);
-    console.log(`${colores.verde}Todos los microservicios han sido iniciados. Tiempo total: ${Date.now() - tiempoInicio}ms`);
+     - tiempoInicio}ms`);
 }, 5000);
 
