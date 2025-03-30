@@ -1095,6 +1095,10 @@
     width: 5rem;
     height: 3.8rem;
   }
+  .emoji-picker-container{
+    height: 24.5rem;
+  }
+
 }
 /* Desktop styles (1024px y superiores) */
 @media (min-width: 1024px) {
@@ -1135,6 +1139,9 @@
     right: 22rem;
     bottom: 8rem;
   }
+  .emoji-picker-container{
+    height: 21rem;
+  }
 }
 /* Large Desktop styles (1440px y superiores) */
 @media (min-width: 1440px) {
@@ -1144,6 +1151,9 @@
   }
   .attach-menu{
     right: 28rem;
+  }
+  .emoji-picker-container{
+    height: 25rem;
   }
 }
 /* Ajuste general cuando el sidebar está cerrado */

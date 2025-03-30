@@ -110,7 +110,7 @@ const CreateComunity = () => {
             }
             setTimeout(() => {
                 setMensaje("");
-            }, 3000);
+            }, 1000);
             setIsCommunitySub(false);
             return
         }
@@ -144,7 +144,7 @@ const CreateComunity = () => {
             setTimeout(() => {
                 setShowBubbles(false);
                 toggleComunity();
-            }, 3000);
+            }, 800);
         }catch(error){
             setMensaje("Error al crear la comunidad");
             if (scrollableRef.current) {
@@ -152,7 +152,7 @@ const CreateComunity = () => {
             }
             setTimeout(() => {
                 toggleComunity();
-            }, 2000);
+            }, 1000);
             console.error("Error:", error);
         } finally {
             setIsCommunitySub(false);

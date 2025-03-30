@@ -1,201 +1,192 @@
-.contenprofile{
-    padding-bottom: 2rem;
-}
-.profile{
-    width: calc(100% - 2rem);
-    height: 100%;
-}
-.contenedorPro{
-    display: flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    
-}
-.profileContent {
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #b377ee #f3e8ff;
-  }
-  
-  .profileContent::-webkit-scrollbar {
-    width: 8px; 
+/* Para navegadores basados en WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px; /* Ancho del scrollbar */
     border-radius: 10px;
-    
-  }
-  
-  .profileContent::-webkit-scrollbar-thumb {
-    background-color: #b377ee;
+}
+  /* Fondo del scrollbar */
+::-webkit-scrollbar-track {
+    background: #d6b4f0; /* Color del fondo */
     border-radius: 10px;
-    border: 2px solid #f3e8ff;
-  }
-  
-  .profileContent::-webkit-scrollbar-track {
-    background: #f3e8ff; 
+}
+  /* Barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+    background: #a47cc3; /* Color de la barra */
     border-radius: 10px;
-  }
-  .profileContent::-webkit-scrollbar-button:single-button{
+    border: 2px solid #ffffff; /* Borde alrededor */
+}
+  /* Para quitar las flechas del scrollbar en WebKit */
+::-webkit-scrollbar-button {
     display: none;
-    width: 0;
-    height: 0;
-  }
+}
+  /* Para Firefox */
+* {
+    scrollbar-width: thin; /* Hace que el scrollbar sea delgado */
+    scrollbar-color: #a47cc3 #d6b4f0; /* Color del thumb y el fondo */
+}
 
-.profileContent{
-    max-height: 100%;
-}
-.imgProfile{
-    width: 6.5rem;
-    height: 6.5rem;
-}
-.rightprofile{
-    padding: 0.5rem 1rem;
+.containerProfile{
     display: flex;
     flex-direction: column;
+    gap: 2rem;
+}    
+.subContainerProfile{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+.containerProfileLeft{
+    display: flex;
+    flex-direction: column;
+    background: rgb(189 167 241);
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    padding: 1rem;
     justify-content: center;
-    gap: 0;
+    align-items: center;
+    gap: 1rem;
+}
+.containerImgProfile{
+    width: 100%;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.containerImgProfile .imgProfile{
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 255, 255);
+    transition: transform 0.3s ease;
+}
+.containerImgProfile .imgProfile:hover{
+    transform: scale(1.1);
+}
+.usernameProfile{
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.containerProfileRight{
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 0.5rem 1rem;
 }
 .textRight{
-    border-bottom: 1px solid rgb(234, 225, 247);
-    padding-bottom: 1.3vh;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
 }
-.textNameP{
-    font-size: 1.3rem;
+.textRight .textNameP{
+    font-size: 1.1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: rgb(56, 55, 55);
 }
-.sobreMi{
+.containerInformation{
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: rgb(234, 224, 255);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 0.8rem;
+    border-left: 4px solid rgb(189 167 241);
 }
 .tittle-bio{
-    border-bottom: 1px solid rgb(234, 225, 247);
-    margin-bottom: 2vh;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-}
-.tittle-bio .icon-user-profile{
-    padding: 0.4vh;
-    border-radius: 0.8vh;
-    background-color: #e9e1f5d6;
-}
-.sobreMi h3{
-    color: #7d45fd;
-    text-shadow: 0px 0.9px 2px gray;
     font-size: 1rem;
-}
-.sobreMi .biografia-text{
-    font-size: 0.9rem;
-    border-left: 3px solid rgb(206, 176, 246);
-    padding-left: 2vh;
-    background-color: #f4eaff;
-    border-radius: 0.8vh;
-    padding: 2vh;
-    box-shadow: 0px 3px 4px -2px gray;
-    margin-bottom: 4vh;
-}
-.informacion-profile{
-    border-bottom: 1px solid rgb(234, 225, 247);
-    margin-bottom: 2vh;
     display: flex;
     flex-direction: row;
-    gap: 5px;
-}
-.informacion-profile .icon-email-profile{
-    padding: 0.4vh;
-    border-radius: 0.8vh;
-    background-color: #e9e1f5;
-}
-.contenido-informacionGeneral{
-    border-left: 3px solid rgb(206, 176, 246);
-    padding-left: 2vh;
-    background-color: #f4eaff;
-    border-radius: 0.8vh;
-    padding: 2vh;
-    box-shadow: 0px 3px 4px -2px gray;
-    margin-bottom: 4vh;
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-}
-.informacionGeneral h4{
-    color: #7d45fd;
-    text-shadow: 0px 0.9px 2px gray;
-    font-size: 1rem;
-}
-
-
-.intereses-tittle{
-    border-bottom: 1px solid rgb(234, 225, 247);
-    margin-bottom: 2vh;
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-}
-.icon-intereses-heart{
-    padding: 0.4vh;
-    border-radius: 0.8vh;
-    background-color: #e9e1f5;
-    font-size: 19px;
-    display: flex;
+    gap: 0.5rem;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 1vh;
-}
-.intereses-profile{
-    margin-top: -1vh;
-
-}
-.intereses-conteen{
-    padding-left: 2vh;
-    background-color: #f4eaff;
-    border-radius: 0.8vh;
-    padding: 2vh;
-    box-shadow: 0px 3px 4px -2px gray;
-    
-}
-.intereses-tittle h4{
-    color: #7d45fd;
-    text-shadow: 0px 0.9px 2px gray;
-    font-size: 1rem;
+    color: rgb(163, 126, 250);
 }
 .textSobe{
-    font-size: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 .textDescription{
-    flex: 1;
-    word-break: break-word; 
-    overflow-wrap: break-word;
-    max-width: 100%;
-    font-size: 0.88rem;
-    
+    color: rgb(95, 94, 94);
+    font-size: 0.8rem;
+}
+.containerInformacionGeneral{
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.5rem 1rem;
+    background-color: rgb(234, 224, 255);
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 0.8rem;
+    border-left: 4px solid rgb(189 167 241);
+}
+.informacion-profile{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    color: rgb(163, 126, 250);
 }
 .textInfo{
     font-size: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.contenido{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.8rem;
+}
+.contenidoEmail, .contenidoEstado{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    color: rgb(115, 115, 116);
+}
+.intereses-profile{
+    display: flex;
+    flex-direction: column;
+}
+.intereses{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.intereses-tittle{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    color: rgb(163, 126, 250);
+    align-items: center;
 }
 .textInteres{
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.intereses-conteen{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.itemsIntereses{
     font-size: 1rem;
-    margin-bottom: 0.2rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: rgb(255, 255, 255);
+    background: rgb(171, 137, 250);
+    padding: 0.3rem 1rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
-.intereses-profilee{
-  color: rgb(255, 255, 255);
-  padding: 8px 12px;
-  border-radius: 5vh;
-  font-size: 11px;
-  box-shadow: 0px 4px 3px -2px gray;
-  background-color: #4b5563;
-}
-.butonprofil{
-    padding-top: 1rem;
-}
-.ineterses{
-    margin-top: 0.5rem;
-    margin-bottom: 0.8rem;
-}
+
 /* Posts section styling - separated from profile */
 .posts-container {
-    width: calc(100% - 2rem);
-    margin-top: 2rem;
+    width: 100%;
     background-color: white;
     border-radius: 1rem;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -293,134 +284,58 @@
     padding: 1rem;
     background-color: rgba(139, 92, 246, 0.1);
 }
-@media (min-width: 768px){
-    .profile{
-        height: calc(100vh - 12.5rem);
-    }
-    .profileContent{
-        height: 100%;
-        max-height: 100%;
-    }
-    /* .contenedordelprofile{
-        height: 100%;
-        max-height: 100%;
 
 
-    } */
-    .dentroProfileConent{
-        height: 100%;
+@media(min-width: 1024px){
+    .containerProfile{
+        width: calc(100% - 18rem);
     }
-    .rightprofile{
-        height: 100%;
-        gap: 1rem;
-    }
-    .textDescription{
-        font-size: 1rem;
-    }
-    /* Posts responsive styling */
-    .posts-container {
-        margin-top: 2rem;
-    }
-    .posts-container {
-        margin-top: 2rem;
-    }
-    
-    .publiAmigo {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .publiAmigoDivi h4 {
-        font-size: 1.2rem;
-    }
-}
-
-/* Rest of the media queries remain the same but with height: auto */
-@media (min-width: 1024px){
-    .contenprofile{
-        padding-bottom: 1rem;
-    }
-   .profile{
-        width: calc(100% - 285px);
+    .subContainerProfile{
+        flex-direction: row;
+        width: 100%;
         height: calc(100vh - 14rem);
     }
-   .profileContent{
-        height: 100%;
+    .containerProfileLeft{
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 1rem;
+        width: 40%;
     }
-    .imgProfile{
-        width: 8rem;
-        height: 8rem;
+    .containerImgProfile .imgProfile{
+        width: 9rem;
+        height: 9rem;
     }
-   .dentroProfileConent{
-        height: 100%;
-    }
-   .rightprofile{
-        overflow-y: auto;
-        height: 100%;
-    }
-    .sobreMi .biografia-text,
-    .contenido-informacionGeneral{
-        margin-bottom: 2vh;
-        gap: 1vh;
-        
-    }
-    .sobreMi .biografia-text p,
-    .contenido-informacionGeneral span{
-        font-size: 13px;
-
-    }
-    /* .textRight{
-        margin-top: 17vh;
-    } */
-    .textDescription{
-        font-size: 1rem;
+    .containerProfileRight{
+        width: 60%;
+        max-height: calc(100vh - 14rem);
+        overflow: auto;
+        flex-grow: 1;
     }
     .posts-container {
-        width: calc(100% - 285px);
+        width: 100%;
     }
     .publiAmigo {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-
-@media (min-width: 1440px) {
-    .profile {
-        width: calc(100% - 350px);
+@media(min-width: 1440px){
+    .containerProfile{
+        width: calc(100% - 21rem);
+    }
+    .subContainerProfile{
+        width: 100%;
         height: calc(100vh - 18rem);
     }
-    .imgProfile{
-        width: 10rem;
-        height: 10rem;
+    .containerImgProfile .imgProfile{
+        width: 9rem;
+        height: 9rem;
     }
-    .rightprofile{
+    .containerProfileRight{
+        max-height: calc(100vh - 18rem);
         gap: 2rem;
-    }
-    .profileContent {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-    .dentroProfileConent {
-        display: flex;
-        flex-grow: 1;
-        height: auto;
-    }
-    .ineterses{
-        margin-top: 2rem;
+        padding-top: 2rem;
     }
     .posts-container {
-        width:  calc(100% - 350px);
+        width: 100%;
     }
-    .textDescription{
-        font-size: 1rem;
-    }
-    .posts-container {
-        width: calc(100% - 350px);
-    }
-    .publiAmigo {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    .posts-section {
-        padding: 2rem;
-    }
+
 }

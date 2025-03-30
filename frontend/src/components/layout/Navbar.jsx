@@ -132,8 +132,14 @@ const Navbar = ({
             )}
           </div>
           <div className="navbar-description">
-            <h3>{userProfile ? userProfile.username : "Cargando..."}</h3>
-            <Notifications />
+            <h3>
+                          {userProfile 
+                            ? userProfile.username.length > 9 
+                              ? `${userProfile.username.substring(0, 9)}...` 
+                              : userProfile.username 
+                            : "Cargando..."}
+                        </h3>
+            <Notifications/>
           </div>
         </div>
         <div className="navbar-right">
