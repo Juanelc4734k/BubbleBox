@@ -24,7 +24,7 @@ export default function RegisterForm({ setMessage }) {
   const checkEmailExists = async (email) => {
     try {
       const response = await checkEmail(email);
-      console.log(response);
+
       // Validar estructura de respuesta
       if (!response || typeof response.existe !== "boolean") {
         console.error("Respuesta inválida del servidor:", response);
@@ -193,7 +193,7 @@ export default function RegisterForm({ setMessage }) {
               value={formData.username}
               onChange={handleChange}
               placeholder="User name"
-              maxLength={9}
+              maxLength={30}
             />
             <div className="linea"></div>
           </div>

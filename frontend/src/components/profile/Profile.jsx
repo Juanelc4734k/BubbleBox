@@ -7,11 +7,11 @@ import ModalReport from "../reports/modalReport";
 import UpdateProfile from "./UpdateProfile";
 import { getPostByUserId } from "../../services/posts";
 import { checkFriendship } from "../../services/friends";
-import '../../assets/css/profile/profile.css';
+import "../../assets/css/profile/profile.css";
 import { CiGrid41 } from "react-icons/ci";
 import { updateProfile } from "../../services/users";
 
-function Profile({ profile: initialProfile, isOwnProfile, }) {
+function Profile({ profile: initialProfile, isOwnProfile }) {
   const [profile, setProfile] = useState(initialProfile);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,22 +19,22 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
   const [canViewProfile, setCanViewProfile] = useState(true);
   const [isFriend, setIsFriend] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  
+
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
-  const defaultDescription = "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
+  const defaultDescription =
+    "¡Hola! Soy nuevo en BubbleBox y estoy emocionado por conectar con nuevos amigos.";
 
   useEffect(() => {
     setProfile(initialProfile);
   }, [initialProfile]);
 
   const handleProfileUpdate = (updatedProfile) => {
-    setProfile(prevProfile => ({
+    setProfile((prevProfile) => ({
       ...prevProfile,
-      ...updatedProfile
-    }))
-  }
-
+      ...updatedProfile,
+    }));
+  };
 
   // Check if the current user can view this profile
   useEffect(() => {
@@ -47,23 +47,23 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
       }
 
       // If profile doesn't have privacy settings or is public, anyone can view
-      if (!profile.privacidad || profile.privacidad === 'publico') {
+      if (!profile.privacidad || profile.privacidad === "publico") {
         setCanViewProfile(true);
         setCheckingAccess(false);
         return;
       }
 
       // For private profiles, only the owner can view
-      if (profile.privacidad === 'privado') {
+      if (profile.privacidad === "privado") {
         setCanViewProfile(false);
         setCheckingAccess(false);
         return;
       }
 
       // For friends-only profiles, check friendship status
-      if (profile.privacidad === 'amigos') {
+      if (profile.privacidad === "amigos") {
         try {
-          const loggedUserId = localStorage.getItem('userId');
+          const loggedUserId = localStorage.getItem("userId");
           if (!loggedUserId) {
             setCanViewProfile(false);
             setCheckingAccess(false);
@@ -78,7 +78,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
           setCanViewProfile(false);
         }
       }
-      
+
       setCheckingAccess(false);
     };
 
@@ -96,26 +96,26 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
 
   // Add this function to render privacy indicator
   const renderPrivacyIndicator = () => {
-    console.log('Privacy value:', profile); // Add this line to debug
-    
+    // Add this line to debug
+
     if (!profile.privacidad) return null;
-    
-    switch(profile.privacidad) {
-      case 'publico':
+
+    switch (profile.privacidad) {
+      case "publico":
         return (
           <div className="flex items-center text-green-600 text-sm mt-2">
             <FiGlobe className="mr-1" />
             <span>Perfil público</span>
           </div>
         );
-      case 'amigos':
+      case "amigos":
         return (
           <div className="flex items-center text-blue-600 text-sm mt-2">
             <FiUsers className="mr-1" />
             <span>Visible para amigos</span>
           </div>
         );
-      case 'privado':
+      case "privado":
         return (
           <div className="flex items-center text-red-600 text-sm mt-2">
             <FiLock className="mr-1" />
@@ -131,16 +131,16 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
     try {
       setLoading(true);
       const data = await getPostByUserId(profile.id);
-      
+
       // Assuming getPostByUserId returns the data directly
       // If it's an array, use it directly
       if (Array.isArray(data)) {
         setUserPosts(data);
-      } 
+      }
       // If it's an object with a data property
-      else if (data && typeof data === 'object') {
+      else if (data && typeof data === "object") {
         setUserPosts(Array.isArray(data.data) ? data.data : []);
-      } 
+      }
       // Otherwise set empty array
       else {
         setUserPosts([]);
@@ -169,7 +169,7 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
             <FiLock className="mx-auto text-red-500" size={48} />
             <h2 className="text-2xl font-semibold mt-4 mb-2">Perfil Privado</h2>
             <p className="text-gray-600">
-              {profile.privacidad === 'amigos' 
+              {profile.privacidad === "amigos"
                 ? "Este perfil solo es visible para amigos. Envía una solicitud de amistad para ver el contenido."
                 : "Este perfil es privado y no está disponible para visualización."}
             </p>
@@ -283,7 +283,6 @@ function Profile({ profile: initialProfile, isOwnProfile, }) {
             </div>
         </div>
       </div>
-
       {!isOwnProfile && (
       <div className="posts-container">
         <div className="posts-section">

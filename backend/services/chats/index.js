@@ -36,12 +36,10 @@ app.use(express.json());
 app.use('/chats', chatRoutes);
 
 io.on('connection', (socket) => {
-    console.log('Nuevo cliente conectado');
 
     socket.on('join_chat', ({ senderId, receiverId }) => {
         const roomId = [senderId, receiverId].sort().join('-');
         socket.join(roomId);
-        console.log(`User ${senderId} joined room ${roomId}`);
     });
 
     socket.on('send_private_message', async ({ senderId, receiverId, message, temp_id, senderAvatar }) => {
@@ -107,10 +105,7 @@ io.on('connection', (socket) => {
                 savedFile = await chatModel.saveFileMessage(messageData);
                 console.log('File message saved to database:', savedFile);
             }
-    
-            // Log the data received for debugging
-            console.log('File message data received:', data);
-    
+        
             // Broadcast to all clients in the room, including sender
             io.in(roomId).emit('receive_file_message', {
                 id: savedFile.id,
@@ -197,8 +192,6 @@ io.on('connection', (socket) => {
                 updated_at: updatedMessage.updated_at
             });
 
-            console.log(`Message ${messageId} edited by ${senderId}`);
-
         } catch (error) {
             console.error('Error al editar el mensaje:', error);
             socket.emit('error', 'Error al editar el mensaje');
@@ -236,7 +229,6 @@ io.on('connection', (socket) => {
                 receiverId: message.receiver_id
             });
 
-            console.log(`Message ${messageId} deleted by ${senderId}`);
         } catch (error) {
             console.error('Error al eliminar el mensaje:', error);
             socket.emit('error', 'Error al eliminar el mensaje');
@@ -265,8 +257,6 @@ io.on('connection', (socket) => {
                 userId2: parseInt(userId2),
                 deletedCount
             });
-
-            console.log(`All messages between ${userId1} and ${userId2} deleted`);
         } catch (error) {
             console.error('Error al eliminar los mensajes:', error);
             socket.emit('error', 'Error al eliminar los mensajes');
@@ -343,9 +333,6 @@ io.on('connection', (socket) => {
                 console.log('Audio message saved to database:', savedAudio);
             }
 
-            // Log the data received for debugging
-            console.log('Audio message data received:', data);
-
             // Broadcast to all clients in the room, including sender
             io.in(roomId).emit('receive_audio_message', {
                 id: savedAudio.id,
@@ -415,7 +402,6 @@ io.on('connection', (socket) => {
 
     socket.on('broadcast_status', async ({ userId, isOnline }) => {
         try {
-            console.log(`Broadcasting status for user ${userId}: ${isOnline ? 'online' : 'offline'}`);
             
             const response = await axios.get(`http://localhost:3000/users/configuraciones/${userId}`);
             const userSettings = response.data;
@@ -446,7 +432,6 @@ io.on('connection', (socket) => {
 
     socket.on('visibility_change', async ({ userId, isVisible }) => {
         try {
-            console.log(`User ${userId} changed visibility to ${isVisible ? 'visible' : 'invisible'}`);
             
             // Update user data in memory
             const userData = onlineUsers.get(parseInt(userId));
@@ -478,7 +463,6 @@ io.on('connection', (socket) => {
     });
     
     socket.on('request_user_status', ({ requesterId, userId }) => {
-        console.log(`User ${requesterId} requested status for user ${userId}`);
         
         // Forward the request to all clients
         // The client with matching userId will respond
@@ -489,7 +473,6 @@ io.on('connection', (socket) => {
     });
     
     socket.on('user_status_response', ({ responderId, requesterId, isOnline }) => {
-        console.log(`User ${responderId} responding to ${requesterId} with status: ${isOnline}`);
         
         // Forward the response directly to the requester
         const requesterSocket = Array.from(io.sockets.sockets.values())
@@ -525,7 +508,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('user_typing', ({ senderId, receiverId, userId }) => {
-        console.log(`User ${senderId} is typing to ${receiverId}`);
         const roomId = [senderId, receiverId].sort().join('-');
         
         // Broadcast to the room that this user is typing
@@ -627,8 +609,6 @@ io.on('connection', (socket) => {
                 console.error('Error updating offline status:', error);
             }
         }
-
-        console.log('Cliente desconectado');
     });
 });
 

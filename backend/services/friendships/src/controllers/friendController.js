@@ -35,7 +35,7 @@ const crearSolicitudAmistad = async (req, res) => {
                         contenido: `${nombreSolicitante} te ha enviado una solicitud de amistad`,
                         referencia_id: resultado.id
                     });
-                    console.log('Notificación enviada con referencia_id:', resultado.id);
+                    
                 } catch (error) {
                     console.error('Error al enviar la notificación:', error.message);
                 }
