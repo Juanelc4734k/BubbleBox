@@ -384,30 +384,18 @@ const Sidebar = ({ setIsAuthenticated, isExpanded }) => {
         </>
       ) : (
         <>
-          {renderMenuItem(
-            AiOutlineHome,
-            "/home",
-            "Inicio",
-            "home",
-            () => {
-              setNewPostsCount(0);
-              const newTimestamp = Date.now();
-              setLastChecked(newTimestamp);
-              localStorage.setItem("lastPostsCheck", newTimestamp);
-              window.location.reload();
-            },
-            newPostsCount
-          )}
-          {renderMenuItem(CgSearch, "/home", "Buscar", "search")}
-          {renderMenuItem(AiOutlineTeam, "/users", "Amigos", "users")}
-          {renderMenuItem(IoChatbubblesOutline, "/chats", "Chats", "chats")}
-          {renderMenuItem(
-            HiOutlineUserGroup,
-            "/comunidades",
-            "Comunidades",
-            "communities"
-          )}
-          {renderMenuItem(PiVideo, "/reels", "Reels", "reels")}
+          {renderMenuItem(AiOutlineHome, '/home', 'Inicio', 'home', () => {
+            setNewPostsCount(0);
+            const newTimestamp = Date.now();
+            setLastChecked(newTimestamp);
+            localStorage.setItem('lastPostsCheck', newTimestamp);
+            window.location.reload();
+          }, newPostsCount)}
+          {renderMenuItem(CgSearch, '#', 'Buscar', 'search')}
+          {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
+          {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
+          {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
+          {renderMenuItem(PiVideo, '/reels', 'Reels', 'reels')}
         </>
       )}
       <li className="menu-item" data-tooltip="Cerrar Sesión">
