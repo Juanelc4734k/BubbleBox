@@ -147,7 +147,7 @@ const CreatePost = () => {
       setTimeout(() => {
         setShowBubbles(false);
         togglePost();
-      }, 3000);
+      }, 800);
     } catch (error) {
       setMensaje("Error al crear la publicación");
       if (scrollableRef.current) {
@@ -155,7 +155,7 @@ const CreatePost = () => {
       }
       setTimeout(() => {
         togglePost();
-      }, 2000);
+      }, 1000);
       console.error("Error: ", error);
     }finally {
       setIsSubmitting(false); // Reactiva el botón después de la petición

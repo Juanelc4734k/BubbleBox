@@ -332,7 +332,7 @@ const handleSearch = async (term, filter) => {
             localStorage.setItem('lastPostsCheck', newTimestamp);
             window.location.reload();
           }, newPostsCount)}
-          {renderMenuItem(CgSearch, '/home', 'Buscar', 'search')}
+          {renderMenuItem(CgSearch, '#', 'Buscar', 'search')}
           {renderMenuItem(AiOutlineTeam, '/users', 'Amigos', 'users')}
           {renderMenuItem(IoChatbubblesOutline, '/chats', 'Chats', 'chats')}
           {renderMenuItem(HiOutlineUserGroup, '/comunidades', 'Comunidades', 'communities')}
