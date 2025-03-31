@@ -20,11 +20,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-//routes
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.path}`);
-    next();
-});
 app.use('/auth', authRoutes);
 
 const PORT = process.env.AUTH_PORT || 3010 ;

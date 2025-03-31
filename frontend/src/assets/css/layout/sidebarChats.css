@@ -144,11 +144,11 @@ html, body {
 /* Tablet styles */
 @media (min-width: 768px) {
   .conSide{
-    height: calc(100vh - 13rem);
+    height: calc(100vh - 12rem);
   }
   .dideChat {
     width: 100%;
-    height: calc(100vh - 13rem);
+    height: calc(100vh - 12rem);
   }
   .sidebar-wrapper {
     top: 9.8rem;
@@ -171,15 +171,15 @@ html, body {
   .conSide{
     align-items: normal;
     width: calc(100% - 17.5rem);
-    height: calc(100vh - 15rem);
+    height: calc(100vh - 14rem);
   }
   .dideChat {
     width: 100%;
-    height: calc(100vh - 15rem);
+    height: calc(100vh - 14rem);
   }
   .selectChat {
     width: 100%;
-    height: calc(100vh - 15rem);
+    height: calc(100vh - 14rem);
   }
   .sidebar-wrapper {
     top: 12rem;

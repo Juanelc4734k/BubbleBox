@@ -383,6 +383,9 @@ padding: 2vh;
   .request-button {
     width: 80%;
   }
+  .status-indicator{
+    margin-left: -2rem;
+  }
 }
 
 

@@ -238,7 +238,7 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Search response:', data); // Debug log
+                 // Debug log
                 if (data && Array.isArray(data)) {
                     displayPostResults(data);
                 } else {

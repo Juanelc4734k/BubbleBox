@@ -16,7 +16,13 @@ import { FiFlag, FiMoreVertical } from "react-icons/fi";
 import "../../assets/css/comments/SideComments.css";
 import ModalReport from "../reports/modalReport";
 
-const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setIsModalReport }) => {
+const SidebarComments = ({
+  contentId,
+  contentType,
+  onClose,
+  isModalReport,
+  setIsModalReport,
+}) => {
   const [comments, setComments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,7 +36,7 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
   const [showReportModal, setShowReportModal] = useState(false);
   const [selectedComment, setSelectedComment] = useState(null);
   const [openDropdownId, setOpenDropdownId] = useState(null);
-  
+
   useEffect(() => {
     const fetchComments = async () => {
       if (!contentId) return;
@@ -81,17 +87,12 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
 
     const fetchUserById = async (userId) => {
       try {
-        console.log("Fetching user profile for ID:", userId);
         const response = await getUserProfile(userId);
-        console.log("Raw response:", response);
 
         if (response) {
-          console.log("User profile data:", response);
           setComments((prevComments) => {
-            console.log("Previous comments:", prevComments);
             return prevComments.map((comment) => {
               if (comment.id_usuario === userId) {
-                console.log("Updating comment for user:", userId);
                 return {
                   ...comment,
                   nombre_usuario: response.nombre || response.username,
@@ -102,11 +103,9 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
             });
           });
         } else {
-          console.log("No user data found in response");
         }
       } catch (error) {
         console.error(`Error fetching user profile for ID ${userId}:`, error);
-        console.log("Error details:", error.response || error.message);
       }
     };
 
@@ -212,7 +211,6 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
       if (createdComment) {
         try {
           const userProfile = await getUserProfile(userId);
-          console.log("Current user profile:", userProfile);
 
           const formattedComment = {
             ...createdComment,
@@ -228,7 +226,7 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
 
           setComments((prevComments) => {
             const updatedComments = [formattedComment, ...prevComments];
-            console.log("Updated comments list:", updatedComments);
+
             return updatedComments;
           });
           setNewComment("");
@@ -504,12 +502,16 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
-                                  setOpenDropdownId(openDropdownId === comment.id ? null : comment.id);
+                                  setOpenDropdownId(
+                                    openDropdownId === comment.id
+                                      ? null
+                                      : comment.id
+                                  );
                                 }}
                               >
                                 <FiMoreVertical />
                               </button>
-                              
+
                               {openDropdownId === comment.id && (
                                 <div className="dropdown-menu">
                                   <button
@@ -529,10 +531,14 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
                               )}
                             </div>
                           </div>
-                          <div className="comment-text">{comment.contenido}</div>
+                          <div className="comment-text">
+                            {comment.contenido}
+                          </div>
                           <div className="comment-date">
                             {comment.fecha_creacion
-                              ? new Date(comment.fecha_creacion).toLocaleString("es-ES")
+                              ? new Date(comment.fecha_creacion).toLocaleString(
+                                  "es-ES"
+                                )
                               : ""}
                           </div>
                           <div className="comment-actions">
@@ -542,12 +548,12 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
                             >
                               <FaReply /> Responder
                             </button>
-                            
+
                             {showReportModal && selectedComment && (
                               <ModalReport
                                 isOpen={() => {
-                                  showReportModal
-                                  setIsModalReport
+                                  showReportModal;
+                                  setIsModalReport;
                                 }}
                                 onClose={() => {
                                   setShowReportModal(false);
@@ -638,7 +644,7 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
                                         />
                                       </div>
                                       <div className="reply-content">
-                                      <div className="reply-header">
+                                        <div className="reply-header">
                                           <div className="reply-author">
                                             {reply.nombre_usuario || "Usuario"}
                                           </div>
@@ -648,13 +654,19 @@ const SidebarComments = ({ contentId, contentType, onClose,  isModalReport, setI
                                               onClick={(e) => {
                                                 e.preventDefault();
                                                 e.stopPropagation();
-                                                setOpenDropdownId(openDropdownId === `reply-${reply.id}` ? null : `reply-${reply.id}`);
+                                                setOpenDropdownId(
+                                                  openDropdownId ===
+                                                    `reply-${reply.id}`
+                                                    ? null
+                                                    : `reply-${reply.id}`
+                                                );
                                               }}
                                             >
                                               <FiMoreVertical />
                                             </button>
-                                            
-                                            {openDropdownId === `reply-${reply.id}` && (
+
+                                            {openDropdownId ===
+                                              `reply-${reply.id}` && (
                                               <div className="dropdown-menu">
                                                 <button
                                                   className="dropdown-item-2 report-button"
