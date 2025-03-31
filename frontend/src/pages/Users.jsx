@@ -59,7 +59,66 @@ function Users() {
         console.error("Error al obtener datos:", error);
       }
     };
+    const displayUsers = getDisplayUsers();
 
+    return (
+        <div className='conten-users'>
+            {/* Tab Navigation similar to Home.jsx */}
+
+            <div className="tabs-container-2">
+                <div className="tabs">
+                    <button 
+                        className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('all')}
+                    >
+                        Usuarios
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('friends')}
+                    >
+                        Mis Amigos
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'blocked' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('blocked')}
+                    >
+                        Bloqueados
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'requests' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('requests')}
+                    >
+                        Solicitudes
+                    </button>
+                </div>
+                <div className="tabs-contenDos">
+                    <button 
+                        className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('all')}
+                    >
+                    <i className="fa-solid fa-user"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('friends')}
+                    >
+                        <i className="fa-solid fa-user-group"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'blocked' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('blocked')}
+                    >
+                        <i className="fa-solid fa-user-minus"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'requests' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('requests')}
+                    >
+                    <i className="fa-solid fa-user-plus"></i>
+                    </button>
+                </div>
+            </div>
     fetchData();
   }, [activeTab, loggedInUserId]);
 

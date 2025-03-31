@@ -215,10 +215,15 @@ const Home = ({ openCommentsSidebar }) => {
                   />
                 ))
               ) : (
-                <div className="no-posts">
-                  {activeTab === 'my' 
-                    ? 'No has creado ninguna publicación todavía.' 
-                    : 'No hay publicaciones disponibles.'}
+
+                <div className="empty-state-container">
+                  <div className="empty-state-icon">
+                    {activeTab === 'my' ? '🚫' : '🔍'}
+                  </div>
+                  <p className="mpty-state-message">
+                  {activeTab === 'my' ? 'No has creado ninguna publicación todavía.' : 
+                  'No hay publicaciones disponibles.'}
+                  </p>
                 </div>
               )}
             </div>

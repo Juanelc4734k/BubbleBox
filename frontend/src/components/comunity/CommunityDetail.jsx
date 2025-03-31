@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "../../assets/css/comunity/communityDetail.css";
 import { FiImage } from "react-icons/fi";
@@ -8,8 +8,7 @@ import { MdPostAdd } from "react-icons/md";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { FiFlag } from "react-icons/fi";
 import { FaRegClipboard } from "react-icons/fa6";
-
-import ModalReport from "../reports/modalReport";
+import ModalReport from '../reports/modalReport';
 
 import {
   getCommunityById,
@@ -31,7 +30,9 @@ const CommunityDetail = () => {
   const [posts, setPosts] = useState([]);
   const [members, setMembers] = useState([]);
   const [isMemberStatus, setIsMemberStatus] = useState(false);
-  const [postContent, setPostContent] = useState("");
+  const [postContent, setPostContent] = useState('');
+  const textareaRef = useRef(null);
+
   // Add these states at the top of your component
 
   const [showModal, setShowModal] = useState(false);
@@ -60,6 +61,14 @@ const CommunityDetail = () => {
         console.error("Error al obtener la comunidad", error);
       }
     };
+    const handleTextareaChange = (e) => {
+      setPostContent(e.target.value);
+  
+      // Ajustar la altura automáticamente
+      textareaRef.current.style.height = "auto"; // Restablecer la altura
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px"; // Ajustarla al contenido
+    };
+  
 
     const fetchCommunityPosts = async () => {
       try {
@@ -80,6 +89,7 @@ const CommunityDetail = () => {
         console.error("Error al obtener publicaciones de la comunidad", error);
       }
     };
+    
     const fetchCommunityMembers = async () => {
       try {
         const data = await getCommunityMembers(id);
@@ -284,6 +294,31 @@ const CommunityDetail = () => {
         });
       });
 
+    setPosts(updatedPosts);
+
+    // Limpiar el textarea
+    setPostContent("");
+
+    Swal.fire({
+      icon: "success",
+      title: "Publicación creada",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "No se pudo crear la publicación",
+    });
+  }
+};
+document.querySelectorAll('.community-post.no-image p').forEach(p => {
+  if (p.scrollHeight > p.clientHeight) {
+    p.style.display = 'block';
+  }
+});
       // Limpiar el textarea
       setPostContent("");
 
@@ -375,10 +410,10 @@ const CommunityDetail = () => {
                 </div>
               ))}
             </div>
-            <div className="DescripcionButton">
-              <div className="complement-button">
-                <div className="infoCo">
-                  <div className="ico-community-tittle">
+                <div className="DescripcionButton">
+                  <div className="complement-button" onClick={() => setIsClickDescri(!isClickDescri)}>
+                    <div className="infoCo">
+                      <div className="ico-community-tittle">
                     <FaRegClipboard />
                   </div>
                   <p>Descripción</p>
@@ -401,13 +436,13 @@ const CommunityDetail = () => {
                 </div>
               </div>
             </div>
+                <div className="reglas-communidad" onClick={() => setIsClickReglas(!isClickReglas)}>
+                  <div className="complement-button">
+                  <div className="infoRegla">
+                    <div className="ico-community-tittle">
+                  <IoShieldCheckmarkOutline  />
 
-            <div className="reglas-communidad">
-              <div className="complement-button">
-                <div className="infoRegla">
-                  <div className="ico-community-tittle">
-                    <IoShieldCheckmarkOutline />
-                  </div>
+                    </div>
                   <p>Reglas de la comunidad</p>
                 </div>
 
@@ -417,8 +452,20 @@ const CommunityDetail = () => {
                     className="toggle-button"
                   >
                     {isClickReglas ? <FaChevronDown /> : <FaChevronUp />}
-                  </button>
-                </div>
+                   </button>
+                  </div>
+
+                  </div>
+
+            <div className={`info-block ${!isClickReglas ? "expanded" : ""}`}>
+              <div className={`reglas ${!isClickReglas ? "expanded" : ""}`}>
+                {community.reglas && JSON.parse(community.reglas).map((rule, index) => (
+                  <div key={index} className="rule-item">
+                    <span className="rule-number">{index + 1}.</span>
+                    <p>{rule}</p>
+                  </div>
+                ))}
+
               </div>
 
               <div className={`info-block ${!isClickReglas ? "expanded" : ""}`}>
@@ -539,7 +586,12 @@ const CommunityDetail = () => {
                 <textarea
                   placeholder="¿Qué quieres compartir con la comunidad?"
                   value={postContent}
-                  onChange={(e) => setPostContent(e.target.value)}
+                  ref={textareaRef}
+                  
+                  onChange={(e) => {
+                    setPostContent(e.target.value);
+                    handleTextareaChange(e);
+                  }}
                   rows="3"
                 />
                 <input
@@ -592,23 +644,33 @@ const CommunityDetail = () => {
           <div className="posts-section">
             <h2>Publicaciones</h2>
             <div className="conten-Post-1">
-              {posts.map((post) => (
-                <div
-                  key={post.id}
-                  className={`community-post ${
-                    post.imagen ? "with-image" : "no-image"
-                  }`}
-                >
-                  <div className="post-header">
-                    <div className="post-header-left">
-                      <img
-                        src={
-                          post.avatar_usuario
-                            ? `http://localhost:3009${post.avatar_usuario}`
-                            : avatarPorDefecto
-                        }
-                        alt={post.nombre_usuario}
-                        className="user-avatar"
+            {posts.map(post => (
+              <div 
+              key={post.id} 
+              className={`community-post overflow-hidden rounded-md ${post.imagen ? 'with-image' : 'no-image'} `} 
+              >
+                <div className="post-header">
+                  <div className="post-header-left">
+                    <img 
+                      src={post.avatar_usuario ? `http://localhost:3009${post.avatar_usuario}` : avatarPorDefecto}
+                      alt={post.nombre_usuario}
+                      className="user-avatar"
+                    />
+                    <div className="post-info">
+                      <span className="post-date">{new Date(post.fecha_creacion).toLocaleString()}</span>
+                      <h3>{post.nombre_usuario}</h3>
+                    </div>
+                  </div>
+                </div>
+                <div className={`post-content ${post.imagen ? 'with-image' : ''}`}>
+                  
+                  <p className="post-text">{post.contenido}</p>
+                  {post.imagen && (
+                    <div className="post-image-container">
+                      <img 
+                        src={`http://localhost:3008/uploads/${post.imagen}`}
+                        alt="Post content"
+                        className="post-image"
                       />
                       <div className="post-info">
                         <span className="post-date">

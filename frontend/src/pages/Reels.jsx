@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { getAllReels, createReel } from "../services/reels";
 import Reel from "../components/reels/Reel";
@@ -16,6 +16,8 @@ const Reels = ({ openCommentsSidebar }) => {
   const [videoFile, setVideoFile] = useState(null);
   const [descripcion, setDescripcion] = useState("");
 
+
+
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
 
@@ -27,6 +29,8 @@ const Reels = ({ openCommentsSidebar }) => {
     }
     return avatarPorDefecto;
   };
+
+  
   useEffect(() => {
     document.body.classList.add("reels-page");
 
@@ -34,6 +38,10 @@ const Reels = ({ openCommentsSidebar }) => {
       document.body.classList.remove("reels-page");
     }
   },[]);
+  
+  const handleDeleteVideo = () => {
+    setVideoFile(null); // 📌 Quitar el video
+  };
 
   useEffect(() => {
     const fetchReels = async () => {
@@ -110,9 +118,14 @@ const Reels = ({ openCommentsSidebar }) => {
                 ))
               ) : (
                 <div className="no-reels">
-                  {activeTab === "my"
-                    ? "No has creado ningún reel todavía."
-                    : "No hay reels disponibles."}
+
+                  <div className="emojis-reels">
+                    {activeTab === "my" ? '❌🎥' : '🎥'}
+                    </div>
+                  <p>
+                  {activeTab === 'my' ?  'No has creado ningún reel todavía.':
+                     'No hay reels disponibles.'}
+                  </p>
                 </div>
               )}
             </div>
@@ -128,37 +141,64 @@ const Reels = ({ openCommentsSidebar }) => {
         >
           <div className="header-modal-reels">
             <h2>Sube un nuevo video</h2>
-            <h4>X</h4>
-            {/* iconSalir */}
+            <div className="onclose-modal-reels">
+            <i className="fa-solid fa-xmark" onClick={() => setModalOpen(false)} ></i>
+            </div>
+
           </div>
           <textarea
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             placeholder="Descripción del video..."
           ></textarea>
-          <div className="conten-video cursor-pointer">
-            <IoVideocamOutline />
-            <input
-              type="file"
-              id="video-upload"
-              accept="video/*"
-              style={{ display: "none" }}
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  setVideoFile(e.target.files[0]);
-                } else {
-                  setVideoFile(null);
-                }
-              }}
-            />
-            <label
-              htmlFor="video-upload"
-              className="flex items-center gap-2 px-2 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap text-xl"
-            >
-              <FaUpload className="text-lg" />
-              {videoFile ? videoFile.name : "Subir Video"}
-            </label>
+<div className="conten-video cursor-pointer">
+  {!videoFile && (
+    <>
+      <IoVideocamOutline />
+      <input
+        type="file"
+        id="video-upload"
+        accept="video/*"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          if (e.target.files && e.target.files[0]) {
+            setVideoFile(e.target.files[0]);
+          } else {
+            setVideoFile(null);
+          }
+        }}
+      />
+      <label
+        htmlFor="video-upload"
+        className="flex items-center gap-2 px-3 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-all duration-300 cursor-pointer whitespace-nowrap text-sm hover:translate-y-[-3px]"
+        >
+        <FaUpload className="text-lg" />
+        Subir Video
+      </label>
+    </>
+  )}
+
+  {/* Si hay un video, se muestra en pantalla ocupando el 100% del contenedor */}
+  {videoFile && (
+        <div className="preview-video w-full h-full flex flex-col justify-center items-center"
+        >
+          <video
+            className="reel-video max-w-full max-h-full object-contain transition-transform duration-300"
+            src={URL.createObjectURL(videoFile)}
+            controls
+         />
+          <div className="OptionReels-modal">
+      <i
+        className="fa-solid fa-xmark DeleteVideo"
+        onClick={handleDeleteVideo}
+      ></i>
           </div>
+
+        </div>
+      )}
+</div>
+
+          
           <button
             className="publicar-reels"
             onClick={async () => {

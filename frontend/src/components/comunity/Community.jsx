@@ -347,7 +347,7 @@ const Community = () => {
                         key={community.id}
                         className='communitys-Info'
                         onClick={(e) => handleCommunityClick(e, community)}
-                        style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.banner})` }}>
+                        style={{ backgroundImage: `url(http://localhost:3004/uploads/${community.banner}) ` }}>
 
                             <div className="datosOne">
                                 <div className="datostwo">
@@ -415,17 +415,30 @@ const Community = () => {
                             </div>
 
                             <div className="infoCommunity">
-                                <p>{community.descripcion}</p>
+                                <p>
+                                {community.descripcion.length > 90 
+                                ? community.descripcion.substring(0, 90) + "..." 
+                                 : community.descripcion}
+                                    </p>
                             </div>
                         </Link>
                     );
                 })}
                 
                 {filteredCommunities.length === 0 && (
-                    <div className="no-communities">
-                        {activeTab === 'my' 
-                            ? 'No te has unido a ninguna comunidad todavía.' 
-                            : 'No hay comunidades disponibles.'}
+
+
+
+                    <div className="empty-state-container">
+                        <div className="empty-state-icon">
+                          {activeTab === 'my' ? '👥🚫' :
+                          activeTab === 'joined' ? '👤🚫' : '🔍'}
+                         </div>
+                        <p className="mpty-state-message">
+                         {activeTab === 'my' ? 'No has creado ninguna comunidad.' : 
+                         activeTab === 'joined' ? 'No te has unido a ninguna comunidad todavía. ' : 
+                         'No hay comunidades disponibles.'}
+                         </p>
                     </div>
                 )}
             </div>
