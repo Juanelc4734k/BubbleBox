@@ -4,7 +4,11 @@
 .buttin{
   padding: 0.2rem 1.5rem;
 }
+.modalInteresess{
 
+  border-radius: 1.5rem;
+  width: 50vh;
+}
 .interests-modal {
   position: fixed;
   top: 0;
@@ -12,39 +16,38 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 1.5rem;
+  z-index: 10001;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
-
 .progress-container {
   width: 100%;
   height: 8px;
-  background-color: #ddd; /* Color de fondo */
+  background-color: #ddd;
   border-radius: 5px;
   overflow: hidden;
-  margin: 5px 0;
+  margin: 3px 0;
 }
 
 
-.interests-modal-content {
+.interests-modal-content { 
   background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  max-width: 600px;
-  width: 90%;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
   max-height: 85vh;
   overflow-y: auto;
+  margin: 1.4vh;
   scrollbar-width: none;
+  width: 70vh;
 
 }
 &::-webkit-scrollbar {
 display: none;
 }
 .contador-profile{
-  font-size: 13px;
+  font-size: 11px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -62,9 +65,7 @@ display: none;
   gap: 5px;
   justify-content: space-between;
   align-items: center;
-  padding: 6px;
-  margin-top: 2vh;
-  
+  margin-top: 2vh;  
 }
 
 .search-container-profiles{
@@ -105,23 +106,23 @@ display: none;
   border-radius: 1vh;
   background-color: white;
   padding: 10px;
+
 }
 .conten-tabs-profile {
   background-color: #ffffff;
   opacity: 0;
-  opacity: 0;
-  position: absolute; 
-  width: 50%; 
+  border: 1px solid rgb(172, 115, 237);
   max-height: 300px; 
   overflow-y: auto; 
   z-index: 9999;
+  position:fixed;
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s linear 0.3s;
   display: flex;
   flex-direction: column;
-  margin-left: -28vh;
   border-radius: 1vh;
   overflow-x: hidden;
   scrollbar-width: none;
+  box-shadow: 0px 3px 6px -2px rgb(41, 41, 41);
 
 }
 &::-webkit-scrollbar {
@@ -129,11 +130,23 @@ display: none;
 }
 .category-tab{
   text-align: left;
-  padding: 10px 4px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #a874f1;
+  font-size: 14px;
+  transition: background-color 0.5s ease;
+}
+.category-tab:hover{
+  background-color: #dfcfff;
 }
 .conten-tabs-profile.active {
   opacity: 1;
   transition: opacity 0.3s ease, transform 0.3s ease;
+  margin-top: 2vh;
+  right: 3vh;
   }
 
   .interests-Profil{
@@ -182,7 +195,7 @@ display: none;
 }
 .interests-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas por fila */
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   margin: 1rem 0;
   padding: 2vh;
@@ -213,7 +226,7 @@ display: none;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 2px 4px -2px gray;
-  font-size: 13px;
+  font-size: 12px;
 
 }
 .interest-tag .icon-circle-profile,
@@ -282,8 +295,8 @@ display: none;
 .fromUpdate {
   position: fixed;
   top: 50%;
-  left: 47%;
-  width: 28rem !important;
+  left: 45.4%;
+  right: 10%;
   transform: translate(-50%, -50%) scale(0.8);
   background: #ffffff;
   padding: 2rem;
@@ -293,6 +306,7 @@ display: none;
   visibility: hidden;
   transition: all 0.3s ease;
   z-index: 9999;
+  margin: 2vh;
 }
 
 .containerUpdateProfile.active .fromUpdate {
@@ -478,6 +492,13 @@ display: none;
   .change-avatar {
     width: 35px;
     height: 35px;
+  }
+}
+@media (max-width: 768px){
+  .fromUpdate{
+    width: 50%;
+    left: 48.8%;
+
   }
 }
 

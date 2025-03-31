@@ -50,9 +50,9 @@ const RecoverPass = () => {
     };
 
     return (
-        <div className='bg-zinc-200 p-6 rounded-xl shadow'>
+        <div className='bg-zinc-200 p-2 rounded-xl shadow'>
             <form onSubmit={handleSubmit}>
-                <div className='Recover overflow-hidden'>
+                <div className='Recover'>
                     <div className="iconEma bg-purple-500">
                         <MdOutlineMarkEmailUnread />
                     </div>

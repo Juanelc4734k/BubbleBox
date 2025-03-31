@@ -46,15 +46,22 @@ const ResetPassComponent = ({ token }) => {
             <div className="form">
                 <div className="text">
                     <h1>Restablecer Contraseña</h1>
-                    <img src={logo} alt="icono" />
+
+                     <div className="conten-img-bubbless">
+                        <img src={logo} alt="icono"/>
+                          <div className="conten bubbles-imgg">
+                                        
+                            <div className="bubbles4"></div>
+                            <div className="bubbles5"></div>
+                            <div className="bubbles7"></div>
+                    </div>
+                    
+                    </div>
                     <div className="conten-bubbles-login">
                 <div className="bubbles1"></div>
                 <div className="bubbles2"></div>
                 <div className="bubbles3"></div>
-                <div className="bubbles4"></div>
-                <div className="bubbles5"></div>
                 <div className="bubbles6"></div>
-                <div className="bubbles7"></div>
                 <div className="bubbles8"></div>
 
                 </div>

@@ -41,13 +41,12 @@ body{
 }
 .form .text h1{
     text-align: center;
-    width: 50%;
+    width: 38vh;
     border-radius: 3vh;
-    font-size: 5.5vh;
+    font-size: 4.5vh;
     color: #ffffff;
     position: relative;
     z-index: 2;
-    font-size: 5.5vh;
     margin-top: -16vh;
 }
 
@@ -59,8 +58,21 @@ body{
     background-color: white;
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
-
-.conten-bubbles-login {
+.conten-img-bubbless{
+    z-index: 2;
+    position: relative;
+    width:34vh;
+    display: flex;
+    justify-content: center;
+}
+.conten-bubbles-imgg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.conten-bubbles-login{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -68,88 +80,64 @@ body{
     top: 0;
     left: 0;
 }
-.conten-bubbles-login .bubbles1{
+.bubbles1, .bubbles2, .bubbles3, .bubbles4, .bubbles5, .bubbles6, .bubbles7, .bubbles8{
     position: absolute;
-    width: 350px;
-    height: 350px;
     background-color: #ffffff4d;
     backdrop-filter: blur(80px);
+}
+.bubbles3, .bubbles4, .bubbles5, .bubbles6, .bubbles7, .bubbles8{
     border-radius: 50%;
-    left: -18vw;
-    top: -22vw;
+}
+.conten-bubbles-login .bubbles1{
+    width: 27vh;
+    height: 27vh;
+    border-bottom-right-radius: 100vh;
+    top: 0;
+    left: 0;
 }
 .conten-bubbles-login .bubbles2{
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 55vw;
-    top: 40vw;
+    width: 24vh;
+    height: 26vh;
+    border-top-left-radius: 100vh;
+    right: 0;
+    bottom: 0;
 }
 .conten-bubbles-login .bubbles3{
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 76vw;
-    top: 15.1vw;
+    width: 7vh;
+    height: 7vh;
+    right: 6vw;
+    top: 13%;
 }
-.conten-bubbles-login .bubbles4{
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 59vw;
-    top: 35vw;
+.bubbles4{
+    width: 5vh;
+    height: 5vh;
+    right:1.8vh;
+    top: 2vh;
 }
-.conten-bubbles-login .bubbles5{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 62vw;
-    top: 42vw;
+.bubbles5{
+    width: 3.5vh;
+    height: 3.5vh;
+    right: 1vh;
+    top: 7.5vh;
 }
-.conten-bubbles-login .bubbles6{
-    position: absolute;
+.bubbles6{
+    width: 5vh;
+    height: 5vh;
+    left: 15vh;
+    top: 33%;
+}
+.bubbles7{
     width: 25px;
     height: 25px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 25vw;
-    top: 33vw;
-}
-
-.conten-bubbles-login .bubbles7{
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 31vw;
-    top: 50vw;
+    left: 2.4vh;
+    bottom: 1vh;
 }
 .conten-bubbles-login .bubbles8{
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 3vw;
-    top: 50vw;
+    width: 50px;
+    height: 50px;
+    left: 1.5vh;
+    bottom: 8vh;
 }
-
 
 /* Codigo de estilos del formulario de inicio de sesion*/
 
@@ -332,43 +320,28 @@ input:focus ~ .line{
 
 }
 
-
 @media (min-width: 768px) {
+    .form .text h1{
+        font-size: 35px;
+    }
 
     .conten-bubbles-login .bubbles1{
-        left: -14vw;
-        top: -13vw;
+        width: 45vh;
+        height: 38vh;
     }
     .conten-bubbles-login .bubbles2{
-        left: 55vw;
-        top: 35vw;
+        width: 40vh;
+        height: 36vh;
     }
-    .conten-bubbles-login .bubbles3{
-        left: 74vw;
-        top: 15.1vw;
-    }
-    .conten-bubbles-login .bubbles4{
-        left: 57vw;
-        top: 28vw;
-    }
-    .conten-bubbles-login .bubbles5{
-        left: 59vw;
-        top: 33vw;
-    }
+
     .conten-bubbles-login .bubbles6{
-        width: 30px;
-        height: 30px;
-        left: 24vw;
-        top: 27vw;
+        left: 30vh;
+        top: 46%;
     }
-    
-    .conten-bubbles-login .bubbles7{  
-        left: 35vw;
-        top: 38vw;
-    }
+
     .conten-bubbles-login .bubbles8{
-        left: 5vw;
-        top: 38vw;
+        bottom: 10vh;
+        left: 3vh;
     }
 
 }
@@ -395,41 +368,29 @@ input:focus ~ .line{
         width: 25vh;
         height: 25vh;
     }
-    
     .conten-bubbles-login .bubbles1{
-        left: -10vw;
-        top: -13vw;
+        width: 30vh;
+        height: 32vh;
     }
     .conten-bubbles-login .bubbles2{
-        left: 12vw;
-        top: 25vw;
+        width: 30vh;
     }
     .conten-bubbles-login .bubbles3{
-        left: 23vw;
-        top: 7vw;
-    }
-    .conten-bubbles-login .bubbles4{
-        left: 21vw;
-        top: 14vw;
-    }
-    .conten-bubbles-login .bubbles5{
-        left: 22.5vw;
-        top: 17vw;
+        right: 3vw;
+        top: 13%;
     }
     .conten-bubbles-login .bubbles6{
-        left: 7vw;
-        top: 13.5vw;
+        left: 12vh;
+        top: 37%;
     }
-    
-    .conten-bubbles-login .bubbles7{
-        left: 6.4vw;
-        top: 23vw;
+    .bubbles4{
+        right:0;
+        top: 2vh;
     }
-    .conten-bubbles-login .bubbles8{
-        left: 1vw;
-        top: 28vw;
+    .bubbles5{
+        right: -1.4vh;
+        top: 7.5vh;
     }
-
 
     .form .formulario{
         width: 55%;
