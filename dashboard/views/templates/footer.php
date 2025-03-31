@@ -171,10 +171,10 @@
                 const response = await fetch('<?php echo STATS_API; ?>/reels/summary');
                 const data = await response.json();
 
-                console.log(data)
+                
 
                 if (!data || data.length === 0) {
-                    console.log('No reels data available');
+                    
                     return;
                 }
 

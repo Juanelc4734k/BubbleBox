@@ -101,7 +101,7 @@ const saveMessageWithNotification = async (senderId, receiverId, message) => {
                 tipo: 'message',
                 contenido: `Tu amigo ${nombreRemitente} te ha enviado un mensaje`
             });
-            console.log(`Notification sent to user ${receiverId}`);
+            
         } catch (error) {
             console.error('Error sending notification:', error.message);
             // We don't reject here, as the message was already saved
@@ -159,7 +159,7 @@ const deleteAllMessages = (userId1, userId2) => {
                 console.error('Error deleting all messages:', error);
                 reject(error);
             } else {
-                console.log(`Deleted ${result.affectedRows} messages between users ${userId1} and ${userId2}`);
+                
                 resolve(result.affectedRows);
             }
         });
@@ -187,10 +187,10 @@ const updateLastSeen = (userId, status = 'conectado', lastSeen = null) => {
                 reject(error);
             } else {
                 if (result.affectedRows === 0) {
-                    console.log(`No user found with ID ${userId}`);
+                    
                     resolve(false);
                 } else {
-                    console.log(`Updated status to ${status} and lastSeen for user ${userId}`);
+                    
                     resolve(true);
                 }
             }

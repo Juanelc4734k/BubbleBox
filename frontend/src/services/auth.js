@@ -9,10 +9,10 @@ export const register = async (userData) => {
 
 export const login = async (userData) => {
     try {
-        console.log('Enviando solicitud de login a:', `${API_URL}/auth/login`);
-        console.log('Credenciales:', userData);
+        
+        
         const response = await axios.post(`${API_URL}/auth/login`, userData);
-        console.log('Respuesta del servidor:', response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Error en la función login:', error);
@@ -39,7 +39,7 @@ export const resetPassword = async (token, newPassword) => {
         const response = await axios.post(`http://localhost:3000/auth/restablecer-contrasena/${token}`, {
             nuevaContrasena: newPassword
         });
-        console.log(response.data);
+        
         return response.data;
     } catch (error) {
         throw error.response.data;
@@ -76,11 +76,11 @@ export const logoutUser = async (userId) => {
                 'Authorization' : `Bearer ${token}`
             }
         });
-        console.log(response.data);
+        
         return response.data;
         
     } catch (error) {
-        console.log('Error en logoutUser: ', error);
+        
         throw error;
     }
 }
@@ -91,7 +91,7 @@ export const updateLastSeen = async (userId, status = 'desconectado', lastSeen =
             status,
             lastSeen
         });
-        console.log('Last seen updated:', response.data);
+        
         return response.data;
     } catch (error) {
         console.error('Error updating last seen:', error);

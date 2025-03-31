@@ -9,9 +9,9 @@ const generar2FA = async (req, res) => {
   const userId = req.user.id;
   try {
     const secret = speakeasy.generateSecret();
-    console.log('Secreto 2FA generado:', secret.base32);
+    
     await authModel.guardarSecreto2FA(userId, secret.base32);
-    console.log('Secreto 2FA guardado para el usuario:', userId);
+    
     
     QRCode.toDataURL(secret.otpauth_url, (err, data_url) => {
       if (err) {
@@ -31,15 +31,15 @@ const verificar2FA = async (req, res) => {
   const userId = req.user.id;
   try {
     const user = await authModel.findUserById(userId);
-    console.log('Usuario encontrado:', user);
-    console.log('Token recibido:', token);
+    
+    
     
     if (!user || !user.secret2FA) {
-      console.log('Usuario no encontrado o sin secreto 2FA configurado');
+      
       return res.status(400).json({ error: 'Usuario no encontrado o 2FA no configurado' });
     }
     
-    console.log('Secreto 2FA del usuario:', user.secret2FA);
+    
     
     const verified = speakeasy.totp.verify({
       secret: user.secret2FA,
@@ -48,7 +48,7 @@ const verificar2FA = async (req, res) => {
       window: 1 // Permite una ventana de 1 paso (30 segundos antes y después)
     });
     
-    console.log('Resultado de la verificación:', verified);
+    
     
     if (verified) {
       res.json({ mensaje: '2FA verificado correctamente' });
@@ -62,22 +62,8 @@ const verificar2FA = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-    const { nombre, username, email, contraseña } = req.body;
+    const { nombre, username, email, contraseña } = req.body;   
     
-    // Validación de entrada
-    if (!nombre || typeof nombre !== 'string' || nombre.length < 2 || nombre.length > 50) {
-        return res.status(400).json({ mensaje: 'El nombre es inválido' });
-    }
-    
-    if (!username || typeof username !== 'string' || username.length < 3 || username.length > 20 || !/^[a-zA-Z0-9_]+$/.test(username)) {
-        return res.status(400).json({ mensaje: 'El nombre de usuario es inválido' });
-    }
-    
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(400).json({ mensaje: 'El correo electrónico es inválido' });
-    }
-    
-    console.log(req.body);
     try {
         const existingUser = await authModel.findUserByEmail(email);
         if(existingUser) {
@@ -92,43 +78,43 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  console.log('Iniciando proceso de login');
+  
   const { email, contraseña } = req.body;
-  console.log('Email recibido:', email);
-  console.log('Contraseña recibida:', contraseña ? '[REDACTED]' : 'No proporcionada');
+  
+  
 
   if (!email || !contraseña) {
-    console.log('Email o contraseña faltantes');
+    
     return res.status(400).json({ mensaje: 'Email y contraseña son requeridos' });
   }
 
   try {
-    console.log('Buscando usuario en la base de datos');
+    
     const user = await authModel.findUserByEmail(email);
-    console.log('Usuario encontrado:', user ? 'Sí' : 'No');
+    
 
     if (!user) {
-      console.log('Usuario no encontrado');
+      
       return res.status(401).json({ mensaje: 'Email o contraseña incorrectos' });
     }
 
-    console.log('Comparando contraseñas');
+    
     const isMatch = await authModel.comparePassword(contraseña, user.contraseña);
-    console.log('¿Contraseña coincide?', isMatch);
+    
 
     if (!isMatch) {
-      console.log('Contraseña incorrecta');
+      
       return res.status(401).json({ mensaje: 'Email o contraseña incorrectos' });
     }
     
-    console.log('Actualizando estado del usuario');
+    
     await authModel.updateUserStatus(user.id, 'conectado');
     
-    console.log('Generando token JWT');
+    
     const token = jwt.sign({ userId: user.id, rol: user.rol, estado: user.estado }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    console.log('Token generado');
+    
 
-    console.log('Enviando respuesta');
+    
     res.status(200).json({ mensaje: 'Usuario logueado', token, userId: user.id, rol: user.rol });
   } catch (err) {
     console.error('Error en loginUser:', err);
@@ -186,21 +172,21 @@ const recoverPassword = async (req, res) => {
 const restablecerContrasena = async (req, res) => {
   const { token } = req.params;
   const { nuevaContrasena } = req.body;
-  console.log('Token recibido:', token);
-  console.log('Nueva contraseña recibida:', nuevaContrasena);
+  
+  
   try {
     // Verificar si el token existe en la base de datos
     const tokenInfo = await authModel.obtenerTokenRecuperacion(token);
     if (!tokenInfo) {
-      console.log('Token no encontrado en la base de datos');
+      
       return res.status(400).json({ error: 'Token inválido o expirado' });
     }
 
-    console.log('Información del token:', tokenInfo);
+    
 
     // Verificar si el token ha expirado
     if (tokenInfo.token_expiracion < Date.now()) {
-      console.log('Token expirado');
+      
       await authModel.eliminarTokenRecuperacion(token);
       return res.status(400).json({ error: 'Token expirado' });
     }
@@ -208,7 +194,7 @@ const restablecerContrasena = async (req, res) => {
     const userId = tokenInfo.id;
     const usuario = await authModel.findUserById(userId);
     if (!usuario) {
-      console.log('Usuario no encontrado');
+      
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
     
@@ -219,7 +205,7 @@ const restablecerContrasena = async (req, res) => {
     // Eliminar el token de recuperación después de usarlo
     await authModel.eliminarTokenRecuperacion(token);
     
-    console.log('Contraseña restablecida exitosamente');
+    
     res.status(200).json({ mensaje: 'Contraseña restablecida exitosamente' });
   } catch (error) {
     console.error('Error en restablecerContrasena:', error);

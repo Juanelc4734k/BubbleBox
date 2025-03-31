@@ -4,8 +4,8 @@ const createGroup = async (req, res) => {
     try {
         const { name, descripcion, userId } = req.body;
         const imagen = req.file ? req.file.filename : null;
-        console.log('Datos recibidos:', name, descripcion, userId, imagen);
-        console.log('req.file:', req.file);
+        
+        
         const group = await groupChatModel.createGroup(userId, name, descripcion, imagen);
         await groupChatModel.addUserToGroup(userId, group.id);
         res.status(201).json(group);
@@ -70,7 +70,7 @@ const getGroup = async (req, res) => {
 const getGroupMessages = async (req, res) => {
     try {
         const { groupId, userId } = req.params;
-        console.log('Checking membership for:', { groupId, userId }); // Debug log
+         // Debug log
         
         const isMember = await groupChatModel.isMember(groupId, userId);
         if (!isMember) {

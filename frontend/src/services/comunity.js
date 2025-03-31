@@ -35,7 +35,7 @@ export const updateCommunity = async (communityId, comunityData) => {
     const headers = comunityData instanceof FormData 
         ? { 'Content-Type': 'multipart/form-data' } 
         : { 'Content-Type': 'application/json' };
-    console.log(communityId, comunityData)
+    
     const response = await axios.put(
         `${API_URL}/communities/actualizar/${communityId}`, 
         comunityData,
