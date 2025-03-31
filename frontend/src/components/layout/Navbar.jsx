@@ -18,7 +18,6 @@ import CreatePost from "../posts/CreatePost";
 import CreateComunity from "../comunity/CreateComunity";
 import CreateStories from "../stories/CreateStories";
 import Notifications from "./Notifications";
-import CreateGroup from "../chats/CreateGroup";
 
 const Navbar = ({
   toggleSidebar,
@@ -32,6 +31,33 @@ const Navbar = ({
   const userRole = localStorage.getItem("userRole");
   const [userProfile, setUserProfile] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedContentRef] = useState(useRef(null));
+
+  // Add this useEffect after other useEffects
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (expandedContentRef.current && 
+          !expandedContentRef.current.contains(event.target) && 
+          !event.target.closest('.navbar-toggle-description')) {
+        setIsExpanded(false);
+      }
+    };
+
+    const handleResize = () => {
+      if (isExpanded) {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isExpanded]);
+
 
   const avatarPorDefecto =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
@@ -175,7 +201,7 @@ const Navbar = ({
           {isExpanded ? "Ocultar detalles" : "Mostrar detalles"}
         </span>
       </button>
-      <div className="navbar-expanded-content">
+      <div className="navbar-expanded-content" ref={expandedContentRef}>
         <div className="navbar-description-p">
           <p>
             {userProfile
