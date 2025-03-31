@@ -668,6 +668,9 @@ form .edit-submit-button {
   border-radius: 1vh;
   box-shadow: 0.2vh 0.2vh 1vh rgb(48, 48, 48);
 }
+.no-posts{
+background-color: #613390;
+}
 
 @media (min-width: 640px) {
   .reactions-menu {

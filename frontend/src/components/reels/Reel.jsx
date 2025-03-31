@@ -21,6 +21,9 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const [showReportModal, setShowReportModal] = useState(false);
     const userId = localStorage.getItem('userId');
     const isMyReel = reel.usuario_id === parseInt(userId);
+    const [isCommented, setIsCommented] = useState(false);
+
+    
 
 
     const avatarPorDefecto = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -187,6 +190,8 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
     const handleCommentClick = () => {
         if (openCommentsSidebar) {
             openCommentsSidebar(reel.id, 'reel');
+            setIsCommented(!isCommented); // Alterna entre true y false
+
         }
     };
 
@@ -270,14 +275,13 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
             document.removeEventListener('click', handleClickOutside);
         };
     }, [showShareMenu]);
-
     return (
         <div className="reel">
 
 
             <div className="reel-content">
                 <div className="conten video-info">
-                    <div className={`reel-video-container ${isHorizontal ? 'horizontal' : ''}`}>
+                    <div className={`reel-video-container ${isHorizontal ? 'horizontall' : ''}`}>
                         <div className="conten-progress-video">
                         <video
                             ref={videoRef}
@@ -297,27 +301,32 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                         <div className="reel-header">
                                     <div className="reel-info">
                                             <div className="reel-author">
-                                                <img src={getAvatarSrc()} alt={`Avatar de ${reel.username || 'Usuario desconocido'}`} />
+                                                <div className="infoUserReels">
+                                                    <div className='conten-image-user-reels' >
+                                                    <img src={getAvatarSrc()} alt={`Avatar de ${reel.username || 'Usuario desconocido'}`} />
+
+                                                    </div>
                                                 <div className="reel-author-info">
                                                     <p>{reel.username || 'Usuario desconocido'}</p>
                                                     {/* <p>{new Date(reel.fecha_creacion).toLocaleString()}</p> */}
                                                     <p className="reel-description">{reel.descripcion}</p>
 
                                                 </div>
+                                                </div>
                                                 {isMyReel && isMyReelsTab && (
-                                                    <div className="reel-options relative ml-auto">
+                                                    <div className="reel-options">
                                                         <button 
-                                                            className="options-button p-1 rounded-full hover:bg-gray-100"
+                                                            className="options-button p-1 rounded-full"
                                                             onClick={toggleOptionsMenu}
                                                         >
                                                             <FiMoreVertical className="text-xl text-gray-600" />
                                                         </button>
                                                         
                                                         {showOptionsMenu && (
-                                                            <div className="options-menu absolute right-0 mt-1 bg-white rounded-md shadow-lg z-10 w-36 py-1">
+                                                            <div className="options-menu-reels  rounded-md shadow-lg">
                                                                 {isMyReel ? (
                                                                     <button 
-                                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                                        className="deleteReels"
                                                                         onClick={handleDeleteReel}
                                                                     >
                                                                         <FiTrash2 />
@@ -325,7 +334,7 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                                                                     </button>
                                                                 ) : (
                                                                     <button 
-                                                                        className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-red-500"
+                                                                        className=""
                                                                         onClick={() => setShowReportModal(true)}
                                                                     >
                                                                         <FiFlag />
@@ -347,72 +356,74 @@ const Reel = ({ reel, isMyReelsTab, openCommentsSidebar }) => {
                     </div>
                             </div>
                         </div>
-
-
-                        
-
                         </div>
-                        
-                        
-
-                            
+         
                     </div>
 
-                </div>
-
-                <div className={`reel-actions-vertical ${isHorizontal ? 'horizontal' : ''}`}>
+                    <div className={`reel-actions-vertical ${isHorizontal ? 'horizontal' : ''}`}>
                     <div className="button-reels-he">
                     <button 
                         className={`reel-action-button ${isLiked ? 'liked' : ''}`} 
                         onClick={handleReaction}>
-                        <BsHandThumbsUp 
-                            size={24} 
-                            className={isLiked ? '' : ''}/>
+                     <i className={`fa-${isLiked ? 'solid' : 'regular'} fa-heart  text-xl cursor-pointer`}></i>
                     </button>
-                    <button className="reel-action-button" onClick={handleCommentClick}>
-                        <MdOutlineInsertComment size={24} />
-                    </button>
+                    <button className="reel-action-button" onClick={handleCommentClick
+
+                    } >
+                         <i className={`fa-${isCommented ? "solid" : "regular"} fa-comment text-xl cursor-pointer`}></i>
+                        </button>
                     </div>
 
                     <button className="reel-action-button-shere relative" onClick={handleShare}>
-                        <IoArrowRedoOutline size={24} />
+                    <div className="shereReels">
+                    <i className="fa-solid fa-share-nodes"></i>                
+                        </div>
                         
                         {showShareMenu && (
-                            <div className="share-menu absolute right-0 bottom-10 bg-white rounded-md shadow-lg z-10 w-48 py-1">
+                            <div className="share-menu absolute right-0 bottom-10 bg-purple-300 rounded-md shadow-lg z-10 w-40 mb-5  text-black ">
                                 <button 
                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
                                     onClick={handleNativeShare}
                                 >
+                                    <i className="fa-solid fa-share"></i>
                                     <span>Compartir</span>
                                 </button>
                                 <button 
                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100"
                                     onClick={handleCopyLink}
                                 >
+                                    <i className="fa-solid fa-paperclip"></i>
                                     <span>Copiar enlace</span>
                                 </button>
                                 <button 
                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-blue-600"
                                     onClick={shareToFacebook}
                                 >
+                                    <i className="fa-brands fa-facebook-f"></i>
                                     <span>Facebook</span>
                                 </button>
                                 <button 
                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-blue-400"
                                     onClick={shareToTwitter}
                                 >
+                                    <i className="fa-brands fa-twitter"></i>
                                     <span>Twitter</span>
                                 </button>
                                 <button 
                                     className="w-full text-left px-4 py-2 flex items-center gap-2 hover:bg-gray-100 text-green-500"
                                     onClick={shareToWhatsApp}
                                 >
+                                 <i className="fa-brands fa-whatsapp"></i>
                                     <span>WhatsApp</span>
                                 </button>
                             </div>
                         )}
                     </button>
                 </div>
+
+                </div>
+
+
             </div>
            
             {/* Report Modal */}

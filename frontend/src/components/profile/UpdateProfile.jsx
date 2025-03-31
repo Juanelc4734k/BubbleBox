@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { getProfiles, updateProfile } from "../../services/users"
 import "../../assets/css/profile/updateProfile.css"
-import { availableInterests, categoryColors, categorizedInterests } from '../../data/interests'
+import {categoryColors, categorizedInterests } from '../../data/interests'
 import { TbUserEdit } from "react-icons/tb"
 import { IoClose } from "react-icons/io5"
 import { IoIosClose } from "react-icons/io";
@@ -16,6 +16,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   const [selectedCategory, setSelectedCategory] = useState("Todos"); 
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isCloseIntereses, setIsCloseIntereses] = useState(false); // Suponiendo que comienza abierto
   
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState({
@@ -29,6 +30,9 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   const [message, setMessage] = useState("")
   const fileInputRef = useRef(null)
 
+  const closeModal = () => {
+    setIsCloseIntereses(false); 
+  };
   useEffect(() => {
     if (profile.intereses) {
       setSelectedInterests(profile.intereses);
@@ -94,6 +98,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setSearchTerm(""); // Reinicia el buscador al cambiar de categoría
+    setIsFilterOpen(false); // Cierra el filtro al seleccionar una categoría
   };
   
   const handleImageChange = async (e) => {
@@ -197,7 +202,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   };
   return(
     <div className={`containerUpdateProfile ${isOpen ? "active" : ""}`}>
-      <button className="w-full md:w-auto bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
+      <button className=" md:w-auto bg-[#bda7f1] text-white rounded-3xl hover:bg-[#866bb8] transition-colors flex items-center justify-center gap-2 text-lg font-medium buttin" onClick={toggleModal}>
         <TbUserEdit className="icon" />
         Actualizar
       </button>
@@ -268,14 +273,24 @@ const UpdateProfile = ({ onProfileUpdate }) => {
               Seleccionar intereses ({selectedInterests.length}/5)
             </button>
           </div>
-          {/* Interests Modal */}
+
+          <button type="submit" className="submit-button">
+            Guardar Cambios
+          </button>
+        </form>
+        
+      </div>
+
+      
+    )}
+              <div className="modalInteresess" >
           {showInterestsModal && (
       <div className="interests-modal">
       <div className="interests-modal-content">
         <div className="contador-profile">
-
         <h3>Selecciona tus intereses (máximo 5)</h3>
         <p>{selectedInterests.length} / 5</p>
+        <i className="fa-solid fa-xmark"></i>
         </div>
       <div className="progress-container">
           <div
@@ -297,9 +312,9 @@ const UpdateProfile = ({ onProfileUpdate }) => {
         </div>            
             {/* Agregamos tabs de categorías */}
               <div className="filtrar-interes-profi">
-                <div className="filter-conten">
+                <div className="filter-conten" onClick={() => setIsFilterOpen(!isFilterOpen)}>
                   <i className="fa-solid fa-filter"></i>
-                  <button type="button" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+                  <button type="button" >
                       Filtrar
                     </button>
 
@@ -316,7 +331,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
                     >
 
                         {category}
-                        {selectedInterests.includes(category) ? (
+                        {selectedCategory.includes(category) ? (
                     <i className="fa-solid fa-circle-check icon-circle-profi selected-icon"></i>
                   ) : (
                     <i className="fa-regular fa-circle icon-circle-profile"></i>
@@ -393,12 +408,8 @@ const UpdateProfile = ({ onProfileUpdate }) => {
 
             </div>
           )}
-          <button type="submit" className="submit-button">
-            Guardar Cambios
-          </button>
-        </form>
-      </div>
-    )}
+            
+          </div>
     </div>
   )
 }

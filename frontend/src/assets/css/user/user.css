@@ -9,6 +9,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: rgb(237, 237, 237);
   width: calc(100% - 1.5rem);
+  border-radius: 2vh;
 }
 .container-usuarios{
   margin: 0 0 0;
@@ -29,7 +30,9 @@ display: flex;
 justify-content: center;
 padding: 2vh;
 }
-
+.tabs-contenDos{
+  display: none;
+}
 /* Add these styles to your existing user.css file */
 
 .request-actions {
@@ -272,6 +275,29 @@ padding: 2vh;
   color: var(--gray-200);
   transform: scale(1.05);
 }
+@media (min-width: 320px) and (max-width: 480px) {
+  .tabs-contenDos{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-between;
+    width: 100%;
+    margin-top: 2vh;
+    background-color: #ffffffcb;
+    border-radius: 10vh;
+    box-shadow: 0px 2px 10px -2px gray;
+    padding: 1vh;
+    overflow: hidden;
+    gap: 8px;
+  }
+  
+.tabs-contenDos .tab{
+  width: 22%;
+} 
+  .tabs{
+    display: none;
+    
+  }
+ }
 
 
 /* Small devices (landscape phones, 576px and up) */

@@ -151,16 +151,22 @@ export default function RegisterForm({ setMessage }) {
     <div className="registerFrom">
       <div className="bienvenidoRegister">
         <h1>Bienvenido a BubbleBox</h1>
+        <div className="conten-img-bubbles">
         <img src={Animation} alt="" className="registerAnimation" />
+        <div className="conten-bubbles-img">
+
+          <div className="bubbless7"></div>
+          <div className="bubbless4"></div>
+          <div className="bubbless5"></div>
+        </div>
+
+        </div>
         <div className="conten-bubbles-register">
           <div className="bubbless1"></div>
           <div className="bubbless2"></div>
           <div className="bubbless3"></div>
-          <div className="bubbless4"></div>
-          <div className="bubbless5"></div>
           <div className="bubbless6"></div>
-          <div className="bubbless7"></div>
-          <div className="bubbless8"></div>
+          <div className="bubblesss8"></div>
         </div>
       </div>
       <div className="FormularioRegister">

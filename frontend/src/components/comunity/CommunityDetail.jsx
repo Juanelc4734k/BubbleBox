@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import '../../assets/css/comunity/communityDetail.css'
 import { FiImage } from "react-icons/fi";
@@ -8,7 +8,6 @@ import { MdPostAdd } from "react-icons/md";
 import { IoShieldCheckmarkOutline } from "react-icons/io5";
 import { FiFlag } from "react-icons/fi";
 import { FaRegClipboard } from "react-icons/fa6";
-
 import ModalReport from '../reports/modalReport';
 
 import {
@@ -32,6 +31,9 @@ import Swal from 'sweetalert2';
   const [members, setMembers] = useState([]);
   const [isMemberStatus, setIsMemberStatus] = useState(false);
   const [postContent, setPostContent] = useState('');
+    const textareaRef = useRef(null);
+
+  
   // Add these states at the top of your component
 
   const [showModal, setShowModal] = useState(false);
@@ -59,24 +61,24 @@ import Swal from 'sweetalert2';
         console.error("Error al obtener la comunidad", error);
       }
     };
+    const handleTextareaChange = (e) => {
+      setPostContent(e.target.value);
+  
+      // Ajustar la altura automáticamente
+      textareaRef.current.style.height = "auto"; // Restablecer la altura
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px"; // Ajustarla al contenido
+    };
+  
 
     const fetchCommunityPosts = async () => {
       try {
         const data = await getCommunityByPostId(id);
-        setPosts(prevPosts => {
-          return data.map(post => {
-            const existingPost = prevPosts.find(p => p.id === post.id);
-            return {
-              ...post,
-              bgColor: post.imagen ? null : existingPost?.bgColor || generateRandomColor(),
-            };
-          });
-        });
         setPosts(data);
       } catch (error) {
         console.error("Error al obtener publicaciones de la comunidad", error);
       }
     };
+    
     const fetchCommunityMembers = async () => {
       try {
         const data = await getCommunityMembers(id);
@@ -270,18 +272,7 @@ const handleCreatePost = async () => {
     // Obtener las publicaciones actualizadas
     const updatedPosts = await getCommunityByPostId(id);
 
-    setPosts(prevPosts => {
-      return updatedPosts.map(post => {
-        const existingPost = prevPosts.find(p => p.id === post.id);
-
-        return {
-          ...post,
-          bgColor: post.imagen
-            ? null
-            : existingPost?.bgColor || generateRandomColor(),
-        };
-      });
-    });
+    setPosts(updatedPosts);
 
     // Limpiar el textarea
     setPostContent("");
@@ -301,15 +292,11 @@ const handleCreatePost = async () => {
     });
   }
 };
-
-const generateRandomColor = () => {
-  const letters = "0123456789ABCDEF";
-  let color = "#";
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
+document.querySelectorAll('.community-post.no-image p').forEach(p => {
+  if (p.scrollHeight > p.clientHeight) {
+    p.style.display = 'block';
   }
-  return color;
-};
+});
 
   return (
     <div className="communityDetail">
@@ -372,7 +359,7 @@ const generateRandomColor = () => {
 
             </div>
                 <div className="DescripcionButton">
-                  <div className="complement-button">
+                  <div className="complement-button" onClick={() => setIsClickDescri(!isClickDescri)}>
                     <div className="infoCo">
                       <div className="ico-community-tittle">
                     <FaRegClipboard />
@@ -395,7 +382,7 @@ const generateRandomColor = () => {
 
               </div>
 
-                <div className="reglas-communidad">
+                <div className="reglas-communidad" onClick={() => setIsClickReglas(!isClickReglas)}>
                   <div className="complement-button">
                   <div className="infoRegla">
                     <div className="ico-community-tittle">
@@ -441,6 +428,8 @@ const generateRandomColor = () => {
                 <textarea 
                   placeholder="¿Qué quieres compartir con la comunidad?"
                   value={postContent}
+                  ref={textareaRef}
+                  
                   onChange={(e) => {
                     setPostContent(e.target.value);
                     handleTextareaChange(e);
@@ -563,7 +552,7 @@ const generateRandomColor = () => {
             {posts.map(post => (
               <div 
               key={post.id} 
-              className={`community-post ${post.imagen ? 'with-image' : 'no-image'}`} 
+              className={`community-post overflow-hidden rounded-md ${post.imagen ? 'with-image' : 'no-image'} `} 
               >
                 <div className="post-header">
                   <div className="post-header-left">
@@ -579,8 +568,8 @@ const generateRandomColor = () => {
                   </div>
                 </div>
                 <div className={`post-content ${post.imagen ? 'with-image' : ''}`}>
-                  <p className="post-text"  style={post.imagen ? {} : { backgroundColor: post.bgColor, display: 'inline-block', padding: '5px 10px', borderRadius: '5px'  }}  
-                  >{post.contenido}</p>
+                  
+                  <p className="post-text">{post.contenido}</p>
                   {post.imagen && (
                     <div className="post-image-container">
                       <img 
