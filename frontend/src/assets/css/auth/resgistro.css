@@ -3,8 +3,7 @@
 }
 .registerFrom{
     width: 100%;
-    margin-top: 15rem;
-    margin-bottom: 20vh;
+    margin-top: 10rem;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -13,32 +12,49 @@
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.3);
     overflow: hidden;
 }
-.registerFrom .bienvenidoRegister{
+.bienvenidoRegister{
     width: 100%;
     height: 70vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items:center;
     order: -1;
     position: relative;
-    background: linear-gradient(to bottom, #5acbba 1%, #fff 90%);
+    background: linear-gradient(to bottom, #5acbba 1%, #fff 93%);
+
 
 }
-.registerFrom .bienvenidoRegister h1{
+.bienvenidoRegister h1{
     text-align: center;
-    width: 50%;
-    font-size: 5.5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 38vh;
+    font-size: 4.5vh;
     padding-bottom: 4vh;
-    margin-top: -9vh;
     position: relative;
     z-index: 2;
-    top: 0;
+    top: -8vh;
     left: 0;
     color: white;
-
 }
-.registerFrom .bienvenidoRegister .registerAnimation{
+.conten-img-bubbles{
+    z-index: 2;
+    position: relative;
+    width:34vh;
+    display: flex;
+    justify-content: center;
+    top: -5vh;
+}
+.conten-bubbles-img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.registerAnimation{
     width: 20vh;
     height: 20vh;
     border-radius: 100%;
@@ -47,7 +63,7 @@
     box-shadow: 0px 1vh 1.5vh rgb(0, 0, 0, 0.5);
 }
 
-.conten-bubbles-register {
+.conten-bubbles-register{
     width: 100%;
     height: 100%;
     position: absolute;
@@ -55,86 +71,63 @@
     top: 0;
     left: 0;
 }
-.conten-bubbles-register .bubbless1{
+.bubbless1, .bubbless2, .bubbless3, .bubbless4, .bubbless5, .bubbless6, .bubbless7, .bubblesss8{
     position: absolute;
-    width: 350px;
-    height: 350px;
     background-color: #ffffff4d;
     backdrop-filter: blur(80px);
+}
+.bubbless3, .bubbless4, .bubbless5, .bubbless6, .bubbless7, .bubblesss8{
     border-radius: 50%;
-    left: -18vw;
-    top: -22vw;
+}
+.conten-bubbles-register .bubbless1{
+    width: 27vh;
+    height: 27vh;
+    border-bottom-right-radius: 100vh;
+    top: 0;
+    left: 0;
 }
 .conten-bubbles-register .bubbless2{
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 55vw;
-    top: 40vw;
+    width: 24vh;
+    height: 26vh;
+    border-top-left-radius: 100vh;
+    right: 0;
+    bottom: 0;
 }
 .conten-bubbles-register .bubbless3{
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 76vw;
-    top: 15.1vw;
+    width: 7vh;
+    height: 7vh;
+    right: 6vw;
+    top: 13%;
 }
-.conten-bubbles-register .bubbless4{
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 59vw;
-    top: 35vw;
+.bubbless4{
+    width: 5vh;
+    height: 5vh;
+    right:1.8vh;
+    top: 2vh;
 }
-.conten-bubbles-register .bubbless5{
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 62vw;
-    top: 42vw;
+.bubbless5{
+    width: 3.5vh;
+    height: 3.5vh;
+    right: 1vh;
+    top: 7.5vh;
 }
 .conten-bubbles-register .bubbless6{
-    position: absolute;
+    width: 5vh;
+    height: 5vh;
+    left: 15vh;
+    top: 33%;
+}
+.bubbless7{
     width: 25px;
     height: 25px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 25vw;
-    top: 33vw;
+    left: 2.4vh;
+    bottom: 1vh;
 }
-
-.conten-bubbles-register .bubbless7{
-    position: absolute;
-    width: 25px;
-    height: 25px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 31vw;
-    top: 50vw;
-}
-.conten-bubbles-register .bubbless8{
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background-color: #ffffff4d;
-    backdrop-filter: blur(80px);
-    border-radius: 50%;
-    left: 3vw;
-    top: 50vw;
+.conten-bubbles-register .bubblesss8{
+    width: 50px;
+    height: 50px;
+    left: 1.5vh;
+    bottom: 8vh;
 }
 .registerFrom .FormularioRegister{
     width: 100%;
@@ -155,11 +148,9 @@
     margin-top: -6%;
     margin-bottom: 10vh;
     display: flex;
-    padding: 4%;
+    padding: 4% 0;
     border-radius: 2vh;
     flex-direction: column;
-    /* box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    background-color: white; */
 }
 .registerFrom .FormularioRegister form h2{
     font-size: 5vh;
@@ -252,6 +243,7 @@
     gap: 4px;
     align-items: center;
     margin-right: 1rem;
+    width: 100%;
 }
 .terminos p{
     font-size: 12px;
@@ -271,21 +263,27 @@
     color: #242424;
     box-shadow: 0px 0.1vh 1.5vh rgba(64, 64, 64, 0.5);
     cursor: pointer;
+    margin-bottom: 1vw;
 }
 .registerFrom .FormularioRegister form button:hover{
     background-color: #55c7b6;
     transition: 0.5s ease-out;
 }
+.linkLogin{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+}
 .Link-Sesion{
-    position: relative;
     width: 100%;
-    margin-top: -35vh;  
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 2.2vh;
-    margin-bottom: 11.5vh;
     z-index: 1001;
+    bottom: 8%;
+    position: relative;
 }
 .Link-Sesion .link{
     width: 14vh;
@@ -308,47 +306,39 @@
     box-shadow: 0 4px 4px -2px rgba(30, 30, 31, 0.129);
 
 }
-@media (min-width: 768px) {
 
+ @media (min-width: 768px) {
+    .registerFrom .bienvenidoRegister h1{ 
+        font-size: 35px;
+    }
     .conten-bubbles-register .bubbless1{
-        left: -14vw;
-        top: -13vw;
+        width: 45vh;
+        height: 38vh;
     }
     .conten-bubbles-register .bubbless2{
-        left: 55vw;
-        top: 35vw;
-    }
-    .conten-bubbles-register .bubbless3{
-        left: 74vw;
-        top: 15.1vw;
-    }
-    .conten-bubbles-register .bubbless4{
-        left: 57vw;
-        top: 28vw;
-    }
-    .conten-bubbles-register .bubbless5{
-        left: 59vw;
-        top: 33vw;
-    }
-    .conten-bubbles-register .bubbless6{
-        width: 30px;
-        height: 30px;
-        left: 24vw;
-        top: 27vw;
-    }
-    
-    .conten-bubbles-register .bubbless7{  
-        left: 35vw;
-        top: 38vw;
-    }
-    .conten-bubbles-register .bubbless8{
-        left: 5vw;
-        top: 38vw;
+        width: 40vh;
+        height: 36vh;
     }
 
-}
-@media (min-width: 1024px) {
-   
+    .conten-bubbles-register .bubbless6{
+        left: 30vh;
+        top: 46%;
+    }
+    .conten-bubbles-register .bubblesss8{
+        bottom: 10vh;
+        left: 3vh;
+
+    }
+    .registerFrom .FormularioRegister form button{
+        margin-top: 5vh;
+       
+    }
+    .Link-Sesion{
+
+        bottom: 15vw;
+    }
+} 
+@media (min-width: 1024px){
     .registerFrom{
         flex-direction: row;
         width: 70%;
@@ -365,51 +355,38 @@
         height: 85vh;
         width: 45%;
     }
-    .conten-bubbles-register .bubbless1{
-        left: -10vw;
-        top: -13vw;
-    }
-    .conten-bubbles-register .bubbless2{
-        left: 12vw;
-        top: 25vw;
-    }
-    .conten-bubbles-register .bubbless3{
-        left: 23vw;
-        top: 7vw;
-    }
-    .conten-bubbles-register .bubbless4{
-        left: 21vw;
-        top: 14vw;
-    }
-    .conten-bubbles-register .bubbless5{
-        left: 22.5vw;
-        top: 17vw;
-    }
-    .conten-bubbles-register .bubbless6{
-        left: 7vw;
-        top: 13.5vw;
-    }
-    
-    .conten-bubbles-register .bubbless7{
-        left: 6.4vw;
-        top: 23vw;
-    }
-    .conten-bubbles-register .bubbless8{
-        left: 1vw;
-        top: 28vw;
-    }
-
-
-  
     .registerFrom .bienvenidoRegister h1{
         order: -1;
-        margin-top: -35%;
-        font-size: 4vh;
+        top: -2vh;
+        font-size: 5vh;
     }
     .registerFrom .bienvenidoRegister .registerAnimation{
         margin-top: 1%;
         width: 25vh;
         height: 25vh;
+    }
+    .conten-bubbles-register .bubbless1{
+        width: 30vh;
+        height: 33vh;
+    }
+    .conten-bubbles-register .bubbless2{
+        width: 30vh;
+    }
+    .conten-bubbles-register .bubbless3{
+        right: 3vw;
+        top: 13%;
+    }
+    .conten-bubbles-register .bubbless6{
+        left: 12vh;
+        top: 37%;
+    }
+    .bubbless4{
+        right:0;
+        top: 2vh;
+    }
+    .bubbless5{
+        right: -1.4vh;
+        top: 7.5vh;
     }
     .registerFrom .FormularioRegister{
         width: 55%;
@@ -421,7 +398,7 @@
         border-radius: 0;
         box-shadow: none;
         margin-top: 0;
-        padding: 15vh 8vh;
+        padding: 15vh 5vh;
     }
     .registerFrom .FormularioRegister form h2{
         margin-top: -3vh;
@@ -431,11 +408,14 @@
         height: 0.8vh;
     }
 .Link-Sesion{
-    width: 31.6%;
-    margin-left: 53.5%;
-    margin-top: -18vh;
+    width: 31.4%;
+    right: 14.3vw;
+    bottom: 12vh;
+    position: absolute;
+}
+.linkLogin{
+    top: 4vw;
+    position: relative;
 }
 
-}
-@media (min-width: 1440px){
-}
+}   

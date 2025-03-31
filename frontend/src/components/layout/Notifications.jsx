@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { FaBell } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdMessage, MdPersonAdd, MdPeople, MdPhoto, MdComment, MdFavorite, MdDelete, MdMoreVert  } from "react-icons/md";
@@ -11,6 +11,7 @@ import "../../assets/css/layout/notification.css";
 const NOTIFICATION_TABS = [
     { id: 'all', label: 'Todas', icon: <FaBell /> },
 ];
+
 
 const EXTRA_TABS = [
     { id: 'all', label: 'Todas', icon: <FaBell /> },
@@ -101,8 +102,9 @@ const NotificationItem = ({ notification, onNotificationClick, onDelete, onFrien
         >
             {icon}
             <div className="notification-content">
-                <p>{notification.contenido}</p>
+           <p>{notification.contenido}</p>
                 <span className="notification-time">
+                <i className="fa-regular fa-clock"></i>
                     {new Date(notification.fecha_creacion).toLocaleTimeString()}
                 </span>
                 {notification.tipo === 'solicitud_amistad' && (
@@ -126,7 +128,7 @@ const NotificationItem = ({ notification, onNotificationClick, onDelete, onFrien
                 className="delete-notification"
                 onClick={(e) => onDelete(e, notification.id)}
             >
-                <MdDelete />
+            <i className="fa-solid fa-trash"></i>
             </button>
         </div>
     );
@@ -134,10 +136,24 @@ const NotificationItem = ({ notification, onNotificationClick, onDelete, onFrien
 
 // Main Notifications Component
 const Notifications = () => {
+    const containerRef = useRef(null);
     const [isOpenNoti, setIsOpenNoti] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [activeTab, setActiveTab] = useState('all');
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setIsOpenNoti(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [setIsOpenNoti]);
 
     const handleNotificationClick = async (noti) => {
         if (!noti.leida) {
@@ -282,7 +298,7 @@ const Notifications = () => {
     }, {});
 
     return (
-        <div className={`containerNoti ${isOpenNoti ? "active" : ""}`}>
+        <div className={`containerNoti ${isOpenNoti ? "active" : ""}`} ref={containerRef}>
             {notificationsEnabled ? (
                 <>
                     <NotificationBell 

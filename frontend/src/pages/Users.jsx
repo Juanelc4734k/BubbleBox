@@ -107,6 +107,32 @@ function Users() {
                         Solicitudes
                     </button>
                 </div>
+                <div className="tabs-contenDos">
+                    <button 
+                        className={`tab ${activeTab === 'all' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('all')}
+                    >
+                    <i className="fa-solid fa-user"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'friends' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('friends')}
+                    >
+                        <i className="fa-solid fa-user-group"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'blocked' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('blocked')}
+                    >
+                        <i className="fa-solid fa-user-minus"></i>
+                    </button>
+                    <button 
+                        className={`tab ${activeTab === 'requests' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('requests')}
+                    >
+                    <i className="fa-solid fa-user-plus"></i>
+                    </button>
+                </div>
             </div>
 
             <div className='container-usuarios'>
