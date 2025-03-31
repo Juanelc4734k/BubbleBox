@@ -414,7 +414,6 @@ const generateRandomColor = () => {
                   </div>
 
             <div className={`info-block ${!isClickReglas ? "expanded" : ""}`}>
-              <h3>Reglas de la comunidad</h3>
               <div className={`reglas ${!isClickReglas ? "expanded" : ""}`}>
                 {community.reglas && JSON.parse(community.reglas).map((rule, index) => (
                   <div key={index} className="rule-item">
