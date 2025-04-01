@@ -62,21 +62,7 @@ const verificar2FA = async (req, res) => {
 };
 
 const registerUser = async (req, res) => {
-    const { nombre, username, email, contraseña } = req.body;
-    
-    // Validación de entrada
-    if (!nombre || typeof nombre !== 'string' || nombre.length < 2 || nombre.length > 50) {
-        return res.status(400).json({ mensaje: 'El nombre es inválido' });
-    }
-    
-    if (!username || typeof username !== 'string' || username.length < 3 || username.length > 20 || !/^[a-zA-Z0-9_]+$/.test(username)) {
-        return res.status(400).json({ mensaje: 'El nombre de usuario es inválido' });
-    }
-    
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        return res.status(400).json({ mensaje: 'El correo electrónico es inválido' });
-    }
-    
+    const { nombre, username, email, contraseña } = req.body;   
     
     try {
         const existingUser = await authModel.findUserByEmail(email);
