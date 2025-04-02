@@ -295,7 +295,7 @@
   }
 
 /* Edit Modal styles */
-.edit-modal-overlay {
+.edit-modal-overlayComuni {
     position: fixed;
     top: 0;
     left: 0;
@@ -308,77 +308,128 @@
     z-index: 9999;
   }
   
-  .edit-form-post {
+  .edit-form-postComuni {
     background-color: white;
     border-radius: 8px;
-    padding: 20px;
     width: 90%;
     max-width: 500px;
+    max-height: 70vh;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: relative;
+    overflow-y: auto;
   }
   
-  .edit-form-header {
+  .edit-form-headercomuni {
+    position: sticky;
+    top: 0;
+    background: rgba(253, 253, 253, 0.95);
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(151, 71, 255, 0.2);
+    padding: 1rem;
+  }
+  .formEditComu{
+    padding: 1.5rem;
   }
   
-  .edit-text-publi {
+  .edit-text-publicomuni {
     font-size: 18px;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #bda7f1;
   }
   
-  .edit-icono-publicacion {
-    color: #b685e4;
+  .edit-icono-publicacioncomuni {
+    color: #bda7f1;
   }
   
-  .edit-close-button {
+  .edit-close-buttoncomuni {
     background: none;
     border: none;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
     color: #666;
     padding: 5px;
+    transition: background 0.3s ease-in-out;
+    border-radius: 50%;
   }
   
-  .edit-close-button:hover {
-    color: #333;
+  .edit-close-buttoncomuni:hover {
+    color: #ffffff;
+    background: #e2d1f1;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
   
-  .edit-form-group {
+  .edit-form-groupcomuni {
     margin-bottom: 15px;
+    color: #d3b1ff;
   }
   
-  .edit-form-group input,
-  .edit-form-group textarea,
-  .edit-form-group select {
+  .edit-form-groupcomuni input,
+  .edit-form-groupcomuni textarea,
+  .edit-form-groupcomuni select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+    border: 1px solid rgba(151, 71, 255, 0.2);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.8);
   }
   
-  .edit-form-group textarea {
+  .edit-form-groupcomuni textarea {
     resize: vertical;
     min-height: 100px;
   }
-  
-  .edit-image-preview {
-    margin: 15px 0;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
+  .edit-form-groupcomuni input:focus,
+  .edit-form-groupcomuni textarea:focus {
+    outline: none;
+    border-color: #d2b0ff;
+    background: white;
+    box-shadow: 0 0 0 2px rgba(212, 179, 255, 0.315);
+  }
+  .hidden-input-comuni {
+    display: none;
+  }
+  .file-comuni {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(151, 71, 255, 0.1);
+    border-radius: 0.75rem;
+    color: #9747ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 12px;
+    box-shadow: 0 4px 3px rgba(12, 12, 12, 0.1);
+  }
+  .file-comuni:hover {
+    background: rgba(151, 71, 255, 0.2);
+  }
+  .edit-image-previewcomuni {
+    margin-top: 1rem;
+    position: relative;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    max-height: 180px; /* Altura máxima de la vista previa */
+    overflow-y: auto; /* Barra de desplazamiento interna si la imagen es muy grande */
+  }
+  .edit-image-previewcomuni img{
+    width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    display: block;
   }
   
-  .edit-submit-button {
+  .edit-submit-buttoncomuni {
     background-color: #b685e4;
     color: white;
     border: none;
