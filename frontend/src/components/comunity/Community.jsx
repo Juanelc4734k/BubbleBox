@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FiMoreVertical, FiEdit, FiTrash2, FiX } from "react-icons/fi";
 import { IoClose } from 'react-icons/io5';
+import { CiImageOn } from 'react-icons/ci';
 
 const Community = () => {
     const avatarUsuario = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s';
@@ -443,14 +444,14 @@ const Community = () => {
                 )}
             </div>
             {showEditModal && editingCommunity && (
-                <div className="edit-modal-overlay">
-                    <div ref={editModalRef} className="edit-form-post">
-                        <div className="edit-form-header">
-                            <h2 className="edit-text-publi">
-                                <FiEdit className="edit-icono-publicacion" /> Editar Comunidad
+                <div className="edit-modal-overlayComuni">
+                    <div ref={editModalRef} className="edit-form-postComuni">
+                        <div className="edit-form-headercomuni">
+                            <h2 className="edit-text-publicomuni">
+                                <FiEdit className="edit-icono-publicacioncomuni" /> Editar Comunidad
                             </h2>
                             <button 
-                                className="edit-close-button" 
+                                className="edit-close-buttoncomuni" 
                                 onClick={() => setShowEditModal(false)}
                             >
                                 <IoClose />
@@ -463,8 +464,8 @@ const Community = () => {
                             </div>
                         )}
 
-                        <form onSubmit={handleSubmit}>
-                            <div className="edit-form-group">
+                        <form onSubmit={handleSubmit} className="formEditComu">
+                            <div className="edit-form-groupcomuni">
                                 <input
                                     type="text"
                                     value={formData.nombre}
@@ -475,7 +476,7 @@ const Community = () => {
                                 />
                             </div>
 
-                            <div className="edit-form-group">
+                            <div className="edit-form-groupcomuni">
                                 <textarea
                                     value={formData.descripcion}
                                     onChange={handleInputChange}
@@ -486,7 +487,7 @@ const Community = () => {
                                 />
                             </div>
 
-                            <div className="edit-form-group">
+                            <div className="edit-form-groupcomuni">
                                 <select
                                     value={formData.tipo_privacidad}
                                     onChange={handleInputChange}
@@ -498,7 +499,8 @@ const Community = () => {
                                 </select>
                             </div>
 
-                            <div className="edit-form-group">
+                            <div className="edit-form-groupcomuni file-comuni">
+                                <CiImageOn/>
                                 <label htmlFor="imagen">Imagen de la comunidad (opcional)</label>
                                 <input
                                     type="file"
@@ -506,11 +508,12 @@ const Community = () => {
                                     name="imagen"
                                     onChange={handleImageChange}
                                     accept="image/*"
+                                    className="hidden-input-comuni"
                                 />
                             </div>
 
                             {previewImage && (
-                                <div className="edit-image-preview">
+                                <div className="edit-image-previewcomuni">
                                     <p className="text-sm text-gray-500 mb-2">Vista previa:</p>
                                     <img 
                                         src={previewImage}
@@ -522,7 +525,7 @@ const Community = () => {
 
                             <button 
                                 type="submit" 
-                                className="edit-submit-button" 
+                                className="edit-submit-buttoncomuni" 
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? "Actualizando..." : "Actualizar Comunidad"}
