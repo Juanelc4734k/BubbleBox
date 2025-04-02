@@ -102,7 +102,6 @@ const Reels = ({ openCommentsSidebar }) => {
                 >
                   Mis reels
                 </button>
-                <button className="tab-reel-1">Guardados</button>
               </div>
             </div>
 
