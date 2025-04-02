@@ -17,7 +17,9 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCloseIntereses, setIsCloseIntereses] = useState(false); // Suponiendo que comienza abierto
-  
+  const avatarPorDefecto =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
+
   const [isOpen, setIsOpen] = useState(false)
   const [profile, setProfile] = useState({
     username: "",
@@ -222,10 +224,10 @@ const UpdateProfile = ({ onProfileUpdate }) => {
             <img 
               src={previewImage || (profile.avatar && profile.avatar.trim() !== "" ? 
                 (profile.avatar.startsWith('http') ? profile.avatar : `http://localhost:3009${profile.avatar}`)
-                : "/placeholder.svg")} 
+                : avatarPorDefecto)} 
               alt="Profile" 
               className="avatar"
-              onError={(e) => { e.target.src = "/placeholder.svg"; }}
+              onError={(e) => { e.target.src = avatarPorDefecto }}
             />
               <button type="button" className="change-avatar" onClick={() => fileInputRef.current.click()}>
                 <FaCamera />
