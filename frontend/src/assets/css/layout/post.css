@@ -251,6 +251,7 @@ border-radius: 50%;
   padding:0;
   max-width: 500px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
   position: relative;
   overflow: hidden;
 } 
@@ -291,7 +292,6 @@ border-radius: 50%;
 }
 .edit-time{
   width: 101%;
-  margin-top:-3vh;
   border-left: 1vh solid rgb(182, 104, 255);
   background-color: #dab6fd83;
   padding: 2vh;

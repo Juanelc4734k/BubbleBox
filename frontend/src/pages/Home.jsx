@@ -114,27 +114,6 @@ const Home = ({ openCommentsSidebar }) => {
     }
   }, [targetPostId, posts]);
 
-  useEffect(() => {
-        const timer = setTimeout(() => {
-            setMostrarT(false);
-            setTimeout(() => setNoVer(true), 1500);
-        }, 3000);
-        return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    let i = 0;
-    const escribir = setInterval(() => {
-      if (i <= parrafoComm.length) {
-        setTextoM(parrafoComm.substring(0, i));
-        i++;
-      } else {
-        clearInterval(escribir);
-      }
-    }, 100);
-    
-    return () => clearInterval(escribir);
-  }, []);
 
   // Filter posts based on active tab
   const filteredPosts = activeTab === 'my' 
