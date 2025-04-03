@@ -256,7 +256,7 @@ const Community = () => {
                 formDataToSend.append('nombre', formData.nombre);
                 formDataToSend.append('descripcion', formData.descripcion);
                 formDataToSend.append('tipo_privacidad', formData.tipo_privacidad);
-                formDataToSend.append('imagen', formData.imagen);
+                //formDataToSend.append('imagen', formData.imagen);
                 
                 await updateCommunity(editingCommunity.id, formDataToSend);
             } else {
@@ -498,30 +498,6 @@ const Community = () => {
                                     <option value="privada">Privada</option>
                                 </select>
                             </div>
-
-                            <div className="edit-form-groupcomuni file-comuni">
-                                <CiImageOn/>
-                                <label htmlFor="imagen">Imagen de la comunidad (opcional)</label>
-                                <input
-                                    type="file"
-                                    id="imagen"
-                                    name="imagen"
-                                    onChange={handleImageChange}
-                                    accept="image/*"
-                                    className="hidden-input-comuni"
-                                />
-                            </div>
-
-                            {previewImage && (
-                                <div className="edit-image-previewcomuni">
-                                    <p className="text-sm text-gray-500 mb-2">Vista previa:</p>
-                                    <img 
-                                        src={previewImage}
-                                        alt="Vista previa" 
-                                        className="w-full max-h-40 object-contain rounded-md"
-                                    />
-                                </div>
-                            )}
 
                             <button 
                                 type="submit" 

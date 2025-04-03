@@ -5,9 +5,45 @@
   padding: 0.2rem 1.5rem;
 }
 .modalInteresess{
-
   border-radius: 1.5rem;
   width: 50vh;
+}
+.contador-profile{
+  gap: 6px;
+}
+.contador-profile i{
+  font-size: 2vh;
+  background-color: #9f62ee;
+  width: 4vh;
+  height: 4vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100vh;
+  color: white;
+  text-shadow: 0px 1px 3px black;
+  box-shadow: 0px 2px 4px -2px black;
+  transition: background-color 0.3s ease-in, transform 0.2s ease-in;
+}
+.contador-profile i:hover{
+  transform: translateY(-3px);
+  background-color: #8a53f2;
+  cursor: pointer;
+}
+.fromUpdate{
+  overflow: hidden;
+}
+.contador-profile{
+  align-items: center;
+}
+.textheader{
+  display: flex;
+  justify-content: space-between;
+}
+.infoHeader{
+  display: flex;
+  flex-direction: column;
+  width: 95%;
 }
 .interests-modal {
   position: fixed;
@@ -15,7 +51,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.347);
   z-index: 10001;
   width: 100%;
   display: flex;
@@ -30,7 +66,6 @@
   overflow: hidden;
   margin: 3px 0;
 }
-
 
 .interests-modal-content { 
   background: white;
@@ -113,6 +148,7 @@ display: none;
   opacity: 0;
   border: 1px solid rgb(172, 115, 237);
   max-height: 300px; 
+  width: 40vh;
   overflow-y: auto; 
   z-index: 9999;
   position:fixed;
@@ -146,7 +182,7 @@ display: none;
   opacity: 1;
   transition: opacity 0.3s ease, transform 0.3s ease;
   margin-top: 2vh;
-  right: 3vh;
+  right: 5vh;
   }
 
   .interests-Profil{

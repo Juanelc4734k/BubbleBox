@@ -17,6 +17,7 @@ const UpdateProfile = ({ onProfileUpdate }) => {
   const [searchTerm, setSearchTerm] = useState(""); 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isCloseIntereses, setIsCloseIntereses] = useState(false); // Suponiendo que comienza abierto
+  const filterRef = useRef(null);
   const avatarPorDefecto =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnEIMyG8RRFZ7fqoANeSGL6uYoJug8PiXIKg&s";
 
@@ -34,12 +35,27 @@ const UpdateProfile = ({ onProfileUpdate }) => {
 
   const closeModal = () => {
     setIsCloseIntereses(false); 
+    setShowInterestsModal(false);
   };
   useEffect(() => {
     if (profile.intereses) {
       setSelectedInterests(profile.intereses);
     }
   }, [profile.intereses]);
+  
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setIsFilterOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   
   useEffect(() => {
     const fetchProfile = async () => {
@@ -280,26 +296,27 @@ const UpdateProfile = ({ onProfileUpdate }) => {
             Guardar Cambios
           </button>
         </form>
-        
-      </div>
-
-      
-    )}
-              <div className="modalInteresess" >
+        <div className="modalInteresess" >
           {showInterestsModal && (
       <div className="interests-modal">
       <div className="interests-modal-content">
         <div className="contador-profile">
-        <h3>Selecciona tus intereses (máximo 5)</h3>
-        <p>{selectedInterests.length} / 5</p>
-        <i className="fa-solid fa-xmark"></i>
-        </div>
-      <div className="progress-container">
+          <div className="infoHeader">
+            <div className="textheader">
+
+          <h3>Selecciona tus intereses</h3>
+          <p>{selectedInterests.length} / 5</p>
+            </div>
+          <div className="progress-container">
           <div
             className="progress-bar"
             style={{ width: `${(selectedInterests.length / 5) * 100}%` }}
           ></div>
         </div>
+          </div>
+        <i className="fa-solid fa-xmark" onClick={closeModal}></i>
+        </div>
+     
         <div className="profile-interests-busqueda">
 
         <div className="search-container-profiles">
@@ -313,17 +330,17 @@ const UpdateProfile = ({ onProfileUpdate }) => {
           />
         </div>            
             {/* Agregamos tabs de categorías */}
-              <div className="filtrar-interes-profi">
+              <div className="filtrar-interes-profi"ref={filterRef}>
                 <div className="filter-conten" onClick={() => setIsFilterOpen(!isFilterOpen)}>
                   <i className="fa-solid fa-filter"></i>
-                  <button type="button" >
+                  <button type="button"  >
                       Filtrar
                     </button>
 
                 </div>
 
                 {isFilterOpen && (
-                  <div  className={`conten-tabs-profile ${isFilterOpen ? "active" : ""}`}>
+                  <div  className={`conten-tabs-profile ${isFilterOpen ? "active" : ""}`} >
                       {Object.keys(categorizedInterests).map((category) => (
                       <button
                       key={category}
@@ -412,6 +429,11 @@ const UpdateProfile = ({ onProfileUpdate }) => {
           )}
             
           </div>
+      </div>
+
+      
+    )}
+
     </div>
   )
 }
