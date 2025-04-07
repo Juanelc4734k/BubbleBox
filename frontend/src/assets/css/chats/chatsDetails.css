@@ -644,7 +644,9 @@
   align-items: center;
   padding: 0.5rem;
   border-bottom: 1px solid #cfcfcf;
-  gap: 1rem;
+  gap: 1.2vh;
+  width: 100%;
+  max-width: 100%; /* evita que se expanda más allá del padre */
 }
 
 .chat-actions {
@@ -750,7 +752,8 @@
 }
 .textChatH {
   color: #535353;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);  
+  overflow: hidden;
 }
 .chat-messages {
   flex: 1;

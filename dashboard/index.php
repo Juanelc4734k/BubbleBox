@@ -363,7 +363,7 @@ include 'views/templates/sidebar.php';
                     <td>
                       <div class="text-start">
                         <p class="text-xs font-weight-bold mb-0">Título:</p>
-                        <h6 class="text-sm mb-0"><?php echo htmlspecialchars($post['titulo']); ?></h6>
+                        <h6 class="text-sm mb-0"><?php echo $post['titulo']; ?></h6>
                       </div>
                     </td>
                     <td>
@@ -389,7 +389,7 @@ include 'views/templates/sidebar.php';
                             <div class="modal-dialog modal-md">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="imageModalLabel<?php echo $post['id']; ?>"><?php echo htmlspecialchars($post['titulo']); ?></h5>
+                                  <h5 class="modal-title" id="imageModalLabel<?php echo $post['id']; ?>"><?php echo $post['titulo']; ?></h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center">

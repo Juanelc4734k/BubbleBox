@@ -566,7 +566,13 @@ const Post = forwardRef((props, ref) => {
                 />
               </div>
               <div className="info-post">
-                <p>{post.nombre_usuario || "Usuario desconocido"}</p>
+                <p>
+                {post.nombre_usuario || "Usuario desconocido" .length > 30
+                ? post.nombre_usuario.substring(0, 15) + "..." 
+                : post.nombre_usuario}
+                  {/* {post.nombre_usuario || "Usuario desconocido"} */}
+
+                </p>
                 <p className="post-title">{post.titulo}</p>
               </div>
 
@@ -678,7 +684,9 @@ const Post = forwardRef((props, ref) => {
           </div>
 
           <div className="reaction-summary text-sm text-gray-600 min-h-[25px] pl-7 pb-1 flex items-center">
-            {reactionSummary}
+          {reactionSummary.length > 20
+                ? reactionSummary.substring(0, 20) + "..." 
+                : reactionSummary}
           </div>
           <div className="post-lineTwo"></div>
           <div className="post-aption flex justify-between items-center px-4 py-2">

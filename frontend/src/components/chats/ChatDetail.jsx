@@ -32,6 +32,7 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
   const [isTyping, setIsTyping] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
   const [lastSeen, setLastSeen] = useState(null);
+  const [esPantallaChica, setEsPantallaChica] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isEmojiPickerInitialized, setIsEmojiPickerInitialized] =
     useState(false);
@@ -70,6 +71,16 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
   const onEmojiClick = (emojiObject) => {
     setNewMessage((prevInput) => prevInput + emojiObject.emoji);
   };
+  useEffect(() => {
+    const manejarResize = () => {
+      setEsPantallaChica(window.innerWidth < 768); // Cambiá 768 según tu breakpoint
+    };
+
+    manejarResize(); // Para que se ejecute apenas carga
+
+    window.addEventListener("resize", manejarResize);
+    return () => window.removeEventListener("resize", manejarResize);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -1336,7 +1347,16 @@ const ChatDetail = ({ chatId, onMessageSent, onCloseChat }) => {
           className="imgChatDetail"
         />
         <div className="user-info">
-          <h2 className="textChatH">{friendUser.nombre}</h2>
+
+          <h2 className="textChatH">
+          {friendUser && friendUser.nombre
+        ? esPantallaChica
+          ? friendUser.nombre.length > 8
+            ? `${friendUser.nombre.substring(0, 8)}...`
+            : friendUser.nombre
+          : friendUser.nombre
+        : ""}
+            </h2>
           <div className="user-status">
             {isTyping ? (
               <span className="typing-status">Escribiendo</span>
