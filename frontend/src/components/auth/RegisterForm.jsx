@@ -8,6 +8,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { SlLock } from "react-icons/sl";
 import { FaRegSquare, FaRegCheckSquare } from "react-icons/fa";
 import Swal from "sweetalert2";
+import ModalConTabs from "./ModalConTabs";
 
 export default function RegisterForm({ setMessage }) {
   const [formData, setFormData] = useState({
@@ -18,6 +19,8 @@ export default function RegisterForm({ setMessage }) {
   });
   const [aceptado, setAceptado] = useState(false); // Estado para el checkbox de términos y condiciones
   const [error, setError] = useState("");
+  const [mostrarModal, setMostrarModal] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -184,6 +187,7 @@ export default function RegisterForm({ setMessage }) {
               value={formData.nombre}
               onChange={handleChange}
               placeholder="Nombre"
+              maxLength={30}
             />
             <div className="linea"></div>
           </div>
@@ -239,9 +243,21 @@ export default function RegisterForm({ setMessage }) {
             ) : (
               <FaRegSquare size={20} />
             )}
-            <p>
+             <div>
+      <p
+        onClick={() => setMostrarModal(true)}
+        className=""
+      >
               Acepto los <span>Términos y Condiciones</span>
-            </p>
+      </p>
+
+      {mostrarModal && (
+        <ModalConTabs onClose={() => setMostrarModal(false)} />
+      )}
+    </div>
+            {/* <p>
+              Acepto los <span>Términos y Condiciones</span>
+            </p> */}
           </div>
           <button type="submit">Registrate</button>
         </form>

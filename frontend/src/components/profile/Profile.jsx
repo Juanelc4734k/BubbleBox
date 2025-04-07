@@ -211,9 +211,11 @@ function Profile({ profile: initialProfile, isOwnProfile }) {
         <div className="containerProfileRight">
           <div className="textRight" >
             <i className="fa-regular fa-user text-purple-500"></i>
-              <h1 className="textNameP">
-                {profile.nombre}
-              </h1>
+            <h1 className="textNameP">
+                {profile.nombre.length > 40
+                ? profile.nombre.substring(0, 40) + "..." 
+                : profile.nombre}
+            </h1>
           </div>
           <div className="containerInformation">
             <div className="tittle-bio">

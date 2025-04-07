@@ -220,9 +220,10 @@ const ChatPreview = ({ friend, onSelect, isSelected }) => {
         <div className="flex-1 PreviewChat">
           <div className="flex justify-between items-center">
             <h3 className="chat-name truncate">
-              {localStorage.getItem("userId") === friend.id_usuario1.toString()
+            {(localStorage.getItem("userId") === friend.id_usuario1.toString()
                 ? friend.nombre_usuario2
-                : friend.nombre_usuario1}
+                : friend.nombre_usuario1
+              ).substring(0, 11) + "..."}
             </h3>
             {unreadCount > 0 && (
               <span className="unread-badge">{unreadCount}</span>
